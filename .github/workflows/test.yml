@@ -24,7 +24,7 @@ jobs:
     #if: ${{ false }}  # disable for now
     strategy:
       matrix:
-        scope: [IT]
+        scope: [UT, Postgres, Sqlserver, Oracle]
       fail-fast: false
       
     steps:
@@ -35,15 +35,59 @@ jobs:
           java-version: '8'
           cache: 'maven'
 
+      # Starts the DBMS containers when applicable
+      - name: Launch Postgres
+        if: ${{ matrix.scope == 'Postgres' }}
+        run: |
+          docker run -d -p 5432:5432 --name test-postgres  --restart unless-stopped \
+            -e POSTGRES_PASSWORD="$TEST_POSTGRES_PWD" \
+            -e TEST_POSTGRES_PWD="$TEST_POSTGRES_PWD" \
+            -v ${GITHUB_WORKSPACE}/setup/postgres:/docker-entrypoint-initdb.d \
+            postgres:14
+          chmod u+x setup/wait-container-ready.sh && ./setup/wait-container-ready.sh test-postgres "END SETUP!"
+
+      - name: Launch Sqlserver
+        if: ${{ matrix.scope == 'Sqlserver' }}
+        run: |
+          docker stop test-sqlserver && docker rm test-sqlserver
+          docker run -d -p 1433:1433 --name test-sqlserver  --restart unless-stopped \
+            -e SA_PASSWORD="$TEST_SQLSERVER_PWD" \
+            -e TEST_SQLSERVER_PWD="$TEST_SQLSERVER_PWD" \
+            -e "ACCEPT_EULA=Y" -e "MSSQL_PID=Developer" \
+            -v ${GITHUB_WORKSPACE}/setup/sqlserver:/setup.d \
+            mcr.microsoft.com/mssql/server:2017-latest
+          chmod u+x setup/wait-container-ready.sh && ./setup/wait-container-ready.sh test-sqlserver "SQL Server is now ready for client connections"
+          # SQLServer does not have an on startup script, run it now
+          docker exec test-sqlserver bash -c "chmod u+x setup.d/sqlserver-setup.sh && ./setup.d/sqlserver-setup.sh"     
+      
+      - name: Launch Oracle
+        if: ${{ matrix.scope == 'Oracle' }}
+        run: |
+          docker run -d -p 1521:1521 --name test-oracle  --restart unless-stopped \
+            -e ORACLE_PASSWORD=$TEST_ORACLE_PWD \
+            -e TEST_ORACLE_PWD="$TEST_ORACLE_PWD" \
+            -v ${GITHUB_WORKSPACE}/setup/oracle:/container-entrypoint-initdb.d \
+            gvenzl/oracle-xe:11.2.0.2-slim-faststart
+          chmod u+x setup/wait-container-ready.sh && ./setup/wait-container-ready.sh test-oracle "DATABASE IS READY TO USE!"
+
       # Run the tests UT, IT and those that require database server
       
       - name: Test and aggregate surefire report - ${{ matrix.scope }}
         if: ${{ matrix.scope == 'UT' }}
         run: >
-          mvn test surefire-report:report -Daggregate=true
+          mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=!TestPostgres*,!TestSqlserver*,!TestOracle*,!ITTest*
           -Dsurefire.failIfNoSpecifiedTests=false
           -Dmaven.test.failure.ignore=true -U --no-transfer-progress
+
+      - name: Test and aggregate surefire report - ${{ matrix.scope }}
+        if: ${{ matrix.scope != 'UT' && matrix.scope != 'IT' }}
+        run: >
+          mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=Test${{ matrix.scope }}*
+          -Dmaven.test.failure.ignore=true -U --no-transfer-progress
+          -Duser.timezone=Europe/Madrid
+        # NOTE: must specify a timezone to avoid oracle error ORA-01882: timezone region not found
 
       # it requires first running the tests outside of maven, then a test case compares results
       - name: Test execution - ${{ matrix.scope }}
