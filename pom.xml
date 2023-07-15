@@ -336,11 +336,11 @@
 	<licenses>
 		<license>
 			<name>Apache-2.0</name>
-			<url>https://github.com/giis-uniovi/samples-giis-template/blob/main/LICENSE</url>
+			<url>https://github.com/giis-uniovi/qacover/blob/main/LICENSE</url>
 		</license>
 	</licenses>
 	<scm>
-		<url>https://github.com/giis-uniovi/samples-giis-template</url>
+		<url>https://github.com/giis-uniovi/qacover</url>
 	</scm>
 
 	<!-- To publish packages (mvn deploy) a profile must be specified (github for snapsots and maven central for releases) -->
@@ -351,7 +351,7 @@
 				<snapshotRepository>
 					<id>github</id>
 					<name>GitHub Apache Maven Packages</name>
-					<url>https://maven.pkg.github.com/giis-uniovi/samples-giis-template</url>
+					<url>https://maven.pkg.github.com/giis-uniovi/qacover</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
