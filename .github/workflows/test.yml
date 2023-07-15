@@ -24,7 +24,8 @@ jobs:
     #if: ${{ false }}  # disable for now
     strategy:
       matrix:
-        scope: [Sqlserver]
+        # Excluding IT for now
+        scope: [UT, Postgres, Sqlserver, Oracle]
       fail-fast: false
       
     steps:
@@ -256,7 +257,9 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           sonar-token: ${{ secrets.SONAR_TOKEN }}
           restore-artifact-name1: "test-report-files-UT"
-          restore-artifact-name2: "test-report-files-IT"
+          restore-artifact-name2: "test-report-files-Postgres"
+          restore-artifact-name3: "test-report-files-Sqlserver"
+          restore-artifact-name4: "test-report-files-Oracle"
 
   publish-java-snapshot:
     #if: ${{ false }}  # disable for now
