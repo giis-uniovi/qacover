@@ -33,6 +33,7 @@ jobs:
         run: >
           mvn test surefire-report:report -Daggregate=true
           -Dtest=!TestPostgres*,!TestSqlserver*,!TestOracle*
+          -Dsurefire.failIfNoSpecifiedTests=false
           -Dmaven.test.failure.ignore=true -U --no-transfer-progress
 
       - name: Additional aggregated junit report
