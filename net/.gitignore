@@ -1,0 +1,16 @@
+Sharpen-Project
+sharpen-temp
+TestResults
+reports
+packages
+dist
+.sonar
+.vs
+#sqlite databases
+*.db
+*.db-shm
+*.db-wal
+.vs
+bin
+obj
+lib

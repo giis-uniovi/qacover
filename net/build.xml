@@ -1,0 +1,198 @@
+<project name="QaCover" default="build" basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless" xmlns:dn="antlib:org.apache.ant.dotnet" xmlns="antlib:org.apache.tools.ant">
+
+	<description>Convert QaCover to C#</description>
+  <!--Uses java for sharpen if this property specifies the location of a java7 executable, if not, uses containers -->
+  <property environment="env"/>
+  <property name="java7.exec" value="C:/Program Files/Java/jdk1.7.0_75/bin/java" unless:set="env.GITHUB_WORKSPACE" />
+
+  <mkdir dir="packages" />
+  <property name="ant-util-url" value="https://in4test.lsi.uniovi.es/xlib/ant-util-master" />
+  <get src="${ant-util-url}/ant.netcore.xml" dest="packages/ant.netcore.xml" usetimestamp="true" />
+  <import file="packages/ant.netcore.xml"/>
+
+  <target name="clean" >
+    <delete dir="*/bin"/>
+    <delete dir="*/obj"/>
+    <delete dir="packages"/>
+    <delete dir="reports"/>
+    <delete dir="target"/>
+    <delete dir="sharpen-temp"/>
+  </target>
+
+  <target name="sharpen" description="Transform QaCover from Java to C#"
+          depends="sharpen.preprocess, sharpen.sharpen, sharpen.postprocess">
+    <!--
+      Tree stages (each is run as a target, all run as target 'sharpen'):
+      - copy java files to a sharpen-temp/java directory and gets dependencies
+      - perform the sharpen translation
+      - final changes in translated files (in temporary folder) and copy to the solution
+     -->
+  </target>
+
+  <target name="sharpen.preprocess">
+    <!-- Copy the source files (code+test) to a temproal folder where will be preprocessed -->
+      <mkdir dir="sharpen-temp/lib"/>
+      <copy todir="sharpen-temp/java">
+        <fileset dir="../qacover-model/src/main/java" >
+        </fileset>
+        <fileset dir="../qacover-core/src/main/java" >
+          <exclude name="**/driver/*.java" />
+          <exclude name="in2test/qacover/p6spy/*.java" />
+        </fileset>
+        <fileset dir="../qacover-core/src/test/java" >
+          <exclude name="**/test4giis/qacoversample/*.java" />
+        </fileset>
+      </copy>
+      <!-- As of VisualAssert 2.4.1 the use of generics in the hierarchy of SoftVisualAssert
+      causes a null pointer exception when executing sharpen, creates an stub as workaround -->
+      <echo file="sharpen-temp/java/giis/visualassert/SoftVisualAssert.java">
+        package giis.visualassert;
+        public class SoftVisualAssert {
+        public SoftVisualAssert setFramework(String Framework) { return null;}
+        public SoftVisualAssert setCallStackLength(int length) { return null;}
+        public SoftVisualAssert setBrightColors(boolean value) { return null;}
+        public SoftVisualAssert setShowExpectedAndActual(boolean value) { return null;}
+        public SoftVisualAssert setReportSubdir(String value) { return null;}
+        public void assertEquals(String message, String expected, String actual, String file) {}
+        public void assertEquals(String message, String expected, String actual) {}
+        public void assertEquals(String expected, String actual) {}
+        public void assertAll(String fileName) {}
+        public void assertAll() {}
+        }
+      </echo>
+      <echo file="sharpen-temp/java/giis/visualassert/Framework.java">
+        package giis.visualassert;
+        public class Framework {
+        public static final String JUNIT4 = "junit4";
+        }
+      </echo>
+
+    <!-- Other libraries to resolve depenencies when executing sharpen (delcared in sharpen-all-options.txt) -->
+    <sequential>
+      <get src="https://repo1.maven.org/maven2/io/github/giis-uniovi/tdrules-model/3.5.0/tdrules-model-3.5.0.jar" dest="sharpen-temp/lib/tdrules-model-3.5.0.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/io/github/giis-uniovi/tdrules-client/3.5.0/tdrules-client-3.5.0.jar" dest="sharpen-temp/lib/tdrules-client-3.5.0.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/io/github/giis-uniovi/tdrules-client-rdb/3.5.0/tdrules-client-rdb-3.5.0.jar" dest="sharpen-temp/lib/tdrules-client-rdb-3.5.0.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/io/github/giis-uniovi/tdrules-store-rdb/3.5.0/tdrules-store-rdb-3.5.0.jar" dest="sharpen-temp/lib/tdrules-store-rdb-3.5.0.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/io/github/javiertuya/portable-java/2.2.0/portable-java-2.2.0.jar" dest="sharpen-temp/lib/portable-java-2.2.0.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/io/github/javiertuya/visual-assert/2.4.1/visual-assert-2.4.1.jar" dest="sharpen-temp/lib/visual-assert-2.4.1.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/p6spy/p6spy/3.9.0/p6spy-3.9.0.jar" dest="sharpen-temp/lib/p6spy-3.9.0.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/junit/junit/4.13/junit-4.13.jar" dest="sharpen-temp/lib/junit-4.13.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.33/slf4j-api-1.7.33.jar" dest="sharpen-temp/lib/slf4j-api-1.7.33.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/org/xerial/sqlite-jdbc/3.23.1/sqlite-jdbc-3.23.1.jar" dest="sharpen-temp/lib/sqlite-jdbc-3.23.1.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/commons-dbutils/commons-dbutils/1.7/commons-dbutils-1.7.jar" dest="sharpen-temp/lib/commons-dbutils-1.7.jar" usetimestamp="true" />
+      <get src="https://repo1.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.13.2/jackson-annotations-2.13.2.jar" dest="sharpen-temp/lib/jackson-annotations-2.13.2.jar" usetimestamp="true" />
+    </sequential>
+  </target>
+
+  <target name="sharpen.sharpen">
+    <sharpen.run.java7 if:set="java7.exec" />
+    <sharpen.run.container unless:set="java7.exec" />
+  </target>
+
+  <macrodef name="sharpen.run.container" description="Run sharpen from a container" >
+    <sequential>
+      <exec executable="docker" failonerror="true" >
+        <arg value="build" />
+        <arg value="-t" />
+        <arg value="sharpen" />
+        <arg value="./sharpen-docker" />
+      </exec>
+      <echo>${basedir}</echo>
+      <exec executable="docker" failonerror="true" >
+        <arg value="run" />
+        <arg value="-v" />
+        <arg value="${basedir}:/sharpen/workdir" />
+        <arg value="sharpen" />
+        <arg value="." />
+        <arg value="sharpen-temp/java" />
+        <arg value="@sharpen-all-options.txt" />
+      </exec>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="sharpen.run.java7" description="Run sharpen with local java7 installation" >
+    <sequential>
+      <get src="https://github.com/javiertuya/sharpen/releases/download/v1.1.0-fork/sharpencore-1.1.0-fork-jar-with-dependencies.jar" 
+           dest="sharpen-temp/lib/sharpencore-1.1.0-fork-jar-with-dependencies.jar" usetimestamp="true" />
+      <exec executable="${java7.exec}" failonerror="true" >
+        <arg value="-jar" />
+        <arg value="sharpen-temp/lib/sharpencore-1.1.0-fork-jar-with-dependencies.jar" />
+        <arg value="sharpen-temp/java" />
+        <arg value="@sharpen-all-options.txt" />
+      </exec>
+    </sequential>
+  </macrodef>
+  
+  <target name="sharpen.postprocess">
+    <!-- Some replacements to ensure the transformed C# code is compilable -->
+    <replace dir="sharpen-temp/sharpen-temp.net/">
+        <include name="Giis*/**" />
+        <replacefilter token="using Sharpen;" value="" />
+        <replacefilter token="using Giis.QACover.Java.Sql;" value="Java.Sql" />
+        <replacefilter token="//NOSONAR" value="//" />
+        <replacefilter token="//#pragma warning" value="#pragma warning" />
+        <replacefilter token="ToLower()" value="ToLowerInvariant()" />
+        <replacefilter token="files.Sort();" value="((List&lt;string&gt;)files).Sort();" />
+        <replacefilter token="using Java.Lang;" value="" />
+        <replacefilter token="using Java.IO;" value="" />
+        <replacefilter token="using Org.Apache.Commons.IO;" value="" />
+        <replacefilter token="using Org.Hamcrest;" value="" />
+        <replacefilter token="StackTraceElement" value="System.Diagnostics.StackFrame" />
+        <replacefilter token="TreeSet" value="System.Collections.Generic.SortedSet" />
+        <replacefilter token="throw new IllegalAccessError" value="throw new System.InvalidOperationException" />
+
+        <replacefilter token="using Org.Apache.Log4j;" value="using NLog;" />
+        <replacefilter token="Logger.GetLogger(this.GetType())" value="LogManager.GetCurrentClassLogger()" />
+      </replace>
+
+      <!--idem para los tests, realizando varios remplazos para adaptar los test nunit que genera sharpen a mstest-->
+      <replace dir="sharpen-temp/sharpen-temp.net">
+        <include name="Test4giis*/**" />
+        <replacefilter token="using Sharpen;" value="" />
+        <replacefilter token="[Rule]" value="" />
+        <replacefilter token="using Com.P6spy.Engine.Spy;" value="" />
+        <replacefilter token="P6SpyOptions.GetActiveInstance()" value="//P6SpyOptions.GetActiveInstance()" />
+        <replacefilter token="using NUnit.Framework.Rules;" value="" />
+        <replacefilter token="public TestName testName = new TestName();" value="" />
+        <replacefilter token="testName.GetMethodName()" value="NUnit.Framework.TestContext.CurrentContext.Test.Name " />
+        
+        <replacefilter token="Locale.SetDefault(" value="//Locale.SetDefault(" />
+      </replace>
+      
+      <!--Copia ficheros transformados correspondientes a esta aplicacion.
+      Los componentes que son importados los situa en una carpeta (imported)-->
+      <copy todir="QACover/Translated">
+        <fileset dir="sharpen-temp/sharpen-temp.net">
+          <exclude name="Giis.Qacover.Portable/*" />
+          <exclude name="Giis.Qacover.Driver/*" />
+          <include name="Giis.Qacover*/**" />
+        </fileset>
+        <filterchain>
+          <concatfilter prepend="sharpen-autogenerated-note.txt"/>
+        </filterchain>
+      </copy>
+      <copy todir="QACoverTest/Translated">
+        <fileset dir="sharpen-temp/sharpen-temp.net">
+          <include name="Test4giis*/**" />
+          <exclude name="Test4giis.Qacoverapp/AppBase.cs" />
+          <exclude name="Test4giis.Qacoverapp/AppDbUtils.cs" />
+          <exclude name="Test4giis.Qacoverapp/ConnectionFactory.cs" />
+          <exclude name="Test4giis.Qacover/TestExecute.cs" />
+          <exclude name="Test4giis.Qacover.Sqlserver/TestSqlserverExecute.cs" />
+          <exclude name="Test4giis.Qacover.Oracle/*" />
+          <exclude name="Test4giis.Qacover.Postgres/*" />
+          <exclude name="Test4giis.Qacover.H2/*" />
+          <exclude name="Test4giis.Qacover.IT/*" />
+        </fileset>
+        <filterchain>
+          <concatfilter prepend="sharpen-autogenerated-note.txt"/>
+        </filterchain>
+      </copy>
+      
+      <!-- IMPORTANT: En java el p6spy se configura con un fichero de propiedades, en .net con una variable de entorno.
+      Para tests se cambia directamente una variable -->
+      <replace file="QACoverTest/Translated/Test4giis.Qacover/Base.cs" token="// PLACEHOLDER FOR .NET STATIC INITIALIZATION - DO NOT CHANGE"
+               value="static Base() { Giis.Qacover.Driver.EventTrigger.SetListenerClassName(&quot;Giis.Qacover.Driver.EventListener&quot;); }" />
+    </target>
+
+</project>

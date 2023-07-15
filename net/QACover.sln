@@ -1,0 +1,51 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{77B8ED75-8496-4E8F-8B27-B3841171AF1D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		build.xml = build.xml
+		qacover.properties = qacover.properties
+		sharpen-all-options.txt = sharpen-all-options.txt
+		sonar-project.properties.xml = sonar-project.properties.xml
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QACover", "QACover\QACover.csproj", "{8C9EE3BE-79F0-463D-9EAF-F2EA16263FDC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QACoverTest", "QACoverTest\QACoverTest.csproj", "{4AA2018F-5163-4013-95C9-0DB7FF11C9B4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QACoverTestEf", "QACoverTestEf\QACoverTestEf.csproj", "{DACEC558-DC68-4F91-BFE0-29E396DE4E12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QACoverEf2spy", "QACoverEf2spy\QACoverEf2spy.csproj", "{BC1CF1F1-3477-4966-9A03-3A7118790DCE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C9EE3BE-79F0-463D-9EAF-F2EA16263FDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C9EE3BE-79F0-463D-9EAF-F2EA16263FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C9EE3BE-79F0-463D-9EAF-F2EA16263FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C9EE3BE-79F0-463D-9EAF-F2EA16263FDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA2018F-5163-4013-95C9-0DB7FF11C9B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA2018F-5163-4013-95C9-0DB7FF11C9B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA2018F-5163-4013-95C9-0DB7FF11C9B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA2018F-5163-4013-95C9-0DB7FF11C9B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DACEC558-DC68-4F91-BFE0-29E396DE4E12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DACEC558-DC68-4F91-BFE0-29E396DE4E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DACEC558-DC68-4F91-BFE0-29E396DE4E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DACEC558-DC68-4F91-BFE0-29E396DE4E12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC1CF1F1-3477-4966-9A03-3A7118790DCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC1CF1F1-3477-4966-9A03-3A7118790DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC1CF1F1-3477-4966-9A03-3A7118790DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC1CF1F1-3477-4966-9A03-3A7118790DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FA354DD4-A766-4C9C-923B-3B127317D2E1}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <InformationalVersion>1.5.0-SNAPSHOT</InformationalVersion>
+    
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>QACoverReport</ToolCommandName>
+    <Authors>Javier Tuya</Authors>
+    <Company>GIIS - University of Oviedo</Company>
+    <Description>
+      QACover Report
+    </Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--para compilacion condicional-->
+    <DefineConstants>NETCORE</DefineConstants>
+    <StartupObject>QACoverReport.Program</StartupObject>
+    <PackageId>QACoverReport</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--la traduccion causa algunas definiciones using duplicadas, elimina el warning-->
+    <NoWarn>0105</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="In2test.Qacover.Core\**" />
+    <Compile Remove="In2test.Qacover.Dbspy\**" />
+    <EmbeddedResource Remove="In2test.Qacover.Core\**" />
+    <EmbeddedResource Remove="In2test.Qacover.Dbspy\**" />
+    <None Remove="In2test.Qacover.Core\**" />
+    <None Remove="In2test.Qacover.Dbspy\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="PortableCs" Version="2.2.0" />
+
+    <PackageReference Include="TdRules" Version="3.5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    
+    <PackageReference Include="NLog" Version="5.2.2" />
+    
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+  </ItemGroup>
+
+</Project>

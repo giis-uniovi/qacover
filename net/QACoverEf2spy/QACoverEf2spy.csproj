@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DebugType>Full</DebugType>
+    <ProjectGuid>{BC1CF1F1-3477-4966-9A03-3A7118790DCE}</ProjectGuid>
+    <SonarQubeTestProject>false</SonarQubeTestProject>
+  </PropertyGroup> 
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--para compilacion condicional-->
+    <DefineConstants>NETCORE</DefineConstants>
+    <RootNamespace />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="In2test.Qacover.Report\**" />
+    <EmbeddedResource Remove="In2test.Qacover.Report\**" />
+    <None Remove="In2test.Qacover.Report\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.20" />
+    
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.20" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QACover\QACover.csproj" />
+  </ItemGroup>
+
+</Project>
