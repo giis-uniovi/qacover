@@ -32,7 +32,7 @@ jobs:
 
       - name: Generate report checks
         if: always()
-        uses: mikepenz/action-junit-report@v3.7.8
+        uses: mikepenz/action-junit-report@v3.8.0
         with:
           check_name: "test-result"
           report_paths: "**/surefire-reports/TEST-*.xml"
