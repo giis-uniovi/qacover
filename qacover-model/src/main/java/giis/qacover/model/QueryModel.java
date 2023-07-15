@@ -100,7 +100,7 @@ public class QueryModel extends RuleBase {
 	}
 
 	public List<RuleModel> getRules() {
-		List<RuleModel> rules = new ArrayList<RuleModel>();
+		List<RuleModel> rules = new ArrayList<>();
 		for (SqlRule rule : safe(model.getRules()))
 			rules.add(new RuleModel(rule));
 		return rules;

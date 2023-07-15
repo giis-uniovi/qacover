@@ -1,4 +1,4 @@
-package in2test.qacover.p6spy;
+package in2test.qacover.p6spy; //NOSONAR better name
 
 import giis.qacover.driver.InterceptorFactory;
 

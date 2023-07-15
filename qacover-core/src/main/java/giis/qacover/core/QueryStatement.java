@@ -53,7 +53,7 @@ public abstract class QueryStatement {
 	 */
 	protected List<String> parseNamedParameters(String sql) {
 		String comment = sql;
-		List<String> spec = new ArrayList<String>();
+		List<String> spec = new ArrayList<>();
 		// comment before starting teh query
 		if (comment.startsWith("/*"))
 			comment = JavaCs.substring(comment, 2, comment.length());

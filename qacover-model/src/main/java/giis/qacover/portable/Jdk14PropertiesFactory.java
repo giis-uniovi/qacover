@@ -37,9 +37,9 @@ public class Jdk14PropertiesFactory {
 				}
 				return prop;
 			}
-			return null;
+			return null; // NOSONAR to have same return values than similar methods
 		} catch (IOException e) {
-			return null;
+			return null; // NOSONAR
 		}
 	}
 

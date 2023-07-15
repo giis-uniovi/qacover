@@ -73,7 +73,7 @@ public class StatementAdapter extends QueryStatement {
 		// The access of parameters in PreparedStatementInformation is readonly
 		// Uses reflection to invoke the method to get the parameters
 		// http://tutorials.jenkov.com/java-reflection/private-fields-and-methods.html  
-		Map<Integer, Value> parameterValues = new HashMap<Integer, Value>();
+		Map<Integer, Value> parameterValues = new HashMap<>();
 		Method protectedMethod;
 		try {
 			log.debug("#### Getting p6spy parameters ");

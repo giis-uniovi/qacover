@@ -35,7 +35,7 @@ public class CoverageReader {
 		log.trace("CoverageReader.GetByClass, Processing files in folder: " + rulesFolder);
 		List<String> files = new LocalStore(rulesFolder).getRuleItems();
 		// saves the query collection for each class
-		Map<String, QueryCollection> index = new TreeMap<String, QueryCollection>(); 
+		Map<String, QueryCollection> index = new TreeMap<>(); 
 		CoverageCollection target = new CoverageCollection(); // collection to return
 		for (String fileName : files) {
 			log.trace("Processing file: " + fileName);

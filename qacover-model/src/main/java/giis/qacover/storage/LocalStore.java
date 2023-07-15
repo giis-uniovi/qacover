@@ -110,7 +110,7 @@ public class LocalStore {
 	public List<HistoryModel> getHistoryItems() {
 		String logFile = FileUtil.getPath(storeLocation, HISTORY_FILE_NAME);
 		List<String> lines = FileUtil.fileReadLines(logFile);
-		List<HistoryModel> items = new ArrayList<HistoryModel>();
+		List<HistoryModel> items = new ArrayList<>();
 		for (String line : lines)
 			items.add(new HistoryModel(line));
 		return items;

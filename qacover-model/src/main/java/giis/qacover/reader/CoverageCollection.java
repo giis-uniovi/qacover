@@ -9,7 +9,7 @@ import java.util.List;
  * structure than QueryCollection and and lazy access to the details.
  */
 public class CoverageCollection {
-	private List<QueryCollection> queries = new ArrayList<QueryCollection>();
+	private List<QueryCollection> queries = new ArrayList<>();
 	private CoverageSummary summary;
 
 	public void add(QueryCollection queryCol) {

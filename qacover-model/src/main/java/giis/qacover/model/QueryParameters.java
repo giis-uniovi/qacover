@@ -15,8 +15,8 @@ import giis.portable.xml.tiny.XNodeAbstract;
  * (2) object to manage specific features that depend on the datatype
  */
 public class QueryParameters {
-	protected Map<String, String> parameters = new TreeMap<String, String>(); 
-	protected Map<String, Object> parameterObjects = new TreeMap<String, Object>();
+	protected Map<String, String> parameters = new TreeMap<>(); 
+	protected Map<String, Object> parameterObjects = new TreeMap<>();
 
 	public int size() {
 		return parameters.size();
@@ -60,7 +60,7 @@ public class QueryParameters {
 	}
 
 	public List<String> keySet() {
-		List<String> keys = new ArrayList<String>();
+		List<String> keys = new ArrayList<>();
 		for (String name : parameters.keySet())
 			keys.add(name);
 		return keys;

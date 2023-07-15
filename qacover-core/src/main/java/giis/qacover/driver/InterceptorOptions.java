@@ -45,7 +45,7 @@ final class InterceptorOptions extends P6SpyOptions {
 
   @Override
   public Map<String, String> getDefaults() {
-    Map<String, String> allDefaults = new LinkedHashMap<String, String>(super.getDefaults());
+    Map<String, String> allDefaults = new LinkedHashMap<>(super.getDefaults());
     allDefaults.putAll(logLoadableOptions.getDefaults());
     allDefaults.put(INCLUDE_PARAMETER_VALUES, Boolean.FALSE.toString());
     return allDefaults;

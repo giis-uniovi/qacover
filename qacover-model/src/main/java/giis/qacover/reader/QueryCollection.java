@@ -12,7 +12,7 @@ import giis.qacover.storage.LocalStore;
  * Lazy access to the QueryModel data from the stored QueryReader
  */
 public class QueryCollection {
-	private List<QueryReader> items = new ArrayList<QueryReader>();
+	private List<QueryReader> items = new ArrayList<>();
 	private String folder; // store folder
 	private String name; // a name given to differentiate from other collections
 	private CoverageSummary summary = null; // optional, created on demand

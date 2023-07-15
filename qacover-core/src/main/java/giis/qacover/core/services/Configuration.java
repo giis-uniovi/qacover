@@ -18,12 +18,13 @@ import giis.qacover.portable.QaCoverException;
 /**
  * Global configuration options (singleton), read from properties file
  */
-public class Configuration {
+public class Configuration { // NOSONAR singleton allowed
 	public static final String OPTIONS_FILE_PROPERTY = "qacover.properties";
+	private static final String QACOVER_NAME = "qacover";
 	private static final Logger log = LoggerFactory.getLogger(Configuration.class);
 	private Properties properties;
 	private static Configuration instance;
-	private String name="qacover";
+	private String name=QACOVER_NAME;
 	private String storeRulesLocation;
 	private String storeReportsLocation;
 	private String fpcServiceUrl;
@@ -48,8 +49,8 @@ public class Configuration {
 	public Configuration reset() {
 		this.properties = getProperties(OPTIONS_FILE_PROPERTY);
 		String storeRootLocation = getProperty("qacover.store.root", Parameters.getProjectRoot());
-		String defaultRulesSubDir = FileUtil.getPath(Parameters.getReportSubdir(), "qacover", "rules");
-		String defaultReportsSubDir = FileUtil.getPath(Parameters.getReportSubdir(), "qacover", "reports");
+		String defaultRulesSubDir = FileUtil.getPath(Parameters.getReportSubdir(), QACOVER_NAME, "rules");
+		String defaultReportsSubDir = FileUtil.getPath(Parameters.getReportSubdir(), QACOVER_NAME, "reports");
 		storeRulesLocation = FileUtil.getPath(storeRootLocation, getProperty("qacover.store.rules", defaultRulesSubDir));
 		storeReportsLocation = FileUtil.getPath(storeRootLocation, getProperty("qacover.store.reports", defaultReportsSubDir));
 		fpcServiceUrl = getProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/sqlrules/api/v3");
@@ -63,7 +64,7 @@ public class Configuration {
 		inferQueryParameters = JavaCs.equalsIgnoreCase("true", getProperty("qacover.query.infer.parameters", "false"));
 
 		// Includes some predefined stack exclusions
-		stackExclusions = new ArrayList<String>();
+		stackExclusions = new ArrayList<>();
 		stackExclusions.add("giis.portable.");
 		stackExclusions.add("giis.qacover.");
 		stackExclusions.add("com.p6spy.");
@@ -151,7 +152,7 @@ public class Configuration {
 	 * Reads a property that represents a list of comma separated values
 	 */
 	private List<String> getMultiValueProperty(String name) {
-		List<String> values = new ArrayList<String>();
+		List<String> values = new ArrayList<>();
 		String str = getProperty(name, "");
 		if (!"".equals(str)) {
 			String[] arr = JavaCs.splitByChar(str, ',');
