@@ -3,31 +3,48 @@
 	<parent>
 		<groupId>io.github.giis-uniovi</groupId>
 		<artifactId>qacover</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.4.99-SNAPSHOT</version>
 	</parent>
 	<artifactId>qacover-model</artifactId>
 	<packaging>jar</packaging>
+
 	<name>qacover-model</name>
-	<description>qacover-model</description>
-	<url>http://github.com/giis-uniovi/qacover</url>
+	<description>QACover model</description>
+	<url>http://github.com/giis-uniovi/sqacover</url>
 	<organization>
 		<name>Software Engineering Research Group (GIIS) - Universidad de Oviedo, ES</name>
 		<url>http://giis.uniovi.es/</url>
 	</organization>
+
 	<dependencies>
+		<dependency>
+			<groupId>io.github.giis-uniovi</groupId>
+			<artifactId>tdrules-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.github.javiertuya</groupId>
+			<artifactId>portable-java</artifactId>
+		</dependency>
+		<!--this dependency is in portable-java, but if not set here it will not be included in jar-with-dependencies-->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<scope>compile</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -49,6 +66,34 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+ 					<appendAssemblyId>true</appendAssemblyId>
+ 					<archive>
+						<addMavenDescriptor>true</addMavenDescriptor>
+						<manifest>
+							<mainClass>giis.qacover.report.ReportMain</mainClass>
+						</manifest>
+					</archive>
+					<descriptors>
+						<descriptor>src/assembly/report.xml</descriptor>
+					</descriptors>
+					<!--
+					<finalName>qacover-report-${project.version}</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					-->
+				</configuration>
+				<executions>
+					<execution>
+						<id>create-qacover-report</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

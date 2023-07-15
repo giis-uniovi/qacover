@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.giis-uniovi</groupId>
 	<artifactId>qacover</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.4.99-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>qacover</name>
-	<description>SQL Query Aware Test Data Coverage Evaluation for Java and .Net applications</description>
+	<description>QACover - SQL Query Aware Test Data Coverage Evaluation for Java and .Net applications</description>
 	<url>http://github.com/giis-uniovi/qacover</url>
 	<organization>
 		<name>Software Engineering Research Group (GIIS) - Universidad de Oviedo, ES</name>
@@ -29,20 +29,93 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>io.github.giis-uniovi</groupId>
+				<artifactId>tdrules-bom</artifactId>
+				<version>3.5.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.github.javiertuya</groupId>
+				<artifactId>portable-java</artifactId>
+				<version>2.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>p6spy</groupId>
+				<artifactId>p6spy</artifactId>
+				<version>3.9.1</version>
+			</dependency>
+			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.13.2</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>2.0.7</version>
+				<groupId>io.github.javiertuya</groupId>
+				<artifactId>visual-assert</artifactId>
+				<version>2.4.1</version>
+				<scope>test</scope>
+			</dependency>
+			<!--this dependency is in portable-java, but if not set here
+			it will not be included in jar-with-dependencies or uber jars-->
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.13.0</version>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-classic</artifactId>
-				<version>1.3.8</version>
+				<groupId>commons-dbutils</groupId>
+				<artifactId>commons-dbutils</artifactId>
+				<version>1.7</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.9.4</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.7.36</version> <!--$NO-MVN-MAN-VER$-->
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-slf4j-impl</artifactId>
+				<version>2.20.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.microsoft.sqlserver</groupId>
+				<artifactId>mssql-jdbc</artifactId>
+				<version>12.2.0.jre8</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>42.6.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.oracle.database.jdbc</groupId>
+				<artifactId>ojdbc8</artifactId>
+				<version>21.10.0.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.xerial</groupId>
+				<artifactId>sqlite-jdbc</artifactId>
+				<version>3.42.0.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>2.2.220</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
@@ -77,8 +150,60 @@
 								<goal>report-only</goal>
 							</goals>
 						</execution>
+						<execution>
+							<id>it-reports</id>
+							<phase>integration-test</phase>
+							<goals>
+								<goal>failsafe-report-only</goal>
+							</goals>
+							<configuration>
+								<outputName>failsafe-report</outputName>
+							</configuration>
+						</execution>
 					</executions>
 				</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${surefire.version}</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>it/**/*.*</include>
+							</includes>
+							<argLine>${surefireArgLine}</argLine>
+							<redirectTestOutputToFile>true</redirectTestOutputToFile>
+		                	<useSystemClassLoader>false</useSystemClassLoader>
+          					<skipTests>${skipITs}</skipTests>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.4.0</version>
+				<executions>
+					<!-- ignorar error si eclipse senyala uno en este punto -->
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/it/java</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
@@ -121,6 +246,27 @@
 								<target unless="skipTests">
 									<junitreport>
 										<fileset dir="${project.basedir}/target/surefire-reports" erroronmissingdir="false">
+											<include name="**/*.xml" />
+										</fileset>
+										<report format="frames" todir="${project.reporting.outputDirectory}/junit-frames" />
+										<report format="noframes" todir="${project.reporting.outputDirectory}/junit-noframes" />
+									</junitreport>
+								</target>
+							</configuration>
+							<goals>
+								<goal>run</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>junit-reports-with-it</id>
+							<phase>post-integration-test</phase>
+							<configuration>
+								<target unless="skipITs">
+									<junitreport>
+										<fileset dir="${project.basedir}/target/surefire-reports" erroronmissingdir="false">
+											<include name="**/*.xml" />
+										</fileset>
+										<fileset dir="${project.basedir}/target/failsafe-reports" erroronmissingdir="false">
 											<include name="**/*.xml" />
 										</fileset>
 										<report format="frames" todir="${project.reporting.outputDirectory}/junit-frames" />

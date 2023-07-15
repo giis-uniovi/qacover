@@ -3,17 +3,19 @@
 	<parent>
 		<groupId>io.github.giis-uniovi</groupId>
 		<artifactId>qacover</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.4.99-SNAPSHOT</version>
 	</parent>
 	<artifactId>qacover-core</artifactId>
 	<packaging>jar</packaging>
+
 	<name>qacover-core</name>
-	<description>Multimodule maven project template, module with dependencies</description>
+	<description>QACover core</description>
 	<url>http://github.com/giis-uniovi/qacover</url>
 	<organization>
 		<name>Software Engineering Research Group (GIIS) - Universidad de Oviedo, ES</name>
 		<url>http://giis.uniovi.es/</url>
 	</organization>
+
 	<dependencies>
 		<dependency>
 			<groupId>io.github.giis-uniovi</groupId>
@@ -21,27 +23,73 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>io.github.giis-uniovi</groupId>
+			<artifactId>tdrules-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.github.giis-uniovi</groupId>
+			<artifactId>tdrules-client-rdb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.github.javiertuya</groupId>
+			<artifactId>portable-java</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>p6spy</groupId>
+		    <artifactId>p6spy</artifactId>
+		    <scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.github.javiertuya</groupId>
+			<artifactId>visual-assert</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbutils</groupId>
+			<artifactId>commons-dbutils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.xerial</groupId>
+			<artifactId>sqlite-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
 	</dependencies>
+
 	<build>
-		<plugins>
+   		<plugins>
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -54,7 +102,89 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-			</plugin>			
+			</plugin>
+			<!-- for ITs: 
+			Only check the execution results of the script it/build.xml,
+			Must be executed manually
+			The java ITTests.java only checks the results -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>uber</id>
+			<!--https://maven.apache.org/plugins/maven-shade-plugin/shade-mojo.html-->
+			<!--<minimizeJar>true</minimizeJar>-->
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-shade-plugin</artifactId>
+						<version>3.5.0</version>
+						<executions>
+							<execution>
+								<id>create-uber-jar</id>
+								<phase>package</phase>
+								<goals>
+									<goal>shade</goal>
+								</goals>
+								<configuration>
+									<shadedArtifactAttached>true</shadedArtifactAttached>
+									<shadedClassifierName>uber</shadedClassifierName>
+									<useBaseVersion>true</useBaseVersion>
+									<artifactSet>
+										<excludes>
+											<exclude>org.slf4j:*</exclude>
+										</excludes>
+									</artifactSet>
+									<relocations>
+										<relocation>
+											<pattern>io.swagger</pattern>
+											<shadedPattern>shadedclient.io.swagger</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>org.openapitools</pattern>
+											<shadedPattern>shadedclient.org.openapitools</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>org.apache</pattern>
+											<shadedPattern>shadedclient.org.apache</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>com.fasterxml.jackson</pattern>
+											<shadedPattern>shadedclient.com.fasterxml.jackson</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>javax.activation</pattern>
+											<shadedPattern>shadedclient.javax.activation</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>javax.annotation</pattern>
+											<shadedPattern>shadedclient.javax.annotation</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>javax.xml.bind</pattern>
+											<shadedPattern>shadedclient.javax.xml.bind</shadedPattern>
+										</relocation>
+										<relocation>
+											<pattern>jakarta</pattern>
+											<shadedPattern>shadedclient.jakarta</shadedPattern>
+										</relocation>
+									</relocations>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

@@ -1,7 +1,8 @@
 target
 pom.xml.versionsBackup
 TESTS-TestSuites.xml
+dependency-reduced-pom.xml
 *.db
-*/dat/out
+spy.log
 # to allow each developer customize sonarlint
 org.sonarlint.eclipse.core.prefs

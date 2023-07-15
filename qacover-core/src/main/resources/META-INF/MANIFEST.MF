@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Implementation-Vendor-Id: giis.uniovi.es
+Implementation-Vendor: Software Engineering Research Group - Universid
+ ad de Oviedo
+Implementation-Title: QACover - Evaluation of SQLFpc query coverage fo
+ r Java jdbc programs

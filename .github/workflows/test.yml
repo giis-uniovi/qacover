@@ -9,6 +9,14 @@ on:
   pull_request:
     branches:
       - 'main'
+
+env:
+  TEST_POSTGRES_PWD: ${RANDOM}${RANDOM}${RANDOM}
+  #sqlserver must comply with password requirements (upper, lower, digit, symbol)
+  TEST_SQLSERVER_PWD: ${RANDOM}Ax.${RANDOM}${RANDOM}
+  TEST_ORACLE_PWD: ${RANDOM}${RANDOM}${RANDOM}
+  TEST_SQLITE_PWD: ""
+
 jobs:
   test-java:
     runs-on: ubuntu-latest
@@ -22,7 +30,10 @@ jobs:
           cache: 'maven'
 
       - name: Test and aggregate surefire report
-        run: mvn test surefire-report:report -Daggregate=true -Dmaven.test.failure.ignore=true -U --no-transfer-progress
+        run: >
+          mvn test surefire-report:report -Daggregate=true
+          -Dtest=!TestPostgres*,!TestSqlserver*,!TestOracle*
+          -Dmaven.test.failure.ignore=true -U --no-transfer-progress
 
       - name: Additional aggregated junit report
         uses: javiertuya/junit-report-action@v1
