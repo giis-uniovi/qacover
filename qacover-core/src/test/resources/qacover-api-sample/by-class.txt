@@ -1,0 +1,15 @@
+***** Class: test4giis.qacoverapp.AppSimpleJdbc
+* method: queryDifferentSingleLine:35 - SELECT * FROM test WHERE num = ?1?
+* method: queryDifferentSingleLine:35 - SELECT * FROM test WHERE text = ?1?
+* method: queryEqualDifferentLine:41 - SELECT * FROM test WHERE text = ?1?
+* method: queryEqualDifferentLine:44 - SELECT * FROM test WHERE text = ?1?
+* method: queryNoParameters1Condition:23 - SELECT id , num , text FROM test WHERE num >= ?1?
+* method: queryNoParameters2Condition:26 - SELECT id , num , text FROM test WHERE num > ?1? AND text = ?2?
+***** Class: test4giis.qacoverapp.AppSimpleJdbc2
+* method: queryNoParameters1Condition:14 - SELECT id , num , text FROM test WHERE num >= ?1?
+* method: queryNoParameters2Condition:17 - SELECT id , num , text FROM test WHERE num > ?1? AND text = ?2?
+***** Class: test4giis.qacoverapp.AppSimpleJdbc3Errors
+* method: query0Errors:16 - select id,num,text from test where num<9
+* method: query1ErrorAtQuery:19 - select id,num,text from test where num<10
+* method: query1ErrorAtRule:22 - select id,num,text from test where num < 11
+* method: queryMultipleErrors:25 - select id,num,text from test where num<9

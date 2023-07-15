@@ -1,0 +1,6 @@
+QACover version 1.5.0-SNAPSHOT
+Rules folder: C:\TUYA\IN2TEST\QACover-GH\it\spring-petclinic-main\target\qacover\rules
+Report folder: C:\TUYA\IN2TEST\QACover-GH\it\spring-petclinic-main\target\qacover\reports
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+Report for class: org.springframework.samples.petclinic.PetclinicIntegrationTests qcount=2,qerror=0,count=3,dead=2,error=0
+1 classes generated, see index.html at reports folder
