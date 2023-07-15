@@ -2,14 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>io.github.giis-uniovi</groupId>
-		<artifactId>samples-giis-template</artifactId>
+		<artifactId>qacover</artifactId>
 		<version>1.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>samples-giis-template-m2</artifactId>
+	<artifactId>qacover-core</artifactId>
 	<packaging>jar</packaging>
-	<name>samples-giis-template-m2</name>
+	<name>qacover-core</name>
 	<description>Multimodule maven project template, module with dependencies</description>
-	<url>http://github.com/giis-uniovi/samples-giis-template</url>
+	<url>http://github.com/giis-uniovi/qacover</url>
 	<organization>
 		<name>Software Engineering Research Group (GIIS) - Universidad de Oviedo, ES</name>
 		<url>http://giis.uniovi.es/</url>
@@ -17,7 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>io.github.giis-uniovi</groupId>
-			<artifactId>samples-giis-template-m1</artifactId>
+			<artifactId>qacover-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

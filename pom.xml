@@ -1,13 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.giis-uniovi</groupId>
-	<artifactId>samples-giis-template</artifactId>
+	<artifactId>qacover</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>samples-giis-template</name>
-	<description>Multimodule maven project template</description>
-	<url>http://github.com/giis-uniovi/samples-giis-template</url>
+	<name>qacover</name>
+	<description>SQL Query Aware Test Data Coverage Evaluation for Java and .Net applications</description>
+	<url>http://github.com/giis-uniovi/qacover</url>
 	<organization>
 		<name>Software Engineering Research Group (GIIS) - Universidad de Oviedo, ES</name>
 		<url>http://giis.uniovi.es/</url>
@@ -22,9 +22,8 @@
 	</properties>
 
 	<modules>
-		<module>samples-giis-template-m1</module>
-		<module>samples-giis-template-m2</module>
-		<module>samples-giis-template-bom</module>
+		<module>qacover-model</module>
+		<module>qacover-core</module>
 	</modules>
 
 	<dependencyManagement>
