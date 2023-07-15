@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlfpc dbms="sqlite" count="3" dead="0" error="1" qrun="1" class="test4giis.qacoverapp.AppSimpleJdbc3Errors" method="query1ErrorAtRule" line="20" file="AppSimpleJdbc3Errors.java">
+<version>3.5.32<development/></version>
+<sql>select id,num,text from test where num &lt; 11</sql>
+<fpcrules>
+  <fpcrule count="1" error="1"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 11]</location>
+    <sql>selectar id,num,text from test where num &lt; 9</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B+) num = 12</description>
+    <error>giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near "selectar": syntax error)</error>
+  </fpcrule>
+  <fpcrule count="1" dead="0"><id>2</id><category>S</category><type>B</type><subtype>B=F</subtype><location>1.w.1.[WHERE num &lt; 11]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = 11)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B=) num = 11</description>
+  </fpcrule>
+  <fpcrule count="1" dead="0"><id>3</id><category>S</category><type>B</type><subtype>B-F</subtype><location>1.w.1.[WHERE num &lt; 11]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = 10)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B-) num = 10</description>
+  </fpcrule>
+</fpcrules>
+</sqlfpc>

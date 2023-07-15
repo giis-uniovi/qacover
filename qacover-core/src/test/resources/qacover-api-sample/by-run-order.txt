@@ -1,6 +1,6 @@
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryNoParameters2Condition.26.6af47aa3d7fda829fc88672c5bb64fbf9efea7f6f3416ee899789f2990b1ba80
-* timestamp: 2023-03-26T18:37:35.137
+* timestamp: 2023-07-15T14:26:47.124
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 26
 * method: queryNoParameters2Condition
@@ -20,7 +20,7 @@ rule2: SELECT id , num , text FROM test WHERE NOT(text = ?2?) AND (num > ?1?)
 rule3: SELECT id , num , text FROM test WHERE (text IS NULL) AND (num > ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryNoParameters2Condition.26.6af47aa3d7fda829fc88672c5bb64fbf9efea7f6f3416ee899789f2990b1ba80
-* timestamp: 2023-03-26T18:37:35.264
+* timestamp: 2023-07-15T14:26:47.287
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 26
 * method: queryNoParameters2Condition
@@ -33,7 +33,7 @@ rule2: SELECT id , num , text FROM test WHERE NOT(text = ?2?) AND (num > ?1?)
 rule3: SELECT id , num , text FROM test WHERE (text IS NULL) AND (num > ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryNoParameters2Condition.26.6af47aa3d7fda829fc88672c5bb64fbf9efea7f6f3416ee899789f2990b1ba80
-* timestamp: 2023-03-26T18:37:35.378
+* timestamp: 2023-07-15T14:26:47.427
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 26
 * method: queryNoParameters2Condition
@@ -46,7 +46,7 @@ rule2: SELECT id , num , text FROM test WHERE NOT(text = ?2?) AND (num > ?1?)
 rule3: SELECT id , num , text FROM test WHERE (text IS NULL) AND (num > ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryNoParameters1Condition.23.2ad05b47f18cfd5166dc1feb6b547049794ba1edd0df35fee72c9fc252def031
-* timestamp: 2023-03-26T18:37:35.721
+* timestamp: 2023-07-15T14:26:47.790
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 23
 * method: queryNoParameters1Condition
@@ -57,7 +57,7 @@ rule0: SELECT id , num , text FROM test WHERE NOT(num >= ?1?)
 rule1: SELECT id , num , text FROM test WHERE (num >= ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryDifferentSingleLine.35.c4869b5b7ec19955a2c6ead9c938b0a5d4c4927723fd515418b3bfcb631d3731
-* timestamp: 2023-03-26T18:37:36.046
+* timestamp: 2023-07-15T14:26:48.148
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 35
 * method: queryDifferentSingleLine
@@ -68,7 +68,7 @@ rule0: SELECT * FROM test WHERE NOT(num = ?1?)
 rule1: SELECT * FROM test WHERE (num = ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryDifferentSingleLine.35.c4869b5b7ec19955a2c6ead9c938b0a5d4c4927723fd515418b3bfcb631d3731
-* timestamp: 2023-03-26T18:37:36.160
+* timestamp: 2023-07-15T14:26:48.283
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 35
 * method: queryDifferentSingleLine
@@ -79,7 +79,7 @@ rule0: SELECT * FROM test WHERE NOT(num = ?1?)
 rule1: SELECT * FROM test WHERE (num = ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryDifferentSingleLine.35.e03a1fbcfe551f7b165fd9302db349ece39d1809bc9a5d6c64ff6ca9a5173354
-* timestamp: 2023-03-26T18:37:36.489
+* timestamp: 2023-07-15T14:26:48.649
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 35
 * method: queryDifferentSingleLine
@@ -91,7 +91,7 @@ rule1: SELECT * FROM test WHERE (text = ?1?)
 rule2: SELECT * FROM test WHERE (text IS NULL)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryEqualDifferentLine.41.e03a1fbcfe551f7b165fd9302db349ece39d1809bc9a5d6c64ff6ca9a5173354
-* timestamp: 2023-03-26T18:37:36.816
+* timestamp: 2023-07-15T14:26:49.008
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 41
 * method: queryEqualDifferentLine
@@ -103,7 +103,7 @@ rule1: SELECT * FROM test WHERE (text = ?1?)
 rule2: SELECT * FROM test WHERE (text IS NULL)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryEqualDifferentLine.44.e03a1fbcfe551f7b165fd9302db349ece39d1809bc9a5d6c64ff6ca9a5173354
-* timestamp: 2023-03-26T18:37:37.147
+* timestamp: 2023-07-15T14:26:49.372
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 44
 * method: queryEqualDifferentLine
@@ -115,7 +115,7 @@ rule1: SELECT * FROM test WHERE (text = ?1?)
 rule2: SELECT * FROM test WHERE (text IS NULL)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryEqualDifferentLine.41.e03a1fbcfe551f7b165fd9302db349ece39d1809bc9a5d6c64ff6ca9a5173354
-* timestamp: 2023-03-26T18:37:37.259
+* timestamp: 2023-07-15T14:26:49.504
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 41
 * method: queryEqualDifferentLine
@@ -127,7 +127,7 @@ rule1: SELECT * FROM test WHERE (text = ?1?)
 rule2: SELECT * FROM test WHERE (text IS NULL)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc.queryEqualDifferentLine.44.e03a1fbcfe551f7b165fd9302db349ece39d1809bc9a5d6c64ff6ca9a5173354
-* timestamp: 2023-03-26T18:37:37.375
+* timestamp: 2023-07-15T14:26:49.638
 * class: test4giis.qacoverapp.AppSimpleJdbc
 * line: 44
 * method: queryEqualDifferentLine
@@ -139,7 +139,7 @@ rule1: SELECT * FROM test WHERE (text = ?1?)
 rule2: SELECT * FROM test WHERE (text IS NULL)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc2.queryNoParameters1Condition.14.2ad05b47f18cfd5166dc1feb6b547049794ba1edd0df35fee72c9fc252def031
-* timestamp: 2023-03-26T18:37:37.802
+* timestamp: 2023-07-15T14:26:50.215
 * class: test4giis.qacoverapp.AppSimpleJdbc2
 * line: 14
 * method: queryNoParameters1Condition
@@ -150,7 +150,7 @@ rule0: SELECT id , num , text FROM test WHERE NOT(num >= ?1?)
 rule1: SELECT id , num , text FROM test WHERE (num >= ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc2.queryNoParameters2Condition.17.6af47aa3d7fda829fc88672c5bb64fbf9efea7f6f3416ee899789f2990b1ba80
-* timestamp: 2023-03-26T18:37:38.137
+* timestamp: 2023-07-15T14:26:50.577
 * class: test4giis.qacoverapp.AppSimpleJdbc2
 * line: 17
 * method: queryNoParameters2Condition
@@ -163,7 +163,7 @@ rule2: SELECT id , num , text FROM test WHERE NOT(text = ?2?) AND (num > ?1?)
 rule3: SELECT id , num , text FROM test WHERE (text IS NULL) AND (num > ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc2.queryNoParameters1Condition.14.2ad05b47f18cfd5166dc1feb6b547049794ba1edd0df35fee72c9fc252def031
-* timestamp: 2023-03-26T18:37:38.252
+* timestamp: 2023-07-15T14:26:50.706
 * class: test4giis.qacoverapp.AppSimpleJdbc2
 * line: 14
 * method: queryNoParameters1Condition
@@ -174,7 +174,7 @@ rule0: SELECT id , num , text FROM test WHERE NOT(num >= ?1?)
 rule1: SELECT id , num , text FROM test WHERE (num >= ?1?)
 
 ***** Execution test4giis.qacoverapp.AppSimpleJdbc2.queryNoParameters1Condition.14.2ad05b47f18cfd5166dc1feb6b547049794ba1edd0df35fee72c9fc252def031
-* timestamp: 2023-03-26T18:37:38.366
+* timestamp: 2023-07-15T14:26:50.839
 * class: test4giis.qacoverapp.AppSimpleJdbc2
 * line: 14
 * method: queryNoParameters1Condition
@@ -184,10 +184,10 @@ rule1: SELECT id , num , text FROM test WHERE (num >= ?1?)
 rule0: SELECT id , num , text FROM test WHERE NOT(num >= ?1?)
 rule1: SELECT id , num , text FROM test WHERE (num >= ?1?)
 
-***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.query0Errors.16.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
-* timestamp: 2023-03-26T18:37:38.649
+***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.query0Errors.14.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+* timestamp: 2023-07-15T14:26:51.223
 * class: test4giis.qacoverapp.AppSimpleJdbc3Errors
-* line: 16
+* line: 14
 * method: query0Errors
 * sql: select id,num,text from test where num<9
 * parameters: <parameters></parameters>
@@ -195,19 +195,19 @@ rule1: SELECT id , num , text FROM test WHERE (num >= ?1?)
 rule0: SELECT id , num , text FROM test WHERE NOT(num < 9)
 rule1: SELECT id , num , text FROM test WHERE (num < 9)
 
-***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.query1ErrorAtQuery.19.7ab053d55b54c975de770640bed8e8ee65c54aec24d94b949b6b3fdc49a1d311
-* timestamp: 2023-03-26T18:37:38.719
+***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.query1ErrorAtQuery.17.7ab053d55b54c975de770640bed8e8ee65c54aec24d94b949b6b3fdc49a1d311
+* timestamp: 2023-07-15T14:26:51.360
 * class: test4giis.qacoverapp.AppSimpleJdbc3Errors
-* line: 19
+* line: 17
 * method: query1ErrorAtQuery
 * sql: select id,num,text from test where num<10
 * parameters: <parameters></parameters>
 * Using the model to iterate over 0 rules
 
-***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.query1ErrorAtRule.22.cf89702f8478266da73089272b7d89c3812b3e236dbbe2b02949c2ca1bdd1255
-* timestamp: 2023-03-26T18:37:38.946
+***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.query1ErrorAtRule.20.cf89702f8478266da73089272b7d89c3812b3e236dbbe2b02949c2ca1bdd1255
+* timestamp: 2023-07-15T14:26:51.612
 * class: test4giis.qacoverapp.AppSimpleJdbc3Errors
-* line: 22
+* line: 20
 * method: query1ErrorAtRule
 * sql: select id,num,text from test where num < 11
 * parameters: <parameters></parameters>
@@ -216,10 +216,10 @@ rule0: selectar id,num,text from test where num < 9
 rule1: SELECT id , num , text FROM test WHERE (num = 11)
 rule2: SELECT id , num , text FROM test WHERE (num = 10)
 
-***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.25.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
-* timestamp: 2023-03-26T18:37:39.173
+***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.23.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+* timestamp: 2023-07-15T14:26:51.862
 * class: test4giis.qacoverapp.AppSimpleJdbc3Errors
-* line: 25
+* line: 23
 * method: queryMultipleErrors
 * sql: select id,num,text from test where num<9
 * parameters: <parameters></parameters>
@@ -228,10 +228,10 @@ rule0: select id,num,text from notable where num < 9
 rule1: SELECT id , num , text FROM test WHERE (num = 9)
 rule2: SELECT id , num , text FROM test WHERE (num = 8)
 
-***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.25.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
-* timestamp: 2023-03-26T18:37:39.180
+***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.23.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+* timestamp: 2023-07-15T14:26:51.888
 * class: test4giis.qacoverapp.AppSimpleJdbc3Errors
-* line: 25
+* line: 23
 * method: queryMultipleErrors
 * sql: select id,num,text from test where num<9
 * parameters: <parameters></parameters>
@@ -240,10 +240,10 @@ rule0: select id,num,text from notable where num < 9
 rule1: SELECT id , num , text FROM test WHERE (num = 9)
 rule2: SELECT id , num , text FROM test WHERE (num = 8)
 
-***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.25.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
-* timestamp: 2023-03-26T18:37:39.184
+***** Execution test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.23.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+* timestamp: 2023-07-15T14:26:51.916
 * class: test4giis.qacoverapp.AppSimpleJdbc3Errors
-* line: 25
+* line: 23
 * method: queryMultipleErrors
 * sql: select id,num,text from test where num<9
 * parameters: <parameters></parameters>

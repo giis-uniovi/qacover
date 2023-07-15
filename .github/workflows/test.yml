@@ -24,7 +24,7 @@ jobs:
     #if: ${{ false }}  # disable for now
     strategy:
       matrix:
-        scope: [UT]
+        scope: [IT]
       fail-fast: false
       
     steps:
@@ -42,6 +42,26 @@ jobs:
         run: >
           mvn test surefire-report:report -Daggregate=true
           -Dtest=!TestPostgres*,!TestSqlserver*,!TestOracle*,!ITTest*
+          -Dsurefire.failIfNoSpecifiedTests=false
+          -Dmaven.test.failure.ignore=true -U --no-transfer-progress
+
+      # it requires first running the tests outside of maven, then a test case compares results
+      - name: Test execution - ${{ matrix.scope }}
+        if: ${{ matrix.scope == 'IT' }}
+        run: |
+          cd it
+          ant install
+          ant spring-petclinic
+          ant qacover-api
+          cd ..
+          mvn install -P uber -pl qacover-core -DskipTests=true -DskipITs=true -Dmaven.javadoc.skip=true
+          cd it
+          ant qacover-uber 
+      - name: Test results compraison - ${{ matrix.scope }}
+        if: ${{ matrix.scope == 'IT' }}
+        run: >
+          mvn verify surefire-report:report -Daggregate=true -pl qacover-core -am
+          -Dtest=ITTest* -DskipTests=true
           -Dsurefire.failIfNoSpecifiedTests=false
           -Dmaven.test.failure.ignore=true -U --no-transfer-progress
 
@@ -79,15 +99,16 @@ jobs:
             target/site
             **/target/site/jacoco/jacoco*.xml
             **/target/surefire-reports
+            **/target/failsafe-reports
             **/target/*.html
             **/target/*.log
 
   sonarqube:
     needs: [test-java]
-    #if: ${{ false }}  # disable for now
+    if: ${{ false }}  # disable for now
     #This job fails when comming from a dependabot PR (can't read the sonarqube token for security reasons).
     #Links to discussions and workaround at: https://github.com/giis-uniovi/samples-giis-template/issues/4
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    #if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: javiertuya/sonarqube-action@v1.1.0
@@ -95,11 +116,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           sonar-token: ${{ secrets.SONAR_TOKEN }}
           restore-artifact-name1: "test-report-files-UT"
+          restore-artifact-name2: "test-report-files-IT"
 
   publish-java-snapshot:
-    #if: ${{ false }}  # disable for now
+    if: ${{ false }}  # disable for now
     #avoid publishing PRs and dependabot branches
-    if: ${{ github.event_name != 'pull_request' && !contains('/head/refs/dependabot/', github.ref) }}
+    #if: ${{ github.event_name != 'pull_request' && !contains('/head/refs/dependabot/', github.ref) }}
     runs-on: ubuntu-latest
     permissions:
       contents: read

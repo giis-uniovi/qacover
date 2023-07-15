@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlfpc class="test4giis.qacoverapp.AppSimpleJdbc2" count="2" dbms="sqlite" dead="1" file="AppSimpleJdbc2.java" line="14" method="queryNoParameters1Condition" qrun="3">
+<version>3.5.32<development/></version>
+<sql>SELECT id , num , text FROM test WHERE num &gt;= ?1?</sql>
+<fpcrules>
+  <fpcrule count="3" dead="0"><id>1</id><category>S</category><type>T</type><subtype>FF</subtype><location>1.w.1.[WHERE num &gt;= ?1?]</location>
+    <sql>SELECT id , num , text FROM test WHERE NOT(num &gt;= ?1?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(F) num &gt;= ?1? is FALSE</description>
+  </fpcrule>
+  <fpcrule count="3" dead="3"><id>2</id><category>S</category><type>T</type><subtype>TF</subtype><location>1.w.1.[WHERE num &gt;= ?1?]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num &gt;= ?1?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(T) num &gt;= ?1? is TRUE</description>
+  </fpcrule>
+</fpcrules>
+</sqlfpc>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlfpc dbms="sqlite" count="2" dead="1" qrun="1" class="test4giis.qacoverapp.AppSimpleJdbc3Errors" method="query0Errors" line="14" file="AppSimpleJdbc3Errors.java">
+<version>3.5.32<development/></version>
+<sql>select id,num,text from test where num&lt;9</sql>
+<fpcrules>
+  <fpcrule count="1" dead="1"><id>1</id><category>S</category><type>T</type><subtype>FF</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
+    <sql>SELECT id , num , text FROM test WHERE NOT(num &lt; 9)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(F) num &lt; 9 is FALSE</description>
+  </fpcrule>
+  <fpcrule count="1" dead="0"><id>2</id><category>S</category><type>T</type><subtype>TF</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num &lt; 9)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(T) num &lt; 9 is TRUE</description>
+  </fpcrule>
+</fpcrules>
+</sqlfpc>

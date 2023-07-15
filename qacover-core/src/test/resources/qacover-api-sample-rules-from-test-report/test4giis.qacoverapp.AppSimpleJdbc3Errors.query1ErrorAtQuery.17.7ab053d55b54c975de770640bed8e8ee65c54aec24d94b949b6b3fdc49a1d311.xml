@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlfpc qerror="1" class="test4giis.qacoverapp.AppSimpleJdbc3Errors" method="query1ErrorAtQuery" line="17" file="AppSimpleJdbc3Errors.java">
+<version></version>
+<sql>select id,num,text from test where num&lt;10</sql>
+<error>Error at Get query table names: ApiException{code=0, responseHeaders=null, responseBody='null'}</error>
+</sqlfpc>

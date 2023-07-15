@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlfpc class="test4giis.qacoverapp.AppSimpleJdbc3Errors" count="3" dbms="sqlite" dead="0" error="1" file="AppSimpleJdbc3Errors.java" line="23" method="queryMultipleErrors" qrun="3">
+<version>3.5.32<development/></version>
+<sql>select id,num,text from test where num&lt;9</sql>
+<fpcrules>
+  <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
+    <sql>select id,num,text from notable where num &lt; 9</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B+) num = 10</description>
+    <error>giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near "selectar": syntax error)
+giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: notable)</error>
+  </fpcrule>
+  <fpcrule count="3" dead="0"><id>2</id><category>S</category><type>B</type><subtype>B=F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = 9)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B=) num = 9</description>
+  </fpcrule>
+  <fpcrule count="3" dead="0"><id>3</id><category>S</category><type>B</type><subtype>B-F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = 8)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B-) num = 8</description>
+  </fpcrule>
+</fpcrules>
+</sqlfpc>

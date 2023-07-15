@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlfpc class="test4giis.qacoverapp.AppSimpleJdbc" count="3" dbms="sqlite" dead="1" file="AppSimpleJdbc.java" line="44" method="queryEqualDifferentLine" qrun="2">
+<version>3.5.32<development/></version>
+<sql>SELECT * FROM test WHERE text = ?1?</sql>
+<fpcrules>
+  <fpcrule count="2" dead="2"><id>1</id><category>S</category><type>T</type><subtype>FF</subtype><location>1.w.1.[WHERE text = ?1?]</location>
+    <sql>SELECT * FROM test WHERE NOT(text = ?1?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(F) text = ?1? is FALSE</description>
+  </fpcrule>
+  <fpcrule count="2" dead="0"><id>2</id><category>S</category><type>T</type><subtype>TF</subtype><location>1.w.1.[WHERE text = ?1?]</location>
+    <sql>SELECT * FROM test WHERE (text = ?1?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(T) text = ?1? is TRUE</description>
+  </fpcrule>
+  <fpcrule count="2" dead="0"><id>3</id><category>S</category><type>N</type><subtype>NF</subtype><location>1.w.1.[text]</location>
+    <sql>SELECT * FROM test WHERE (text IS NULL)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(N) text is NULL</description>
+  </fpcrule>
+</fpcrules>
+</sqlfpc>
