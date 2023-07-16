@@ -43,7 +43,6 @@ public class TestReport extends Base {
 			? FileUtil.getPath(Parameters.getProjectRoot(), "src", "test", "resources", "qacover-report")
 			: FileUtil.getPath(Parameters.getProjectRoot(), "resources", "qacover-report");
 	private String reportAppPackage = new Variability().isJava() ? "test4giis.qacoverapp." : "Test4giis.Qacoverapp.";
-	private ResultSet rs;
 	private SoftVisualAssert va;
 
 	@Before

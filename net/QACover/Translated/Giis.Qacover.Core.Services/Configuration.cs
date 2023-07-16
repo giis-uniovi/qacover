@@ -17,13 +17,15 @@ namespace Giis.Qacover.Core.Services
 	{
 		public const string OptionsFileProperty = "qacover.properties";
 
+		private const string QacoverName = "qacover";
+
 		private static readonly Logger log = NLogUtil.GetLogger(typeof(Giis.Qacover.Core.Services.Configuration));
 
 		private Properties properties;
 
 		private static Giis.Qacover.Core.Services.Configuration instance;
 
-		private string name = "qacover";
+		private string name = QacoverName;
 
 		private string storeRulesLocation;
 
@@ -47,6 +49,7 @@ namespace Giis.Qacover.Core.Services
 
 		private Configuration()
 		{
+			// NOSONAR singleton allowed
 			// do not generate for classes with this name (exact match)
 			// do not generate for queries using any of this tables (exact match)
 			Reset();
@@ -65,8 +68,8 @@ namespace Giis.Qacover.Core.Services
 		{
 			this.properties = GetProperties(OptionsFileProperty);
 			string storeRootLocation = GetProperty("qacover.store.root", Parameters.GetProjectRoot());
-			string defaultRulesSubDir = FileUtil.GetPath(Parameters.GetReportSubdir(), "qacover", "rules");
-			string defaultReportsSubDir = FileUtil.GetPath(Parameters.GetReportSubdir(), "qacover", "reports");
+			string defaultRulesSubDir = FileUtil.GetPath(Parameters.GetReportSubdir(), QacoverName, "rules");
+			string defaultReportsSubDir = FileUtil.GetPath(Parameters.GetReportSubdir(), QacoverName, "reports");
 			storeRulesLocation = FileUtil.GetPath(storeRootLocation, GetProperty("qacover.store.rules", defaultRulesSubDir));
 			storeReportsLocation = FileUtil.GetPath(storeRootLocation, GetProperty("qacover.store.reports", defaultReportsSubDir));
 			fpcServiceUrl = GetProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/sqlrules/api/v3");

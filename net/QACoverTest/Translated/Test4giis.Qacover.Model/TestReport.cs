@@ -10,7 +10,6 @@ using Giis.Qacover.Reader;
 using Giis.Qacover.Report;
 using Giis.Tdrules.Model.IO;
 using Giis.Visualassert;
-using Java.Sql;
 using NUnit.Framework;
 
 using Test4giis.Qacover;
@@ -33,8 +32,6 @@ namespace Test4giis.Qacover.Model
 		private string bmkPath = new Variability().IsJava() ? FileUtil.GetPath(Parameters.GetProjectRoot(), "src", "test", "resources", "qacover-report") : FileUtil.GetPath(Parameters.GetProjectRoot(), "resources", "qacover-report");
 
 		private string reportAppPackage = new Variability().IsJava() ? "test4giis.qacoverapp." : "Test4giis.Qacoverapp.";
-
-		private ResultSet rs;
 
 		private SoftVisualAssert va;
 
