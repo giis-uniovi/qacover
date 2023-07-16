@@ -67,7 +67,7 @@ public class ClassHtmlWriter {
 				.replace("$dead", String.valueOf(rule.getDead()))
 				.replace("$category", rule.getCategory())
 				.replace("$subtype", rule.getSubtype())
-				.replace("$type", rule.getType())
+				.replace("$type", rule.getMainType())
 				.replace("$location", rule.getLocation())
 				.replace("$description", XNodeAbstract.encodeText(rule.getDescription()).replace("\n",HTML_NEWLINE))
 				.replace("$sql", getSqlToHtml(rule.getSql()))

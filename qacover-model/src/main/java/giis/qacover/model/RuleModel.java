@@ -53,7 +53,7 @@ public class RuleModel extends RuleBase {
 	public String getCategory() {
 		return model.getCategory();
 	}
-	public String getType() {
+	public String getMainType() {
 		return model.getMaintype();
 	}
 

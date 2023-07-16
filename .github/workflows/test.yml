@@ -21,10 +21,9 @@ env:
 jobs:
   test-java:
     runs-on: ubuntu-latest
-    #if: ${{ false }}  # disable for now
+    if: ${{ false }}  # disable for now
     strategy:
       matrix:
-        # Excluding IT for now
         scope: [UT, IT, Postgres, Sqlserver, Oracle]
       fail-fast: false
     permissions:
@@ -183,28 +182,18 @@ jobs:
       
       - name: Run test - ADO.NET
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report.trx" QACoverTest/QACoverTest.csproj
-      - name: Junit html report - ADO.NET
+      - name: Run test - Entity Framework
+        run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
+      - name: Junit html report
         if: always()
-        uses: javiertuya/junit-report-action@v1.1.0
+        uses: javiertuya/junit-report-action@v1.2.0
         with:
-          net-trx-report: "net/reports/qacover-report.trx"
+          net-trx-report: "net/reports/qacover-report.trx,net/reports/qacover-report-ef.trx"
           net-surefire-folder: "net/target/surefire-reports"
           surefire-files: "net/target/surefire-reports/TEST-*.xml"
           report-dir: net/target/site
           report-title: "Test Report: Net - Branch: ${{ github.ref_name }}"
 
-      #- name: Run test - Entity Framework
-      #  run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
-      #- name: Junit html report - Entity Framework
-      #  if: always()
-      #  uses: javiertuya/junit-report-action@v1.1.0
-      #  with:
-      #    net-trx-report: "net/reports/qacover-report-ef.trx"
-      #    net-surefire-folder: "net/target/surefire-reports"
-      #    surefire-files: "net/target/surefire-reports/TEST-*.xml"
-      #    report-dir: net/target/site
-      #    report-title: "Test Report: Net - Branch: ${{ github.ref_name }}"
-        
       - name: Generate report checks
         if: always()
         uses: mikepenz/action-junit-report@v3.8.0
@@ -255,10 +244,10 @@ jobs:
       
   sonarqube:
     needs: [test-java]
-    #if: ${{ false }}  # disable for now
+    if: ${{ false }}  # disable for now
     #This job fails when comming from a dependabot PR (can't read the sonarqube token for security reasons).
     #Links to discussions and workaround at: https://github.com/giis-uniovi/samples-giis-template/issues/4
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    #if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: javiertuya/sonarqube-action@v1.1.0

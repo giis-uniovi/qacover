@@ -79,7 +79,7 @@ namespace Giis.Qacover.Model
 			return model.GetCategory();
 		}
 
-		public virtual string GetType()
+		public virtual string GetMainType()
 		{
 			return model.GetMaintype();
 		}

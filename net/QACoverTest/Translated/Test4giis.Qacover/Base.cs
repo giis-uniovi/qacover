@@ -36,7 +36,7 @@ namespace Test4giis.Qacover
 	/// Implementation of tests is under the qacover package (with Sqlite) that extends this class.
 	/// Test for other platforms are in subpackages, inherit the Sqlite tests
 	/// and customize the appropriate variables to reuse tests from their superclass.
-	/// Most of tests are integration test with a DBMS, the jdbcdriver, p6spy and the rules generated.
+	/// Most of tests are at the integration level with a DBMS, the jdbcdriver, p6spy and the rules generated.
 	/// Integration tests according the maven convention (IT) are those that
 	/// execute outside of maven using the generated jars.
 	/// </remarks>

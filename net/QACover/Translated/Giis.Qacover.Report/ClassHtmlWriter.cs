@@ -48,7 +48,7 @@ namespace Giis.Qacover.Report
 			bool covered = rule.GetDead() != 0;
 			string template = "\n<tr><td><strong>$id</strong></td><td>$dead</td><td>$count</td>" + "\n<td>$category</td><td>$type</td><td>$subtype</td><td>$location</td></tr>" + "\n<td colspan=\"7\" $style >" + "<div class=\"row\">" + "<div class=\"col-5\">$description</div>" + "<div class=\"col-7\">$sql$error</div>"
 				 + "</div>" + "</td></tr>";
-			return template.Replace("$id", rule.GetId()).Replace("$count", rule.GetCount().ToString()).Replace("$dead", rule.GetDead().ToString()).Replace("$category", rule.GetCategory()).Replace("$subtype", rule.GetSubtype()).Replace("$type", rule.GetType()).Replace("$location", rule.GetLocation
+			return template.Replace("$id", rule.GetId()).Replace("$count", rule.GetCount().ToString()).Replace("$dead", rule.GetDead().ToString()).Replace("$category", rule.GetCategory()).Replace("$subtype", rule.GetSubtype()).Replace("$type", rule.GetMainType()).Replace("$location", rule.GetLocation
 				()).Replace("$description", XNodeAbstract.EncodeText(rule.GetDescription()).Replace("\n", HtmlNewline)).Replace("$sql", GetSqlToHtml(rule.GetSql())).Replace("$error", GetErrorsHtml(rule)).Replace("$style", covered ? Bgcolor("palegreen") : Bgcolor("lightyellow"));
 		}
 
