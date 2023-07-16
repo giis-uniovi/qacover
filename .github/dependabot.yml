@@ -6,6 +6,8 @@ updates:
       - dependency-name: "com.microsoft.sqlserver*"
       - dependency-name: "com.oracle.database.jdbc*"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "org.slf4j*"
+        update-types: ["version-update:semver-major"]
     schedule:
       interval: weekly
       day: "friday"
@@ -29,6 +31,8 @@ updates:
     directory: "/net/QACover" #reports
     ignore:
       - dependency-name: "Microsoft.Data.SQLite"
+      - dependency-name: "Microsoft.EntitiFramework*"
+        update-types: ["version-update:semver-major"]
     schedule:
       interval: weekly
       day: "friday"

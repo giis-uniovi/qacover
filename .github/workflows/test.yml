@@ -186,7 +186,7 @@ jobs:
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
       - name: Junit html report
         if: always()
-        uses: javiertuya/junit-report-action@main
+        uses: javiertuya/junit-report-action@v1.2.0
         with:
           net-trx-report: "net/reports/qacover-report.trx,net/reports/qacover-report-ef.trx"
           net-surefire-folder: "net/target/surefire-reports"
