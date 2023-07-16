@@ -103,17 +103,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 			</plugin>
-			<!-- for ITs: 
-			Only check the execution results of the script it/build.xml,
-			Must be executed manually
-			The java ITTests.java only checks the results -->
+			<!-- for ITs ensure src/it/java is in the test scope,
+			note that IT are executed with surefire in an independen job at CI,
+			On development, run the build.xml script at it before -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>

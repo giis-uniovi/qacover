@@ -163,33 +163,10 @@
 					</executions>
 				</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${surefire.version}</version>
-				<executions>
-					<execution>
-						<id>integration-test</id>
-						<goals>
-							<goal>integration-test</goal>
-						</goals>
-						<configuration>
-							<includes>
-								<include>it/**/*.*</include>
-							</includes>
-							<argLine>${surefireArgLine}</argLine>
-							<redirectTestOutputToFile>true</redirectTestOutputToFile>
-		                	<useSystemClassLoader>false</useSystemClassLoader>
-          					<skipTests>${skipITs}</skipTests>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
 				<version>3.4.0</version>
 				<executions>
-					<!-- ignorar error si eclipse senyala uno en este punto -->
 					<execution>
 						<id>add-test-source</id>
 						<phase>generate-test-sources</phase>

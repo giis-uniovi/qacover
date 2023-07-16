@@ -1,0 +1,7 @@
+<schema dbms="sqlite">
+<table name="test" type="table">
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
+<column name="text" type="VARCHAR" size="16" />
+</table>
+</schema>

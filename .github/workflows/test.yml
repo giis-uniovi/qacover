@@ -25,8 +25,10 @@ jobs:
     strategy:
       matrix:
         # Excluding IT for now
-        scope: [UT, Postgres, Sqlserver, Oracle]
+        scope: [UT, IT, Postgres, Sqlserver, Oracle]
       fail-fast: false
+    permissions:
+      checks: write
       
     steps:
       - uses: actions/checkout@v3
@@ -73,14 +75,14 @@ jobs:
 
       # Run the tests UT, IT and those that require database server
       
-      - name: Test and aggregate surefire report - ${{ matrix.scope }}
+      - name: Test unit and aggregate surefire report - ${{ matrix.scope }}
         if: ${{ matrix.scope == 'UT' }}
         run: >
           mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
-          -Dtest=!TestPostgres*,!TestSqlserver*,!TestOracle*,!ITTest*
+          -Dtest=!TestPostgres*,!TestSqlserver*,!TestOracle*,!IT*
           -Dmaven.test.failure.ignore=true -U --no-transfer-progress
 
-      - name: Test and aggregate surefire report - ${{ matrix.scope }}
+      - name: Test with databases and aggregate surefire report - ${{ matrix.scope }}
         if: ${{ matrix.scope != 'UT' && matrix.scope != 'IT' }}
         run: >
           mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
@@ -89,24 +91,22 @@ jobs:
           -Duser.timezone=Europe/Madrid
         # NOTE: must specify a timezone to avoid oracle error ORA-01882: timezone region not found
 
-      # it requires first running the tests outside of maven, then a test case compares results
-      - name: Test execution - ${{ matrix.scope }}
+      # IT requires first running the tests outside of maven, then a test case compares results
+      # runs with surefire also
+      - name: Integration test execution - ${{ matrix.scope }}
         if: ${{ matrix.scope == 'IT' }}
         run: |
           cd it
           ant install
           ant spring-petclinic
           ant qacover-api
-          cd ..
-          mvn install -P uber -pl qacover-core -DskipTests=true -DskipITs=true -Dmaven.javadoc.skip=true
-          cd it
+          ant install-uber
           ant qacover-uber 
-      - name: Test results compraison - ${{ matrix.scope }}
+      - name: Integration test results comparison - ${{ matrix.scope }}
         if: ${{ matrix.scope == 'IT' }}
         run: >
-          mvn verify surefire-report:report -Daggregate=true -pl qacover-core -am
-          -Dtest=ITTest* -DskipTests=true
-          -Dsurefire.failIfNoSpecifiedTests=false
+          mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=IT*
           -Dmaven.test.failure.ignore=true -U --no-transfer-progress
 
       # Reporting
@@ -115,7 +115,7 @@ jobs:
         if: always()
         uses: javiertuya/junit-report-action@v1.1.0
         with:
-          surefire-files: "**/target/surefire-reports/TEST-*.xml"
+          surefire-files: "*/target/surefire-reports/TEST-*.xml"
           report-dir: target/site
           report-title: "Test Report: ${{ matrix.scope }} - Branch: ${{ github.ref_name }}"
 
@@ -124,7 +124,7 @@ jobs:
         uses: mikepenz/action-junit-report@v3.8.0
         with:
           check_name: "test-result-${{ matrix.scope }}"
-          report_paths: "**/surefire-reports/TEST-*.xml"
+          report_paths: "*/target/surefire-reports/TEST-*.xml"
           fail_on_failure: 'true'
 
       - if: always()
@@ -141,14 +141,24 @@ jobs:
           name: "test-report-files-${{ matrix.scope }}"
           path: |
             target/site
-            **/target/site/jacoco/jacoco*.xml
-            **/target/surefire-reports
-            **/target/failsafe-reports
-            **/target/*.html
-            **/target/*.log
+            */target/site/jacoco/jacoco*.xml
+            */target/surefire-reports
+            */target/failsafe-reports
+            */target/*.html
+            */target/*.log
+      - name: Publish additional test report files from IT artifacts
+        if: always() && matrix.scope == 'IT'
+        uses: actions/upload-artifact@v3
+        with:
+          name: "test-report-files-IT-artifacts"
+          path: |
+            it/*/target/surefire-reports
+            it/*/target/qacover
 
   test-net:
     runs-on: ubuntu-latest
+    permissions:
+      checks: write
     defaults:
       run:
         working-directory: net

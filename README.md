@@ -152,7 +152,7 @@ you must configure additional exclusions by setting the `qacover.stack.exclusion
 **Example**: Folder `it/spring-petclinic-main` contains a typical sample from Spring Boot.
 The exclusion is declared as:
 ```
-qacover.stack.exclusions=org.springframework.,org.hibernate.,com.zaxxer.hikari.,com.sun.
+qacover.stack.exclusions=org.springframework.,org.hibernate.,com.zaxxer.hikari.,com.sun.,sun.reflect.
 ```
 that removes the framework classes that we want to skip to locate the interaction point that is at the
 `org.springframework.samples.petclinic.PetclinicIntegrationTests` class.
