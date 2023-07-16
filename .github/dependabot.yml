@@ -20,6 +20,8 @@ updates:
     #avoids updates that cause not compilable code
     ignore:
       - dependency-name: "Microsoft.Data.SQLite"
+      - dependency-name: "Microsoft.EntitiFramework*"
+        update-types: ["version-update:semver-major"]
     schedule:
       interval: weekly
       day: "friday"
@@ -31,8 +33,6 @@ updates:
     directory: "/net/QACover" #reports
     ignore:
       - dependency-name: "Microsoft.Data.SQLite"
-      - dependency-name: "Microsoft.EntitiFramework*"
-        update-types: ["version-update:semver-major"]
     schedule:
       interval: weekly
       day: "friday"
