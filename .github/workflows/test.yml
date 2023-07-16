@@ -112,7 +112,7 @@ jobs:
       
       - name: Additional aggregated junit report
         if: always()
-        uses: javiertuya/junit-report-action@v1.1.0
+        uses: javiertuya/junit-report-action@v1.2.0
         with:
           surefire-files: "*/target/surefire-reports/TEST-*.xml"
           report-dir: target/site
