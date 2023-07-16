@@ -20,7 +20,7 @@ updates:
     #avoids updates that cause not compilable code
     ignore:
       - dependency-name: "Microsoft.Data.SQLite"
-      - dependency-name: "Microsoft.EntitiFramework*"
+      - dependency-name: "Microsoft.EntityFramework*"
         update-types: ["version-update:semver-major"]
     schedule:
       interval: weekly

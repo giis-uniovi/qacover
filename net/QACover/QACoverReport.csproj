@@ -2,20 +2,36 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
-    <InformationalVersion>1.5.0-SNAPSHOT</InformationalVersion>
+    <InformationalVersion>3.5.0-SNAPSHOT</InformationalVersion>
+    <Version>3.5.0-SNAPSHOT</Version>
+    <PackageId>QACover</PackageId>
     
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>QACoverReport</ToolCommandName>
+    
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <RepositoryUrl>https://github.com/$(GITHUB_REPOSITORY)</RepositoryUrl>
+    <PackageTags>test, database, coverage, sql, fpc, mcdc, java, net</PackageTags>
     <Authors>Javier Tuya</Authors>
     <Company>GIIS - University of Oviedo</Company>
     <Description>
       QACover Report
     </Description>
+    
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/giis-uniovi/qacover</PackageProjectUrl>
+    <PackageTags>test, database, coverage, sql, mutants, fpc, mcdc</PackageTags>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="../../LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
   <PropertyGroup>
-    <!--para compilacion condicional-->
-    <DefineConstants>NETCORE</DefineConstants>
     <StartupObject>QACoverReport.Program</StartupObject>
     <PackageId>QACoverReport</PackageId>
   </PropertyGroup>
@@ -23,6 +39,7 @@
   <PropertyGroup>
     <!--la traduccion causa algunas definiciones using duplicadas, elimina el warning-->
     <NoWarn>0105</NoWarn>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

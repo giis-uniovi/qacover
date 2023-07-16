@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.giis-uniovi</groupId>
 	<artifactId>qacover</artifactId>
-	<version>1.5.0-SNAPSHOT</version>
+	<version>3.5.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>qacover</name>
@@ -304,9 +304,31 @@
 		</pluginManagement>
 	</build>
 
+	<repositories>
+		<!-- GitHub snapshots repositories -->
+		<repository>
+			<id>github</id>
+			<url>https://maven.pkg.github.com/javiertuya/*</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+      		<releases>
+        		<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
 	<developers>
 		<developer>
 			<name>Javier Tuya</name>
+			<url>http://giis.uniovi.es</url>
+		</developer>
+		<developer>
+			<name>Maria Jose Suarez-Cabal</name>
+			<url>http://giis.uniovi.es</url>
+		</developer>
+		<developer>
+			<name>Claudio de la Riva</name>
 			<url>http://giis.uniovi.es</url>
 		</developer>
 	</developers>
@@ -368,6 +390,10 @@
 					<id>ossrh</id>
 					<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 				</repository>
+				<snapshotRepository>
+					<id>ossrh</id>
+					<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+				</snapshotRepository>
 			</distributionManagement>
 		</profile>
 	</profiles>

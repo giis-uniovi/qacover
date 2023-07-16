@@ -1,28 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <InformationalVersion>1.5.0-SNAPSHOT</InformationalVersion>
+    <InformationalVersion>3.5.0-SNAPSHOT</InformationalVersion>
+    <Version>3.5.0-SNAPSHOT</Version>
+    <PackageId>QACover</PackageId>
 
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <SonarQubeTestProject>false</SonarQubeTestProject>
+    
+    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <RepositoryUrl>https://github.com/$(GITHUB_REPOSITORY)</RepositoryUrl>
+    <PackageTags>test, database, coverage, sql, fpc, mcdc, java, net</PackageTags>
     <Authors>Javier Tuya</Authors>
     <Company>GIIS - University of Oviedo</Company>
     <Description>
       SQL Query Aware Test Data Coverage Evaluation for Java and .Net applications
     </Description>
 
-    <DebugType>Full</DebugType>
-    <ProjectGuid>{8C9EE3BE-79F0-463D-9EAF-F2EA16263FDC}</ProjectGuid>
-    <SonarQubeTestProject>false</SonarQubeTestProject>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/giis-uniovi/qacover</PackageProjectUrl>
+    <PackageTags>test, database, coverage, sql, mutants, fpc, mcdc</PackageTags>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup> 
 
-  <PropertyGroup>
-    <!--para compilacion condicional-->
-    <DefineConstants>NETCORE</DefineConstants>
-    <RootNamespace />
-  </PropertyGroup>
-
+  <ItemGroup>
+    <None Include="../../LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  
   <PropertyGroup>
     <!--la traduccion causa algunas definiciones using duplicadas, elimina el warning-->
     <NoWarn>0105</NoWarn>
+    <NoWarn>CS1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

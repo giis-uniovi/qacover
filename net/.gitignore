@@ -4,6 +4,7 @@ TestResults
 reports
 packages
 dist
+nupkg
 .sonar
 .vs
 #sqlite databases
