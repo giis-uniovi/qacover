@@ -182,28 +182,18 @@ jobs:
       
       - name: Run test - ADO.NET
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report.trx" QACoverTest/QACoverTest.csproj
-      - name: Junit html report - ADO.NET
+      - name: Run test - Entity Framework
+        run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
+      - name: Junit html report
         if: always()
-        uses: javiertuya/junit-report-action@v1.1.0
+        uses: javiertuya/junit-report-action@main
         with:
-          net-trx-report: "net/reports/qacover-report.trx"
+          net-trx-report: "net/reports/qacover-report.trx,net/reports/qacover-report-ef.trx"
           net-surefire-folder: "net/target/surefire-reports"
           surefire-files: "net/target/surefire-reports/TEST-*.xml"
           report-dir: net/target/site
           report-title: "Test Report: Net - Branch: ${{ github.ref_name }}"
 
-      #- name: Run test - Entity Framework
-      #  run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
-      #- name: Junit html report - Entity Framework
-      #  if: always()
-      #  uses: javiertuya/junit-report-action@v1.1.0
-      #  with:
-      #    net-trx-report: "net/reports/qacover-report-ef.trx"
-      #    net-surefire-folder: "net/target/surefire-reports"
-      #    surefire-files: "net/target/surefire-reports/TEST-*.xml"
-      #    report-dir: net/target/site
-      #    report-title: "Test Report: Net - Branch: ${{ github.ref_name }}"
-        
       - name: Generate report checks
         if: always()
         uses: mikepenz/action-junit-report@v3.8.0
