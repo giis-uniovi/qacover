@@ -112,7 +112,7 @@ jobs:
       
       - name: Additional aggregated junit report
         if: always()
-        uses: javiertuya/junit-report-action@v1.1.0
+        uses: javiertuya/junit-report-action@v1.2.0
         with:
           surefire-files: "*/target/surefire-reports/TEST-*.xml"
           report-dir: target/site
@@ -242,6 +242,100 @@ jobs:
           ant sharpen.postprocess
           dotnet build
       
+  test-report:
+    needs: [test-java, test-net]
+    #if: ${{ false }}  # disable for now
+    #avoid publishing to Github pages PRs and dependabot branches
+    if: ${{ always() && github.event_name != 'pull_request' && !contains('/head/refs/dependabot/', github.ref) }}
+    runs-on: ubuntu-latest
+    # Configuration to deploy at github pages
+    permissions:
+      contents: read  
+      pages: write
+      id-token: write
+    concurrency:
+      group: "pages"
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Downloads java test report files
+      - uses: actions/download-artifact@v3
+        if: always()
+        with:
+          name: "test-report-files-UT"
+      - uses: actions/download-artifact@v3
+        if: always()
+        with:
+          name: "test-report-files-Postgres"
+      - uses: actions/download-artifact@v3
+        if: always()
+        with:
+          name: "test-report-files-Sqlserver"
+      - uses: actions/download-artifact@v3
+        if: always()
+        with:
+          name: "test-report-files-Oracle"
+      - uses: actions/download-artifact@v3
+        if: always()
+        with:
+          name: "test-report-files-IT"
+          
+      # Net reports were zipped under a different root, specifies the path.
+      # Modifies the namespaces to allow differentiate from the java test results
+      - uses: actions/download-artifact@v3
+        if: always()
+        with:
+          name: "test-report-files-Net"
+          path: "net"
+      - if: always()
+        run: sed -i 's/Test4giis/Test4NET/g' net/target/surefire-reports/*
+
+      # Generates and uploads the html reports and the individual surefire reports for further reference
+      - name: Aggregated junit html report
+        if: always()
+        uses: javiertuya/junit-report-action@v1.2.0
+        with:
+          surefire-files: "**/target/surefire-reports/TEST-*.xml"
+          report-dir: target-ALL/site
+          report-title: "Test Report: ALL - Branch: ${{ github.ref_name }} - Run #${{ github.run_number }}"
+      - name: Index file to html reports
+        run: |
+          echo "<html><head><title>Latest Test Reports</title></head><body>"  > target-ALL/site/index.html
+          echo "<h2>Latest Test Reports - Branch: ${{ github.ref_name }} - Run #${{ github.run_number }}</h2>"  >> target-ALL/site/index.html
+          echo "<p><a href=\"junit-noframes/junit-noframes.html\">Single page reports</a></p>"                  >> target-ALL/site/index.html
+          echo "<p><a href=\"junit-frames/index.html\">Multiple page reports with frames</a></p>"               >> target-ALL/site/index.html
+          echo "</body></html>"                                              >> target-ALL/site/index.html
+      - if: always()
+        name: Publish test report files
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: "test-report-ALL"
+          path: |
+            target-ALL/site
+            **/target/surefire-reports
+            **/target/*.html
+            **/target/*.log
+            **/reports/*.html
+            **/reports/*.log
+            
+      # Deploy to GitHub Pages
+      # Some files (e.g. junit reports) have 600 permissions.
+      # As of upload-pages-artifact@v1.0.9, permissions must be set explicitly
+      # to 0755 (as indicated in warnings produced by v1.0.8)
+      - name: Fix permissions to actions/upload-pages-artifact@v2.0.0
+        run: sudo chmod -c -R 0755 target-ALL/site
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-pages-artifact@v2.0.0
+        with:
+          path: 'target-ALL/site'
+      - name: Deploy to GitHub Pages
+        if: always()
+        id: deployment
+        uses: actions/deploy-pages@v2.0.3
+        
   sonarqube:
     needs: [test-java]
     #if: ${{ false }}  # disable for now

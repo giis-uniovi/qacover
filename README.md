@@ -1,8 +1,11 @@
-BADGES
+[![Status](https://github.com/giis-uniovi/qacover/actions/workflows/test.yml/badge.svg)](https://github.com/giis-uniovi/qacover/actions)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=my%3Aqacover&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=my%3Aqacover)
+[![Test Reports](https://img.shields.io/badge/%20-Test_Reports-orange)](https://giis-uniovi.github.io/qacover/junit-noframes/junit-noframes.html)
+[![Test Reports (frames)](https://img.shields.io/badge/%20-Test_Reports_(frames)-orange)](https://giis-uniovi.github.io/qacover/junit-frames/index.html)
+[![Maven Central (core)](https://img.shields.io/maven-central/v/io.github.giis-uniovi/qacover-core)](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-core)
+[![Nuget](https://img.shields.io/nuget/v/QACover)](https://www.nuget.org/packages/QACover/)
 
 # QACover - SQL Query Aware Test Data Coverage Evaluation for Java and .Net applications
-
-**(work in progress)**
 
 *QACover* is a component to evaluate the test data coverage in relation with the
 SQL queries that are executed in a Java or .NET application.
@@ -186,7 +189,7 @@ but does not use `spy.properties`. Instead, it requires some coding:
 - On ADO.NET: a connection wrapper, see e.g.
   [SampleDbConnectionWrapper.cs](net/QACover/Giis.Qacover.Driver/SampleDbConnectionWrapper.N.cs)
 - On Entity Framework: a custom context that inherits from `DbContext`, see e.g.
-  [Ef2InterceptorContext.cs](net/QaCoverEf2/Giis.QACover.Ef2driver/Ef2InterceptorContext.N.cs)
+  [Ef2InterceptorContext.cs](net/QaCoverEf2spy/Giis.QACover.Ef2driver/Ef2InterceptorContext.N.cs)
 
 ## Logging
 
