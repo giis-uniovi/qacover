@@ -229,11 +229,11 @@ namespace Test4giis.Qacover
 		public virtual void TestAbortByTableExclusion()
 		{
 			// full match (implies an abort on the rule evaluation)
-			Configuration.GetInstance().Reset().SetFpcServiceOptions("noboundaries").AddTableExclusionExact("test");
+			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddTableExclusionExact("test");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertAbort("{}");
 			// approximate match (no abort)
-			Configuration.GetInstance().Reset().SetFpcServiceOptions("noboundaries").AddTableExclusionExact("tes");
+			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddTableExclusionExact("tes");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertNoAbort();
 		}
@@ -243,15 +243,15 @@ namespace Test4giis.Qacover
 		public virtual void TestAbortByClassExclusion()
 		{
 			// full match (abort)
-			Configuration.GetInstance().Reset().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdbc");
+			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdbc");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertAbort(string.Empty);
 			// partial match
-			Configuration.GetInstance().Reset().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdb");
+			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdb");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertAbort(string.Empty);
 			// no match, normal processing
-			Configuration.GetInstance().Reset().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdbx");
+			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdbx");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertNoAbort();
 		}

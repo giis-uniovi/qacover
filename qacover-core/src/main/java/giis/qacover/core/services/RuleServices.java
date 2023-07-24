@@ -12,7 +12,6 @@ import giis.qacover.model.QueryModel;
 import giis.qacover.model.QueryWithParameters;
 import giis.qacover.model.SchemaModel;
 import giis.qacover.portable.QaCoverException;
-import giis.tdrules.client.TdRulesApi;
 import giis.tdrules.client.rdb.DbSchemaApi;
 import giis.tdrules.model.io.SqlRulesXmlSerializer;
 import giis.tdrules.openapi.model.DbSchema;
@@ -66,7 +65,7 @@ public class RuleServices {
 
 	public String[] getAllTableNames(String sql) {
 		this.setErrorContext("Get query table names");
-		SqlTableListBody model = getApi().sqlTablesPost(sql);
+		SqlTableListBody model = getApi().getTables(sql);
 		injectFaultIfNeeded(model);
 		if (!"".equals(model.getError()))
 			throw new QaCoverException(model.getError());
@@ -75,7 +74,7 @@ public class RuleServices {
 
 	public QueryWithParameters inferQueryWithParameters(String sql) {
 		this.setErrorContext("Infer query parameters");
-		SqlParametersBody model = getApi().sqlParametersPost(sql);
+		SqlParametersBody model = getApi().getParameters(sql);
 		injectFaultIfNeeded(model);
 		if (!"".equals(model.getError()))
 			throw new QaCoverException(model.getError());

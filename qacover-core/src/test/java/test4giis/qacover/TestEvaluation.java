@@ -94,7 +94,7 @@ public class TestEvaluation extends Base {
 	
 	@Test
 	public void testEvalFpcOptions() throws SQLException {
-		Configuration.getInstance().reset().setFpcServiceOptions("noboundaries");
+		configureTestOptions().setFpcServiceOptions("noboundaries");
 		rs = app.queryNoParameters1Condition(-1);
 		assertEvalResults("select id,num,text from test where num>=-1", 
 				"1 0 abc\n2 99 xyz\n3 99 NULL", SqlUtil.resultSet2csv(rs," "), 
@@ -154,7 +154,7 @@ public class TestEvaluation extends Base {
 	
 	@Test
 	public void testEvalNoConditionsInferParams() throws SQLException {
-		Configuration.getInstance().reset().setInferQueryParameters(true);
+		Base.configureTestOptions().setInferQueryParameters(true);
 		rs = app.queryNoConditions();
 		assertEvalResults("SELECT id , num , text FROM test", "1 0 abc\n2 99 xyz\n3 99 NULL", SqlUtil.resultSet2csv(rs," "), "");
 	}

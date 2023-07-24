@@ -4,7 +4,6 @@
 using Giis.Portable.Util;
 using Giis.Qacover.Model;
 using Giis.Qacover.Portable;
-using Giis.Tdrules.Client;
 using Giis.Tdrules.Client.Rdb;
 using Giis.Tdrules.Model;
 using Giis.Tdrules.Model.IO;
@@ -71,7 +70,7 @@ namespace Giis.Qacover.Core.Services
 		public virtual string[] GetAllTableNames(string sql)
 		{
 			this.SetErrorContext("Get query table names");
-			SqlTableListBody model = GetApi().SqlTablesPost(sql);
+			SqlTableListBody model = GetApi().GetTables(sql);
 			InjectFaultIfNeeded(model);
 			if (!string.Empty.Equals(model.GetError()))
 			{
@@ -83,7 +82,7 @@ namespace Giis.Qacover.Core.Services
 		public virtual QueryWithParameters InferQueryWithParameters(string sql)
 		{
 			this.SetErrorContext("Infer query parameters");
-			SqlParametersBody model = GetApi().SqlParametersPost(sql);
+			SqlParametersBody model = GetApi().GetParameters(sql);
 			InjectFaultIfNeeded(model);
 			if (!string.Empty.Equals(model.GetError()))
 			{

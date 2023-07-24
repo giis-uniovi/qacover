@@ -72,6 +72,13 @@ jobs:
             gvenzl/oracle-xe:11.2.0.2-slim-faststart
           chmod u+x setup/wait-container-ready.sh && ./setup/wait-container-ready.sh test-oracle "DATABASE IS READY TO USE!"
 
+      - name: Rules cache
+        id: rules-cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: qacover-core/.tdrules-cache
+          key: tdrules-cache-${{ matrix.scope }}
+
       # Run the tests UT, IT and those that require database server
       
       - name: Test unit and aggregate surefire report - ${{ matrix.scope }}
@@ -96,18 +103,22 @@ jobs:
         if: ${{ matrix.scope == 'IT' }}
         run: |
           cd it
+          echo "***** $(date)"
           ant install
+          echo "***** $(date)"
           ant spring-petclinic
+          echo "***** $(date)"
           ant qacover-api
           ant install-uber
           ant qacover-uber 
+          echo "***** $(date)"
       - name: Integration test results comparison - ${{ matrix.scope }}
         if: ${{ matrix.scope == 'IT' }}
         run: >
           mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=IT*
           -Dmaven.test.failure.ignore=true -U --no-transfer-progress
-
+          
       # Reporting
       
       - name: Additional aggregated junit report
@@ -156,6 +167,7 @@ jobs:
 
   test-net:
     runs-on: ubuntu-latest
+    #if: ${{ false }}  # disable for now
     permissions:
       checks: write
     defaults:
@@ -180,6 +192,12 @@ jobs:
           # SQLServer does not have an on startup script, run it now
           docker exec test-sqlserver bash -c "chmod u+x setup.d/sqlserver-setup.sh && ./setup.d/sqlserver-setup.sh"     
       
+      - name: Rules cache
+        id: rules-cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: net/.tdrules-cache
+          key: tdrules-cache-Net
       - name: Run test - ADO.NET
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report.trx" QACoverTest/QACoverTest.csproj
       - name: Run test - Entity Framework
@@ -244,9 +262,9 @@ jobs:
       
   test-report:
     needs: [test-java, test-net]
-    #if: ${{ false }}  # disable for now
+    if: ${{ false }}  # disable for now
     #avoid publishing to Github pages PRs and dependabot branches
-    if: ${{ always() && github.event_name != 'pull_request' && !contains('/head/refs/dependabot/', github.ref) }}
+    #if: ${{ always() && github.event_name != 'pull_request' && !contains('/head/refs/dependabot/', github.ref) }}
     runs-on: ubuntu-latest
     # Configuration to deploy at github pages
     permissions:
@@ -338,10 +356,10 @@ jobs:
         
   sonarqube:
     needs: [test-java]
-    #if: ${{ false }}  # disable for now
+    if: ${{ false }}  # disable for now
     #This job fails when comming from a dependabot PR (can't read the sonarqube token for security reasons).
     #Links to discussions and workaround at: https://github.com/giis-uniovi/samples-giis-template/issues/4
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    #if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: javiertuya/sonarqube-action@v1.1.0

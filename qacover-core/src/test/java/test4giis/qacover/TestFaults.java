@@ -72,7 +72,8 @@ public class TestFaults extends Base {
 
 	@Test
 	public void testFaultConnectingService() throws SQLException {
-		options.setFpcServiceUrl("http://giis.uniovi.es/noexiste.xml");
+		options.setFpcServiceUrl("http://giis.uniovi.es/noexiste.xml")
+			.setCacheRulesLocation(""); // disable cache to run the actual service
 		rs=app.executeQuery("select id,num,text from test where num<9");
 		assertExceptionMessage(new Variability().isJava()
 				? "Error at Get query table names: ApiException"

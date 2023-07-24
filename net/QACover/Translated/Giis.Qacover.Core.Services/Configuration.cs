@@ -29,6 +29,8 @@ namespace Giis.Qacover.Core.Services
 
 		private string storeRulesLocation;
 
+		private string cacheRulesLocation;
+
 		private string storeReportsLocation;
 
 		private string fpcServiceUrl;
@@ -238,6 +240,18 @@ namespace Giis.Qacover.Core.Services
 		public virtual void SetStoreRulesLocation(string location)
 		{
 			storeRulesLocation = location;
+		}
+
+		public virtual string GetCacheRulesLocation()
+		{
+			return cacheRulesLocation;
+		}
+
+		public virtual Giis.Qacover.Core.Services.Configuration SetCacheRulesLocation(string location)
+		{
+			// Ensures that valid location is relative to project root 
+			cacheRulesLocation = location != null && !string.Empty.Equals(location) ? FileUtil.GetPath(Parameters.GetProjectRoot(), location) : string.Empty;
+			return this;
 		}
 
 		public virtual string GetStoreReportsLocation()

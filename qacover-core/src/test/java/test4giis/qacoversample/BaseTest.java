@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import giis.qacover.core.services.Configuration;
 import giis.qacover.core.services.StoreService;
+import test4giis.qacover.Base;
 
 import java.sql.*;
 
@@ -51,7 +52,7 @@ public class BaseTest {
 	@BeforeClass
 	public static void classSetUp() {
 		log.info("Reset coverage parameters");
-		Configuration options = Configuration.getInstance().reset().setName("qacoversample")
+		Configuration options = Base.configureTestOptions().setName("qacoversample")
 				.setFpcServiceOptions("noboundaries notautology");
 		// instantiates an store to reset rules
 		new StoreService(options).dropRules().dropLast();
