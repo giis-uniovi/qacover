@@ -9,7 +9,7 @@ import giis.tdrules.openapi.model.SqlTableListBody;
 /**
  * Temporal implementation of the client api, to be moved to tdrules-client
  */
-public class TdRulesApi extends giis.tdrules.client.TdRulesApi {
+public class TdRulesApi extends giis.tdrules.client.TdRulesApi { //NOSONAR
 	
 	private boolean useCache;
 	private String cacheLocation;

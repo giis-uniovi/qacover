@@ -16,6 +16,7 @@ namespace Giis.Qacover.Core.Services
 		public TdRulesApi(string uri)
 			: base(uri)
 		{
+			//
 			this.cacheLocation = Giis.Qacover.Core.Services.Configuration.GetInstance().GetCacheRulesLocation();
 			this.useCache = !string.Empty.Equals(Coalesce(cacheLocation));
 		}

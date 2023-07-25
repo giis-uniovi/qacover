@@ -1,4 +1,4 @@
-<project default="test-all"  basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless" >
+<project default="test-sequential"  basedir="." xmlns:if="ant:if" xmlns:unless="ant:unless" >
 <description>Execution of integration tests, outside of the parent pom context</description>
 
 	<condition property="isWindows" value="true">
@@ -12,18 +12,41 @@
 	<xmlproperty file="../pom.xml" />
 	<echo>Integration tests, parent pom version: ${project.version}</echo>
 	
+	<!-- Entry point for individual steps -->
+	<target name="install" ><install/></target>
+	<target name="spring-petclinic" ><spring-petclinic/></target>
+	<target name="qacover-api" ><qacover-api/></target>
+	<target name="install-uber" ><install-uber/></target>
+	<target name="qacover-uber" ><qacover-uber/></target>
+	
 	<!-- Entry point for everything, the first install may be not needed, but ensures this script is standalone -->
-	<target name="test-all" depends="install,spring-petclinic,qacover-api,install-uber,qacover-uber" >
+	<target name="test-sequential" depends="install,spring-petclinic,qacover-api,install-uber,qacover-uber" >
 	</target>
 
-	<target name="install">
+	<!-- Entry point for everything in parallel -->
+	<target name="test-parallel" >
+		<install/>
+		<parallel>
+			<spring-petclinic/>
+			<sequential>
+				<qacover-api/>
+				<install-uber/>
+				<qacover-uber/>
+			</sequential>
+		</parallel>
+	</target>
+
+	<macrodef name="install">
+	  <sequential>
 		<echo>*******************************</echo>
 		<echo>*** INSTALLING DEPENDENCIES ***</echo>
 		<echo>*******************************</echo>
 		<mvn folder=".." arg1="install" arg2="-DskipTests=true" />
-	</target>
+	  </sequential>
+	</macrodef>
 	
-	<target name="spring-petclinic">
+	<macrodef name="spring-petclinic">
+	  <sequential>
 		<!--
 		Full execution of a spring project that includes qacover-core as dependency.
 		Ensures that artifacts are the right version, executes tests and generate reports from commandline
@@ -37,9 +60,12 @@
 		<delete dir="spring-petclinic-main/target" />
 		<mvn folder="spring-petclinic-main" arg1="clean" arg2="test" />
 		<report rules="spring-petclinic-main/target/qacover/rules" reports="spring-petclinic-main/target/qacover/reports" />
-	</target>
+		<echo>*** END RUNNING SPRING-PETCLINIC-MAIN ***</echo>
+	  </sequential>
+	</macrodef>
 			
-	<target name="qacover-api" >
+	<macrodef name="qacover-api" >
+	  <sequential>
 		<echo>******************************</echo>
 		<echo>*** RUNNING QACOVER AS API ***</echo>
 		<echo>******************************</echo>
@@ -51,16 +77,23 @@
 		<mvn folder="qacover-api-sample" arg1="versions:set" arg2="-DnewVersion=${project.version}" />
 		<delete dir="qacover-api-sample/target" />
 		<mvn folder="qacover-api-sample" arg1="clean" arg2="test" />
-	</target>	
+		<echo>*** END RUNNING QACOVER AS API ***</echo>
+	  </sequential>
+	</macrodef>	
 
-	<target name="install-uber">
+	<macrodef name="install-uber">
+	  <sequential>
 		<echo>***************************</echo>
 		<echo>*** INSTALLING UBER JAR ***</echo>
 		<echo>***************************</echo>
-		<mvn folder=".." arg2="install" arg3="-DskipTests=true" arg4="-P" arg5="uber" arg6="-pl" arg7="qacover-core" />
-	</target>
+		<!-- Only packages the uber jar to target folder -->
+		<mvn folder=".." arg2="package" arg3="-DskipTests=true" arg4="-P" arg5="uber" arg6="-pl" arg7="qacover-core" />
+		<echo>*** END INSTALLING UBER JAR ***</echo>
+	  </sequential>
+	</macrodef>
 	
-	<target name="qacover-uber">
+	<macrodef name="qacover-uber">
+	  <sequential>
 		<!--
 		Execution of a java standalone jar that does not include qacover-core as dependency,
 		but adds the qacover uber jar to its classpath.
@@ -91,7 +124,9 @@
 			</classpath>
 		</java>
 		<report rules="qacover-uber-main/target/qacover/rules" reports="qacover-uber-main/target/qacover/reports" />
-	</target>
+		<echo>*** END RUNNING QACOVER-UBER-MAIN ***</echo>
+	  </sequential>
+	</macrodef>
 	
 	<macrodef name="mvn" xmlns:unless="ant:unless" >
 	    <attribute name="folder" description="folder where the pom.xml is located" />
@@ -108,7 +143,7 @@
 				<arg value="${maven}" />
 				<arg value="-DskipITs=true" />
 				<arg value="-Dmaven.javadoc.skip=true" />
-				<arg value="--no-transfer-progress" />
+				<!--<arg value="- -no-transfer-progress" />-->
 				<arg value="@{arg1}" unless:blank="@{arg1}" />
 				<arg value="@{arg2}" unless:blank="@{arg2}" />
 				<arg value="@{arg3}" unless:blank="@{arg3}" />
