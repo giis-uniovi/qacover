@@ -9,7 +9,15 @@ import giis.tdrules.model.io.ModelJsonSerializer;
 
 /**
  * Temporal implementation of a local storage cache for payloads sent to
- * TdRules, to be moved to tdrules-client
+ * TdRules, to be moved to tdrules-client.
+ * 
+ * A call to an api endpoint instantiates this class for a given request and a
+ * folder that will store the responses for each request. Then, checks if a
+ * response for this request already exists in the cache using 'hit':
+ * - If true, it will return the object 'getPayload' with the cached response
+ *   (a cast may be necessary).
+ * - If false, call to the real endpoint and save the response to
+ *   the cache by calling 'putPayload'
  */
 public class TdRulesCache {
 	private static final Logger log = LoggerFactory.getLogger(TdRulesCache.class);
@@ -33,20 +41,22 @@ public class TdRulesCache {
 	}
 
 	/**
-	 * Gets the payload of a given request from cache, if does not exists returns
-	 * null
+	 * Determines if there is a cached response for the request indicated at the instantiation
 	 */
 	public boolean hit() {
 		return this.hit != null;
 	}
 
+	/**
+	 * Gets the cached response of a given request stored in the cache ('hit' should be true)
+	 */
 	@SuppressWarnings("rawtypes")
 	public Object getPayload(Class clazz) {
 		return serializer.deserialize(hit, clazz);
 	}
 
 	/**
-	 * Saves the response payload of a given request to cache
+	 * Saves to the cache the response payload of a given request
 	 */
 	public void putPayload(Object result) {
 		FileUtil.fileWrite(cacheFile, serializer.serialize(result, true));
@@ -56,6 +66,7 @@ public class TdRulesCache {
 	private void ensureCacheFolder(String cacheFolder, String endpoint) {
 		FileUtil.createDirectory(FileUtil.getPath(cacheFolder, endpoint));
 	}
+
 	private String getCacheFile(String cacheFolder, String endpoint, String hash) {
 		return FileUtil.getPath(cacheFolder, endpoint, hash + ".json");
 	}

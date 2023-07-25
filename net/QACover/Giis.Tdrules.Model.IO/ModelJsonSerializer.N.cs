@@ -6,9 +6,7 @@ namespace Giis.Tdrules.Model.IO
     // Temporal location, to be moved to tdrules-model
     public class ModelJsonSerializer
     {
-        /**
-         * Recommended serialization for models (exclude null and empty attributes)
-         */
+        /// <summary>Recommended serialization for models (exclude null and empty attributes)</summary>
         public string Serialize(object model, bool prettyPrint)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings
@@ -20,9 +18,7 @@ namespace Giis.Tdrules.Model.IO
             return result;
         }
 
-        /**
-         * Recommended deserialization for models
-         */
+        /// <summary>Recommended deserialization for models</summary>
         public object Deserialize(string json, Type clazz)
         {
             return JsonConvert.DeserializeObject(json, clazz);

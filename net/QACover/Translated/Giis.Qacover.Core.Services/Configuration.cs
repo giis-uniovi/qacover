@@ -249,7 +249,7 @@ namespace Giis.Qacover.Core.Services
 
 		public virtual Giis.Qacover.Core.Services.Configuration SetCacheRulesLocation(string location)
 		{
-			// Ensures that valid location is relative to project root 
+			// Ensures that location is relative to project root and not null
 			cacheRulesLocation = location != null && !string.Empty.Equals(location) ? FileUtil.GetPath(Parameters.GetProjectRoot(), location) : string.Empty;
 			return this;
 		}

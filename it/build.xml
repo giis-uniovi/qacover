@@ -23,7 +23,7 @@
 	<target name="test-sequential" depends="install,spring-petclinic,qacover-api,install-uber,qacover-uber" >
 	</target>
 
-	<!-- Entry point for everything in parallel -->
+	<!-- Entry point for everything with parallel execution -->
 	<target name="test-parallel" >
 		<install/>
 		<parallel>

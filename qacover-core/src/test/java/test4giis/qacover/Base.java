@@ -63,9 +63,7 @@ public class Base {
 		Locale.setDefault(new Locale("en", "US"));
 	}
 	
-	/**
-	 * Default configuration for tests
-	 */
+	// Default configuration for tests
 	public static Configuration configureTestOptions() {
 		return Configuration.getInstance().reset()
 				.setName("qacovertest")

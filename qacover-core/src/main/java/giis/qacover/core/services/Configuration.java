@@ -195,7 +195,7 @@ public class Configuration { // NOSONAR singleton allowed
 		return cacheRulesLocation;
 	}
 	public Configuration setCacheRulesLocation(String location) {
-		// Ensures that valid location is relative to project root 
+		// Ensures that location is relative to project root and not null
 		cacheRulesLocation = location != null && !"".equals(location) ? FileUtil.getPath(Parameters.getProjectRoot(), location) : "";
 		return this;
 	}

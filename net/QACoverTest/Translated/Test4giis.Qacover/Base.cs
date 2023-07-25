@@ -73,7 +73,7 @@ namespace Test4giis.Qacover
 			//Locale.SetDefault(new Locale("en", "US"));
 		}
 
-		/// <summary>Default configuration for tests</summary>
+		// Default configuration for tests
 		public static Configuration ConfigureTestOptions()
 		{
 			return Configuration.GetInstance().Reset().SetName("qacovertest").SetCacheRulesLocation(".tdrules-cache");

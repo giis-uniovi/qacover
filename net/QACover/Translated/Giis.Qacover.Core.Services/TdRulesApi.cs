@@ -16,7 +16,7 @@ namespace Giis.Qacover.Core.Services
 		public TdRulesApi(string uri)
 			: base(uri)
 		{
-			//
+			// NOSONAR
 			this.cacheLocation = Giis.Qacover.Core.Services.Configuration.GetInstance().GetCacheRulesLocation();
 			this.useCache = !string.Empty.Equals(Coalesce(cacheLocation));
 		}
@@ -25,6 +25,7 @@ namespace Giis.Qacover.Core.Services
 		public SqlRules GetRules(DbSchema schema, string query, string options)
 		{
 			SqlRulesBody request = new SqlRulesBody();
+			// don't use fluent for C# compatibility
 			request.SetSchema(schema);
 			request.SetSql(query);
 			request.SetOptions(Coalesce(options));
