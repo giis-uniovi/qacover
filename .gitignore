@@ -1,4 +1,5 @@
 target
+.tdrules-cache
 pom.xml.versionsBackup
 TESTS-TestSuites.xml
 dependency-reduced-pom.xml

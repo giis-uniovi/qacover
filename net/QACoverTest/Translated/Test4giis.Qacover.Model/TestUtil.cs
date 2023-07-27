@@ -7,6 +7,7 @@ using Giis.Qacover.Model;
 using Java.Util;
 using NUnit.Framework;
 
+using Test4giis.Qacover;
 using Test4giis.Qacoverapp;
 
 namespace Test4giis.Qacover.Model
@@ -20,13 +21,13 @@ namespace Test4giis.Qacover.Model
 		[NUnit.Framework.SetUp]
 		public virtual void SetUp()
 		{
-			Configuration.GetInstance().Reset();
+			Base.ConfigureTestOptions();
 		}
 
 		[NUnit.Framework.TearDown]
 		public virtual void TearDown()
 		{
-			Configuration.GetInstance().Reset();
+			Base.ConfigureTestOptions();
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>

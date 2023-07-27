@@ -86,7 +86,7 @@ namespace Test4giis.Qacover
 		[Test]
 		public virtual void TestEvalFpcOptions()
 		{
-			Configuration.GetInstance().Reset().SetFpcServiceOptions("noboundaries");
+			ConfigureTestOptions().SetFpcServiceOptions("noboundaries");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertEvalResults("select id,num,text from test where num>=-1", "1 0 abc\n2 99 xyz\n3 99 NULL", SqlUtil.ResultSet2csv(rs, " "), "UNCOVERED SELECT id , num , text FROM test WHERE NOT(num >= -1)\n" + "COVERED   SELECT id , num , text FROM test WHERE (num >= -1)");
 		}
@@ -145,7 +145,7 @@ namespace Test4giis.Qacover
 		[Test]
 		public virtual void TestEvalNoConditionsInferParams()
 		{
-			Configuration.GetInstance().Reset().SetInferQueryParameters(true);
+			Base.ConfigureTestOptions().SetInferQueryParameters(true);
 			rs = app.QueryNoConditions();
 			AssertEvalResults("SELECT id , num , text FROM test", "1 0 abc\n2 99 xyz\n3 99 NULL", SqlUtil.ResultSet2csv(rs, " "), string.Empty);
 		}

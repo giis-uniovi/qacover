@@ -67,10 +67,16 @@ namespace Test4giis.Qacover
 			variant = GetVariant();
 			log.Info("*** CURRENT DBMS - " + variant.GetSgbdName());
 			rs = null;
-			options = Configuration.GetInstance().Reset().SetName("qacovertest");
+			options = ConfigureTestOptions();
 			new StoreService(options).DropRules().DropLast();
 			QueryStatement.SetFaultInjector(null);
 			//Locale.SetDefault(new Locale("en", "US"));
+		}
+
+		// Default configuration for tests
+		public static Configuration ConfigureTestOptions()
+		{
+			return Configuration.GetInstance().Reset().SetName("qacovertest").SetCacheRulesLocation(".tdrules-cache");
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>

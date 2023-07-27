@@ -228,11 +228,11 @@ public class TestStore extends Base {
 	@Test
 	public void testAbortByTableExclusion() throws SQLException {
 		// full match (implies an abort on the rule evaluation)
-		Configuration.getInstance().reset().setFpcServiceOptions("noboundaries").addTableExclusionExact("test");
+		Base.configureTestOptions().setFpcServiceOptions("noboundaries").addTableExclusionExact("test");
 		rs = app.queryNoParameters1Condition(-1);
 		assertAbort("{}");
 		// approximate match (no abort)
-		Configuration.getInstance().reset().setFpcServiceOptions("noboundaries").addTableExclusionExact("tes");
+		Base.configureTestOptions().setFpcServiceOptions("noboundaries").addTableExclusionExact("tes");
 		rs = app.queryNoParameters1Condition(-1);
 		assertNoAbort();
 	}
@@ -240,17 +240,17 @@ public class TestStore extends Base {
 	@Test
 	public void testAbortByClassExclusion() throws SQLException {
 		// full match (abort)
-		Configuration.getInstance().reset().setFpcServiceOptions("noboundaries")
+		Base.configureTestOptions().setFpcServiceOptions("noboundaries")
 				.addClassExclusion("test4giis.qacoverapp.AppSimpleJdbc");
 		rs = app.queryNoParameters1Condition(-1);
 		assertAbort("");
 		// partial match
-		Configuration.getInstance().reset().setFpcServiceOptions("noboundaries")
+		Base.configureTestOptions().setFpcServiceOptions("noboundaries")
 				.addClassExclusion("test4giis.qacoverapp.AppSimpleJdb");
 		rs = app.queryNoParameters1Condition(-1);
 		assertAbort("");
 		// no match, normal processing
-		Configuration.getInstance().reset().setFpcServiceOptions("noboundaries")
+		Base.configureTestOptions().setFpcServiceOptions("noboundaries")
 				.addClassExclusion("test4giis.qacoverapp.AppSimpleJdbx");
 		rs = app.queryNoParameters1Condition(-1);
 		assertNoAbort();

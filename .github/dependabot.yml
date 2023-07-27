@@ -9,24 +9,17 @@ updates:
       - dependency-name: "org.slf4j*"
         update-types: ["version-update:semver-major"]
     schedule:
-      interval: weekly
-      day: "friday"
-    assignees:
-      - "javiertuya" 
+      interval: daily
     open-pull-requests-limit: 20
 
   - package-ecosystem: nuget
     directory: "/net"
-    #avoids updates that cause not compilable code
     ignore:
       - dependency-name: "Microsoft.Data.SQLite"
       - dependency-name: "Microsoft.EntityFramework*"
         update-types: ["version-update:semver-major"]
     schedule:
-      interval: weekly
-      day: "friday"
-    assignees:
-      - "javiertuya" 
+      interval: daily
     open-pull-requests-limit: 20
 
   - package-ecosystem: nuget
@@ -34,17 +27,11 @@ updates:
     ignore:
       - dependency-name: "Microsoft.Data.SQLite"
     schedule:
-      interval: weekly
-      day: "friday"
-    assignees:
-      - "javiertuya" 
+      interval: daily
     open-pull-requests-limit: 20
 
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: weekly
-      day: "friday"
+      interval: daily
     open-pull-requests-limit: 20
-    assignees:
-      - "javiertuya" 

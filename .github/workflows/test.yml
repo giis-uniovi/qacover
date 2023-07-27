@@ -24,7 +24,7 @@ jobs:
     #if: ${{ false }}  # disable for now
     strategy:
       matrix:
-        scope: [UT, IT, Postgres, Sqlserver, Oracle]
+        scope: [UT, Postgres, Sqlserver, Oracle]
       fail-fast: false
     permissions:
       checks: write
@@ -72,6 +72,13 @@ jobs:
             gvenzl/oracle-xe:11.2.0.2-slim-faststart
           chmod u+x setup/wait-container-ready.sh && ./setup/wait-container-ready.sh test-oracle "DATABASE IS READY TO USE!"
 
+      - name: Rules cache
+        id: rules-cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: qacover-core/.tdrules-cache
+          key: tdrules-cache-${{ matrix.scope }}
+
       # Run the tests UT, IT and those that require database server
       
       - name: Test unit and aggregate surefire report - ${{ matrix.scope }}
@@ -89,24 +96,6 @@ jobs:
           -Dmaven.test.failure.ignore=true -U --no-transfer-progress
           -Duser.timezone=Europe/Madrid
         # NOTE: must specify a timezone to avoid oracle error ORA-01882: timezone region not found
-
-      # IT requires first running the tests outside of maven, then a test case compares results
-      # runs with surefire also
-      - name: Integration test execution - ${{ matrix.scope }}
-        if: ${{ matrix.scope == 'IT' }}
-        run: |
-          cd it
-          ant install
-          ant spring-petclinic
-          ant qacover-api
-          ant install-uber
-          ant qacover-uber 
-      - name: Integration test results comparison - ${{ matrix.scope }}
-        if: ${{ matrix.scope == 'IT' }}
-        run: >
-          mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
-          -Dtest=IT*
-          -Dmaven.test.failure.ignore=true -U --no-transfer-progress
 
       # Reporting
       
@@ -145,17 +134,66 @@ jobs:
             */target/failsafe-reports
             */target/*.html
             */target/*.log
-      - name: Publish additional test report files from IT artifacts
-        if: always() && matrix.scope == 'IT'
+
+  test-IT:
+    runs-on: ubuntu-latest
+    #if: ${{ false }}  # disable for now
+    permissions:
+      checks: write
+      
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'maven'
+
+      # IT requires first running the tests outside of maven, then a test case compares results
+      # runs with surefire also
+      - name: Integration test execution - IT
+        run: |
+          cd it
+          ant test-parallel
+      - name: Integration test results comparison - ${{ matrix.scope }}
+        run: >
+          mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
+          -Dtest=IT*
+          -Dmaven.test.failure.ignore=true -U --no-transfer-progress
+          
+      - name: Additional aggregated junit report
+        if: always()
+        uses: javiertuya/junit-report-action@v1.2.0
+        with:
+          surefire-files: "*/target/surefire-reports/TEST-*.xml"
+          report-dir: target/site
+          report-title: "Test Report: IT - Branch: ${{ github.ref_name }}"
+
+      - name: Generate report checks
+        if: always()
+        uses: mikepenz/action-junit-report@v3.8.0
+        with:
+          check_name: "test-result-IT"
+          report_paths: "*/target/surefire-reports/TEST-*.xml"
+          fail_on_failure: 'true'
+
+      - name: Publish test report files
+        if: always()
         uses: actions/upload-artifact@v3
         with:
-          name: "test-report-files-IT-artifacts"
+          name: "test-report-files-IT"
           path: |
-            it/*/target/surefire-reports
-            it/*/target/qacover
+            target/site
+            it/index.html
+            **/target/qacover
+            */target/surefire-reports
+            */target/failsafe-reports
+            */target/*.html
+            */target/*.log
 
   test-net:
     runs-on: ubuntu-latest
+    #if: ${{ false }}  # disable for now
     permissions:
       checks: write
     defaults:
@@ -180,6 +218,12 @@ jobs:
           # SQLServer does not have an on startup script, run it now
           docker exec test-sqlserver bash -c "chmod u+x setup.d/sqlserver-setup.sh && ./setup.d/sqlserver-setup.sh"     
       
+      - name: Rules cache
+        id: rules-cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: net/.tdrules-cache
+          key: tdrules-cache-Net
       - name: Run test - ADO.NET
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report.trx" QACoverTest/QACoverTest.csproj
       - name: Run test - Entity Framework
@@ -243,7 +287,7 @@ jobs:
           dotnet build
       
   test-report:
-    needs: [test-java, test-net]
+    needs: [test-java, test-IT, test-net]
     #if: ${{ false }}  # disable for now
     #avoid publishing to Github pages PRs and dependabot branches
     if: ${{ always() && github.event_name != 'pull_request' && !contains('/head/refs/dependabot/', github.ref) }}

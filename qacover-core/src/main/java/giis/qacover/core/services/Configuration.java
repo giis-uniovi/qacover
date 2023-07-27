@@ -26,6 +26,7 @@ public class Configuration { // NOSONAR singleton allowed
 	private static Configuration instance;
 	private String name=QACOVER_NAME;
 	private String storeRulesLocation;
+	private String cacheRulesLocation;
 	private String storeReportsLocation;
 	private String fpcServiceUrl;
 	private String fpcServiceOptions;
@@ -189,6 +190,14 @@ public class Configuration { // NOSONAR singleton allowed
 	}
 	public void setStoreRulesLocation(String location) {
 		storeRulesLocation = location;
+	}
+	public String getCacheRulesLocation() {
+		return cacheRulesLocation;
+	}
+	public Configuration setCacheRulesLocation(String location) {
+		// Ensures that location is relative to project root and not null
+		cacheRulesLocation = location != null && !"".equals(location) ? FileUtil.getPath(Parameters.getProjectRoot(), location) : "";
+		return this;
 	}
 	public String getStoreReportsLocation() {
 		return storeReportsLocation;

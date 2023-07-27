@@ -57,10 +57,17 @@ public class Base {
 		variant = getVariant();
 		log.info("*** CURRENT DBMS - " + variant.getSgbdName());
 		rs = null;
-		options = Configuration.getInstance().reset().setName("qacovertest");
+		options = configureTestOptions();
 		new StoreService(options).dropRules().dropLast();
 		QueryStatement.setFaultInjector(null);
 		Locale.setDefault(new Locale("en", "US"));
+	}
+	
+	// Default configuration for tests
+	public static Configuration configureTestOptions() {
+		return Configuration.getInstance().reset()
+				.setName("qacovertest")
+				.setCacheRulesLocation(".tdrules-cache");
 	}
 
 	@After

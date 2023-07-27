@@ -1,5 +1,6 @@
 package test4giis.qacover.model;
 
+import test4giis.qacover.Base;
 import test4giis.qacoverapp.AppSimpleJdbc;
 
 import static org.junit.Assert.assertEquals;
@@ -24,12 +25,12 @@ public class TestUtil {
 	// ensures clean start without custom options
 	@Before
 	public void setUp() {
-		Configuration.getInstance().reset();
+		Base.configureTestOptions();
 	}
 
 	@After
 	public void tearDown() {
-		Configuration.getInstance().reset();
+		Base.configureTestOptions();
 	}
 
 	@Test
