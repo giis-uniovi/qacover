@@ -45,7 +45,7 @@ This is an example of the summary report of a test session:
 Example for Java:
 
 - Add the dependency 
-  [`qacover-core`](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-core/1.5.0/overview) to your pom.xml
+  [`qacover-core`](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-core) to your pom.xml
 - Copy the files  
   [`qacover.properties`](qacover-core/qacover.properties) and 
   [`spy.properties`](qacover-core/spy.properties) from the `qacover-core` folder to the root of your project.
@@ -59,11 +59,10 @@ To generate an html report:
 - Download the *the standalone reporter jar file*
   [`qacover-model-<VERSION>-report.jar`](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-model)
   from Maven Central (go to Versions and then Browse the selected version to download).
-- Run 
+- Run this command from the root of your workspace:
   ```bash
   java -jar qacover-model-<VERSION>-report.jar  target/qacover/rules  target/qacover/reports
   ``` 
-  from the root of your workspace.
 - Open the `index.html` that you will found in the `target/qacover/reports` folder.
 
 If you find that the class names are not the ones at the interaction point that executes the query, 
@@ -98,7 +97,7 @@ There are two different artifacts:
 Each of them has another downloadable jar that includes additional qualifier:
 
 - [`qacover-core` uber jar](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-core).
-  It includes all needed dependencies (excluding `slf4j``) and they are *shaded*
+  It includes all needed dependencies (excluding `slf4j`) and they are *shaded*
   (i.e. renamed in a different namespace to avoid dependency conflicts):
   - Download the artifact with the `-uber` qualifier if for any reason you cannot use it as a dependency in your application 
     (e.g. to deploy in an application server).
@@ -106,7 +105,7 @@ Each of them has another downloadable jar that includes additional qualifier:
   - Use the uber jar as a dependency declared in your pom.xml if you experiment conflicts with versions:
     Add `<qualifier>uber</qualifier>` to the dependency declaration.
 - [`qacover-model` standalone reporter](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-model):
-  Download the artifact with the `-report` qualifier to generate the reports from the command line as shown in the [quick start].(#quick-start)
+  Download the artifact with the `-report` qualifier to generate the reports from the command line as shown in the [quick start](#quick-start).
 
 ### .NET Packages in NuGet
 
@@ -140,7 +139,7 @@ inclusion and exclusion criteria.
 
 When a line of a method in your application executes a SQL query (*interaction point*),
 a chain of calls to methods of your framework
-is executed until the reaching driver method that actually executes the query. 
+is executed until reaching the driver method that actually executes the query. 
 Here is the point in which the actual execution of the query is detected,
 but what we want is to determine the interaction point in the application.
 To achieve this, QACover checks the call stack at the point of the actual execution
