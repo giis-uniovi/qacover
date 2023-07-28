@@ -13,10 +13,10 @@ import giis.qacover.model.HistoryModel;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.QueryParameters;
 import giis.qacover.model.SchemaModel;
-import giis.tdrules.model.io.DbSchemaXmlSerializer;
-import giis.tdrules.model.io.SqlRulesXmlSerializer;
-import giis.tdrules.openapi.model.DbSchema;
-import giis.tdrules.openapi.model.SqlRules;
+import giis.tdrules.model.io.TdRulesXmlSerializer;
+import giis.tdrules.model.io.TdSchemaXmlSerializer;
+import giis.tdrules.openapi.model.TdRules;
+import giis.tdrules.openapi.model.TdSchema;
 
 /**
  * Manages the persistence of the model objects (queries, rules and its
@@ -70,7 +70,7 @@ public class LocalStore {
 	 */
 	public void putQueryModel(String queryKey, QueryModel queryModel, QueryParameters params, SchemaModel schemaModel, Date timestamp) {
 		FileUtil.fileWrite(storeLocation, queryKey + ".xml",
-				new SqlRulesXmlSerializer().serialize(queryModel.getModel()));
+				new TdRulesXmlSerializer().serialize(queryModel.getModel()));
 		addHistoryItem(timestamp, queryKey, params);
 		// The schema model is only available for new generated rules, second time that a rule is evaluated
 		// it is read from the store and does not need the schema
@@ -85,7 +85,7 @@ public class LocalStore {
 	
 	private void putSchema(String queryKey, SchemaModel schema) {
 		FileUtil.fileWrite(storeLocationSchema, queryKey + ".xml",
-				new DbSchemaXmlSerializer().serialize(schema.getModel()));
+				new TdSchemaXmlSerializer().serialize(schema.getModel()));
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class LocalStore {
 			return null;
 		}
 		log.debug("QueryModel file found");
-		SqlRules srules = new SqlRulesXmlSerializer().deserialize(frules);
+		TdRules srules = new TdRulesXmlSerializer().deserialize(frules);
 		return new QueryModel(srules);
 	}
 	
@@ -130,7 +130,7 @@ public class LocalStore {
 
 	public SchemaModel getSchema(String ruleKey) {
 		String fschema = FileUtil.fileRead(storeLocationSchema, ruleKey + ".xml");
-		DbSchema schema = new DbSchemaXmlSerializer().deserialize(fschema);
+		TdSchema schema = new TdSchemaXmlSerializer().deserialize(fschema);
 		return new SchemaModel(schema);
 	}
 

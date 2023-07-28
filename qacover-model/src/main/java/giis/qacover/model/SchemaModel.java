@@ -1,27 +1,27 @@
 package giis.qacover.model;
 
-import giis.tdrules.openapi.model.DbSchema;
+import giis.tdrules.openapi.model.TdSchema;
 
 /**
  * Wrapper of the TdRules schema model
  */
 public class SchemaModel {
-	private DbSchema model;
+	private TdSchema model;
 
 	public SchemaModel() {
-		model = new DbSchema();
+		model = new TdSchema();
 	}
 
-	public SchemaModel(DbSchema schemaModel) {
+	public SchemaModel(TdSchema schemaModel) {
 		model = schemaModel;
 	}
 
-	public DbSchema getModel() {
+	public TdSchema getModel() {
 		return model;
 	}
 
 	public String getDbms() {
-		return model.getDbms();
+		return model.getStoretype();
 	}
 
 	@Override

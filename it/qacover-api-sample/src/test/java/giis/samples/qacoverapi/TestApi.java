@@ -1,6 +1,6 @@
 package giis.samples.qacoverapi;
 
-import giis.tdrules.model.io.DbSchemaXmlSerializer;
+import giis.tdrules.model.io.TdSchemaXmlSerializer;
 import giis.portable.util.FileUtil;
 import giis.qacover.model.QueryModel;
 import giis.qacover.reader.CoverageCollection;
@@ -54,7 +54,7 @@ public class TestApi extends TestCase
 			allData.append("* parameters: " + qi.getParametersXml() + "\n");
 			//muestra el esquema solo para la primera regla
 			if (i==0)
-				allData.append("* schema xml: " + new DbSchemaXmlSerializer().serialize(qi.getSchema().getModel()) + "\n");
+				allData.append("* schema xml: " + new TdSchemaXmlSerializer().serialize(qi.getSchema().getModel()) + "\n");
 			//las reglas, solo muestra el sql
 			QueryModel model=qi.getModel();
 			allData.append("* Using the model to iterate over " + model.getRules().size() + " rules\n");
