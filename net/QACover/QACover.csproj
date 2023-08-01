@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <InformationalVersion>1.5.0</InformationalVersion>
-    <Version>1.5.0</Version>
+    <InformationalVersion>1.6.0</InformationalVersion>
+    <Version>1.6.0</Version>
     <PackageId>QACover</PackageId>
 
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
