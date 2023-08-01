@@ -219,12 +219,12 @@ namespace Test4giis.Qacover.Model
 				allData.Append("parameters: " + cc.Get(i).GetParametersXml() + "\n");
 				for (int j = 0; j < cc.Get(i).GetModel().GetRules().Count; j++)
 				{
-					allData.Append("rule" + j + ": " + new SqlRulesXmlSerializer().Serialize(cc.Get(i).GetModel().GetRules()[j].GetModel(), "fpcrule").Trim() + "\n");
+					allData.Append("rule" + j + ": " + new TdRulesXmlSerializer().Serialize(cc.Get(i).GetModel().GetRules()[j].GetModel(), "fpcrule").Trim() + "\n");
 				}
 				if (!string.Empty.Equals(cc.Get(i).GetModel().GetErrorString()) || cc.Get(i).GetModel().GetRules().Count > 0)
 				{
 					SchemaModel schema = cc.Get(i).GetSchema();
-					allData.Append("schema: " + new DbSchemaXmlSerializer().Serialize(schema.GetModel()) + "\n");
+					allData.Append("schema: " + new TdSchemaXmlSerializer().Serialize(schema.GetModel()) + "\n");
 				}
 			}
 			FileUtil.FileWrite(outPath, "all-keys-by-run-order.txt", allKeys.ToString());

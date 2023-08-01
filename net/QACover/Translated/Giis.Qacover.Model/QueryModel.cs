@@ -28,7 +28,7 @@ namespace Giis.Qacover.Model
 
 		private const string ClassFileName = "file";
 
-		protected internal SqlRules model = null;
+		protected internal TdRules model = null;
 
 		// In addition to the standard attributes, indicates if the query itself 
 		// has errors (it can't be evaluated)
@@ -46,12 +46,12 @@ namespace Giis.Qacover.Model
 		}
 
 		/// <summary>Creates an instance with the wrapped model</summary>
-		public QueryModel(SqlRules rulesModel)
+		public QueryModel(TdRules rulesModel)
 		{
 			model = rulesModel;
 		}
 
-		public virtual SqlRules GetModel()
+		public virtual TdRules GetModel()
 		{
 			return model;
 		}
@@ -62,9 +62,9 @@ namespace Giis.Qacover.Model
 		/// </summary>
 		public QueryModel(string sql, string error)
 		{
-			model = new SqlRules();
+			model = new TdRules();
 			model.SetRulesClass("sqlfpc");
-			model.SetSql(sql);
+			model.SetQuery(sql);
 			model.SetError(error);
 			this.SetQerror(1);
 		}
@@ -123,13 +123,13 @@ namespace Giis.Qacover.Model
 
 		public virtual string GetSql()
 		{
-			return model.GetSql();
+			return model.GetQuery();
 		}
 
 		public virtual IList<RuleModel> GetRules()
 		{
 			IList<RuleModel> rules = new List<RuleModel>();
-			foreach (SqlRule rule in ModelUtil.Safe(model.GetRules()))
+			foreach (TdRule rule in ModelUtil.Safe(model.GetRules()))
 			{
 				rules.Add(new RuleModel(rule));
 			}
