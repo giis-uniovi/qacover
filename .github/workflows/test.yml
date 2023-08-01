@@ -72,17 +72,22 @@ jobs:
             gvenzl/oracle-xe:11.2.0.2-slim-faststart
           chmod u+x setup/wait-container-ready.sh && ./setup/wait-container-ready.sh test-oracle "DATABASE IS READY TO USE!"
 
+      # Uses the trick: https://github.com/actions/cache/blob/main/tips-and-workarounds.md#update-a-cache
+      # to simulate an updatable cache. If eventually we need to clear the cache, increase the V* number
       - name: Rules cache
         id: rules-cache
         uses: actions/cache@v3.3.1
         with:
           path: qacover-core/.tdrules-cache
-          key: tdrules-cache-${{ matrix.scope }}
+          key: tdrules-cache-${{ matrix.scope }}-v1-${{ github.run_id }}
+          restore-keys: tdrules-cache-${{ matrix.scope }}-v1-
 
-      # Run the tests UT, IT and those that require database server
+      # Run the tests UT and those that require database server
       
       - name: Test unit and aggregate surefire report - ${{ matrix.scope }}
         if: ${{ matrix.scope == 'UT' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
           mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=!TestPostgres*,!TestSqlserver*,!TestOracle*,!IT*
@@ -90,6 +95,8 @@ jobs:
 
       - name: Test with databases and aggregate surefire report - ${{ matrix.scope }}
         if: ${{ matrix.scope != 'UT' && matrix.scope != 'IT' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
           mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=Test${{ matrix.scope }}*
@@ -147,15 +154,28 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '8'
-          cache: 'maven'
+      # Can't use the setup-java cache because the poms of ITs are changed inside the job.
+      # Uses the same trick that in other jobs top simulate a writable cache
+      - name: Custom cache for IT
+        id: rules-cache
+        uses: actions/cache@v3.3.1
+        with:
+          path: /home/runner/.m2/repository #can't pass $HOME
+          key: setup-java-IT-maven-v1-${{ github.run_id }}
+          restore-keys: setup-java-IT-maven-v1-
 
       # IT requires first running the tests outside of maven, then a test case compares results
       # runs with surefire also
       - name: Integration test execution - IT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd it
           ant test-parallel
+      - run: ls -la $HOME/.m2/repository
       - name: Integration test results comparison - ${{ matrix.scope }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: >
           mvn test surefire-report:report -Daggregate=true -Dsurefire.failIfNoSpecifiedTests=false
           -Dtest=IT*
@@ -223,7 +243,8 @@ jobs:
         uses: actions/cache@v3.3.1
         with:
           path: net/.tdrules-cache
-          key: tdrules-cache-Net
+          key: tdrules-cache-Net-v1-${{ github.run_id }}
+          restore-keys: tdrules-cache-Net-v1-
       - name: Run test - ADO.NET
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report.trx" QACoverTest/QACoverTest.csproj
       - name: Run test - Entity Framework
@@ -388,7 +409,7 @@ jobs:
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: javiertuya/sonarqube-action@v1.1.0
+      - uses: javiertuya/sonarqube-action@v1.1.1
         with: 
           github-token: ${{ secrets.GITHUB_TOKEN }}
           sonar-token: ${{ secrets.SONAR_TOKEN }}
@@ -407,6 +428,8 @@ jobs:
       packages: write
     steps:
       - uses: javiertuya/branch-snapshots-action@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
           token: ${{ secrets.GITHUB_TOKEN }}
           java-version: '8'

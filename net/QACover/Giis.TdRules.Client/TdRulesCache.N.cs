@@ -1,24 +1,18 @@
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
-/////////////////////////////////////////////////////////////////////////////////////////////
+/////// TO BE REMOVED WHEN FULL CLIENT IMPLEMENTATION AVAILABLE FOR NET///////
 using System;
 using Giis.Portable.Util;
 using Giis.Tdrules.Model.IO;
 using NLog;
+using Sharpen;
 
-
-namespace Giis.Qacover.Core.Services
+namespace Giis.Tdrules.Client
 {
-	/// <summary>
-	/// Temporal implementation of a local storage cache for payloads sent to
-	/// TdRules, to be moved to tdrules-client.
-	/// </summary>
+	/// <summary>Local storage cache for payloads sent to TdRules.</summary>
 	/// <remarks>
-	/// Temporal implementation of a local storage cache for payloads sent to
-	/// TdRules, to be moved to tdrules-client.
-	/// A call to an api endpoint instantiates this class for a given request and a
-	/// folder that will store the responses for each request. Then, checks if a
-	/// response for this request already exists in the cache using 'hit':
+	/// Local storage cache for payloads sent to TdRules.
+	/// Calls to api endpoints instantiat this class.
+	/// First call to an endpoint with a request stores the response for this request.
+	/// Succesive calls, check if a response for this request already exists in the cache using 'hit':
 	/// - If true, it will return the object 'getPayload' with the cached response
 	/// (a cast may be necessary).
 	/// - If false, call to the real endpoint and save the response to
@@ -26,7 +20,7 @@ namespace Giis.Qacover.Core.Services
 	/// </remarks>
 	public class TdRulesCache
 	{
-		private static readonly Logger log = NLogUtil.GetLogger(typeof(Giis.Qacover.Core.Services.TdRulesCache));
+		private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(Giis.Tdrules.Client.TdRulesCache));
 
 		private ModelJsonSerializer serializer;
 

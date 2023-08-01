@@ -89,8 +89,8 @@ public class TestReader extends Base {
 				item.getKey().toString());
 		assertEquals("select id,num,text from test where num>=-1", item.getSql());
 		SchemaModel schema = item.getSchema();
-		assertEquals("test", schema.getModel().getTables().get(0).getName());
-		assertEquals("id", schema.getModel().getTables().get(0).getColumns().get(0).getName());
+		assertEquals("test", schema.getModel().getEntities().get(0).getName());
+		assertEquals("id", schema.getModel().getEntities().get(0).getAttributes().get(0).getName());
 
 		// this view is static, no execution data
 		assertEquals("", item.getTimestamp());

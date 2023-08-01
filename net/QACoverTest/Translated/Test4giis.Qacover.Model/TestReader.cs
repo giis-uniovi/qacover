@@ -83,8 +83,8 @@ namespace Test4giis.Qacover.Model
 			AssertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc.queryNoParameters1Condition." + qline1 + ".63629c65b13acf17c46df6199346b2fa414b78edfddccf3ba7f875eca30393b3", item.GetKey().ToString());
 			NUnit.Framework.Assert.AreEqual("select id,num,text from test where num>=-1", item.GetSql());
 			SchemaModel schema = item.GetSchema();
-			NUnit.Framework.Assert.AreEqual("test", schema.GetModel().GetTables()[0].GetName());
-			NUnit.Framework.Assert.AreEqual("id", schema.GetModel().GetTables()[0].GetColumns()[0].GetName());
+			NUnit.Framework.Assert.AreEqual("test", schema.GetModel().GetEntities()[0].GetName());
+			NUnit.Framework.Assert.AreEqual("id", schema.GetModel().GetEntities()[0].GetAttributes()[0].GetName());
 			// this view is static, no execution data
 			NUnit.Framework.Assert.AreEqual(string.Empty, item.GetTimestamp());
 			NUnit.Framework.Assert.AreEqual(string.Empty, item.GetParametersXml());

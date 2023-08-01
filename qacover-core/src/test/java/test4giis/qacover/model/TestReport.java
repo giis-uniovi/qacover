@@ -20,8 +20,8 @@ import giis.qacover.reader.CoverageCollection;
 import giis.qacover.reader.CoverageReader;
 import giis.qacover.reader.QueryCollection;
 import giis.qacover.report.ReportManager;
-import giis.tdrules.model.io.DbSchemaXmlSerializer;
-import giis.tdrules.model.io.SqlRulesXmlSerializer;
+import giis.tdrules.model.io.TdRulesXmlSerializer;
+import giis.tdrules.model.io.TdSchemaXmlSerializer;
 import giis.visualassert.Framework;
 import giis.visualassert.SoftVisualAssert;
 import test4giis.qacover.Base;
@@ -238,10 +238,10 @@ public class TestReport extends Base {
 			allData.append("sql: " + cc.get(i).getModel().getSql() + "\n");
 			allData.append("parameters: " + cc.get(i).getParametersXml() + "\n");
 			for (int j = 0; j < cc.get(i).getModel().getRules().size(); j++)
-				allData.append("rule" + j + ": " + new SqlRulesXmlSerializer().serialize(cc.get(i).getModel().getRules().get(j).getModel(), "fpcrule").trim() + "\n");
+				allData.append("rule" + j + ": " + new TdRulesXmlSerializer().serialize(cc.get(i).getModel().getRules().get(j).getModel(), "fpcrule").trim() + "\n");
 			if (!"".equals(cc.get(i).getModel().getErrorString()) || cc.get(i).getModel().getRules().size() > 0) {
 				SchemaModel schema = cc.get(i).getSchema();
-				allData.append("schema: " + new DbSchemaXmlSerializer().serialize(schema.getModel()) + "\n");
+				allData.append("schema: " + new TdSchemaXmlSerializer().serialize(schema.getModel()) + "\n");
 			}
 		}
 		FileUtil.fileWrite(outPath, "all-keys-by-run-order.txt", allKeys.toString());

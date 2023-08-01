@@ -9,26 +9,26 @@ namespace Giis.Qacover.Model
 	/// <summary>Wrapper of the TdRules schema model</summary>
 	public class SchemaModel
 	{
-		private DbSchema model;
+		private TdSchema model;
 
 		public SchemaModel()
 		{
-			model = new DbSchema();
+			model = new TdSchema();
 		}
 
-		public SchemaModel(DbSchema schemaModel)
+		public SchemaModel(TdSchema schemaModel)
 		{
 			model = schemaModel;
 		}
 
-		public virtual DbSchema GetModel()
+		public virtual TdSchema GetModel()
 		{
 			return model;
 		}
 
 		public virtual string GetDbms()
 		{
-			return model.GetDbms();
+			return model.GetStoretype();
 		}
 
 		public override string ToString()

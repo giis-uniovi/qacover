@@ -54,12 +54,7 @@ public class Configuration { // NOSONAR singleton allowed
 		String defaultReportsSubDir = FileUtil.getPath(Parameters.getReportSubdir(), QACOVER_NAME, "reports");
 		storeRulesLocation = FileUtil.getPath(storeRootLocation, getProperty("qacover.store.rules", defaultRulesSubDir));
 		storeReportsLocation = FileUtil.getPath(storeRootLocation, getProperty("qacover.store.reports", defaultReportsSubDir));
-		fpcServiceUrl = getProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/sqlrules/api/v3");
-		if (fpcServiceUrl.contains("/sqlfpc/api/v2")) {
-			fpcServiceUrl = fpcServiceUrl.replace("/sqlfpc/api/v2", "/sqlrules/api/v3");
-			log.warn("SQLFpc api v2 is deprecated, switch to v3 at: " + fpcServiceUrl);
-			log.warn("Please, update your qacover.properties configuration file");
-		}
+		fpcServiceUrl = getProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
 		fpcServiceOptions = getProperty("qacover.fpc.options", "");
 		optimizeRuleEvaluation = JavaCs.equalsIgnoreCase("true", getProperty("qacover.optimize.rule.evaluation", "false"));
 		inferQueryParameters = JavaCs.equalsIgnoreCase("true", getProperty("qacover.query.infer.parameters", "false"));

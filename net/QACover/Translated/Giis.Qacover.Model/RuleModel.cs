@@ -20,15 +20,15 @@ namespace Giis.Qacover.Model
 	{
 		protected internal string runtimeError = string.Empty;
 
-		protected internal SqlRule model = null;
+		protected internal TdRule model = null;
 
-		public RuleModel(SqlRule ruleModel)
+		public RuleModel(TdRule ruleModel)
 		{
 			// The model of the rules that is wrapped here
 			model = ruleModel;
 		}
 
-		public virtual SqlRule GetModel()
+		public virtual TdRule GetModel()
 		{
 			return model;
 		}
@@ -45,12 +45,12 @@ namespace Giis.Qacover.Model
 
 		public virtual string GetSql()
 		{
-			return model.GetSql();
+			return model.GetQuery();
 		}
 
 		public virtual void SetSql(string sql)
 		{
-			model.SetSql(sql);
+			model.SetQuery(sql);
 		}
 
 		public virtual string GetTextSummary()

@@ -77,7 +77,7 @@ public class TestFaults extends Base {
 		rs=app.executeQuery("select id,num,text from test where num<9");
 		assertExceptionMessage(new Variability().isJava()
 				? "Error at Get query table names: ApiException"
-				: "Error at Get query table names: Giis.Tdrules.Openapi.Client.ApiException: Error calling SqlTablesPost"
+				: "Error at Get query table names: Giis.Tdrules.Openapi.Client.ApiException: Error calling QueryEntitiesPost"
 				, StoreService.getLast().getLastGenStatus());
 	}
 	@Test

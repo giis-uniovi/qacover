@@ -75,7 +75,7 @@ namespace Giis.Qacover.Storage
 		/// <summary>Stores the query model, overwrite if already exists</summary>
 		public virtual void PutQueryModel(string queryKey, QueryModel queryModel, QueryParameters @params, SchemaModel schemaModel, DateTime timestamp)
 		{
-			FileUtil.FileWrite(storeLocation, queryKey + ".xml", new SqlRulesXmlSerializer().Serialize(queryModel.GetModel()));
+			FileUtil.FileWrite(storeLocation, queryKey + ".xml", new TdRulesXmlSerializer().Serialize(queryModel.GetModel()));
 			AddHistoryItem(timestamp, queryKey, @params);
 			// The schema model is only available for new generated rules, second time that a rule is evaluated
 			// it is read from the store and does not need the schema
@@ -93,7 +93,7 @@ namespace Giis.Qacover.Storage
 
 		private void PutSchema(string queryKey, SchemaModel schema)
 		{
-			FileUtil.FileWrite(storeLocationSchema, queryKey + ".xml", new DbSchemaXmlSerializer().Serialize(schema.GetModel()));
+			FileUtil.FileWrite(storeLocationSchema, queryKey + ".xml", new TdSchemaXmlSerializer().Serialize(schema.GetModel()));
 		}
 
 		/// <summary>
@@ -110,7 +110,7 @@ namespace Giis.Qacover.Storage
 				return null;
 			}
 			log.Debug("QueryModel file found");
-			SqlRules srules = new SqlRulesXmlSerializer().Deserialize(frules);
+			TdRules srules = new TdRulesXmlSerializer().Deserialize(frules);
 			return new QueryModel(srules);
 		}
 
@@ -147,7 +147,7 @@ namespace Giis.Qacover.Storage
 		public virtual SchemaModel GetSchema(string ruleKey)
 		{
 			string fschema = FileUtil.FileRead(storeLocationSchema, ruleKey + ".xml");
-			DbSchema schema = new DbSchemaXmlSerializer().Deserialize(fschema);
+			TdSchema schema = new TdSchemaXmlSerializer().Deserialize(fschema);
 			return new SchemaModel(schema);
 		}
 

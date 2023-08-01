@@ -1,7 +1,7 @@
 package giis.qacover.model;
 
 import giis.tdrules.model.ModelUtil;
-import giis.tdrules.openapi.model.SqlRule;
+import giis.tdrules.openapi.model.TdRule;
 
 /**
  * Representation of single rule and the results/indicators about the
@@ -11,13 +11,13 @@ import giis.tdrules.openapi.model.SqlRule;
 public class RuleModel extends RuleBase {
 	protected String runtimeError = "";
 	// The model of the rules that is wrapped here
-	protected SqlRule model = null;
+	protected TdRule model = null;
 
-	public RuleModel(SqlRule ruleModel) {
+	public RuleModel(TdRule ruleModel) {
 		model = ruleModel;
 	}
 
-	public SqlRule getModel() {
+	public TdRule getModel() {
 		return model;
 	}
 
@@ -31,10 +31,10 @@ public class RuleModel extends RuleBase {
 	}
 
 	public String getSql() {
-		return model.getSql();
+		return model.getQuery();
 	}
 	public void setSql(String sql) {
-		model.setSql(sql);
+		model.setQuery(sql);
 	}
 	public String getTextSummary() {
 		return super.toString();

@@ -74,13 +74,7 @@ namespace Giis.Qacover.Core.Services
 			string defaultReportsSubDir = FileUtil.GetPath(Parameters.GetReportSubdir(), QacoverName, "reports");
 			storeRulesLocation = FileUtil.GetPath(storeRootLocation, GetProperty("qacover.store.rules", defaultRulesSubDir));
 			storeReportsLocation = FileUtil.GetPath(storeRootLocation, GetProperty("qacover.store.reports", defaultReportsSubDir));
-			fpcServiceUrl = GetProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/sqlrules/api/v3");
-			if (fpcServiceUrl.Contains("/sqlfpc/api/v2"))
-			{
-				fpcServiceUrl = fpcServiceUrl.Replace("/sqlfpc/api/v2", "/sqlrules/api/v3");
-				log.Warn("SQLFpc api v2 is deprecated, switch to v3 at: " + fpcServiceUrl);
-				log.Warn("Please, update your qacover.properties configuration file");
-			}
+			fpcServiceUrl = GetProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
 			fpcServiceOptions = GetProperty("qacover.fpc.options", string.Empty);
 			optimizeRuleEvaluation = JavaCs.EqualsIgnoreCase("true", GetProperty("qacover.optimize.rule.evaluation", "false"));
 			inferQueryParameters = JavaCs.EqualsIgnoreCase("true", GetProperty("qacover.query.infer.parameters", "false"));

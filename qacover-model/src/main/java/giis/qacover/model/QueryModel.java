@@ -5,8 +5,8 @@ import static giis.tdrules.model.ModelUtil.safe;
 import java.util.ArrayList;
 import java.util.List;
 
-import giis.tdrules.openapi.model.SqlRule;
-import giis.tdrules.openapi.model.SqlRules;
+import giis.tdrules.openapi.model.TdRule;
+import giis.tdrules.openapi.model.TdRules;
 
 /**
  * Representation of a query, its rules and the results/indicators about the evaluation.
@@ -25,7 +25,7 @@ public class QueryModel extends RuleBase {
 	private static final String CLASS_FILE_NAME = "file";
 
 	// The model of the rules that is wrapped here
-	protected SqlRules model = null;
+	protected TdRules model = null;
 
 	@Override
 	protected String getAttribute(String name) {
@@ -39,11 +39,11 @@ public class QueryModel extends RuleBase {
 	/**
 	 * Creates an instance with the wrapped model
 	 */
-	public QueryModel(SqlRules rulesModel) {
+	public QueryModel(TdRules rulesModel) {
 		model = rulesModel;
 	}
 
-	public SqlRules getModel() {
+	public TdRules getModel() {
 		return model;
 	}
 
@@ -52,9 +52,9 @@ public class QueryModel extends RuleBase {
 	 * containing the sql and error message only
 	 */
 	public QueryModel(String sql, String error) {
-		model = new SqlRules();
+		model = new TdRules();
 		model.setRulesClass("sqlfpc");
-		model.setSql(sql);
+		model.setQuery(sql);
 		model.setError(error);
 		this.setQerror(1); // para contabilizar en totales al igual que la cobertura
 	}
@@ -96,12 +96,12 @@ public class QueryModel extends RuleBase {
 		setAttribute(QERROR, String.valueOf(value));
 	}
 	public String getSql() {
-		return model.getSql();
+		return model.getQuery();
 	}
 
 	public List<RuleModel> getRules() {
 		List<RuleModel> rules = new ArrayList<>();
-		for (SqlRule rule : safe(model.getRules()))
+		for (TdRule rule : safe(model.getRules()))
 			rules.add(new RuleModel(rule));
 		return rules;
 	}

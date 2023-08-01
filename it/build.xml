@@ -138,12 +138,13 @@
 	    <attribute name="arg6" default="" />
 	    <attribute name="arg7" default="" />
 		<sequential>
+			<echo message="*** Run maven with args: @{arg1} @{arg2} @{arg3} @{arg4} @{arg5} @{arg6} @{arg7}" />
 			<exec executable="${shell}" dir="@{folder}" failonerror="true" >
 				<arg value="/c" if:set="isWindows"/>
 				<arg value="${maven}" />
 				<arg value="-DskipITs=true" />
 				<arg value="-Dmaven.javadoc.skip=true" />
-				<!--<arg value="- -no-transfer-progress" />-->
+				<arg value="--no-transfer-progress" />
 				<arg value="@{arg1}" unless:blank="@{arg1}" />
 				<arg value="@{arg2}" unless:blank="@{arg2}" />
 				<arg value="@{arg3}" unless:blank="@{arg3}" />
