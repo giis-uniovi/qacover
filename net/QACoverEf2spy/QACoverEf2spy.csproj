@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <DebugType>Full</DebugType>
     <ProjectGuid>{BC1CF1F1-3477-4966-9A03-3A7118790DCE}</ProjectGuid>
@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
     
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.20" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.21" />
   </ItemGroup>
 
   <ItemGroup>
