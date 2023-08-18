@@ -1,0 +1,5 @@
+src/test/resources/**/* linguist-generated
+net/resources/**/* linguist-generated
+net/dat/**/* linguist-generated
+net/*/Translated/**/*.cs linguist-generated
+it/spring-petclinic-main/**/*.* linguist-vendored
