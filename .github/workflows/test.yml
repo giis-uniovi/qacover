@@ -22,8 +22,6 @@ jobs:
   test-java:
     runs-on: ubuntu-latest
     #if: ${{ false }}  # disable for now
-    #avoids duplicate execution of pr from local repo, but allows pr from forked repos and dependabot
-    if: (github.event_name != 'pull_request' && ! github.event.pull_request.head.repo.fork) || (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.fork || github.actor == 'dependabot[bot]'))
     strategy:
       matrix:
         scope: [UT, Postgres, Sqlserver, Oracle]
@@ -147,8 +145,6 @@ jobs:
   test-IT:
     runs-on: ubuntu-latest
     #if: ${{ false }}  # disable for now
-    #avoids duplicate execution of pr from local repo, but allows pr from forked repos and dependabot
-    if: (github.event_name != 'pull_request' && ! github.event.pull_request.head.repo.fork) || (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.fork || github.actor == 'dependabot[bot]'))
     permissions:
       checks: write
       
@@ -218,8 +214,6 @@ jobs:
   test-net:
     runs-on: ubuntu-latest
     #if: ${{ false }}  # disable for now
-    #avoids duplicate execution of pr from local repo, but allows pr from forked repos and dependabot
-    if: (github.event_name != 'pull_request' && ! github.event.pull_request.head.repo.fork) || (github.event_name == 'pull_request' && (github.event.pull_request.head.repo.fork || github.actor == 'dependabot[bot]'))
     permissions:
       checks: write
     defaults:
@@ -405,7 +399,7 @@ jobs:
       - name: Deploy to GitHub Pages
         if: always()
         id: deployment
-        uses: actions/deploy-pages@v2.0.3
+        uses: actions/deploy-pages@v2.0.4
         
   sonarqube:
     needs: [test-java]
