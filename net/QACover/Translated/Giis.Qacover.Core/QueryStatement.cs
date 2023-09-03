@@ -43,13 +43,13 @@ namespace Giis.Qacover.Core
 		/// If the query does not have parameters, transforms this object as a result
 		/// of the parameters inference on the query
 		/// </summary>
-		public virtual void InferParameters(RuleServices svc)
+		public virtual void InferParameters(RuleServices svc, string storetype)
 		{
 			if (GetParameters().Size() > 0)
 			{
 				return;
 			}
-			QueryWithParameters queryAndParam = svc.InferQueryWithParameters(sql);
+			QueryWithParameters queryAndParam = svc.InferQueryWithParameters(sql, storetype);
 			sql = queryAndParam.GetSql();
 			// este sql sera el que tenga parametros y se usara a partir de ahora
 			parameters = queryAndParam.GetParams();

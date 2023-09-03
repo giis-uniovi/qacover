@@ -68,18 +68,18 @@ public class RuleServices {
 		return new TdRulesXmlSerializer().serialize(body);
 	}
 
-	public String[] getAllTableNames(String sql) {
+	public String[] getAllTableNames(String sql, String storetype) {
 		this.setErrorContext("Get query table names");
-		QueryEntitiesBody model = getApi().getEntities(sql);
+		QueryEntitiesBody model = getApi().getEntities(sql, storetype);
 		injectFaultIfNeeded(model);
 		if (!"".equals(model.getError()))
 			throw new QaCoverException(model.getError());
 		return JavaCs.toArray(safe(model.getEntities()));
 	}
 
-	public QueryWithParameters inferQueryWithParameters(String sql) {
+	public QueryWithParameters inferQueryWithParameters(String sql, String storetype) {
 		this.setErrorContext("Infer query parameters");
-		QueryParametersBody model = getApi().getParameters(sql);
+		QueryParametersBody model = getApi().getParameters(sql, storetype);
 		injectFaultIfNeeded(model);
 		if (!"".equals(model.getError()))
 			throw new QaCoverException(model.getError());

@@ -45,15 +45,17 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 
+    <!-- already in TdRules, avoids detected downgrade errors
     <PackageReference Include="NLog" Version="5.2.4" />
-
+    -->
+    
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="PortableCs" Version="2.2.2" />
 
-    <PackageReference Include="TdRules" Version="4.0.1" />
+    <PackageReference Include="TdRules" Version="4.0.2" />
   </ItemGroup>
   
 </Project>

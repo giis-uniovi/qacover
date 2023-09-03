@@ -36,6 +36,7 @@ public class Configuration { // NOSONAR singleton allowed
 	private List<String> stackInclusions;
 	private List<String> classExclusions; // do not generate for classes with this name (exact match)
 	private List<String> tableExclusionsExact; // do not generate for queries using any of this tables (exact match)
+	private String dbStoretype = null; // null means not configured, once configured will not be changed
 
 	private Configuration() {
 		reset();
@@ -258,4 +259,13 @@ public class Configuration { // NOSONAR singleton allowed
 		tableExclusionsExact.add(exclusion);
 		return this;
 	}
+
+	public String getDbStoretype() {
+		return this.dbStoretype;
+	}
+	public void setDbStoretype(String storetype) {
+		this.dbStoretype = storetype;
+		log.info("Configure db store type as: {}", storetype);
+	}
+
 }

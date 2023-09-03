@@ -54,19 +54,19 @@ public class CoverageManager {
 	/**
 	 * Generates a new set of coverage rules for a given query, that are kept in a QueryModel
 	 */
-	public void generate(RuleServices svc, StoreService store, QueryStatement stmt, String sql) {
+	public void generate(RuleServices svc, StoreService store, QueryStatement stmt, String sql, Configuration config) {
 		FaultInjector faultInjector = stmt.getFaultInjector();
 		// To better handling large schemas first gets the tables involved in the query
 		log.debug("Getting table names");
 		store.setLastGeneratedSql(sql);
 		if (faultInjector != null && faultInjector.isSchemaFaulty())
 			sql = stmt.getFaultInjector().getSchemaFault();
-		String[] tables = svc.getAllTableNames(sql);
+		String[] tables = svc.getAllTableNames(sql, config.getDbStoretype());
 		log.debug("Table names: " + JavaCs.deepToString(tables));
 		
 		// Check table name exclusions
 		for (String table : tables)
-			if (Configuration.valueInProperty(table, Configuration.getInstance().getTableExclusionsExact(), false)) {
+			if (Configuration.valueInProperty(table, config.getTableExclusionsExact(), false)) {
 				log.warn("Table " + table + " found in table exclusions property, skip generation");
 				abortedStatus = true;
 				return;
@@ -79,7 +79,6 @@ public class CoverageManager {
 		// Gets the rules, always numbering jdbc parameters for further substitution
 		log.debug("Getting sql coverage rules");
 		String clientVersion = new Variability().getVersion();
-		Configuration config=Configuration.getInstance();
 		String fpcOptions = "clientname=" + config.getName() + new Variability().getVariantId() + " clientversion=" + clientVersion
 				+ " numberjdbcparam" + " " + config.getFpcServiceOptions();
 		store.setLastGeneratedInRules(svc.getRulesInput(sql, this.schema, fpcOptions));

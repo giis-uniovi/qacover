@@ -75,10 +75,10 @@ namespace Giis.Qacover.Core.Services
 			return new TdRulesXmlSerializer().Serialize(body);
 		}
 
-		public virtual string[] GetAllTableNames(string sql)
+		public virtual string[] GetAllTableNames(string sql, string storetype)
 		{
 			this.SetErrorContext("Get query table names");
-			QueryEntitiesBody model = GetApi().GetEntities(sql);
+			QueryEntitiesBody model = GetApi().GetEntities(sql, storetype);
 			InjectFaultIfNeeded(model);
 			if (!string.Empty.Equals(model.GetError()))
 			{
@@ -87,10 +87,10 @@ namespace Giis.Qacover.Core.Services
 			return JavaCs.ToArray(ModelUtil.Safe(model.GetEntities()));
 		}
 
-		public virtual QueryWithParameters InferQueryWithParameters(string sql)
+		public virtual QueryWithParameters InferQueryWithParameters(string sql, string storetype)
 		{
 			this.SetErrorContext("Infer query parameters");
-			QueryParametersBody model = GetApi().GetParameters(sql);
+			QueryParametersBody model = GetApi().GetParameters(sql, storetype);
 			InjectFaultIfNeeded(model);
 			if (!string.Empty.Equals(model.GetError()))
 			{

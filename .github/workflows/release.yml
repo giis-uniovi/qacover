@@ -49,6 +49,8 @@ jobs:
       - uses: actions/setup-dotnet@v3.2.0
         with:
             dotnet-version: '6.0.x'
+      #- name: Enable snapshots
+      #  run: dotnet nuget add source https://apiint.nugettest.org/v3/index.json -n int.nugettest.org
       - name: Pack
         run: |
           dotnet pack --configuration Release QACover/QACover.csproj

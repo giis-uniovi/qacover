@@ -39,10 +39,10 @@ public abstract class QueryStatement {
 	 * If the query does not have parameters, transforms this object as a result 
 	 * of the parameters inference on the query
 	 */
-	public void inferParameters(RuleServices svc) {
+	public void inferParameters(RuleServices svc, String storetype) {
 		if (getParameters().size() > 0)
 			return;
-		QueryWithParameters queryAndParam = svc.inferQueryWithParameters(sql);
+		QueryWithParameters queryAndParam = svc.inferQueryWithParameters(sql, storetype);
 		sql = queryAndParam.getSql(); // este sql sera el que tenga parametros y se usara a partir de ahora
 		parameters = queryAndParam.getParams();
 	}

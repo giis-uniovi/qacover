@@ -251,6 +251,8 @@ jobs:
           path: net/.tdrules-cache
           key: tdrules-cache-Net-v1-${{ github.run_id }}
           restore-keys: tdrules-cache-Net-v1-
+      #- name: Enable snapshots
+      #  run: dotnet nuget add source https://apiint.nugettest.org/v3/index.json -n int.nugettest.org
       - name: Run test - ADO.NET
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report.trx" QACoverTest/QACoverTest.csproj
       - name: Run test - Entity Framework
@@ -288,25 +290,26 @@ jobs:
       # As a last step, checks that conversion works to detect potential incompatible changes in the java side.
       # Note that updates on the java side are still made in the develop environment and pushed.
       - name: Validate Sharpen Conversion - Prepare Java envrionment
+        #if: ${{ false }}
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '8'
           cache: 'maven'
       - name: Validate Sharpen Conversion - Preprocess
-        if: always()
+        #if: ${{ false }}
         run: |
           mvn -f ../pom.xml generate-sources -am
           ant clean sharpen.preprocess
       - name: Validate Sharpen Conversion - Sharpen
-        if: always()
+        #if: ${{ false }}
         uses: javiertuya/sharpen-action@v1.1.0
         with:
           working-dir: net
           project-dir: sharpen-temp/java
           sharpen-args: '@sharpen-all-options.txt'
       - name: Validate Sharpen Conversion - Postprocess
-        if: always()
+        #if: ${{ false }}
         run: |
           ls -la sharpen-temp/sharpen-temp.net
           sudo chown -R $(id -u):$(id -g) sharpen-temp/sharpen-temp.net

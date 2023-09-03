@@ -78,10 +78,16 @@ namespace Giis.Qacover.Core
 
 		private CoverageManager MainProcessSql(RuleServices svc, StoreService store, StackLocator stack, QueryStatement stmt, Configuration options)
 		{
+			// Set the configuration of data store type if not already set
+			if (options.GetDbStoretype() == null)
+			{
+				SchemaModel schema = svc.GetSchemaModel(stmt.GetConnection(), string.Empty, string.Empty, new string[] {  });
+				options.SetDbStoretype(schema.GetDbms());
+			}
 			// Optional parameter inference may lead to a change in the sql and parameters
 			if (options.GetInferQueryParameters() && stmt.GetParameters().Size() == 0)
 			{
-				stmt.InferParameters(svc);
+				stmt.InferParameters(svc, options.GetDbStoretype());
 			}
 			log.Info("  SQL: " + stmt.GetSql());
 			log.Info("  PARAMS: " + stmt.GetParameters().ToString());
@@ -93,7 +99,7 @@ namespace Giis.Qacover.Core
 			{
 				log.Debug("Generating new coverage rules for this query");
 				rm = new CoverageManager();
-				rm.Generate(svc, store, stmt, stmt.GetSql());
+				rm.Generate(svc, store, stmt, stmt.GetSql(), options);
 			}
 			else
 			{

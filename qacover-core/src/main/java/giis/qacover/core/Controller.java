@@ -8,6 +8,7 @@ import giis.qacover.core.services.RuleServices;
 import giis.qacover.core.services.StackLocator;
 import giis.qacover.core.services.StoreService;
 import giis.qacover.model.QueryModel;
+import giis.qacover.model.SchemaModel;
 import giis.qacover.portable.QaCoverException;
 
 /**
@@ -62,9 +63,15 @@ public class Controller {
 
 	private CoverageManager mainProcessSql(RuleServices svc, StoreService store, StackLocator stack, QueryStatement stmt,
 			Configuration options) {
+		// Set the configuration of data store type if not already set
+		if (options.getDbStoretype() == null) {
+			SchemaModel schema = svc.getSchemaModel(stmt.getConnection(), "", "", new String[] {});
+			options.setDbStoretype(schema.getDbms());
+		}
+
 		// Optional parameter inference may lead to a change in the sql and parameters
 		if (options.getInferQueryParameters() && stmt.getParameters().size() == 0)
-			stmt.inferParameters(svc);
+			stmt.inferParameters(svc, options.getDbStoretype());
 		log.info("  SQL: " + stmt.getSql());
 		log.info("  PARAMS: " + stmt.getParameters().toString());
 		store.setLastParametersRun(stmt.getParameters().toString());
@@ -75,7 +82,7 @@ public class Controller {
 		if (rm == null) {
 			log.debug("Generating new coverage rules for this query");
 			rm = new CoverageManager();
-			rm.generate(svc, store, stmt, stmt.getSql());
+			rm.generate(svc, store, stmt, stmt.getSql(), options);
 		} else {
 			log.debug("Using existing coverage rules for this query");
 		}

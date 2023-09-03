@@ -49,11 +49,14 @@ namespace Giis.Qacover.Core.Services
 
 		private IList<string> tableExclusionsExact;
 
+		private string dbStoretype = null;
+
 		private Configuration()
 		{
 			// NOSONAR singleton allowed
 			// do not generate for classes with this name (exact match)
 			// do not generate for queries using any of this tables (exact match)
+			// null means not configured, once configured will not be changed
 			Reset();
 		}
 
@@ -341,6 +344,17 @@ namespace Giis.Qacover.Core.Services
 			// for testing
 			tableExclusionsExact.Add(exclusion);
 			return this;
+		}
+
+		public virtual string GetDbStoretype()
+		{
+			return this.dbStoretype;
+		}
+
+		public virtual void SetDbStoretype(string storetype)
+		{
+			this.dbStoretype = storetype;
+			log.Info("Configure db store type as: {}", storetype);
 		}
 	}
 }

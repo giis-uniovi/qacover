@@ -63,7 +63,7 @@ namespace Giis.Qacover.Core
 		}
 
 		/// <summary>Generates a new set of coverage rules for a given query, that are kept in a QueryModel</summary>
-		public virtual void Generate(RuleServices svc, StoreService store, QueryStatement stmt, string sql)
+		public virtual void Generate(RuleServices svc, StoreService store, QueryStatement stmt, string sql, Configuration config)
 		{
 			FaultInjector faultInjector = stmt.GetFaultInjector();
 			// To better handling large schemas first gets the tables involved in the query
@@ -73,12 +73,12 @@ namespace Giis.Qacover.Core
 			{
 				sql = stmt.GetFaultInjector().GetSchemaFault();
 			}
-			string[] tables = svc.GetAllTableNames(sql);
+			string[] tables = svc.GetAllTableNames(sql, config.GetDbStoretype());
 			log.Debug("Table names: " + JavaCs.DeepToString(tables));
 			// Check table name exclusions
 			foreach (string table in tables)
 			{
-				if (Configuration.ValueInProperty(table, Configuration.GetInstance().GetTableExclusionsExact(), false))
+				if (Configuration.ValueInProperty(table, config.GetTableExclusionsExact(), false))
 				{
 					log.Warn("Table " + table + " found in table exclusions property, skip generation");
 					abortedStatus = true;
@@ -91,7 +91,6 @@ namespace Giis.Qacover.Core
 			// Gets the rules, always numbering jdbc parameters for further substitution
 			log.Debug("Getting sql coverage rules");
 			string clientVersion = new Variability().GetVersion();
-			Configuration config = Configuration.GetInstance();
 			string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + " " + config.GetFpcServiceOptions();
 			store.SetLastGeneratedInRules(svc.GetRulesInput(sql, this.schema, fpcOptions));
 			model = svc.GetRulesModel(sql, this.schema, fpcOptions);
