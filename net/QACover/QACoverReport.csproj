@@ -60,7 +60,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     
-    <PackageReference Include="NLog" Version="5.2.3" />
+    <PackageReference Include="NLog" Version="5.2.4" />
     
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
