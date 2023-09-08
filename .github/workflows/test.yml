@@ -32,7 +32,7 @@ jobs:
       checks: write
       
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -78,7 +78,7 @@ jobs:
       # to simulate an updatable cache. If eventually we need to clear the cache, increase the V* number
       - name: Rules cache
         id: rules-cache
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: qacover-core/.tdrules-cache
           key: tdrules-cache-${{ matrix.scope }}-v1-${{ github.run_id }}
@@ -118,7 +118,7 @@ jobs:
 
       - name: Generate report checks
         if: always()
-        uses: mikepenz/action-junit-report@v3.8.0
+        uses: mikepenz/action-junit-report@v4.0.0
         with:
           check_name: "test-result-${{ matrix.scope }}"
           report_paths: "*/target/surefire-reports/TEST-*.xml"
@@ -153,7 +153,7 @@ jobs:
       checks: write
       
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
@@ -162,7 +162,7 @@ jobs:
       # Uses the same trick that in other jobs top simulate a writable cache
       - name: Custom cache for IT
         id: rules-cache
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: /home/runner/.m2/repository #can't pass $HOME
           key: setup-java-IT-maven-v1-${{ github.run_id }}
@@ -195,7 +195,7 @@ jobs:
 
       - name: Generate report checks
         if: always()
-        uses: mikepenz/action-junit-report@v3.8.0
+        uses: mikepenz/action-junit-report@v4.0.0
         with:
           check_name: "test-result-IT"
           report_paths: "*/target/surefire-reports/TEST-*.xml"
@@ -226,7 +226,7 @@ jobs:
       run:
         working-directory: net
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3.2.0
         with:
             dotnet-version: '6.0.x'
@@ -246,7 +246,7 @@ jobs:
       
       - name: Rules cache
         id: rules-cache
-        uses: actions/cache@v3.3.1
+        uses: actions/cache@v3.3.2
         with:
           path: net/.tdrules-cache
           key: tdrules-cache-Net-v1-${{ github.run_id }}
@@ -267,7 +267,7 @@ jobs:
 
       - name: Generate report checks
         if: always()
-        uses: mikepenz/action-junit-report@v3.8.0
+        uses: mikepenz/action-junit-report@v4.0.0
         with:
           check_name: "test-result-Net"
           report_paths: "net/surefire-reports/TEST-*.xml"
