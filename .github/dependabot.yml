@@ -8,10 +8,6 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "org.slf4j*"
         update-types: ["version-update:semver-major"]
-    groups:
-      MicrosoftEntityFramework:
-        patterns:
-          - "Microsoft.EntityFramework*"
     schedule:
       interval: daily
     open-pull-requests-limit: 20
@@ -22,6 +18,10 @@ updates:
       - dependency-name: "Microsoft.Data.SQLite"
       - dependency-name: "Microsoft.EntityFramework*"
         update-types: ["version-update:semver-major"]
+    groups:
+      MicrosoftEntityFramework:
+        patterns:
+          - "Microsoft.EntityFramework*"
     schedule:
       interval: daily
     open-pull-requests-limit: 20
