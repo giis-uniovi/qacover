@@ -6,8 +6,6 @@ updates:
       - dependency-name: "com.microsoft.sqlserver*"
       - dependency-name: "com.oracle.database.jdbc*"
         update-types: ["version-update:semver-major"]
-      - dependency-name: "org.slf4j*"
-        update-types: ["version-update:semver-major"]
     schedule:
       interval: daily
     open-pull-requests-limit: 20
