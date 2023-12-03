@@ -70,31 +70,31 @@ namespace Test4giis.Qacover.Model
 			CoverageReader reader = GetCoverageReader();
 			// List of classes CoverageCollection
 			CoverageCollection classes = reader.GetByClass();
-			NUnit.Framework.Assert.AreEqual(1, classes.Size());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, classes.Size());
 			// Content of a class: QueryCollection
 			QueryCollection query = classes.Get(0);
 			AssertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", query.GetName());
-			NUnit.Framework.Assert.AreEqual(2, query.Size());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(2, query.Size());
 			// Each query: QueryReader
 			QueryReader item = query.Get(0);
 			AssertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.GetKey().GetClassName());
 			AssertEqualsCs("queryNoParameters1Condition", item.GetKey().GetMethodName());
-			NUnit.Framework.Assert.AreEqual(qline1, item.GetKey().GetClassLine());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(qline1, item.GetKey().GetClassLine());
 			AssertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc.queryNoParameters1Condition." + qline1 + ".63629c65b13acf17c46df6199346b2fa414b78edfddccf3ba7f875eca30393b3", item.GetKey().ToString());
-			NUnit.Framework.Assert.AreEqual("select id,num,text from test where num>=-1", item.GetSql());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("select id,num,text from test where num>=-1", item.GetSql());
 			SchemaModel schema = item.GetSchema();
-			NUnit.Framework.Assert.AreEqual("test", schema.GetModel().GetEntities()[0].GetName());
-			NUnit.Framework.Assert.AreEqual("id", schema.GetModel().GetEntities()[0].GetAttributes()[0].GetName());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("test", schema.GetModel().GetEntities()[0].GetName());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("id", schema.GetModel().GetEntities()[0].GetAttributes()[0].GetName());
 			// this view is static, no execution data
-			NUnit.Framework.Assert.AreEqual(string.Empty, item.GetTimestamp());
-			NUnit.Framework.Assert.AreEqual(string.Empty, item.GetParametersXml());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(string.Empty, item.GetTimestamp());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(string.Empty, item.GetParametersXml());
 			// can access the QueryModel data
-			NUnit.Framework.Assert.AreEqual("select id,num,text from test where num>=-1", item.GetModel().GetSql());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("select id,num,text from test where num>=-1", item.GetModel().GetSql());
 			IList<RuleModel> allRules = item.GetModel().GetRules();
-			NUnit.Framework.Assert.AreEqual(3, allRules.Count);
-			NUnit.Framework.Assert.AreEqual("SELECT id , num , text FROM test WHERE (num = 0)", allRules[0].GetSql());
-			NUnit.Framework.Assert.AreEqual("SELECT id , num , text FROM test WHERE (num = -1)", allRules[1].GetSql());
-			NUnit.Framework.Assert.AreEqual("SELECT id , num , text FROM test WHERE (num = -2)", allRules[2].GetSql());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(3, allRules.Count);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("SELECT id , num , text FROM test WHERE (num = 0)", allRules[0].GetSql());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("SELECT id , num , text FROM test WHERE (num = -1)", allRules[1].GetSql());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("SELECT id , num , text FROM test WHERE (num = -2)", allRules[2].GetSql());
 			// basic comprobation of a second item
 			item = query.Get(1);
 			AssertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.GetKey().GetClassName());
@@ -117,10 +117,10 @@ namespace Test4giis.Qacover.Model
 				// ignores in .net (too many differences to compare)
 				AssertEqualsCs(classesStrAll, classes.ToString(true, true, true));
 			}
-			NUnit.Framework.Assert.AreEqual("qcount=2,qerror=0,count=9,dead=1,error=0", classes.GetSummary().ToString());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("qcount=2,qerror=0,count=9,dead=1,error=0", classes.GetSummary().ToString());
 			QueryCollection query = classes.Get(0);
 			AssertEqualsCs("QueryCollection: test4giis.qacoverapp.AppSimpleJdbc\n" + "  queryNoParameters1Condition\n" + "  queryParameters", query.ToString());
-			NUnit.Framework.Assert.AreEqual("qcount=2,qerror=0,count=9,dead=1,error=0", query.GetSummary().ToString());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("qcount=2,qerror=0,count=9,dead=1,error=0", query.GetSummary().ToString());
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -131,25 +131,25 @@ namespace Test4giis.Qacover.Model
 			CoverageReader reader = GetCoverageReader();
 			// This should return the collection with an evaluation in each item
 			QueryCollection query = reader.GetByRunOrder();
-			NUnit.Framework.Assert.AreEqual(3, query.Size());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(3, query.Size());
 			QueryReader item = query.Get(0);
 			AssertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.GetKey().GetClassName());
 			AssertEqualsCs("queryParameters", item.GetKey().GetMethodName());
 			AssertEqualsCs(SqlCs("SELECT id , num , text FROM test WHERE num > ?1? AND text = ?2?"), item.GetSql());
 			JavaCs.ParseIsoDate(item.GetTimestamp());
-			NUnit.Framework.Assert.AreEqual(SqlCs("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"), item.GetParametersXml());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(SqlCs("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"), item.GetParametersXml());
 			item = query.Get(1);
 			AssertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.GetKey().GetClassName());
 			AssertEqualsCs("queryNoParameters1Condition", item.GetKey().GetMethodName());
-			NUnit.Framework.Assert.AreEqual("select id,num,text from test where num>=-1", item.GetSql());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("select id,num,text from test where num>=-1", item.GetSql());
 			JavaCs.ParseIsoDate(item.GetTimestamp());
-			NUnit.Framework.Assert.AreEqual("<parameters></parameters>", item.GetParametersXml());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("<parameters></parameters>", item.GetParametersXml());
 			item = query.Get(2);
 			AssertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.GetKey().GetClassName());
 			AssertEqualsCs("queryParameters", item.GetKey().GetMethodName());
 			AssertEqualsCs(SqlCs("SELECT id , num , text FROM test WHERE num > ?1? AND text = ?2?"), item.GetSql());
 			JavaCs.ParseIsoDate(item.GetTimestamp());
-			NUnit.Framework.Assert.AreEqual(SqlCs("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"), item.GetParametersXml());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(SqlCs("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"), item.GetParametersXml());
 		}
 
 		private string SqlCs(string sql)
@@ -173,11 +173,11 @@ namespace Test4giis.Qacover.Model
 			{
 				CoverageReader reader = new CoverageReader("pathnotexist");
 				reader.GetByClass();
-				NUnit.Framework.Assert.Fail("Deberia producirse una excepcion");
+				NUnit.Framework.Legacy.ClassicAssert.Fail("Deberia producirse una excepcion");
 			}
 			catch (Exception e)
 			{
-				NUnit.Framework.Assert.AreEqual("Can't browse directory at path pathnotexist", e.Message);
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual("Can't browse directory at path pathnotexist", e.Message);
 			}
 		}
 
@@ -189,7 +189,7 @@ namespace Test4giis.Qacover.Model
 				CoverageReader reader = new CoverageReader(".");
 				// folder exists, but no index
 				reader.GetByRunOrder();
-				NUnit.Framework.Assert.Fail("Deberia producirse una excepcion");
+				NUnit.Framework.Legacy.ClassicAssert.Fail("Deberia producirse una excepcion");
 			}
 			catch (Exception e)
 			{

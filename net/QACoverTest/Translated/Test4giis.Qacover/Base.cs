@@ -103,7 +103,7 @@ namespace Test4giis.Qacover
 
 		protected internal virtual void AssertEqualsIgnoreCase(string expected, string actual)
 		{
-			NUnit.Framework.Assert.AreEqual(expected.ToLower(), actual.ToLower());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(expected.ToLower(), actual.ToLower());
 		}
 
 		//for compatibility with .NET
@@ -115,7 +115,7 @@ namespace Test4giis.Qacover
 			}
 			else
 			{
-				NUnit.Framework.Assert.AreEqual(expected, actual);
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(expected, actual);
 			}
 		}
 
@@ -123,7 +123,7 @@ namespace Test4giis.Qacover
 		{
 			if (!actual.Contains(expected))
 			{
-				NUnit.Framework.Assert.Fail("Expected not contained in actual: " + actual);
+				NUnit.Framework.Legacy.ClassicAssert.Fail("Expected not contained in actual: " + actual);
 			}
 		}
 
@@ -146,21 +146,21 @@ namespace Test4giis.Qacover
 		protected internal virtual void AssertEvalResults(bool expSuccess, string expSql, string expOutput, string actOutput, string expRule, string expParams, bool removeQuotesAndLines, bool convertNetParams)
 		{
 			StoreService store = StoreService.GetLast();
-			NUnit.Framework.Assert.AreEqual(expSuccess ? "success" : string.Empty, store.GetLastGenStatus());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(expSuccess ? "success" : string.Empty, store.GetLastGenStatus());
 			string sql = store.GetLastSqlRun();
 			// needed to test Entity Framework
 			sql = removeQuotesAndLines ? sql.Replace("\"", string.Empty).Replace("\n", " ").Replace("\r", string.Empty) : sql;
 			// to compare parametrized queries in ADO.NET
 			expSql = convertNetParams ? AppBase.JdbcParamsToAssert(expSql, MaxParams) : expSql;
 			log.Debug("Tested sql: " + sql);
-			NUnit.Framework.Assert.AreEqual(expSql, sql);
-			NUnit.Framework.Assert.AreEqual(expOutput, actOutput);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(expSql, sql);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(expOutput, actOutput);
 			string rules = removeQuotesAndLines ? store.GetLastRulesLog().Replace("\"", string.Empty) : store.GetLastRulesLog();
-			NUnit.Framework.Assert.AreEqual(expRule, rules);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(expRule, rules);
 			if (expParams != null)
 			{
 				expParams = convertNetParams ? AppBase.RuleParamsToAssert(expParams, MaxParams) : expParams;
-				NUnit.Framework.Assert.AreEqual(expParams, store.GetLastParametersRun());
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual(expParams, store.GetLastParametersRun());
 			}
 		}
 	}

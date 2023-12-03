@@ -117,7 +117,7 @@ namespace Test4giis.Qacover
 				);
 			QueryModel model = StoreService.GetLast().GetQueryModel(StoreService.GetLast().GetLastSavedQueryKey());
 			string sql = model.GetSql();
-			NUnit.Framework.Assert.AreEqual("/*params=?1?,?1?,?2?*/ SELECT id , num , text FROM test WHERE id = ?1? OR num = ?1? OR text = ?2?", sql);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("/*params=?1?,?1?,?2?*/ SELECT id , num , text FROM test WHERE id = ?1? OR num = ?1? OR text = ?2?", sql);
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -130,7 +130,7 @@ namespace Test4giis.Qacover
 			}
 			Configuration.GetInstance().SetInferQueryParameters(false).SetFpcServiceOptions("noboundaries");
 			rs = app.QueryParametersNamed(1, 2, "abc");
-			NUnit.Framework.Assert.AreEqual("Error at : giis.qacover.portable.QaCoverException: StatementAdapter: Parameter ?1? had been assigned to 1. Can't be assigned to a new value 2", StoreService.GetLast().GetLastGenStatus());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("Error at : giis.qacover.portable.QaCoverException: StatementAdapter: Parameter ?1? had been assigned to 1. Can't be assigned to a new value 2", StoreService.GetLast().GetLastGenStatus());
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Test4giis.Qacoverapp.Ef;
 
 namespace Test4giis.Qacover.Ef
@@ -32,10 +33,10 @@ namespace Test4giis.Qacover.Ef
         {
             AppSimpleEf app = new AppSimpleEf();
             List<SimpleEfEntity> pojo = app.QueryEfNoParams();
-            Assert.AreEqual(1, pojo.Count);
-            Assert.AreEqual(2, pojo[0].Id);
-            Assert.AreEqual(99, pojo[0].Num);
-            Assert.AreEqual("xyz", pojo[0].Text);
+            ClassicAssert.AreEqual(1, pojo.Count);
+            ClassicAssert.AreEqual(2, pojo[0].Id);
+            ClassicAssert.AreEqual(99, pojo[0].Num);
+            ClassicAssert.AreEqual("xyz", pojo[0].Text);
             //compara eliminando las comillas dobles que inserta EntityFramework en tablas y columnas
             String efSql= "SELECT s.Id, s.Num, s.Text FROM SimpleEntitys AS s WHERE (s.Text = 'xyz') AND (s.Num = 99) ORDER BY s.Id";
             AssertEvalResults(efSql, 

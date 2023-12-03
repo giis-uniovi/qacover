@@ -62,7 +62,7 @@ namespace Test4giis.Qacover
 			string compareTo = actual.Length >= count ? JavaCs.Substring(actual, 0, count) : actual;
 			if (!Contains(compareTo.ToLower(), expected.ToLower()))
 			{
-				NUnit.Framework.Assert.AreEqual("Expected no incluido en actual", expected, actual);
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual("Expected no incluido en actual", expected, actual);
 			}
 		}
 
@@ -97,7 +97,7 @@ namespace Test4giis.Qacover
 			try
 			{
 				rs = app.ExecuteQuery("select id,num,text from test where num lt 9");
-				NUnit.Framework.Assert.Fail("se esperaba excepcion");
+				NUnit.Framework.Legacy.ClassicAssert.Fail("se esperaba excepcion");
 			}
 			catch (Exception e)
 			{
@@ -113,7 +113,7 @@ namespace Test4giis.Qacover
 			try
 			{
 				rs = app.ExecuteQuery("select id,num,text from noexiste where num<9");
-				NUnit.Framework.Assert.Fail("se esperaba excepcion");
+				NUnit.Framework.Legacy.ClassicAssert.Fail("se esperaba excepcion");
 			}
 			catch (Exception e)
 			{
@@ -176,7 +176,7 @@ namespace Test4giis.Qacover
 			AssertExceptionMessage("success", StoreService.GetLast().GetLastGenStatus());
 			// More checks
 			QueryModel model = StoreService.GetLast().GetQueryModel(StoreService.GetLast().GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=2,dead=0,error=1\n" + "count=1,dead=0,error=1\n" + "count=1,dead=0", model.GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=2,dead=0,error=1\n" + "count=1,dead=0,error=1\n" + "count=1,dead=0", model.GetTextSummary());
 			// Rule with fault is the first one, checks its message
 			IList<RuleModel> rules = model.GetRules();
 			//NOSONAR no using typed names for compatibility with downgrade to jdk 1.4
@@ -243,7 +243,7 @@ namespace Test4giis.Qacover
 		{
 			//Obiene las regas del almacenamiento y comprueba el resumen
 			QueryModel model = StoreService.GetLast().GetQueryModel(StoreService.GetLast().GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual(expectedSummary, model.GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(expectedSummary, model.GetTextSummary());
 			//texto detallado de los errores
 			if (checkErrorsAtQuery)
 			{

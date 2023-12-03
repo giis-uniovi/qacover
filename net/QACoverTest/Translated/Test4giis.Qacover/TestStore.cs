@@ -62,29 +62,29 @@ namespace Test4giis.Qacover
 			StoreService store = StoreService.GetLast();
 			string firstFile = store.GetLastSavedQueryKey();
 			log.Debug("Saved to file: " + store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=4,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			rs.Close();
 			rs = app.QueryParameters(90, "nnn");
 			store = StoreService.GetLast();
 			log.Debug("Saved to file: " + store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual(firstFile, store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=4,dead=1\ncount=2,dead=0\ncount=2,dead=0\ncount=2,dead=2\ncount=2,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(firstFile, store.GetLastSavedQueryKey());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=1\ncount=2,dead=0\ncount=2,dead=0\ncount=2,dead=2\ncount=2,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			// increment a rule
 			rs = app.QueryParameters(90, "xyz");
 			store = StoreService.GetLast();
 			log.Debug("Saved to file: " + store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual(firstFile, store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=4,dead=2\ncount=3,dead=1\ncount=3,dead=0\ncount=3,dead=2\ncount=3,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(firstFile, store.GetLastSavedQueryKey());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=2\ncount=3,dead=1\ncount=3,dead=0\ncount=3,dead=2\ncount=3,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			rs.Close();
 			// different query, another summary an file
 			rs = app.QueryNoParameters1Condition(99);
 			store = StoreService.GetLast();
 			log.Debug("Saved to file: " + store.GetLastSavedQueryKey());
 			string secondFile = store.GetLastSavedQueryKey();
-			NUnit.Framework.Assert.IsFalse(firstFile.Equals(store.GetLastSavedQueryKey()));
-			NUnit.Framework.Assert.AreEqual("count=2,dead=1\n" + "count=1,dead=0\ncount=1,dead=1", store.GetQueryModel(secondFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.IsFalse(firstFile.Equals(store.GetLastSavedQueryKey()));
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=2,dead=1\n" + "count=1,dead=0\ncount=1,dead=1", store.GetQueryModel(secondFile).GetTextSummary());
 			// still can read the first file
-			NUnit.Framework.Assert.AreEqual("count=4,dead=2\n" + "count=3,dead=1\ncount=3,dead=0\ncount=3,dead=2\ncount=3,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=2\n" + "count=3,dead=1\ncount=3,dead=0\ncount=3,dead=2\ncount=3,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			rs.Close();
 		}
 
@@ -97,16 +97,16 @@ namespace Test4giis.Qacover
 			rs = app.QueryNoParameters2Condition(90, "nnn");
 			StoreService store = StoreService.GetLast();
 			string firstFile = store.GetLastSavedQueryKey();
-			NUnit.Framework.Assert.AreEqual("count=4,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			rs.Close();
 			rs = app.QueryNoParameters2Condition(90, "nnn");
 			store = StoreService.GetLast();
-			NUnit.Framework.Assert.AreEqual(firstFile, store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=4,dead=1\ncount=2,dead=0\ncount=2,dead=0\ncount=2,dead=2\ncount=2,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(firstFile, store.GetLastSavedQueryKey());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=1\ncount=2,dead=0\ncount=2,dead=0\ncount=2,dead=2\ncount=2,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			rs = app.QueryNoParameters2Condition(90, "xyz");
 			store = StoreService.GetLast();
-			NUnit.Framework.Assert.AreEqual(firstFile, store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=4,dead=2\ncount=3,dead=1\ncount=3,dead=0\ncount=3,dead=2\ncount=3,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(firstFile, store.GetLastSavedQueryKey());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=2\ncount=3,dead=1\ncount=3,dead=0\ncount=3,dead=2\ncount=3,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			rs.Close();
 		}
 
@@ -129,7 +129,7 @@ namespace Test4giis.Qacover
 			string firstFile = store.GetLastSavedQueryKey();
 			// without optimization, the result would be:
 			// count=4,dead=2\ncount=3,dead=2\ncount=3,dead=0\ncount=3,dead=3\ncount=3,dead=0
-			NUnit.Framework.Assert.AreEqual("count=4,dead=2\ncount=2,dead=1\ncount=3,dead=0\ncount=1,dead=1\ncount=3,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=2\ncount=2,dead=1\ncount=3,dead=0\ncount=1,dead=1\ncount=3,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -140,28 +140,28 @@ namespace Test4giis.Qacover
 			rs = app.QueryNoParameters2Condition(90, "nnn");
 			StoreService store = StoreService.GetLast();
 			string firstFile = store.GetLastSavedQueryKey();
-			NUnit.Framework.Assert.AreEqual("count=4,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			rs.Close();
 			// close here to allow a new rs
 			// a new instance preserves previous coverage data
 			store.DropLast();
 			rs = app.QueryNoParameters2Condition(90, "nnn");
 			store = StoreService.GetLast();
-			NUnit.Framework.Assert.AreEqual(firstFile, store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=4,dead=1\ncount=2,dead=0\ncount=2,dead=0\ncount=2,dead=2\ncount=2,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(firstFile, store.GetLastSavedQueryKey());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=1\ncount=2,dead=0\ncount=2,dead=0\ncount=2,dead=2\ncount=2,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			// but drop does not preserves any coverage data
 			StoreService.GetLast().DropRules();
 			store.DropLast();
 			rs = app.QueryNoParameters2Condition(90, "nnn");
 			store = StoreService.GetLast();
-			NUnit.Framework.Assert.AreEqual(firstFile, store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=4,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(firstFile, store.GetLastSavedQueryKey());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			StoreService.GetLast().DropRules();
 			store.DropLast();
 			rs = app.QueryNoParameters2Condition(90, "xyz");
 			store = StoreService.GetLast();
-			NUnit.Framework.Assert.AreEqual(firstFile, store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=4,dead=1\ncount=1,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(firstFile, store.GetLastSavedQueryKey());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=4,dead=1\ncount=1,dead=1\ncount=1,dead=0\ncount=1,dead=0\ncount=1,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 			rs.Close();
 		}
 
@@ -174,13 +174,13 @@ namespace Test4giis.Qacover
 			StoreService store = StoreService.GetLast();
 			string firstFile = store.GetLastSavedQueryKey();
 			log.Debug("Saved to file: " + store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=2,dead=1\ncount=1,dead=0\ncount=1,dead=1", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=2,dead=1\ncount=1,dead=0\ncount=1,dead=1", store.GetQueryModel(firstFile).GetTextSummary());
 			app.QueryDifferentSingleLine(true, 99, true, "'xyz'");
 			store = StoreService.GetLast();
 			string secondFile = store.GetLastSavedQueryKey();
 			log.Debug("Saved to file (second): " + store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=2,dead=1\ncount=2,dead=0\ncount=2,dead=2", store.GetQueryModel(firstFile).GetTextSummary());
-			NUnit.Framework.Assert.AreEqual("count=3,dead=1\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(secondFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=2,dead=1\ncount=2,dead=0\ncount=2,dead=2", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=3,dead=1\ncount=1,dead=0\ncount=1,dead=1\ncount=1,dead=0", store.GetQueryModel(secondFile).GetTextSummary());
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -198,7 +198,7 @@ namespace Test4giis.Qacover
 			StoreService store = StoreService.GetLast();
 			string firstFile = StoreService.GetLast().GetLastSavedQueryKey();
 			log.Debug("Saved to file: " + firstFile);
-			NUnit.Framework.Assert.AreEqual("count=3,dead=2\ncount=2,dead=1\ncount=2,dead=1\ncount=2,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=3,dead=2\ncount=2,dead=1\ncount=2,dead=1\ncount=2,dead=0", store.GetQueryModel(firstFile).GetTextSummary());
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -208,7 +208,7 @@ namespace Test4giis.Qacover
 			app.QueryEqualDifferentLine("'xyz'", "'aaa'");
 			StoreService store = StoreService.GetLast();
 			// only compares the last
-			NUnit.Framework.Assert.AreEqual("count=3,dead=1\ncount=1,dead=1\ncount=1,dead=0\ncount=1,dead=0", store.GetQueryModel(store.GetLastSavedQueryKey()).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=3,dead=1\ncount=1,dead=1\ncount=1,dead=0\ncount=1,dead=0", store.GetQueryModel(store.GetLastSavedQueryKey()).GetTextSummary());
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -221,7 +221,7 @@ namespace Test4giis.Qacover
 			app.QueryEqualDifferentLine("'xyz'", "'aaa'");
 			StoreService store = StoreService.GetLast();
 			// only compares the last
-			NUnit.Framework.Assert.AreEqual("count=3,dead=1\ncount=1,dead=1\ncount=1,dead=0\ncount=1,dead=0", store.GetQueryModel(store.GetLastSavedQueryKey()).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=3,dead=1\ncount=1,dead=1\ncount=1,dead=0\ncount=1,dead=0", store.GetQueryModel(store.GetLastSavedQueryKey()).GetTextSummary());
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -262,7 +262,7 @@ namespace Test4giis.Qacover
 			AssertEvalResults(false, string.Empty, "1 99 xyz", SqlUtil.ResultSet2csv(rs, " "), string.Empty, expParams, false, false);
 			// falta por comprobar el ultimo fichero guardado
 			StoreService store = StoreService.GetLast();
-			NUnit.Framework.Assert.AreEqual(string.Empty, store.GetLastSavedQueryKey());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(string.Empty, store.GetLastSavedQueryKey());
 		}
 
 		private void AssertNoAbort()
@@ -271,7 +271,7 @@ namespace Test4giis.Qacover
 			StoreService store = StoreService.GetLast();
 			string firstFile = store.GetLastSavedQueryKey();
 			log.Debug("Saved to file: " + store.GetLastSavedQueryKey());
-			NUnit.Framework.Assert.AreEqual("count=2,dead=1\ncount=1,dead=0\ncount=1,dead=1", store.GetQueryModel(firstFile).GetTextSummary());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("count=2,dead=1\ncount=1,dead=0\ncount=1,dead=1", store.GetQueryModel(firstFile).GetTextSummary());
 		}
 	}
 }

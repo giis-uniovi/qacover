@@ -36,11 +36,11 @@ namespace Test4giis.Qacover.Model
 		{
 			AppSimpleJdbc app = new AppSimpleJdbc(variant);
 			StackLocator stack = app.MyGetStackTraceTargetMethod();
-			NUnit.Framework.Assert.AreEqual("test4giis.qacoverapp.appsimplejdbc", stack.GetClassName().ToLower());
-			NUnit.Framework.Assert.AreEqual("mygetstacktracetargetmethod", stack.GetMethodName().ToLower());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("test4giis.qacoverapp.appsimplejdbc", stack.GetClassName().ToLower());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("mygetstacktracetargetmethod", stack.GetMethodName().ToLower());
 			// approximate location of the line
-			NUnit.Framework.Assert.IsTrue(stack.GetLineNumber() > 10);
-			NUnit.Framework.Assert.IsTrue(stack.GetLineNumber() < 50);
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(stack.GetLineNumber() > 10);
+			NUnit.Framework.Legacy.ClassicAssert.IsTrue(stack.GetLineNumber() < 50);
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -51,9 +51,9 @@ namespace Test4giis.Qacover.Model
 			Configuration.GetInstance().AddStackExclusion("test4giis").AddStackExclusion("giis").AddStackExclusion("java.").AddStackExclusion("junit.").AddStackExclusion("sun.").AddStackExclusion("org.").AddStackExclusion("microsoft.").AddStackExclusion("nunit.");
 			AppSimpleJdbc app = new AppSimpleJdbc(variant);
 			StackLocator stack = app.MyGetStackTraceTargetMethod();
-			NUnit.Framework.Assert.AreEqual("undefined", stack.GetClassName());
-			NUnit.Framework.Assert.AreEqual("undefined", stack.GetMethodName());
-			NUnit.Framework.Assert.AreEqual(0, stack.GetLineNumber());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("undefined", stack.GetClassName());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("undefined", stack.GetMethodName());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, stack.GetLineNumber());
 		}
 
 		public virtual void TestClassSummaryFileOrder()
@@ -67,18 +67,18 @@ namespace Test4giis.Qacover.Model
 			// qacover.properties in the project rootraiz del proyecto
 			Configuration opt = Configuration.GetInstance();
 			Properties prop = opt.GetProperties("qacover.properties");
-			NUnit.Framework.Assert.AreEqual("false", prop.GetProperty("qacover.query.infer.parameters"));
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("false", prop.GetProperty("qacover.query.infer.parameters"));
 			// fortest.properties in src/test/resources, java only
 			if (new Variability().IsJava())
 			{
 				prop = opt.GetProperties("fortest.properties");
-				NUnit.Framework.Assert.AreEqual("X Y Z", prop.GetProperty("property.one"));
+				NUnit.Framework.Legacy.ClassicAssert.AreEqual("X Y Z", prop.GetProperty("property.one"));
 			}
 			// Not existing
 			try
 			{
 				prop = opt.GetProperties("noexiste.properties");
-				NUnit.Framework.Assert.Fail("se esperaba excepction");
+				NUnit.Framework.Legacy.ClassicAssert.Fail("se esperaba excepction");
 			}
 			catch (Exception)
 			{
