@@ -303,7 +303,7 @@ jobs:
           ant clean sharpen.preprocess
       - name: Validate Sharpen Conversion - Sharpen
         #if: ${{ false }}
-        uses: javiertuya/sharpen-action@v1.1.0
+        uses: javiertuya/sharpen-action@v1.1.1
         with:
           working-dir: net
           project-dir: sharpen-temp/java
