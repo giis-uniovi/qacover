@@ -9,5 +9,7 @@ sqlplus system/${TEST_ORACLE_PWD}@XE  <<-EOSQL
   grant create table to qacoverdb; 
   grant create procedure to qacoverdb; 
   grant create view to qacoverdb;
+  -- migration from 11 to 21 requires granting access to tablespace
+  grant unlimited tablespace to qacoverdb;
 EOSQL
 echo "-- End setup"
