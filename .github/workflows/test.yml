@@ -33,7 +33,7 @@ jobs:
       
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '8'
@@ -154,7 +154,7 @@ jobs:
       
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '8'
@@ -291,7 +291,7 @@ jobs:
       # Note that updates on the java side are still made in the develop environment and pushed.
       - name: Validate Sharpen Conversion - Prepare Java envrionment
         #if: ${{ false }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '8'
