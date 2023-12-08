@@ -94,12 +94,12 @@ public class LocalStore {
 	 */
 	public QueryModel getQueryModel(String queryKey) {
 		String frules = FileUtil.fileRead(storeLocation, queryKey + ".xml", false);
-		log.debug("Try get QueryModel file from store: " + queryKey);
+		log.trace("Try get QueryModel file from store: " + queryKey);
 		if (frules == null) {
-			log.debug("QueryModel file has not been generated");
+			log.trace("QueryModel file has not been generated");
 			return null;
 		}
-		log.debug("QueryModel file found");
+		log.trace("QueryModel file found");
 		TdRules srules = new TdRulesXmlSerializer().deserialize(frules);
 		return new QueryModel(srules);
 	}

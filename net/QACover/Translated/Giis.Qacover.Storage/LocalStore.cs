@@ -103,13 +103,13 @@ namespace Giis.Qacover.Storage
 		public virtual QueryModel GetQueryModel(string queryKey)
 		{
 			string frules = FileUtil.FileRead(storeLocation, queryKey + ".xml", false);
-			log.Debug("Try get QueryModel file from store: " + queryKey);
+			log.Trace("Try get QueryModel file from store: " + queryKey);
 			if (frules == null)
 			{
-				log.Debug("QueryModel file has not been generated");
+				log.Trace("QueryModel file has not been generated");
 				return null;
 			}
-			log.Debug("QueryModel file found");
+			log.Trace("QueryModel file found");
 			TdRules srules = new TdRulesXmlSerializer().Deserialize(frules);
 			return new QueryModel(srules);
 		}
