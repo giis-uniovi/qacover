@@ -254,16 +254,16 @@ public class TestReport extends Base {
 		if (new Variability().isNetCore()) {
 			expectedKeys = replaceExpectedStrings(expectedKeys);
 			expectedData = replaceExpectedStrings(expectedData);
-			expectedData = expectedData.replace("\"INT\"", "\"int\"");
-			expectedData = expectedData.replace("\"VARCHAR\"", "\"varchar\"");
+			//expectedData = expectedData.replace("\"INT\"", "\"int\"");
+			//expectedData = expectedData.replace("\"VARCHAR\"", "\"varchar\"");
 		}
 		// line numbers as ### to allow comparison
 		expectedKeys = JavaCs.replaceRegex(expectedKeys, "\\.\\d+\\.", ".###.");
 		expectedData = JavaCs.replaceRegex(expectedData, "\\.\\d+\\.", ".###.");
 		actualKeys = JavaCs.replaceRegex(actualKeys, "\\.\\d+\\.", ".###.");
 		actualData = JavaCs.replaceRegex(actualData, "\\.\\d+\\.", ".###.");
-		va.assertEquals(expectedKeys.replace("\r", ""), actualKeys, "at assertReaderByRunOrderAll(), check expectedKeys");
-		va.assertEquals(expectedData.replace("\r", ""), actualData, "at assertReaderByRunOrderAll(), check expectedData");
+		va.assertEquals(expectedKeys.replace("\r", ""), actualKeys.replace("\r", ""), "at assertReaderByRunOrderAll(), check expectedKeys");
+		va.assertEquals(expectedData.replace("\r", ""), actualData.replace("\r", ""), "at assertReaderByRunOrderAll(), check expectedData");
 	}
 
 	// Html of generated reports

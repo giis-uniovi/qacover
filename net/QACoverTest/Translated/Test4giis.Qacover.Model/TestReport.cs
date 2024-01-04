@@ -237,16 +237,16 @@ namespace Test4giis.Qacover.Model
 			{
 				expectedKeys = ReplaceExpectedStrings(expectedKeys);
 				expectedData = ReplaceExpectedStrings(expectedData);
-				expectedData = expectedData.Replace("\"INT\"", "\"int\"");
-				expectedData = expectedData.Replace("\"VARCHAR\"", "\"varchar\"");
 			}
+			//expectedData = expectedData.replace("\"INT\"", "\"int\"");
+			//expectedData = expectedData.replace("\"VARCHAR\"", "\"varchar\"");
 			// line numbers as ### to allow comparison
 			expectedKeys = JavaCs.ReplaceRegex(expectedKeys, "\\.\\d+\\.", ".###.");
 			expectedData = JavaCs.ReplaceRegex(expectedData, "\\.\\d+\\.", ".###.");
 			actualKeys = JavaCs.ReplaceRegex(actualKeys, "\\.\\d+\\.", ".###.");
 			actualData = JavaCs.ReplaceRegex(actualData, "\\.\\d+\\.", ".###.");
-			va.AssertEquals(expectedKeys.Replace("\r", string.Empty), actualKeys, "at assertReaderByRunOrderAll(), check expectedKeys");
-			va.AssertEquals(expectedData.Replace("\r", string.Empty), actualData, "at assertReaderByRunOrderAll(), check expectedData");
+			va.AssertEquals(expectedKeys.Replace("\r", string.Empty), actualKeys.Replace("\r", string.Empty), "at assertReaderByRunOrderAll(), check expectedKeys");
+			va.AssertEquals(expectedData.Replace("\r", string.Empty), actualData.Replace("\r", string.Empty), "at assertReaderByRunOrderAll(), check expectedData");
 		}
 
 		// Html of generated reports

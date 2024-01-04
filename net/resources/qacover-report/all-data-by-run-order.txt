@@ -31,8 +31,8 @@ rule3: <fpcrule count="3" dead="0"><id>4</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -69,8 +69,8 @@ rule3: <fpcrule count="3" dead="0"><id>4</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -107,8 +107,8 @@ rule3: <fpcrule count="3" dead="0"><id>4</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -129,8 +129,8 @@ rule1: <fpcrule count="1" dead="1"><id>2</id><category>S</category><type>T</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -151,8 +151,8 @@ rule1: <fpcrule count="2" dead="2"><id>2</id><category>S</category><type>T</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -173,8 +173,8 @@ rule1: <fpcrule count="2" dead="2"><id>2</id><category>S</category><type>T</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -201,8 +201,8 @@ rule2: <fpcrule count="1" dead="0"><id>3</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -229,8 +229,8 @@ rule2: <fpcrule count="2" dead="0"><id>3</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -257,8 +257,8 @@ rule2: <fpcrule count="2" dead="0"><id>3</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -285,8 +285,8 @@ rule2: <fpcrule count="2" dead="0"><id>3</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -313,8 +313,8 @@ rule2: <fpcrule count="2" dead="0"><id>3</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -335,8 +335,8 @@ rule1: <fpcrule count="3" dead="3"><id>2</id><category>S</category><type>T</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -373,8 +373,8 @@ rule3: <fpcrule count="1" dead="1"><id>4</id><category>S</category><type>N</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -395,8 +395,8 @@ rule1: <fpcrule count="3" dead="3"><id>2</id><category>S</category><type>T</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
@@ -417,12 +417,12 @@ rule1: <fpcrule count="3" dead="3"><id>2</id><category>S</category><type>T</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
-*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.Query0Errors.27.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.Query0Errors.22.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
 sql: select id,num,text from test where num<9
 parameters: <parameters></parameters>
 rule0: <fpcrule count="1" dead="1"><id>1</id><category>S</category><type>T</type><subtype>FF</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
@@ -439,17 +439,17 @@ rule1: <fpcrule count="1" dead="0"><id>2</id><category>S</category><type>T</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
-*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.Query1ErrorAtQuery.33.7ab053d55b54c975de770640bed8e8ee65c54aec24d94b949b6b3fdc49a1d311
+*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.Query1ErrorAtQuery.28.7ab053d55b54c975de770640bed8e8ee65c54aec24d94b949b6b3fdc49a1d311
 sql: select id,num,text from test where num<10
 parameters: <parameters></parameters>
 schema: <schema>
 </schema>
-*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.Query1ErrorAtRule.39.cf89702f8478266da73089272b7d89c3812b3e236dbbe2b02949c2ca1bdd1255
+*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.Query1ErrorAtRule.34.cf89702f8478266da73089272b7d89c3812b3e236dbbe2b02949c2ca1bdd1255
 sql: select id,num,text from test where num < 11
 parameters: <parameters></parameters>
 rule0: <fpcrule count="1" error="1"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 11]</location>
@@ -457,7 +457,8 @@ rule0: <fpcrule count="1" error="1"><id>1</id><category>S</category><type>B</typ
     <description>--Some row in the table such that:
 --The WHERE condition fulfills:
   --(B+) num = 12</description>
-    <error>Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near "selectar": syntax error'.</error>
+    <error>Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error
+near "selectar": syntax error</error>
   </fpcrule>
 rule1: <fpcrule count="1" dead="0"><id>2</id><category>S</category><type>B</type><subtype>B=F</subtype><location>1.w.1.[WHERE num &lt; 11]</location>
     <sql>SELECT id , num , text FROM test WHERE (num = 11)</sql>
@@ -473,12 +474,12 @@ rule2: <fpcrule count="1" dead="0"><id>3</id><category>S</category><type>B</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
-*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.QueryMultipleErrors.45.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.QueryMultipleErrors.40.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
 sql: select id,num,text from test where num<9
 parameters: <parameters></parameters>
 rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
@@ -486,8 +487,10 @@ rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</typ
     <description>--Some row in the table such that:
 --The WHERE condition fulfills:
   --(B+) num = 10</description>
-    <error>Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near "selectar": syntax error'.
-Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: notable'.</error>
+    <error>Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error
+near "selectar": syntax error
+Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error
+no such table: notable</error>
   </fpcrule>
 rule1: <fpcrule count="3" dead="0"><id>2</id><category>S</category><type>B</type><subtype>B=F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
     <sql>SELECT id , num , text FROM test WHERE (num = 9)</sql>
@@ -503,12 +506,12 @@ rule2: <fpcrule count="3" dead="0"><id>3</id><category>S</category><type>B</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
-*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.QueryMultipleErrors.45.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.QueryMultipleErrors.40.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
 sql: select id,num,text from test where num<9
 parameters: <parameters></parameters>
 rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
@@ -516,8 +519,10 @@ rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</typ
     <description>--Some row in the table such that:
 --The WHERE condition fulfills:
   --(B+) num = 10</description>
-    <error>Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near "selectar": syntax error'.
-Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: notable'.</error>
+    <error>Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error
+near "selectar": syntax error
+Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error
+no such table: notable</error>
   </fpcrule>
 rule1: <fpcrule count="3" dead="0"><id>2</id><category>S</category><type>B</type><subtype>B=F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
     <sql>SELECT id , num , text FROM test WHERE (num = 9)</sql>
@@ -533,12 +538,12 @@ rule2: <fpcrule count="3" dead="0"><id>3</id><category>S</category><type>B</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>
-*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.QueryMultipleErrors.45.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+*** Test4giis.Qacoverapp.AppSimpleJdbc3Errors.QueryMultipleErrors.40.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
 sql: select id,num,text from test where num<9
 parameters: <parameters></parameters>
 rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
@@ -546,8 +551,10 @@ rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</typ
     <description>--Some row in the table such that:
 --The WHERE condition fulfills:
   --(B+) num = 10</description>
-    <error>Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near "selectar": syntax error'.
-Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: notable'.</error>
+    <error>Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error
+near "selectar": syntax error
+Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error
+no such table: notable</error>
   </fpcrule>
 rule1: <fpcrule count="3" dead="0"><id>2</id><category>S</category><type>B</type><subtype>B=F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
     <sql>SELECT id , num , text FROM test WHERE (num = 9)</sql>
@@ -563,8 +570,8 @@ rule2: <fpcrule count="3" dead="0"><id>3</id><category>S</category><type>B</type
   </fpcrule>
 schema: <schema dbms="sqlite">
 <table name="test" type="table">
-<column name="id" type="int" notnull="true" />
-<column name="num" type="int" notnull="true" />
+<column name="id" type="INT" notnull="true" />
+<column name="num" type="INT" notnull="true" />
 <column name="text" type="varchar" size="16" />
 </table>
 </schema>

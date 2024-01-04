@@ -59,10 +59,18 @@ namespace Test4giis.Qacover
 		{
 			// To make easier comparison and compatible with .net uses ignorecase and partial match (from the beginning)
 			int count = expected.Length;
+			actual = actual.Replace("\r", string.Empty);
 			string compareTo = actual.Length >= count ? JavaCs.Substring(actual, 0, count) : actual;
 			if (!Contains(compareTo.ToLower(), expected.ToLower()))
 			{
-				NUnit.Framework.Legacy.ClassicAssert.AreEqual("Expected no incluido en actual", expected, actual);
+				if (new Variability().IsJava())
+				{
+					NUnit.Framework.Legacy.ClassicAssert.AreEqual("Expected not included in actual.", expected, actual);
+				}
+				else
+				{
+					NUnit.Framework.Legacy.ClassicAssert.AreEqual(expected, actual, "Expected not included in actual.");
+				}
 			}
 		}
 
@@ -101,11 +109,12 @@ namespace Test4giis.Qacover
 			}
 			catch (Exception e)
 			{
-				AssertExceptionMessage(variant.IsJava() ? (variant.IsJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"lt\": syntax error)" : "org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement") : "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"lt\": syntax error'."
+				AssertExceptionMessage(variant.IsJava() ? (variant.IsJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"lt\": syntax error)" : "org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement") : "System.Data.SQLite.SQLiteException: SQL logic error\nnear \"lt\": syntax error"
 					, QaCoverException.GetString(e));
 			}
 		}
 
+		//: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"lt\": syntax error'."
 		/// <exception cref="Java.Sql.SQLException"/>
 		[Test]
 		public virtual void TestFaultJdbcTableNotExists()
@@ -117,11 +126,12 @@ namespace Test4giis.Qacover
 			}
 			catch (Exception e)
 			{
-				AssertExceptionMessage(variant.IsJava() ? (variant.IsJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: noexiste)" : "org.h2.jdbc.JdbcSQLException: Table NOEXISTE not found") : "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: noexiste'."
+				AssertExceptionMessage(variant.IsJava() ? (variant.IsJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: noexiste)" : "org.h2.jdbc.JdbcSQLException: Table NOEXISTE not found") : "System.Data.SQLite.SQLiteException: SQL logic error\nno such table: noexiste"
 					, QaCoverException.GetString(e));
 			}
 		}
 
+		//: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: noexiste'."
 		/// <exception cref="Java.Sql.SQLException"/>
 		[Test]
 		public virtual void TestFaultServiceInferParameters()
@@ -182,9 +192,10 @@ namespace Test4giis.Qacover
 			//NOSONAR no using typed names for compatibility with downgrade to jdk 1.4
 			string errorString = rules[0].GetErrorString();
 			AssertExceptionMessage(variant.IsJava() ? (variant.IsJava8() ? "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)" : "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement"
-				) : "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'.", errorString);
+				) : "Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error\nnear \"selectar\": syntax error", errorString);
 		}
 
+		//: "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'."
 		// Multiple execution scenarios
 		//  - same query with fault: same fault / different fault
 		//  - same rule with fault: same fault / different fault
@@ -210,8 +221,9 @@ namespace Test4giis.Qacover
 		}
 
 		internal string exceptionInvalidSql = new Variability().IsJava() ? (new Variability().IsJava8() ? "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)"
-			 : "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement") : "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'.";
+			 : "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement") : "Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error\nnear \"selectar\": syntax error";
 
+		//: "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'."
 		/// <exception cref="Java.Sql.SQLException"/>
 		[Test]
 		public virtual void TestMultipleFaultsRule()

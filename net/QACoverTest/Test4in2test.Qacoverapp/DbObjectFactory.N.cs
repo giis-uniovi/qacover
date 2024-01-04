@@ -13,7 +13,8 @@ namespace Test4giis.Qacoverapp
         public static DbConnection GetDbConnection(Variability variant, string url)
         {
             if (variant.IsSqlite())
-                return new Microsoft.Data.Sqlite.SqliteConnection(url);
+                //return new Microsoft.Data.Sqlite.SqliteConnection(url);
+                return new System.Data.SQLite.SQLiteConnection(url);
             else if (variant.IsSqlServer())
                 return new System.Data.SqlClient.SqlConnection(url);
             else
@@ -24,7 +25,8 @@ namespace Test4giis.Qacoverapp
         {
             DbParameter p1;
             if (variant.IsSqlite())
-                p1 = new Microsoft.Data.Sqlite.SqliteParameter(name, Microsoft.Data.Sqlite.SqliteType.Integer);
+                //p1 = new Microsoft.Data.Sqlite.SqliteParameter(name, Microsoft.Data.Sqlite.SqliteType.Integer);
+                p1 = new System.Data.SQLite.SQLiteParameter(name, DbType.Int32);
             else if (variant.IsSqlServer())
                 p1 = new System.Data.SqlClient.SqlParameter(name, SqlDbType.Int);
             else
@@ -37,7 +39,8 @@ namespace Test4giis.Qacoverapp
         {
             DbParameter p1;
             if (variant.IsSqlite())
-                p1 = new Microsoft.Data.Sqlite.SqliteParameter(name, Microsoft.Data.Sqlite.SqliteType.Text);
+                //p1 = new Microsoft.Data.Sqlite.SqliteParameter(name, Microsoft.Data.Sqlite.SqliteType.Text);
+                p1 = new System.Data.SQLite.SQLiteParameter(name, DbType.String);
             else if (variant.IsSqlServer())
                 p1 = new System.Data.SqlClient.SqlParameter(name, SqlDbType.VarChar);
             else
@@ -49,7 +52,8 @@ namespace Test4giis.Qacoverapp
         {
             DbParameter p1;
             if (variant.IsSqlite())
-                p1 = new Microsoft.Data.Sqlite.SqliteParameter(name, System.DBNull.Value);
+                //p1 = new Microsoft.Data.Sqlite.SqliteParameter(name, System.DBNull.Value);
+                p1 = new System.Data.SQLite.SQLiteParameter(name, System.DBNull.Value);
             else if (variant.IsSqlServer())
                 p1 = new System.Data.SqlClient.SqlParameter(name, System.DBNull.Value);
             else

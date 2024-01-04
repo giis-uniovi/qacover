@@ -62,9 +62,14 @@ public class TestFaults extends Base {
 	private void assertExceptionMessage(String expected, String actual) {
 		// To make easier comparison and compatible with .net uses ignorecase and partial match (from the beginning)
 		int count = expected.length();
+		actual = actual.replace("\r","");
 		String compareTo = actual.length() >= count ? JavaCs.substring(actual, 0, count) : actual;
-		if (!contains(compareTo.toLowerCase(), expected.toLowerCase()))
-			assertEquals("Expected no incluido en actual", expected, actual);
+		if (!contains(compareTo.toLowerCase(), expected.toLowerCase())) {
+			if (new Variability().isJava())
+				assertEquals("Expected not included in actual.", expected, actual);
+			else
+				assertEquals(expected, actual, "Expected not included in actual.");
+		}
 	}
 	private boolean contains(String text, String substring) {
 		return text.indexOf(substring) != -1;
@@ -97,7 +102,8 @@ public class TestFaults extends Base {
 			assertExceptionMessage(variant.isJava()
 					? (variant.isJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"lt\": syntax error)"
 									   : "org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
-					: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"lt\": syntax error'."
+					: "System.Data.SQLite.SQLiteException: SQL logic error\nnear \"lt\": syntax error"
+					//: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"lt\": syntax error'."
 					, QaCoverException.getString(e));
 		}
 	}
@@ -111,7 +117,8 @@ public class TestFaults extends Base {
 			assertExceptionMessage(variant.isJava()
 					? (variant.isJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: noexiste)"
 							   			: "org.h2.jdbc.JdbcSQLException: Table NOEXISTE not found")
-					: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: noexiste'."
+					: "System.Data.SQLite.SQLiteException: SQL logic error\nno such table: noexiste"
+					//: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: noexiste'."
 					, QaCoverException.getString(e));
 		}
 	}
@@ -170,7 +177,8 @@ public class TestFaults extends Base {
 		assertExceptionMessage(variant.isJava()
 				? (variant.isJava8() ? "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)"
 						   : "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
-				: "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'."
+				: "Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error\nnear \"selectar\": syntax error"
+				//: "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'."
 				, errorString);
 	}
 	
@@ -199,7 +207,8 @@ public class TestFaults extends Base {
 			? (new Variability().isJava8()
 						? "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)"
 						: "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
-			: "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'."
+			: "Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error\nnear \"selectar\": syntax error"
+			//: "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'."
 			;
 
 	@Test
