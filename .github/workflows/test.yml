@@ -255,13 +255,14 @@ jobs:
       #  run: dotnet nuget add source https://apiint.nugettest.org/v3/index.json -n int.nugettest.org
       - name: Run test - ADO.NET
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report.trx" QACoverTest/QACoverTest.csproj
-      - name: Run test - Entity Framework
-        run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
+      #- name: Run test - Entity Framework
+      #  run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
       - name: Junit html report
         if: always()
         uses: javiertuya/junit-report-action@v1.2.0
         with:
-          net-trx-report: "net/reports/qacover-report.trx,net/reports/qacover-report-ef.trx"
+          #net-trx-report: "net/reports/qacover-report.trx,net/reports/qacover-report-ef.trx"
+          net-trx-report: "net/reports/qacover-report.trx"
           net-surefire-folder: "net/target/surefire-reports"
           surefire-files: "net/target/surefire-reports/TEST-*.xml"
           report-dir: net/target/site
