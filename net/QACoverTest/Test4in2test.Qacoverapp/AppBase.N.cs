@@ -1,11 +1,7 @@
 using Giis.Qacover.Model;
 using Giis.Qacover.Driver;
-using Giis.Qacover.Portable;
 using Java.Sql;
-using Microsoft.Data.Sqlite;
-using System.Data;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System;
 using Giis.Qacover.Core.Services;
 
@@ -150,39 +146,15 @@ namespace Test4giis.Qacoverapp
         //Utilidades para crear parametros, especifica del dbms
         private DbParameter GetNetParam(int position, int value)
         {
-            DbParameter p1;
-            if (variant.IsSqlite())
-                p1 = new SqliteParameter("@param" + position, SqliteType.Integer);
-            else if (variant.IsSqlServer())
-                p1 = new SqlParameter("@param" + position, SqlDbType.Int);
-            else
-                throw new QaCoverException("AppBase.GetNetParam: Variant '" + variant.GetSgbdName() + "' not supported");
-            p1.DbType = DbType.Int32; //para que no muestre comillas al mostrar los parametros como string
-            p1.Value = value;
-            return p1;
+            return DbObjectFactory.GetDbParameter(variant, "@param" + position, value);
         }
         private DbParameter GetNetParam(int position, string value)
         {
-            DbParameter p1;
-            if (variant.IsSqlite())
-                p1 = new SqliteParameter("@param" + position, SqliteType.Text);
-            else if (variant.IsSqlServer())
-                p1 = new SqlParameter("@param" + position, SqlDbType.VarChar);
-            else
-                throw new QaCoverException("AppBase.GetNetParam: Variant '" + variant.GetSgbdName() + "' not supported");
-            p1.Value = value;
-            return p1;
+            return DbObjectFactory.GetDbParameter(variant, "@param" + position, value);
         }
         private DbParameter GetNetParamNull(int position)
         {
-            DbParameter p1;
-            if (variant.IsSqlite())
-                p1 = new SqliteParameter("@param" + position, System.DBNull.Value);
-            else if (variant.IsSqlServer())
-                p1 = new SqlParameter("@param" + position, System.DBNull.Value);
-            else
-                throw new QaCoverException("AppBase.GetNetParam: Variant '" + variant.GetSgbdName() + "' not supported");
-            return p1;
+            return DbObjectFactory.GetDbParameterNull(variant, "@param" + position);
         }
         private DbParameter GetNetParam(int position, bool value)
         {

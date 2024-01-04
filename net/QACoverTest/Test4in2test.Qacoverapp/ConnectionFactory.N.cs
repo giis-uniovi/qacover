@@ -1,12 +1,7 @@
 using Giis.Qacover.Model;
 using Giis.Qacover.Driver;
-using Giis.Qacover.Portable;
 using System.Data.Common;
-using System.Data.SqlClient;
-using Microsoft.Data.Sqlite;
-using Java.Util;
 using Giis.Portable.Util;
-using Giis.Qacover.Core.Services;
 using Giis.Tdrules.Store.Rdb;
 
 namespace Test4giis.Qacoverapp
@@ -46,13 +41,10 @@ namespace Test4giis.Qacoverapp
 		/// <summary>Obtiene una conexion usando el driver nativo sin interceptar por p6spy para uso en carga y comprobacion de datos</summary>
 		public DbConnection GetNativeConnection()
 		{
-			DbConnection nativeConn;
-			if (variant.IsSqlite())
-				nativeConn = new SqliteConnection(url);
-			else if (variant.IsSqlServer())
-				nativeConn = new SqlConnection(url + ";UID=" + user + ";PWD=" + password + ";MultipleActiveResultSets=true");
-			else
-				throw new QaCoverException("ConnectionFactory.GetNativeConnection: Variant '" + variant.GetSgbdName() + "' not supported");
+			string realUrl = url;
+			if (variant.IsSqlServer())
+                realUrl = url + ";UID=" + user + ";PWD=" + password + ";MultipleActiveResultSets=true";
+			DbConnection nativeConn = DbObjectFactory.GetDbConnection(variant, realUrl);
 			nativeConn.Open();
 			return nativeConn;
 		}
