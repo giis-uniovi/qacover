@@ -5,13 +5,8 @@ using System;
 using System.Data.Common;
 
 //Prueba de concepto de un interceptor EF Core
-//(sutituye al anterior que usaba un componente no nativo Z.EntityFramework...)
 //Este interceptor se anyade en OnConfiguring del contexto y se puede deshabilitar
 //para no capturar determinadas queries, p.e. cuando se crean datos de prueba
-
-//TODO revisar resto de metodos a interceptar (p.e. escalares)
-//TODO Revisar que se interceptan consultas adicionales como las de obtener metadatos
-//posibilidad crear configuracion adicional para omitir la evaluacion de reglas (similar a include/exclude)
 namespace Giis.Qacover.Ef2driver
 {
     public class Ef2EventListener : DbCommandInterceptor

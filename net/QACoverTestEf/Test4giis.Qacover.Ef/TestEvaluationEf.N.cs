@@ -1,29 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using Giis.Qacover.Model;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using Test4giis.Qacoverapp.Ef;
 
 namespace Test4giis.Qacover.Ef
 {
+    /**
+     * This test requires the same SQLServer database that the one used in ADO.NET tests,
+     * the setup of test data and query execution are done using Entity Framework
+     * thorugh the mock app defined in AppSimpleEf
+     */
     public class TestEvaluationEf : Base
     {
+        protected override Variability GetVariant()
+        {
+            return new Variability("sqlserver");
+        }
+
         [SetUp]
         public void SetUpTestData()
         {
             using (EfModel db = new EfModel())
             {
+                // Deactivate the interceptor to forget the setup queries
+                // (although in this case queries are only updates)
                 db.DisableInterceptor(); //evita evaluar estas queries que no son de la aplicacion
-                db.Database.EnsureCreated();
-                //ojo, estamos usando el contexto interceptado, no pasa nada si son sentencias de actualizacion
-                //pero habria que permitir crear un contexto sin interceptar
-                //este si hace lectura
-                db.SimpleEntitys.RemoveRange(from c in db.SimpleEntitys select c);
+                // Setup a fresh table to hold the test data
+                try
+                {
+                    db.Database.ExecuteSqlRaw("drop table TestEfTable");
+                }
+                catch (Microsoft.Data.SqlClient.SqlException) { }
+                db.Database.ExecuteSqlRaw("CREATE TABLE TestEfTable (Id  integer NOT NULL CONSTRAINT PK_TestEfTable PRIMARY KEY , Num INTEGER NOT NULL, Txt varchar(32) NULL)");
+                //db.TestEfTable.RemoveRange(from c in db.TestEfTable select c);
 
-                db.Add(new SimpleEfEntity { Id = 1, Num = 0, Text = "abc" });
-                db.Add(new SimpleEfEntity { Id = 2, Num = 99, Text = "xyz" });
-                db.Add(new SimpleEfEntity { Id = 3, Num = 0, Text = null });
+                // Setup test data for all tests to cover some rules and do not cover oters
+                db.Add(new TestEfEntity { Id = 1, Num = 0, Txt = "abc" });
+                db.Add(new TestEfEntity { Id = 2, Num = 99, Txt = "xyz" });
+                db.Add(new TestEfEntity { Id = 3, Num = 0, Txt = null });
                 db.SaveChanges();
             }
         }
@@ -32,21 +48,21 @@ namespace Test4giis.Qacover.Ef
         public virtual void TestEvalEfNoParameters()
         {
             AppSimpleEf app = new AppSimpleEf();
-            List<SimpleEfEntity> pojo = app.QueryEfNoParams();
+            List<TestEfEntity> pojo = app.QueryEfNoParams();
             ClassicAssert.AreEqual(1, pojo.Count);
             ClassicAssert.AreEqual(2, pojo[0].Id);
             ClassicAssert.AreEqual(99, pojo[0].Num);
-            ClassicAssert.AreEqual("xyz", pojo[0].Text);
+            ClassicAssert.AreEqual("xyz", pojo[0].Txt);
             //compara eliminando las comillas dobles que inserta EntityFramework en tablas y columnas
-            String efSql= "SELECT s.Id, s.Num, s.Text FROM SimpleEntitys AS s WHERE (s.Text = 'xyz') AND (s.Num = 99) ORDER BY s.Id";
-            AssertEvalResults(efSql, 
+            string efSql= "SELECT [t].[Id], [t].[Num], [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] = 'xyz') AND ([t].[Num] = 99) ORDER BY [t].[Id]";
+            AssertEvalResults(efSql,
                 string.Empty, string.Empty,
-                  "COVERED   SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE ((s.Text = 'xyz')) AND ((s.Num = 99))\n"
-                + "UNCOVERED SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE NOT((s.Text = 'xyz')) AND ((s.Num = 99))\n"
-                + "UNCOVERED SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE (s.Text IS NULL) AND ((s.Num = 99))\n"
-                + "UNCOVERED SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE (s.Num = 100) AND ((s.Text = 'xyz'))\n"
-                + "COVERED   SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE (s.Num = 99) AND ((s.Text = 'xyz'))\n"
-                + "UNCOVERED SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE (s.Num = 98) AND ((s.Text = 'xyz'))", 
+                    "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE (([t].[Txt] = 'xyz')) AND (([t].[Num] = 99))\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT(([t].[Txt] = 'xyz')) AND (([t].[Num] = 99))\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] IS NULL) AND (([t].[Num] = 99))\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 100) AND (([t].[Txt] = 'xyz'))\n"
+                + "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 99) AND (([t].[Txt] = 'xyz'))\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 98) AND (([t].[Txt] = 'xyz'))",
                   "{}", true, false);
         }
         [Test()]
@@ -54,13 +70,13 @@ namespace Test4giis.Qacover.Ef
         {
             options.SetFpcServiceOptions("noboundaries");
             AppSimpleEf app = new AppSimpleEf();
-            List<SimpleEfEntity> pojo = app.QueryEfParams(99, "xyz");
-            string efSql = "SELECT s.Id, s.Num, s.Text FROM SimpleEntitys AS s WHERE (s.Text = @__param1_0) AND (s.Num > @__param2_1) ORDER BY s.Id";
+            List<TestEfEntity> pojo = app.QueryEfParams(99, "xyz");
+            string efSql = "SELECT [t].[Id], [t].[Num], [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] = @__param1_0) AND ([t].[Num] > @__param2_1) ORDER BY [t].[Id]";
             AssertEvalResults(efSql, string.Empty, string.Empty,
-                "UNCOVERED SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE ((s.Text = 'xyz')) AND ((s.Num > 99))\n"
-                + "UNCOVERED SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE NOT((s.Text = 'xyz')) AND ((s.Num > 99))\n"
-                + "UNCOVERED SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE (s.Text IS NULL) AND ((s.Num > 99))\n"
-                + "COVERED   SELECT s.Id , s.Num , s.Text FROM SimpleEntitys AS s WHERE NOT((s.Num > 99)) AND ((s.Text = 'xyz'))",
+                "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE (([t].[Txt] = 'xyz')) AND (([t].[Num] > 99))\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT(([t].[Txt] = 'xyz')) AND (([t].[Num] > 99))\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] IS NULL) AND (([t].[Num] > 99))\n"
+                + "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT(([t].[Num] > 99)) AND (([t].[Txt] = 'xyz'))",
                 "{@__param1_0='xyz', @__param2_1=99}", true, false);
         }
     }

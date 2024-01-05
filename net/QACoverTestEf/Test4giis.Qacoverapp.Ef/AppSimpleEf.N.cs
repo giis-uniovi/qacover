@@ -12,23 +12,23 @@ namespace Test4giis.Qacoverapp.Ef
                 db.Database.EnsureCreated();
             }
         }
-        public List<SimpleEfEntity> QueryEfNoParams()
+        public List<TestEfEntity> QueryEfNoParams()
         {
             //String sql = "select id,num,text from test where text=? and num>?";
             using (var db = new EfModel())
             {
-                return db.SimpleEntitys.Where(b => b.Text == "xyz").Where(b => b.Num == 99)
-                    .OrderBy(b => b.Id).ToList<SimpleEfEntity>();
+                return db.TestEfTable.Where(b => b.Txt == "xyz").Where(b => b.Num == 99)
+                    .OrderBy(b => b.Id).ToList<TestEfEntity>();
 
             }
         }
-        public List<SimpleEfEntity> QueryEfParams(int param2, string param1)
+        public List<TestEfEntity> QueryEfParams(int param2, string param1)
         {
             //String sql = "select id,num,text from test where text=? and num>?";
             using (var db = new EfModel())
             {
-                return db.SimpleEntitys.Where(b => b.Text == param1).Where(b => b.Num > param2)
-                    .OrderBy(b => b.Id).ToList<SimpleEfEntity>();
+                return db.TestEfTable.Where(b => b.Txt == param1).Where(b => b.Num > param2)
+                    .OrderBy(b => b.Id).ToList<TestEfEntity>();
             }
         }
 

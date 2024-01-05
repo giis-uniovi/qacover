@@ -81,7 +81,7 @@ namespace Giis.Qacover.Driver
                 // que tienen como tipo interno un string). Esto causa que otros metodos que 
                 // utilicen GetSqlWithValues para hacer logs puedan no mostrar correctamente la sql.
                 cmd.CommandText = sql;
-                if (this.nativeParams != null)
+                if (cmd is SqlCommand && this.nativeParams != null)
                     AddParameters(cmd, this.nativeParams);
                 else if (this.parameters != null && this.parameters.Size() > 0)
                     cmd.CommandText = GetSqlWithValues(sql);
