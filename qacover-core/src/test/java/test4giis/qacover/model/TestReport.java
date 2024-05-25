@@ -254,8 +254,6 @@ public class TestReport extends Base {
 		if (new Variability().isNetCore()) {
 			expectedKeys = replaceExpectedStrings(expectedKeys);
 			expectedData = replaceExpectedStrings(expectedData);
-			//expectedData = expectedData.replace("\"INT\"", "\"int\"");
-			//expectedData = expectedData.replace("\"VARCHAR\"", "\"varchar\"");
 		}
 		// line numbers as ### to allow comparison
 		expectedKeys = JavaCs.replaceRegex(expectedKeys, "\\.\\d+\\.", ".###.");
