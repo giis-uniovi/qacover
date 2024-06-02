@@ -103,13 +103,13 @@
 			<dependency>
 				<groupId>com.oracle.database.jdbc</groupId>
 				<artifactId>ojdbc8</artifactId>
-				<version>21.13.0.0</version>
+				<version>21.14.0.0</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.xerial</groupId>
 				<artifactId>sqlite-jdbc</artifactId>
-				<version>3.45.3.0</version>
+				<version>3.46.0.0</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -361,7 +361,7 @@
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
-						<version>1.6.13</version>
+						<version>1.7.0</version>
 						<extensions>true</extensions>
 						<configuration>
 							<serverId>ossrh</serverId>
