@@ -2,10 +2,6 @@ version: 2
 updates:
   - package-ecosystem: maven
     directory: "/"
-    ignore:
-      - dependency-name: "com.microsoft.sqlserver*"
-      - dependency-name: "com.oracle.database.jdbc*"
-        update-types: ["version-update:semver-major"]
     schedule:
       interval: daily
     open-pull-requests-limit: 20
@@ -13,7 +9,6 @@ updates:
   - package-ecosystem: nuget
     directory: "/net"
     ignore:
-      - dependency-name: "Microsoft.Data.SQLite"
       - dependency-name: "Microsoft.EntityFramework*"
         update-types: ["version-update:semver-major"]
     groups:
@@ -26,8 +21,6 @@ updates:
 
   - package-ecosystem: nuget
     directory: "/net/QACover" #reports
-    ignore:
-      - dependency-name: "Microsoft.Data.SQLite"
     schedule:
       interval: daily
     open-pull-requests-limit: 20
