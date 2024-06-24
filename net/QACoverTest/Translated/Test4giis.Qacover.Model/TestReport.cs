@@ -238,8 +238,6 @@ namespace Test4giis.Qacover.Model
 				expectedKeys = ReplaceExpectedStrings(expectedKeys);
 				expectedData = ReplaceExpectedStrings(expectedData);
 			}
-			//expectedData = expectedData.replace("\"INT\"", "\"int\"");
-			//expectedData = expectedData.replace("\"VARCHAR\"", "\"varchar\"");
 			// line numbers as ### to allow comparison
 			expectedKeys = JavaCs.ReplaceRegex(expectedKeys, "\\.\\d+\\.", ".###.");
 			expectedData = JavaCs.ReplaceRegex(expectedData, "\\.\\d+\\.", ".###.");

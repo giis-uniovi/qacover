@@ -110,7 +110,7 @@ namespace Giis.Qacover.Core.Services
 		{
 			this.SetErrorContext("Get database schema");
 			DbSchemaApi api = new DbSchemaApi(conn).SetCatalogAndSchema(catalog, schema);
-			TdSchema model = api.GetDbSchema(JavaCs.ToList(tables));
+			TdSchema model = api.GetSchema(JavaCs.ToList(tables));
 			return new SchemaModel(model);
 		}
 

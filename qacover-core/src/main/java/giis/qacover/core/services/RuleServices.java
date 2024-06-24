@@ -94,7 +94,7 @@ public class RuleServices {
 	public SchemaModel getSchemaModel(Connection conn, String catalog, String schema, String[] tables) {
 		this.setErrorContext("Get database schema");
 		DbSchemaApi api = new DbSchemaApi(conn).setCatalogAndSchema(catalog, schema);
-		TdSchema model = api.getDbSchema(JavaCs.toList(tables));
+		TdSchema model = api.getSchema(JavaCs.toList(tables));
 		return new SchemaModel(model);
 	}
 
