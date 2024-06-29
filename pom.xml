@@ -31,14 +31,14 @@
 			<dependency>
 				<groupId>io.github.giis-uniovi</groupId>
 				<artifactId>tdrules-bom</artifactId>
-				<version>4.2.0</version>
+				<version>4.2.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>io.github.javiertuya</groupId>
 				<artifactId>portable-java</artifactId>
-				<version>2.2.1</version>
+				<version>2.2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>p6spy</groupId>
@@ -54,7 +54,7 @@
 			<dependency>
 				<groupId>io.github.javiertuya</groupId>
 				<artifactId>visual-assert</artifactId>
-				<version>2.4.1</version>
+				<version>2.4.2</version>
 				<scope>test</scope>
 			</dependency>
 			<!--this dependency is in portable-java, but if not set here
