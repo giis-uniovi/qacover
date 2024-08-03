@@ -91,7 +91,7 @@
 			<dependency>
 				<groupId>com.microsoft.sqlserver</groupId>
 				<artifactId>mssql-jdbc</artifactId>
-				<version>12.7.1.jre8-preview</version>
+				<version>12.8.0.jre8</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -103,13 +103,13 @@
 			<dependency>
 				<groupId>com.oracle.database.jdbc</groupId>
 				<artifactId>ojdbc8</artifactId>
-				<version>23.4.0.24.05</version>
+				<version>23.5.0.24.07</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.xerial</groupId>
 				<artifactId>sqlite-jdbc</artifactId>
-				<version>3.46.0.0</version>
+				<version>3.46.0.1</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -285,7 +285,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.7.0</version>
+					<version>3.8.0</version>
 					<configuration>
 						<quiet>true</quiet>
 						<doclint>none</doclint>
