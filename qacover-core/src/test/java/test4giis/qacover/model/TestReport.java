@@ -31,11 +31,13 @@ import test4giis.qacoverapp.AppSimpleJdbc3Errors;
 
 /**
  * Report generation:
- * Configures QACover to send rules and reports under a different folder (qacover-report)
- * Uses the thest included in the sample (qacoversample) as the application under test
- * Tests the readers in a more integrated way
+ * As the application to be reported, uses three classes that include the
+ * most relevant situations that have been unit tested before,
+ * but here, the goal is to check everything in an integrated way.
+ * Configures QACover to send rules and reports under a different folder (qacover-report).
  */
 public class TestReport extends Base {
+	// All comparisons are made over expected and actual files
 	private String rulesPath = FileUtil.getPath(Parameters.getProjectRoot(), Parameters.getReportSubdir(), "qacover-report", "rules");
 	private String outPath = FileUtil.getPath(Parameters.getProjectRoot(), Parameters.getReportSubdir(), "qacover-report", "reports");
 	// Each platform (java/net) has its own set of expected values for the reports
@@ -53,7 +55,7 @@ public class TestReport extends Base {
 
 	@After
 	public void tearDown() throws SQLException {
-		va.assertAll("diff-aggregated-" + testName.getMethodName() + ".html");
+		va.assertAll("diff-IntegratedTestReaderAndReport.html");
 		super.tearDown();
 	}
 
@@ -73,35 +75,20 @@ public class TestReport extends Base {
 
 	@Test
 	public void testReports() throws SQLException {
-		// Runs the application with partial comparison (readers and reports) at each
 		reset();
 		new StoreService(options).dropRules().dropLast(); // clean start
-		runReports1OfTestStore();
-		assertReaderByClass(0);
-		new ReportManager().run(rulesPath, outPath);
-		assertReports(reportAppPackage, "AppSimpleJdbc.html");
-
-		reset();
-		runReports2OfTestEvaluation();
-		assertReaderByClass(1);
-		new ReportManager().run(rulesPath, outPath);
-		assertReports(reportAppPackage, "AppSimpleJdbc2.html");
-
-		// Excludes Jdk 1.4 because uses H2 with different message errors
-		if (!new Variability().isJava4()) {
-			reset();
-			runReports3OfTestError();
-			assertReaderByClass(2);
-			new ReportManager().run(rulesPath, outPath);
-			assertReports(reportAppPackage, "AppSimpleJdbc3Errors.html");
-		}
-
-		assertReaderByClassAll();
-
-		assertReaderByRunOrderAll();
 		
-		// Repeats the evaluation and report generation with a full check
-		reset();
+		// Runs the application mock classes to generate the rules
+		runReports1OfTestStore();
+		runReports2OfTestEvaluation();
+		runReports3OfTestError();
+
+		// Before the report, checks the results of the readers
+		assertReaderByClassAll();
+		assertReaderKeysByRunOrderAll();
+		assertReaderDataByRunOrderAll();
+		
+		// Generate and test the html report
 		new ReportManager().run(Configuration.getInstance().getStoreRulesLocation(), Configuration.getInstance().getStoreReportsLocation());
 		String indexContent = FileUtil.fileRead(outPath, "index.html");
 		FileUtil.fileWrite(outPath, "index.html", indexContent);
@@ -191,49 +178,33 @@ public class TestReport extends Base {
 		app.close();
 	}
 	
-	// Exptected values from the CoverageReaders
-	private String[] expectedCols = new String[] {
-			"QueryCollection: test4giis.qacoverapp.AppSimpleJdbc qcount=6,qerror=0,count=17,dead=7,error=0\n" + 
-			"  queryDifferentSingleLine\n" + 
-			"  queryDifferentSingleLine\n" + 
-			"  queryEqualDifferentLine\n" + 
-			"  queryEqualDifferentLine\n" + 
-			"  queryNoParameters1Condition\n" + 
-			"  queryNoParameters2Condition",
-			"QueryCollection: test4giis.qacoverapp.AppSimpleJdbc2 qcount=2,qerror=0,count=6,dead=4,error=0\n" + 
-			"  queryNoParameters1Condition\n" + 
-			"  queryNoParameters2Condition",
-			"QueryCollection: test4giis.qacoverapp.AppSimpleJdbc3Errors qcount=4,qerror=1,count=8,dead=1,error=2\n" + 
-			"  query0Errors\n" + 
-			"  query1ErrorAtQuery\n" + 
-			"  query1ErrorAtRule\n" + 
-			"  queryMultipleErrors"
-			};
-	private String expectedAllSummary = "CoverageCollection: qcount=12,qerror=1,count=31,dead=12,error=2";
-	
-	private void assertReaderByClass(int expectedIndex) {
-		CoverageCollection ccol = new CoverageReader(Configuration.getInstance().getStoreRulesLocation()).getByClass();
-		QueryCollection qcol = ccol.get(expectedIndex);
-		va.assertEquals(expectedCols[expectedIndex].toLowerCase(),
-				qcol.toString(true, false, false).toLowerCase(),
-				"at assertReaderByClass(" + expectedIndex + ")"); // lowercase for netcore compatibility
-	}
 	private void assertReaderByClassAll() {
 		CoverageCollection ccol = new CoverageReader(Configuration.getInstance().getStoreRulesLocation()).getByClass();
-		va.assertEquals((expectedAllSummary + "\n" + expectedCols[0] + "\n" + expectedCols[1] + "\n" + expectedCols[2])
-				.toLowerCase(), 
-				ccol.toString(true, false, false).toLowerCase(), 
-				"at assertReaderByClassAll()"); 
+		String expected = ccol.toString(true, false, false);
+		FileUtil.fileWrite(outPath, "all-by-class.txt", ccol.toString(true, false, false));
+		
+		String actual = FileUtil.fileRead(bmkPath, "all-by-class.txt");
+		va.assertEquals(expected.replace("\r", ""), actual.replace("\r", ""), "at assertReaderByClassAll()"); 
 	}
 
-	// first checks all keys and then the data from CoverageReader
-	private void assertReaderByRunOrderAll() {
+	private void assertReaderKeysByRunOrderAll() {
 		StringBuilder allKeys = new StringBuilder();
+		CoverageReader cr = new CoverageReader(Configuration.getInstance().getStoreRulesLocation());
+		QueryCollection cc = cr.getByRunOrder();
+		for (int i = 0; i < cc.size(); i++)
+			allKeys.append(cc.get(i).getKey() + "|" + cc.get(i).getParametersXml() + "\n");
+		FileUtil.fileWrite(outPath, "all-keys-by-run-order.txt", allKeys.toString());
+		
+		String actualKeys = FileUtil.fileRead(outPath, "all-keys-by-run-order.txt");
+		String expectedKeys = FileUtil.fileRead(bmkPath, "all-keys-by-run-order.txt");
+		va.assertEquals(expectedKeys.replace("\r", ""), actualKeys.replace("\r", ""), "at assertReaderByRunOrderAll(), check expectedKeys");
+	}
+	
+	private void assertReaderDataByRunOrderAll() {
 		StringBuilder allData = new StringBuilder();
 		CoverageReader cr = new CoverageReader(Configuration.getInstance().getStoreRulesLocation());
 		QueryCollection cc = cr.getByRunOrder();
 		for (int i = 0; i < cc.size(); i++) {
-			allKeys.append(cc.get(i).getKey() + "\n");
 			allData.append("*** " + cc.get(i).getKey() + "\n");
 			allData.append("sql: " + cc.get(i).getModel().getSql() + "\n");
 			allData.append("parameters: " + cc.get(i).getParametersXml() + "\n");
@@ -244,23 +215,10 @@ public class TestReport extends Base {
 				allData.append("schema: " + new TdSchemaXmlSerializer().serialize(schema.getModel()) + "\n");
 			}
 		}
-		FileUtil.fileWrite(outPath, "all-keys-by-run-order.txt", allKeys.toString());
 		FileUtil.fileWrite(outPath, "all-data-by-run-order.txt", allData.toString());
 
-		String actualKeys = FileUtil.fileRead(outPath, "all-keys-by-run-order.txt");
 		String actualData = FileUtil.fileRead(outPath, "all-data-by-run-order.txt");
-		String expectedKeys = FileUtil.fileRead(bmkPath, "all-keys-by-run-order.txt");
 		String expectedData = FileUtil.fileRead(bmkPath, "all-data-by-run-order.txt");
-		if (new Variability().isNetCore()) {
-			expectedKeys = replaceExpectedStrings(expectedKeys);
-			expectedData = replaceExpectedStrings(expectedData);
-		}
-		// line numbers as ### to allow comparison
-		expectedKeys = JavaCs.replaceRegex(expectedKeys, "\\.\\d+\\.", ".###.");
-		expectedData = JavaCs.replaceRegex(expectedData, "\\.\\d+\\.", ".###.");
-		actualKeys = JavaCs.replaceRegex(actualKeys, "\\.\\d+\\.", ".###.");
-		actualData = JavaCs.replaceRegex(actualData, "\\.\\d+\\.", ".###.");
-		va.assertEquals(expectedKeys.replace("\r", ""), actualKeys.replace("\r", ""), "at assertReaderByRunOrderAll(), check expectedKeys");
 		va.assertEquals(expectedData.replace("\r", ""), actualData.replace("\r", ""), "at assertReaderByRunOrderAll(), check expectedData");
 	}
 
@@ -268,37 +226,17 @@ public class TestReport extends Base {
 	private void assertReports(String packageName, String className) {
 		String expected = FileUtil.fileRead(bmkPath, packageName.toLowerCase() + className);
 		String actual = FileUtil.fileRead(outPath, packageName + className);
-		if (new Variability().isNetCore())
-			expected = replaceExpectedStrings(expected);
+		
 		expected = reprocessReportForCompare(expected);
 		actual = reprocessReportForCompare(actual);
 		va.assertEquals(expected, actual, "at className: " + className);
 	}
+	
 	public static String reprocessReportForCompare(String content) {
-		content = JavaCs.replaceRegex(content, ":\\d+<", ":###<");
+		// to compare using a fixed date and version number
 		content = JavaCs.replaceRegex(content, "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}", "yyyy-MM-ddThh:mm:ss.SSS");
 		content = JavaCs.replaceRegex(content, "\\[version .*\\]", "[version x.y.z]");
-		content = JavaCs.replaceRegex(content, "Error at Get query table names: ApiException.*<\\/span>", "Error at Get query table names: ApiException<\\/span>");
 		return content.replace("\r", "");
-	}
-	private String replaceExpectedStrings(String expected) {
-		expected = expected.replace("test4giis.qacoverapp", "Test4in2test.Qacoverapp");
-		expected = expected.replace("queryDifferentSingleLine", "QueryDifferentSingleLine");
-		expected = expected.replace("queryEqualDifferentLine", "QueryEqualDifferentLine");
-		expected = expected.replace("queryNoParameters1Condition", "QueryNoParameters1Condition");
-		expected = expected.replace("queryNoParameters2Condition", "QueryNoParameters2Condition");
-		expected = expected.replace("query0Errors", "Query0Errors");
-		expected = expected.replace("query1ErrorAtQuery", "Query1ErrorAtQuery");
-		expected = expected.replace("query1ErrorAtRule", "Query1ErrorAtRule");
-		expected = expected.replace("queryMultipleErrors", "QueryMultipleErrors");
-		expected = expected.replace("java.lang.RuntimeException", "System.Exception");
-		expected = expected.replace("org.sqlite.SQLiteException", "Microsoft.Data.Sqlite.SqliteException");
-		expected = expected.replace("giis.qacover.portable", "Giis.Qacover.Portable");
-		expected = expected.replace("HTTP/1.1 404 Not Found", "NotFound");
-		expected = expected.replace("[SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)", "SQLite Error 1: 'near \"selectar\": syntax error'.");
-		expected = expected.replace("[SQLITE_ERROR] SQL error or missing database (no such table: notable)", "SQLite Error 1: 'no such table: notable'.");
-		expected = expected.replace("Giis.Tdrules.Openapi.Invoker.ApiException", "Giis.Tdrules.Openapi.Client.ApiException");
-		return expected;
 	}
 	
 }

@@ -422,7 +422,7 @@ schema: <schema dbms="sqlite">
 <column name="text" type="VARCHAR" size="16" />
 </table>
 </schema>
-*** test4giis.qacoverapp.AppSimpleJdbc3Errors.query0Errors.16.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+*** test4giis.qacoverapp.AppSimpleJdbc3Errors.query0Errors.14.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
 sql: select id,num,text from test where num<9
 parameters: <parameters></parameters>
 rule0: <fpcrule count="1" dead="1"><id>1</id><category>S</category><type>T</type><subtype>FF</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
@@ -444,12 +444,12 @@ schema: <schema dbms="sqlite">
 <column name="text" type="VARCHAR" size="16" />
 </table>
 </schema>
-*** test4giis.qacoverapp.AppSimpleJdbc3Errors.query1ErrorAtQuery.19.7ab053d55b54c975de770640bed8e8ee65c54aec24d94b949b6b3fdc49a1d311
+*** test4giis.qacoverapp.AppSimpleJdbc3Errors.query1ErrorAtQuery.17.7ab053d55b54c975de770640bed8e8ee65c54aec24d94b949b6b3fdc49a1d311
 sql: select id,num,text from test where num<10
 parameters: <parameters></parameters>
 schema: <schema>
 </schema>
-*** test4giis.qacoverapp.AppSimpleJdbc3Errors.query1ErrorAtRule.22.cf89702f8478266da73089272b7d89c3812b3e236dbbe2b02949c2ca1bdd1255
+*** test4giis.qacoverapp.AppSimpleJdbc3Errors.query1ErrorAtRule.20.cf89702f8478266da73089272b7d89c3812b3e236dbbe2b02949c2ca1bdd1255
 sql: select id,num,text from test where num < 11
 parameters: <parameters></parameters>
 rule0: <fpcrule count="1" error="1"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 11]</location>
@@ -478,7 +478,7 @@ schema: <schema dbms="sqlite">
 <column name="text" type="VARCHAR" size="16" />
 </table>
 </schema>
-*** test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.25.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+*** test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.23.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
 sql: select id,num,text from test where num<9
 parameters: <parameters></parameters>
 rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
@@ -508,7 +508,7 @@ schema: <schema dbms="sqlite">
 <column name="text" type="VARCHAR" size="16" />
 </table>
 </schema>
-*** test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.25.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+*** test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.23.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
 sql: select id,num,text from test where num<9
 parameters: <parameters></parameters>
 rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>
@@ -538,7 +538,7 @@ schema: <schema dbms="sqlite">
 <column name="text" type="VARCHAR" size="16" />
 </table>
 </schema>
-*** test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.25.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
+*** test4giis.qacoverapp.AppSimpleJdbc3Errors.queryMultipleErrors.23.5229f8eb53298d20f6959ec6cffcad93d5aa94a9af072386d353c31b08f75153
 sql: select id,num,text from test where num<9
 parameters: <parameters></parameters>
 rule0: <fpcrule count="3" error="3"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &lt; 9]</location>

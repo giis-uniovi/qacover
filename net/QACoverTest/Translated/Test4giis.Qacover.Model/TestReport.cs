@@ -19,10 +19,17 @@ namespace Test4giis.Qacover.Model
 {
 	/// <summary>
 	/// Report generation:
-	/// Configures QACover to send rules and reports under a different folder (qacover-report)
-	/// Uses the thest included in the sample (qacoversample) as the application under test
-	/// Tests the readers in a more integrated way
+	/// As the application to be reported, uses three classes that include the
+	/// most relevant situations that have been unit tested before,
+	/// but here, the goal is to check everything in an integrated way.
 	/// </summary>
+	/// <remarks>
+	/// Report generation:
+	/// As the application to be reported, uses three classes that include the
+	/// most relevant situations that have been unit tested before,
+	/// but here, the goal is to check everything in an integrated way.
+	/// Configures QACover to send rules and reports under a different folder (qacover-report).
+	/// </remarks>
 	public class TestReport : Base
 	{
 		private string rulesPath = FileUtil.GetPath(Parameters.GetProjectRoot(), Parameters.GetReportSubdir(), "qacover-report", "rules");
@@ -35,6 +42,7 @@ namespace Test4giis.Qacover.Model
 
 		private SoftVisualAssert va;
 
+		// All comparisons are made over expected and actual files
 		// Each platform (java/net) has its own set of expected values for the reports
 		/// <exception cref="Java.Sql.SQLException"/>
 		[NUnit.Framework.SetUp]
@@ -48,7 +56,7 @@ namespace Test4giis.Qacover.Model
 		[NUnit.Framework.TearDown]
 		public override void TearDown()
 		{
-			va.AssertAll("diff-aggregated-" + NUnit.Framework.TestContext.CurrentContext.Test.Name  + ".html");
+			va.AssertAll("diff-IntegratedTestReaderAndReport.html");
 			base.TearDown();
 		}
 
@@ -75,32 +83,18 @@ namespace Test4giis.Qacover.Model
 		[Test]
 		public virtual void TestReports()
 		{
-			// Runs the application with partial comparison (readers and reports) at each
 			Reset();
 			new StoreService(options).DropRules().DropLast();
 			// clean start
+			// Runs the application mock classes to generate the rules
 			RunReports1OfTestStore();
-			AssertReaderByClass(0);
-			new ReportManager().Run(rulesPath, outPath);
-			AssertReports(reportAppPackage, "AppSimpleJdbc.html");
-			Reset();
 			RunReports2OfTestEvaluation();
-			AssertReaderByClass(1);
-			new ReportManager().Run(rulesPath, outPath);
-			AssertReports(reportAppPackage, "AppSimpleJdbc2.html");
-			// Excludes Jdk 1.4 because uses H2 with different message errors
-			if (!new Variability().IsJava4())
-			{
-				Reset();
-				RunReports3OfTestError();
-				AssertReaderByClass(2);
-				new ReportManager().Run(rulesPath, outPath);
-				AssertReports(reportAppPackage, "AppSimpleJdbc3Errors.html");
-			}
+			RunReports3OfTestError();
+			// Before the report, checks the results of the readers
 			AssertReaderByClassAll();
-			AssertReaderByRunOrderAll();
-			// Repeats the evaluation and report generation with a full check
-			Reset();
+			AssertReaderKeysByRunOrderAll();
+			AssertReaderDataByRunOrderAll();
+			// Generate and test the html report
 			new ReportManager().Run(Configuration.GetInstance().GetStoreRulesLocation(), Configuration.GetInstance().GetStoreReportsLocation());
 			string indexContent = FileUtil.FileRead(outPath, "index.html");
 			FileUtil.FileWrite(outPath, "index.html", indexContent);
@@ -183,37 +177,37 @@ namespace Test4giis.Qacover.Model
 			app.Close();
 		}
 
-		private string[] expectedCols = new string[] { "QueryCollection: test4giis.qacoverapp.AppSimpleJdbc qcount=6,qerror=0,count=17,dead=7,error=0\n" + "  queryDifferentSingleLine\n" + "  queryDifferentSingleLine\n" + "  queryEqualDifferentLine\n" + "  queryEqualDifferentLine\n" + "  queryNoParameters1Condition\n"
-			 + "  queryNoParameters2Condition", "QueryCollection: test4giis.qacoverapp.AppSimpleJdbc2 qcount=2,qerror=0,count=6,dead=4,error=0\n" + "  queryNoParameters1Condition\n" + "  queryNoParameters2Condition", "QueryCollection: test4giis.qacoverapp.AppSimpleJdbc3Errors qcount=4,qerror=1,count=8,dead=1,error=2\n"
-			 + "  query0Errors\n" + "  query1ErrorAtQuery\n" + "  query1ErrorAtRule\n" + "  queryMultipleErrors" };
-
-		private string expectedAllSummary = "CoverageCollection: qcount=12,qerror=1,count=31,dead=12,error=2";
-
-		// Exptected values from the CoverageReaders
-		private void AssertReaderByClass(int expectedIndex)
-		{
-			CoverageCollection ccol = new CoverageReader(Configuration.GetInstance().GetStoreRulesLocation()).GetByClass();
-			QueryCollection qcol = ccol.Get(expectedIndex);
-			va.AssertEquals(expectedCols[expectedIndex].ToLower(), qcol.ToString(true, false, false).ToLower(), "at assertReaderByClass(" + expectedIndex + ")");
-		}
-
-		// lowercase for netcore compatibility
 		private void AssertReaderByClassAll()
 		{
 			CoverageCollection ccol = new CoverageReader(Configuration.GetInstance().GetStoreRulesLocation()).GetByClass();
-			va.AssertEquals((expectedAllSummary + "\n" + expectedCols[0] + "\n" + expectedCols[1] + "\n" + expectedCols[2]).ToLower(), ccol.ToString(true, false, false).ToLower(), "at assertReaderByClassAll()");
+			string expected = ccol.ToString(true, false, false);
+			FileUtil.FileWrite(outPath, "all-by-class.txt", ccol.ToString(true, false, false));
+			string actual = FileUtil.FileRead(bmkPath, "all-by-class.txt");
+			va.AssertEquals(expected.Replace("\r", string.Empty), actual.Replace("\r", string.Empty), "at assertReaderByClassAll()");
 		}
 
-		// first checks all keys and then the data from CoverageReader
-		private void AssertReaderByRunOrderAll()
+		private void AssertReaderKeysByRunOrderAll()
 		{
 			StringBuilder allKeys = new StringBuilder();
+			CoverageReader cr = new CoverageReader(Configuration.GetInstance().GetStoreRulesLocation());
+			QueryCollection cc = cr.GetByRunOrder();
+			for (int i = 0; i < cc.Size(); i++)
+			{
+				allKeys.Append(cc.Get(i).GetKey() + "|" + cc.Get(i).GetParametersXml() + "\n");
+			}
+			FileUtil.FileWrite(outPath, "all-keys-by-run-order.txt", allKeys.ToString());
+			string actualKeys = FileUtil.FileRead(outPath, "all-keys-by-run-order.txt");
+			string expectedKeys = FileUtil.FileRead(bmkPath, "all-keys-by-run-order.txt");
+			va.AssertEquals(expectedKeys.Replace("\r", string.Empty), actualKeys.Replace("\r", string.Empty), "at assertReaderByRunOrderAll(), check expectedKeys");
+		}
+
+		private void AssertReaderDataByRunOrderAll()
+		{
 			StringBuilder allData = new StringBuilder();
 			CoverageReader cr = new CoverageReader(Configuration.GetInstance().GetStoreRulesLocation());
 			QueryCollection cc = cr.GetByRunOrder();
 			for (int i = 0; i < cc.Size(); i++)
 			{
-				allKeys.Append(cc.Get(i).GetKey() + "\n");
 				allData.Append("*** " + cc.Get(i).GetKey() + "\n");
 				allData.Append("sql: " + cc.Get(i).GetModel().GetSql() + "\n");
 				allData.Append("parameters: " + cc.Get(i).GetParametersXml() + "\n");
@@ -227,23 +221,9 @@ namespace Test4giis.Qacover.Model
 					allData.Append("schema: " + new TdSchemaXmlSerializer().Serialize(schema.GetModel()) + "\n");
 				}
 			}
-			FileUtil.FileWrite(outPath, "all-keys-by-run-order.txt", allKeys.ToString());
 			FileUtil.FileWrite(outPath, "all-data-by-run-order.txt", allData.ToString());
-			string actualKeys = FileUtil.FileRead(outPath, "all-keys-by-run-order.txt");
 			string actualData = FileUtil.FileRead(outPath, "all-data-by-run-order.txt");
-			string expectedKeys = FileUtil.FileRead(bmkPath, "all-keys-by-run-order.txt");
 			string expectedData = FileUtil.FileRead(bmkPath, "all-data-by-run-order.txt");
-			if (new Variability().IsNetCore())
-			{
-				expectedKeys = ReplaceExpectedStrings(expectedKeys);
-				expectedData = ReplaceExpectedStrings(expectedData);
-			}
-			// line numbers as ### to allow comparison
-			expectedKeys = JavaCs.ReplaceRegex(expectedKeys, "\\.\\d+\\.", ".###.");
-			expectedData = JavaCs.ReplaceRegex(expectedData, "\\.\\d+\\.", ".###.");
-			actualKeys = JavaCs.ReplaceRegex(actualKeys, "\\.\\d+\\.", ".###.");
-			actualData = JavaCs.ReplaceRegex(actualData, "\\.\\d+\\.", ".###.");
-			va.AssertEquals(expectedKeys.Replace("\r", string.Empty), actualKeys.Replace("\r", string.Empty), "at assertReaderByRunOrderAll(), check expectedKeys");
 			va.AssertEquals(expectedData.Replace("\r", string.Empty), actualData.Replace("\r", string.Empty), "at assertReaderByRunOrderAll(), check expectedData");
 		}
 
@@ -252,10 +232,6 @@ namespace Test4giis.Qacover.Model
 		{
 			string expected = FileUtil.FileRead(bmkPath, packageName.ToLower() + className);
 			string actual = FileUtil.FileRead(outPath, packageName + className);
-			if (new Variability().IsNetCore())
-			{
-				expected = ReplaceExpectedStrings(expected);
-			}
 			expected = ReprocessReportForCompare(expected);
 			actual = ReprocessReportForCompare(actual);
 			va.AssertEquals(expected, actual, "at className: " + className);
@@ -263,32 +239,10 @@ namespace Test4giis.Qacover.Model
 
 		public static string ReprocessReportForCompare(string content)
 		{
-			content = JavaCs.ReplaceRegex(content, ":\\d+<", ":###<");
+			// to compare using a fixed date and version number
 			content = JavaCs.ReplaceRegex(content, "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}", "yyyy-MM-ddThh:mm:ss.SSS");
 			content = JavaCs.ReplaceRegex(content, "\\[version .*\\]", "[version x.y.z]");
-			content = JavaCs.ReplaceRegex(content, "Error at Get query table names: ApiException.*<\\/span>", "Error at Get query table names: ApiException<\\/span>");
 			return content.Replace("\r", string.Empty);
-		}
-
-		private string ReplaceExpectedStrings(string expected)
-		{
-			expected = expected.Replace("test4giis.qacoverapp", "Test4in2test.Qacoverapp");
-			expected = expected.Replace("queryDifferentSingleLine", "QueryDifferentSingleLine");
-			expected = expected.Replace("queryEqualDifferentLine", "QueryEqualDifferentLine");
-			expected = expected.Replace("queryNoParameters1Condition", "QueryNoParameters1Condition");
-			expected = expected.Replace("queryNoParameters2Condition", "QueryNoParameters2Condition");
-			expected = expected.Replace("query0Errors", "Query0Errors");
-			expected = expected.Replace("query1ErrorAtQuery", "Query1ErrorAtQuery");
-			expected = expected.Replace("query1ErrorAtRule", "Query1ErrorAtRule");
-			expected = expected.Replace("queryMultipleErrors", "QueryMultipleErrors");
-			expected = expected.Replace("java.lang.RuntimeException", "System.Exception");
-			expected = expected.Replace("org.sqlite.SQLiteException", "Microsoft.Data.Sqlite.SqliteException");
-			expected = expected.Replace("giis.qacover.portable", "Giis.Qacover.Portable");
-			expected = expected.Replace("HTTP/1.1 404 Not Found", "NotFound");
-			expected = expected.Replace("[SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)", "SQLite Error 1: 'near \"selectar\": syntax error'.");
-			expected = expected.Replace("[SQLITE_ERROR] SQL error or missing database (no such table: notable)", "SQLite Error 1: 'no such table: notable'.");
-			expected = expected.Replace("Giis.Tdrules.Openapi.Invoker.ApiException", "Giis.Tdrules.Openapi.Client.ApiException");
-			return expected;
 		}
 	}
 }
