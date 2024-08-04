@@ -1,0 +1,16 @@
+CoverageCollection: qcount=12,qerror=1,count=31,dead=12,error=2
+QueryCollection: test4giis.qacoverapp.AppSimpleJdbc qcount=6,qerror=0,count=17,dead=7,error=0
+  queryDifferentSingleLine
+  queryDifferentSingleLine
+  queryEqualDifferentLine
+  queryEqualDifferentLine
+  queryNoParameters1Condition
+  queryNoParameters2Condition
+QueryCollection: test4giis.qacoverapp.AppSimpleJdbc2 qcount=2,qerror=0,count=6,dead=4,error=0
+  queryNoParameters1Condition
+  queryNoParameters2Condition
+QueryCollection: test4giis.qacoverapp.AppSimpleJdbc3Errors qcount=4,qerror=1,count=8,dead=1,error=2
+  query0Errors
+  query1ErrorAtQuery
+  query1ErrorAtRule
+  queryMultipleErrors
