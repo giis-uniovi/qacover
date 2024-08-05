@@ -86,6 +86,8 @@ namespace Test4giis.Qacover.Model
 			Reset();
 			new StoreService(options).DropRules().DropLast();
 			// clean start
+			FileUtil.CreateDirectory(outPath);
+			// this is ensured by reporter, but we need it before to check readers
 			// Runs the application mock classes to generate the rules
 			RunReports1OfTestStore();
 			RunReports2OfTestEvaluation();
@@ -242,6 +244,8 @@ namespace Test4giis.Qacover.Model
 			// to compare using a fixed date and version number
 			content = JavaCs.ReplaceRegex(content, "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}", "yyyy-MM-ddThh:mm:ss.SSS");
 			content = JavaCs.ReplaceRegex(content, "\\[version .*\\]", "[version x.y.z]");
+			// error at query gives different content in local and CI, remove the variable part
+			content = JavaCs.ReplaceRegex(content, "Query error: Error at Get query table names: .*<\\/span>", "Query error: Error at Get query table names: (rest of message removed)<\\/span>");
 			return content.Replace("\r", string.Empty);
 		}
 	}

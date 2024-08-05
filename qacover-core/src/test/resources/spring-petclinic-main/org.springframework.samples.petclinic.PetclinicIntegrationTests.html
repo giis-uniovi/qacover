@@ -1,63 +1,168 @@
 <!doctype html>
-<html lang="en">
+<html lang='en'>
 <head>
 <title>org.springframework.samples.petclinic.PetclinicIntegrationTests</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-<style>.fill { min-width: 100%; width: 100%; } .progress {margin-bottom: 0 !important;}</style>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css' integrity='sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk' crossorigin='anonymous'>
+<script src='https://code.jquery.com/jquery-3.5.1.slim.min.js' integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj' crossorigin='anonymous'></script>
+<script src='https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js' integrity='sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo' crossorigin='anonymous'></script>
+<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js' integrity='sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI' crossorigin='anonymous'></script>
+<style>
+    .fill { min-width: 100%; width: 100%; } 
+    tr.line, tr.line td { line-height:18px; padding-top:0; padding-bottom:0 }
+    tr.query-run td, tr.rule-summary td, tr.rule-sql td, tr.rule-error td { padding-top:0; padding-bottom:0 }    code { color: DimGray; position: absolute; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    tbody.query { background: lightgrey; }
+    td.nowrap { white-space: nowrap; }
+    td.covered { background:aquamarine; }
+    td.uncovered { background:lightyellow; }
+    .params  { font-size: small; font-style: italic }
+    .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }
+</style>
+<script>
+    $(document).ready(function() {
+        $('.rules').show();
+        $('.rules-show').show();
+        $('.rules-hide').hide();
+        $('.params-show').show();
+        $('.params-hide').hide();
+        $('.rules').hide();
+        $('.params').hide();
+        $('.query br.canhide').hide(); 
+        $('.rules br.canhide').show(); 
+        if ($('#view-source').is(':checked')) { $('.method').hide(); } else { $('.method').show(); }
+        $('.rules-show').click(function(){ $(this).hide(); $(this).next().show(); $(this).closest('.query').next('.rules').show(); });
+        $('.rules-hide').click(function(){ $(this).hide(); $(this).prev().show(); $(this).closest('.query').next('.rules').hide(); });
+        $('.params-show').click(function(){ $(this).hide(); $(this).next().show(); $(this).closest('.query').find('.params').show(); $(this).closest('.query').next('.rules').find('.params').show(); });
+        $('.params-hide').click(function(){ $(this).hide(); $(this).prev().show(); $(this).closest('.query').find('.params').hide(); $(this).closest('.query').next('.rules').find('.params').hide(); });
+        $('#format-queries').change(function(){ if ($(this).is(':checked')) $('.query br.canhide').show(); else $('.query br.canhide').hide(); });
+        $('#format-rules').change(function(){ if ($(this).is(':checked')) $('.rules br.canhide').show(); else $('.rules br.canhide').hide(); });
+        $('#view-source').change(function() { 
+            if ($(this).is(':checked')) { $('.line-code').show(); $('code').show(); $('.method').hide(); } 
+            else { $('.line-code').hide(); $('code').hide(); $('.method').show(); }
+        }
+    )});
+</script>
 </head>
-<body>
-<div class="container fill">
-<h4>org.springframework.samples.petclinic.PetclinicIntegrationTests</h4>
-<div class="panel-group" id="accordion">
 
-<div class="panel panel-default">
-<div class="panel-heading">
-<table class="table table-striped table-sm">
-<tr>
-<td><a data-toggle="collapse" data-parent="#accordion" href="#query0">testFindAll:32</a>
-<br/><strong></strong> (0/0) 1 run(s)
-</td>
-<td valign="top">select vet0_.id as id1_5_, vet0_.first_name as first_na2_5_, vet0_.last_name as last_nam3_5_ from vets vet0_
-</td>
-</tr>
+<body style='overflow-x: hidden;'>
+<div class='container fill'>
+<div class='sticky-md-top text-bg-light'>
+  <h4><a href='./index.html'>[Index]</a> org.springframework.samples.petclinic.PetclinicIntegrationTests</h4>
+  <div class='col-auto'>
+    <div  class='form-check form-check-inline'>
+    <input class='form-check-input' id='view-source' type='checkbox' value='' checked>
+    <label class='form-check-label' for='view-source'>View source</label>
+    </div>
+    <div  class='form-check form-check-inline'>
+    <input class='form-check-input' id='format-queries' type='checkbox' value=''>
+    <label class='form-check-label' for='format-queries'>Format queries</label>
+    </div>
+    <div  class='form-check form-check-inline'>
+    <input class='form-check-input' id='format-rules' type='checkbox' value='' checked>
+    <label class='form-check-label' for='format-rules'>Format rules</label>
+    </div>
+  </div>
+</div>
+
+<div>
+<table class='table table-sm table-borderless'>
+    <thead><th>Line</th><th>Coverage</th><th>Source code/method, queries and rules</th></thead>
+    <tr class='line line-coverage'>
+        <td>32</td>
+        <td class='nowrap'><strong></strong> (0/0)</td>
+        <td colspan='2'>
+            <span class='text-primary font-weight-bold method'>testFindAll</span>
+            <code>(source code not available) (source code not available) (source code not available)</code>
+        </td>
+    </tr>
+    <tbody class='query'>
+    <tr class='query-run'>
+        <td></td>
+        <td class='nowrap'>
+            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
+            1 run(s)
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
+        </td>
+        <td colspan='2'>
+            <div class='params'>(run params not available)</div>
+            select vet0_.id as id1_5_, vet0_.first_name as first_na2_5_, vet0_.last_name as last_nam3_5_ from vets vet0_         </td>
+    </tr>
+    </tbody>
+    <tbody class='rules'>
+    <tr><td></td></tr>
+    </tbody>
+
+    <tr class='line line-coverage'>
+        <td>32</td>
+        <td class='nowrap'><strong>66%</strong> (2/3)</td>
+        <td colspan='2'>
+            <span class='text-primary font-weight-bold method'>testFindAll</span>
+            <code>(source code not available) (source code not available) (source code not available)</code>
+        </td>
+    </tr>
+    <tbody class='query'>
+    <tr class='query-run'>
+        <td></td>
+        <td class='nowrap'>
+            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
+            6 run(s)
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
+        </td>
+        <td colspan='2'>
+            <div class='params'>(run params not available)</div>
+            <strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_  <br class='canhide'/><strong>FROM</strong> vet_specialties specialtie0_  <br class='canhide'/><strong>INNER JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id  <br class='canhide'/><strong>WHERE</strong> specialtie0_.vet_id = ?1?         </td>
+    </tr>
+    </tbody>
+    <tbody class='rules'>
+    <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;6 count:&nbsp;6</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: FF location: 1.w.1.[WHERE specialtie0_.vet_id = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='covered'>--A set of joined tables such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) specialtie0_.vet_id = ?1? is FALSE</td>
+            <td class='covered'><strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_  <br class='canhide'/><strong>FROM</strong> vet_specialties specialtie0_  <br class='canhide'/><strong>INNER JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id  <br class='canhide'/><strong>WHERE</strong> NOT(specialtie0_.vet_id = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;4 count:&nbsp;6</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: TF location: 1.w.1.[WHERE specialtie0_.vet_id = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='covered'>--A set of joined tables such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) specialtie0_.vet_id = ?1? is TRUE</td>
+            <td class='covered'><strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_  <br class='canhide'/><strong>FROM</strong> vet_specialties specialtie0_  <br class='canhide'/><strong>INNER JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id  <br class='canhide'/><strong>WHERE</strong> (specialtie0_.vet_id = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>3</strong> - dead:&nbsp;0 count:&nbsp;6</td>
+        <td class='coverage' colspan='2'>
+            category: J type: R subtype: O location: 1.j.1.[INNER JOIN]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='uncovered'> <br class='canhide'/>--The JOIN tables fulfill: <br class='canhide'/>--COMMENT: Reduced conditions: [WHERE specialtie0_.vet_id = ?1?] ;  <br class='canhide'/>  --summary: [VET_SPECIALTIES specialtie0_] right [SPECIALTIES specialty1_] ON specialtie0_.specialty_id = specialty1_.id <br class='canhide'/>  --There exist some row in table SPECIALTIES specialty1_ <br class='canhide'/>  --which does not join to any table in VET_SPECIALTIES specialtie0_</td>
+            <td class='uncovered'><strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_  <br class='canhide'/><strong>FROM</strong> vet_specialties specialtie0_  <br class='canhide'/><strong>RIGHT JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id  <br class='canhide'/><strong>WHERE</strong> (specialtie0_.SPECIALTY_ID IS NULL) AND (specialty1_.ID IS NOT NULL)</td>
+    </tr>
+        <tr><td></td></tr>
+    </tbody>
+
+
 </table>
 </div>
-<div class="panel-collapse collapse" id="query0">
-<table class="table table-sm">
-<tr><th>ID</th><th>dead</th><th>count</th><th>category</th><th>type</th><th>subtype</th><th>location</th></tr>
-</table></div></div>
 
-<div class="panel panel-default">
-<div class="panel-heading">
-<table class="table table-striped table-sm">
-<tr>
-<td><a data-toggle="collapse" data-parent="#accordion" href="#query1">testFindAll:32</a>
-<br/><strong>66%</strong> (2/3) 6 run(s)
-</td>
-<td valign="top"><strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_ <br/><strong>FROM</strong> vet_specialties specialtie0_ <br/><strong>INNER JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id <br/><strong>WHERE</strong> specialtie0_.vet_id = ?1?
-</td>
-</tr>
-</table>
-</div>
-<div class="panel-collapse collapse" id="query1">
-<table class="table table-sm">
-<tr><th>ID</th><th>dead</th><th>count</th><th>category</th><th>type</th><th>subtype</th><th>location</th></tr>
-<tr><td><strong>1</strong></td><td>6</td><td>6</td>
-<td>S</td><td>T</td><td>FF</td><td>1.w.1.[WHERE specialtie0_.vet_id = ?1?]</td></tr>
-<td colspan="7"  style="background:palegreen;" ><div class="row"><div class="col-5">--A set of joined tables such that:<br/>--The WHERE condition fulfills:<br/>  --(F) specialtie0_.vet_id = ?1? is FALSE</div><div class="col-7"><strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_ <br/><strong>FROM</strong> vet_specialties specialtie0_ <br/><strong>INNER JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id <br/><strong>WHERE</strong> NOT(specialtie0_.vet_id = ?1?)</div></div></td></tr>
-<tr><td><strong>2</strong></td><td>4</td><td>6</td>
-<td>S</td><td>T</td><td>TF</td><td>1.w.1.[WHERE specialtie0_.vet_id = ?1?]</td></tr>
-<td colspan="7"  style="background:palegreen;" ><div class="row"><div class="col-5">--A set of joined tables such that:<br/>--The WHERE condition fulfills:<br/>  --(T) specialtie0_.vet_id = ?1? is TRUE</div><div class="col-7"><strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_ <br/><strong>FROM</strong> vet_specialties specialtie0_ <br/><strong>INNER JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id <br/><strong>WHERE</strong> (specialtie0_.vet_id = ?1?)</div></div></td></tr>
-<tr><td><strong>3</strong></td><td>0</td><td>6</td>
-<td>J</td><td>R</td><td>O</td><td>1.j.1.[INNER JOIN]</td></tr>
-<td colspan="7"  style="background:lightyellow;" ><div class="row"><div class="col-5"><br/>--The JOIN tables fulfill:<br/>--COMMENT: Reduced conditions: [WHERE specialtie0_.vet_id = ?1?] ; <br/>  --summary: [VET_SPECIALTIES specialtie0_] right [SPECIALTIES specialty1_] ON specialtie0_.specialty_id = specialty1_.id<br/>  --There exist some row in table SPECIALTIES specialty1_<br/>  --which does not join to any table in VET_SPECIALTIES specialtie0_</div><div class="col-7"><strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_ <br/><strong>FROM</strong> vet_specialties specialtie0_ <br/><strong>RIGHT JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id <br/><strong>WHERE</strong> (specialtie0_.SPECIALTY_ID IS NULL) AND (specialty1_.ID IS NOT NULL)</div></div></td></tr>
-</table></div></div>
-</div>
+<div><span style="float:right;"><small>
+Generated by: QACover java - [version 1.6.4-SNAPSHOT] - <a href="https://github.com/giis-uniovi/qacover/issues/new">[Submit a problem report]</a>
+</small></span></div>
 </div>
 </body>
-</html>

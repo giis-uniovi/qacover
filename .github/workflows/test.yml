@@ -141,6 +141,7 @@ jobs:
             */target/site/jacoco/jacoco*.xml
             */target/surefire-reports
             */target/failsafe-reports
+            */target/qacover-report
             */target/*.html
             */target/*.log
 
@@ -256,6 +257,7 @@ jobs:
       - name: Run test - ADO.NET
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report.trx" QACoverTest/QACoverTest.csproj
       - name: Run test - Entity Framework
+        if: always()
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
       - name: Junit html report
         if: always()
@@ -283,6 +285,7 @@ jobs:
           path: |
             net/target/site
             net/target/surefire-reports
+            net/reports/qacover-report
             net/reports/qacover-report*.trx
             net/reports/*.html
             net/reports/*.log
