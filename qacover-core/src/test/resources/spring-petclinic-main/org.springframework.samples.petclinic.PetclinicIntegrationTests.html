@@ -13,7 +13,7 @@
     tr.line, tr.line td { line-height:18px; padding-top:0; padding-bottom:0 }
     tr.query-run td, tr.rule-summary td, tr.rule-sql td, tr.rule-error td { padding-top:0; padding-bottom:0 }    code { color: DimGray; position: absolute; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     tbody.query { background: lightgrey; }
-    td.nowrap { white-space: nowrap; }
+    td.nowrap, span.nowrap { white-space: nowrap; }
     td.covered { background:aquamarine; }
     td.uncovered { background:lightyellow; }
     .params  { font-size: small; font-style: italic }
@@ -70,10 +70,10 @@
     <thead><th>Line</th><th>Coverage</th><th>Source code/method, queries and rules</th></thead>
     <tr class='line line-coverage'>
         <td>32</td>
-        <td class='nowrap'><strong></strong> (0/0)</td>
+        <td class='nowrap'><strong>66%</strong>&nbsp;(2/3)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold method'>testFindAll</span>
-            <code>(source code not available) (source code not available) (source code not available)</code>
+            <span class='text-primary font-weight-bold '>testFindAll</span>
+            <code> &nbsp; (source code not available)</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -82,7 +82,7 @@
         <td class='nowrap'>
             <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
             1 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             <strong></strong>&nbsp;(0/0)
         </td>
         <td colspan='2'>
             <div class='params'>(run params not available)</div>
@@ -93,21 +93,13 @@
     <tr><td></td></tr>
     </tbody>
 
-    <tr class='line line-coverage'>
-        <td>32</td>
-        <td class='nowrap'><strong>66%</strong> (2/3)</td>
-        <td colspan='2'>
-            <span class='text-primary font-weight-bold method'>testFindAll</span>
-            <code>(source code not available) (source code not available) (source code not available)</code>
-        </td>
-    </tr>
     <tbody class='query'>
     <tr class='query-run'>
         <td></td>
         <td class='nowrap'>
             <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
             6 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             <strong>66%</strong>&nbsp;(2/3)
         </td>
         <td colspan='2'>
             <div class='params'>(run params not available)</div>

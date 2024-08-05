@@ -1,6 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 /////////////////////////////////////////////////////////////////////////////////////////////
+using System.Collections.Generic;
 using System.Text;
 using Giis.Portable.Util;
 using Giis.Qacover.Model;
@@ -51,21 +52,62 @@ namespace Giis.Qacover.Report
 			ConsoleWrite(classes.Size() + " classes generated, see index.html at reports folder");
 		}
 
-		private string GetClassCoverage(QueryCollection query, ClassHtmlWriter writer)
+		private string GetClassCoverage(QueryCollection queries, ClassHtmlWriter writer)
 		{
+			// first makes groups by line number, each line can have zero, one or more queries
+			SourceCodeCollection lineCollection = new SourceCodeCollection();
+			lineCollection.AddQueries(queries);
+			// groups by line number
 			StringBuilder csb = new StringBuilder();
-			for (int j = 0; j < query.Size(); j++)
+			foreach (KeyValuePair<int, SourceCodeLine> line in lineCollection.GetLines())
 			{
-				QueryReader thisQuery = query.Get(j);
-				csb.Append(writer.GetLineContent(thisQuery)).Append(writer.GetQueryContent(query.Get(j)));
-				StringBuilder rsb = new StringBuilder();
-				for (int k = 0; k < thisQuery.GetModel().GetRules().Count; k++)
+				// Coverage and source Code of the line, or method if no line is available
+				QueryReader query0 = line.Value.GetQueries()[0];
+				csb.Append(writer.GetLineContent(line.Key, GetLineCoverage(line.Value, writer), query0.GetKey().GetMethodName(), line.Value.GetSource()));
+				// Each query (if any) and details of their rules
+				foreach (QueryReader thisQuery in line.Value.GetQueries())
 				{
-					rsb.Append(writer.GetRuleContent(thisQuery.GetModel().GetRules()[k]));
+					string queryCoverage = GetQueryCoverage(thisQuery.GetModel(), line.Value, writer);
+					csb.Append(writer.GetQueryContent(thisQuery, queryCoverage));
+					StringBuilder rsb = new StringBuilder();
+					for (int k = 0; k < thisQuery.GetModel().GetRules().Count; k++)
+					{
+						rsb.Append(writer.GetRuleContent(thisQuery.GetModel().GetRules()[k]));
+					}
+					csb.Append(writer.GetRulesContent(rsb.ToString()));
 				}
-				csb.Append(writer.GetRulesContent(rsb.ToString()));
 			}
 			return csb.ToString();
+		}
+
+		private string GetLineCoverage(SourceCodeLine line, ClassHtmlWriter writer)
+		{
+			// If only a query, returns its coverage, if more, returns the aggregate
+			// coverage of all queries
+			// If there is no queries returns empty
+			if (line.GetQueries().Count == 1)
+			{
+				return writer.Coverage(line.GetQueries()[0].GetModel().GetDead(), line.GetQueries()[0].GetModel().GetCount());
+			}
+			else
+			{
+				if (line.GetQueries().Count > 1)
+				{
+					return writer.Coverage(line.GetDead(), line.GetCount());
+				}
+			}
+			return string.Empty;
+		}
+
+		private string GetQueryCoverage(QueryModel query, SourceCodeLine line, ClassHtmlWriter writer)
+		{
+			// If more than a query returns the query coverage, if not, empty (coverage
+			// should be shown in the line)
+			if (line.GetQueries().Count > 1)
+			{
+				return writer.Coverage(query.GetDead(), query.GetCount());
+			}
+			return string.Empty;
 		}
 	}
 }

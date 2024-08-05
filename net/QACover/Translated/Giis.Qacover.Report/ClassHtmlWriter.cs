@@ -22,7 +22,7 @@ namespace Giis.Qacover.Report
 		protected internal override string GetStyles()
 		{
 			return "<style>\n" + "    .fill { min-width: 100%; width: 100%; } \n" + "    tr.line, tr.line td { line-height:18px; padding-top:0; padding-bottom:0 }\n" + "    tr.query-run td, tr.rule-summary td, tr.rule-sql td, tr.rule-error td { padding-top:0; padding-bottom:0 }" + "    code { color: DimGray; position: absolute; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n"
-				 + "    tbody.query { background: lightgrey; }\n" + "    td.nowrap { white-space: nowrap; }\n" + "    td.covered { background:aquamarine; }\n" + "    td.uncovered { background:lightyellow; }\n" + "    .params  { font-size: small; font-style: italic }\n" + "    .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }\n"
+				 + "    tbody.query { background: lightgrey; }\n" + "    td.nowrap, span.nowrap { white-space: nowrap; }\n" + "    td.covered { background:aquamarine; }\n" + "    td.uncovered { background:lightyellow; }\n" + "    .params  { font-size: small; font-style: italic }\n" + "    .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }\n"
 				 + "</style>\n";
 		}
 
@@ -35,21 +35,22 @@ namespace Giis.Qacover.Report
 				+ "</div>\n" + "</body>\n";
 		}
 
-		public virtual string GetLineContent(QueryReader query)
+		public virtual string GetLineContent(int lineNumber, string coverage, string methodName, string sourceCode)
 		{
-			string template = "    <tr class='line line-coverage'>\n" + "        <td>$lineNumber$</td>\n" + "        <td class='nowrap'><strong>$percentCoverage$</strong> ($deadCount$/$runCount$)</td>\n" + "        <td colspan='2'>\n" + "            <span class='text-primary font-weight-bold method'>$methodName$</span>\n"
-				 + "            <code>$sourceCode$</code>\n" + "        </td>\n" + "    </tr>\n";
-			return template.Replace("$lineNumber$", query.GetKey().GetClassLine()).Replace("$deadCount$", query.GetModel().GetDead().ToString()).Replace("$runCount$", query.GetModel().GetCount().ToString()).Replace("$percentCoverage$", Percent(query.GetModel().GetCount(), query.GetModel().GetDead
-				())).Replace("$methodName$", query.GetKey().GetMethodName()).Replace("$sourceCode$", "(source code not available) (source code not available) (source code not available)");
+			string template = "    <tr class='line line-coverage'>\n" + "        <td>$lineNumber$</td>\n" + "        <td class='nowrap'>$coverage$</td>\n" + "        <td colspan='2'>\n" + "            <span class='text-primary font-weight-bold $methodCssClass$'>$methodName$</span>\n" + "            <code>$sourceCode$</code>\n"
+				 + "        </td>\n" + "    </tr>\n";
+			return template.Replace("$lineNumber$", lineNumber.ToString()).Replace("$coverage$", coverage).Replace("$methodName$", methodName).Replace("$methodCssClass$", sourceCode == null ? string.Empty : "method").Replace("$sourceCode$", sourceCode == null ? " &nbsp; (source code not available)"
+				 : sourceCode);
 		}
 
-		public virtual string GetQueryContent(QueryReader query)
+		// if source code not available, the css class for method is empty (it will be shown even if hidden by the ui)
+		public virtual string GetQueryContent(QueryReader query, string coverage)
 		{
 			string template = "    <tbody class='query'>\n" + "    <tr class='query-run'>\n" + "        <td></td>\n" + "        <td class='nowrap'>\n" + "            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>\n" + "            $runCount$ run(s)\n"
-				 + "            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>\n" + "        </td>\n" + "        <td colspan='2'>\n" + "            <div class='params'>(run params not available)</div>\n" + "            $sqlQuery$ $errorsQuery$"
-				 + "        </td>\n" + "    </tr>\n" + "    </tbody>\n";
-			return template.Replace("$runCount$", query.GetModel().GetQrun().ToString()).Replace("$sqlQuery$", GetSqlHtml(Encode(query.GetSql()))).Replace("$errorsQuery$", GetErrorsHtml(Encode(query.GetModel().GetErrorString().Replace("\n", string.Empty).Replace("\r", string.Empty)), query.GetModel
-				().GetError()));
+				 + "            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span> " + "            $coverage$\n" + "        </td>\n" + "        <td colspan='2'>\n" + "            <div class='params'>(run params not available)</div>\n"
+				 + "            $sqlQuery$ $errorsQuery$" + "        </td>\n" + "    </tr>\n" + "    </tbody>\n";
+			return template.Replace("$runCount$", query.GetModel().GetQrun().ToString()).Replace("$coverage$", coverage).Replace("$sqlQuery$", GetSqlHtml(Encode(query.GetSql()))).Replace("$errorsQuery$", GetErrorsHtml(Encode(query.GetModel().GetErrorString().Replace("\n", string.Empty).Replace
+				("\r", string.Empty)), query.GetModel().GetError()));
 		}
 
 		// encode and remove line endings (to allow use a regex to replace platform dependent messages)
