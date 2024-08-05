@@ -77,6 +77,7 @@ public class TestReport extends Base {
 	public void testReports() throws SQLException {
 		reset();
 		new StoreService(options).dropRules().dropLast(); // clean start
+		FileUtil.createDirectory(outPath); // this is ensured by reporter, but we need it before to check readers
 		
 		// Runs the application mock classes to generate the rules
 		runReports1OfTestStore();
@@ -236,6 +237,10 @@ public class TestReport extends Base {
 		// to compare using a fixed date and version number
 		content = JavaCs.replaceRegex(content, "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}", "yyyy-MM-ddThh:mm:ss.SSS");
 		content = JavaCs.replaceRegex(content, "\\[version .*\\]", "[version x.y.z]");
+		// error at query gives different content in local and CI, remove the variable part
+		content = JavaCs.replaceRegex(content, 
+				"Query error: Error at Get query table names: .*<\\/span>", 
+				"Query error: Error at Get query table names: (rest of message removed)<\\/span>");
 		return content.replace("\r", "");
 	}
 	
