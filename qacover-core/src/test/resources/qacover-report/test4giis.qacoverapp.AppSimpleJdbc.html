@@ -13,7 +13,7 @@
     tr.line, tr.line td { line-height:18px; padding-top:0; padding-bottom:0 }
     tr.query-run td, tr.rule-summary td, tr.rule-sql td, tr.rule-error td { padding-top:0; padding-bottom:0 }    code { color: DimGray; position: absolute; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     tbody.query { background: lightgrey; }
-    td.nowrap { white-space: nowrap; }
+    td.nowrap, span.nowrap { white-space: nowrap; }
     td.covered { background:aquamarine; }
     td.uncovered { background:lightyellow; }
     .params  { font-size: small; font-style: italic }
@@ -69,254 +69,11 @@
 <table class='table table-sm table-borderless'>
     <thead><th>Line</th><th>Coverage</th><th>Source code/method, queries and rules</th></thead>
     <tr class='line line-coverage'>
-        <td>35</td>
-        <td class='nowrap'><strong>50%</strong> (1/2)</td>
-        <td colspan='2'>
-            <span class='text-primary font-weight-bold method'>queryDifferentSingleLine</span>
-            <code>(source code not available) (source code not available) (source code not available)</code>
-        </td>
-    </tr>
-    <tbody class='query'>
-    <tr class='query-run'>
-        <td></td>
-        <td class='nowrap'>
-            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
-            2 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
-        </td>
-        <td colspan='2'>
-            <div class='params'>(run params not available)</div>
-            <strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> num = ?1?         </td>
-    </tr>
-    </tbody>
-    <tbody class='rules'>
-    <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;0 count:&nbsp;2</td>
-        <td class='coverage' colspan='2'>
-            category: S type: T subtype: FF location: 1.w.1.[WHERE num = ?1?]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) num = ?1? is FALSE</td>
-            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> NOT(num = ?1?)</td>
-    </tr>
-        <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;2 count:&nbsp;2</td>
-        <td class='coverage' colspan='2'>
-            category: S type: T subtype: TF location: 1.w.1.[WHERE num = ?1?]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='covered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) num = ?1? is TRUE</td>
-            <td class='covered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (num = ?1?)</td>
-    </tr>
-        <tr><td></td></tr>
-    </tbody>
-
-    <tr class='line line-coverage'>
-        <td>35</td>
-        <td class='nowrap'><strong>33%</strong> (1/3)</td>
-        <td colspan='2'>
-            <span class='text-primary font-weight-bold method'>queryDifferentSingleLine</span>
-            <code>(source code not available) (source code not available) (source code not available)</code>
-        </td>
-    </tr>
-    <tbody class='query'>
-    <tr class='query-run'>
-        <td></td>
-        <td class='nowrap'>
-            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
-            1 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
-        </td>
-        <td colspan='2'>
-            <div class='params'>(run params not available)</div>
-            <strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> text = ?1?         </td>
-    </tr>
-    </tbody>
-    <tbody class='rules'>
-    <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;0 count:&nbsp;1</td>
-        <td class='coverage' colspan='2'>
-            category: S type: T subtype: FF location: 1.w.1.[WHERE text = ?1?]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) text = ?1? is FALSE</td>
-            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> NOT(text = ?1?)</td>
-    </tr>
-        <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;1 count:&nbsp;1</td>
-        <td class='coverage' colspan='2'>
-            category: S type: T subtype: TF location: 1.w.1.[WHERE text = ?1?]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='covered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) text = ?1? is TRUE</td>
-            <td class='covered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text = ?1?)</td>
-    </tr>
-        <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>3</strong> - dead:&nbsp;0 count:&nbsp;1</td>
-        <td class='coverage' colspan='2'>
-            category: S type: N subtype: NF location: 1.w.1.[text]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(N) text is NULL</td>
-            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text IS NULL)</td>
-    </tr>
-        <tr><td></td></tr>
-    </tbody>
-
-    <tr class='line line-coverage'>
-        <td>41</td>
-        <td class='nowrap'><strong>33%</strong> (1/3)</td>
-        <td colspan='2'>
-            <span class='text-primary font-weight-bold method'>queryEqualDifferentLine</span>
-            <code>(source code not available) (source code not available) (source code not available)</code>
-        </td>
-    </tr>
-    <tbody class='query'>
-    <tr class='query-run'>
-        <td></td>
-        <td class='nowrap'>
-            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
-            2 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
-        </td>
-        <td colspan='2'>
-            <div class='params'>(run params not available)</div>
-            <strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> text = ?1?         </td>
-    </tr>
-    </tbody>
-    <tbody class='rules'>
-    <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;0 count:&nbsp;2</td>
-        <td class='coverage' colspan='2'>
-            category: S type: T subtype: FF location: 1.w.1.[WHERE text = ?1?]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) text = ?1? is FALSE</td>
-            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> NOT(text = ?1?)</td>
-    </tr>
-        <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;2 count:&nbsp;2</td>
-        <td class='coverage' colspan='2'>
-            category: S type: T subtype: TF location: 1.w.1.[WHERE text = ?1?]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='covered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) text = ?1? is TRUE</td>
-            <td class='covered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text = ?1?)</td>
-    </tr>
-        <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>3</strong> - dead:&nbsp;0 count:&nbsp;2</td>
-        <td class='coverage' colspan='2'>
-            category: S type: N subtype: NF location: 1.w.1.[text]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(N) text is NULL</td>
-            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text IS NULL)</td>
-    </tr>
-        <tr><td></td></tr>
-    </tbody>
-
-    <tr class='line line-coverage'>
-        <td>44</td>
-        <td class='nowrap'><strong>33%</strong> (1/3)</td>
-        <td colspan='2'>
-            <span class='text-primary font-weight-bold method'>queryEqualDifferentLine</span>
-            <code>(source code not available) (source code not available) (source code not available)</code>
-        </td>
-    </tr>
-    <tbody class='query'>
-    <tr class='query-run'>
-        <td></td>
-        <td class='nowrap'>
-            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
-            2 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
-        </td>
-        <td colspan='2'>
-            <div class='params'>(run params not available)</div>
-            <strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> text = ?1?         </td>
-    </tr>
-    </tbody>
-    <tbody class='rules'>
-    <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;2 count:&nbsp;2</td>
-        <td class='coverage' colspan='2'>
-            category: S type: T subtype: FF location: 1.w.1.[WHERE text = ?1?]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='covered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) text = ?1? is FALSE</td>
-            <td class='covered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> NOT(text = ?1?)</td>
-    </tr>
-        <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;0 count:&nbsp;2</td>
-        <td class='coverage' colspan='2'>
-            category: S type: T subtype: TF location: 1.w.1.[WHERE text = ?1?]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) text = ?1? is TRUE</td>
-            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text = ?1?)</td>
-    </tr>
-        <tr class='rule-summary'>
-        <td></td>
-        <td class='coverage' rowspan='2'><strong>3</strong> - dead:&nbsp;0 count:&nbsp;2</td>
-        <td class='coverage' colspan='2'>
-            category: S type: N subtype: NF location: 1.w.1.[text]
-            <div class='params'>(run params not available)</div>
-        </td>
-    </tr>
-    <tr class='rule-sql'>
-        <td></td>
-            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(N) text is NULL</td>
-            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text IS NULL)</td>
-    </tr>
-        <tr><td></td></tr>
-    </tbody>
-
-    <tr class='line line-coverage'>
         <td>23</td>
-        <td class='nowrap'><strong>50%</strong> (1/2)</td>
+        <td class='nowrap'><strong>50%</strong>&nbsp;(1/2)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold method'>queryNoParameters1Condition</span>
-            <code>(source code not available) (source code not available) (source code not available)</code>
+            <span class='text-primary font-weight-bold '>queryNoParameters1Condition</span>
+            <code> &nbsp; (source code not available)</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -325,7 +82,7 @@
         <td class='nowrap'>
             <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
             1 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
         </td>
         <td colspan='2'>
             <div class='params'>(run params not available)</div>
@@ -364,10 +121,10 @@
 
     <tr class='line line-coverage'>
         <td>26</td>
-        <td class='nowrap'><strong>50%</strong> (2/4)</td>
+        <td class='nowrap'><strong>50%</strong>&nbsp;(2/4)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold method'>queryNoParameters2Condition</span>
-            <code>(source code not available) (source code not available) (source code not available)</code>
+            <span class='text-primary font-weight-bold '>queryNoParameters2Condition</span>
+            <code> &nbsp; (source code not available)</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -376,7 +133,7 @@
         <td class='nowrap'>
             <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
             3 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
         </td>
         <td colspan='2'>
             <div class='params'>(run params not available)</div>
@@ -435,6 +192,241 @@
         <td></td>
             <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(N) text is NULL <br class='canhide'/>  --(T) num &gt; ?1? is TRUE</td>
             <td class='uncovered'><strong>SELECT</strong> id , num , text  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text IS NULL) AND (num &gt; ?1?)</td>
+    </tr>
+        <tr><td></td></tr>
+    </tbody>
+
+    <tr class='line line-coverage'>
+        <td>35</td>
+        <td class='nowrap'><strong>40%</strong>&nbsp;(2/5)</td>
+        <td colspan='2'>
+            <span class='text-primary font-weight-bold '>queryDifferentSingleLine</span>
+            <code> &nbsp; (source code not available)</code>
+        </td>
+    </tr>
+    <tbody class='query'>
+    <tr class='query-run'>
+        <td></td>
+        <td class='nowrap'>
+            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
+            2 run(s)
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             <strong>50%</strong>&nbsp;(1/2)
+        </td>
+        <td colspan='2'>
+            <div class='params'>(run params not available)</div>
+            <strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> num = ?1?         </td>
+    </tr>
+    </tbody>
+    <tbody class='rules'>
+    <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;0 count:&nbsp;2</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: FF location: 1.w.1.[WHERE num = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) num = ?1? is FALSE</td>
+            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> NOT(num = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;2 count:&nbsp;2</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: TF location: 1.w.1.[WHERE num = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='covered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) num = ?1? is TRUE</td>
+            <td class='covered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (num = ?1?)</td>
+    </tr>
+        <tr><td></td></tr>
+    </tbody>
+
+    <tbody class='query'>
+    <tr class='query-run'>
+        <td></td>
+        <td class='nowrap'>
+            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
+            1 run(s)
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             <strong>33%</strong>&nbsp;(1/3)
+        </td>
+        <td colspan='2'>
+            <div class='params'>(run params not available)</div>
+            <strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> text = ?1?         </td>
+    </tr>
+    </tbody>
+    <tbody class='rules'>
+    <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;0 count:&nbsp;1</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: FF location: 1.w.1.[WHERE text = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) text = ?1? is FALSE</td>
+            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> NOT(text = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;1 count:&nbsp;1</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: TF location: 1.w.1.[WHERE text = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='covered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) text = ?1? is TRUE</td>
+            <td class='covered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>3</strong> - dead:&nbsp;0 count:&nbsp;1</td>
+        <td class='coverage' colspan='2'>
+            category: S type: N subtype: NF location: 1.w.1.[text]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(N) text is NULL</td>
+            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text IS NULL)</td>
+    </tr>
+        <tr><td></td></tr>
+    </tbody>
+
+    <tr class='line line-coverage'>
+        <td>41</td>
+        <td class='nowrap'><strong>33%</strong>&nbsp;(1/3)</td>
+        <td colspan='2'>
+            <span class='text-primary font-weight-bold '>queryEqualDifferentLine</span>
+            <code> &nbsp; (source code not available)</code>
+        </td>
+    </tr>
+    <tbody class='query'>
+    <tr class='query-run'>
+        <td></td>
+        <td class='nowrap'>
+            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
+            2 run(s)
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
+        </td>
+        <td colspan='2'>
+            <div class='params'>(run params not available)</div>
+            <strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> text = ?1?         </td>
+    </tr>
+    </tbody>
+    <tbody class='rules'>
+    <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;0 count:&nbsp;2</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: FF location: 1.w.1.[WHERE text = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) text = ?1? is FALSE</td>
+            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> NOT(text = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;2 count:&nbsp;2</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: TF location: 1.w.1.[WHERE text = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='covered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) text = ?1? is TRUE</td>
+            <td class='covered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>3</strong> - dead:&nbsp;0 count:&nbsp;2</td>
+        <td class='coverage' colspan='2'>
+            category: S type: N subtype: NF location: 1.w.1.[text]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(N) text is NULL</td>
+            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text IS NULL)</td>
+    </tr>
+        <tr><td></td></tr>
+    </tbody>
+
+    <tr class='line line-coverage'>
+        <td>44</td>
+        <td class='nowrap'><strong>33%</strong>&nbsp;(1/3)</td>
+        <td colspan='2'>
+            <span class='text-primary font-weight-bold '>queryEqualDifferentLine</span>
+            <code> &nbsp; (source code not available)</code>
+        </td>
+    </tr>
+    <tbody class='query'>
+    <tr class='query-run'>
+        <td></td>
+        <td class='nowrap'>
+            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
+            2 run(s)
+            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
+        </td>
+        <td colspan='2'>
+            <div class='params'>(run params not available)</div>
+            <strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> text = ?1?         </td>
+    </tr>
+    </tbody>
+    <tbody class='rules'>
+    <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>1</strong> - dead:&nbsp;2 count:&nbsp;2</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: FF location: 1.w.1.[WHERE text = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='covered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(F) text = ?1? is FALSE</td>
+            <td class='covered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> NOT(text = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;0 count:&nbsp;2</td>
+        <td class='coverage' colspan='2'>
+            category: S type: T subtype: TF location: 1.w.1.[WHERE text = ?1?]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(T) text = ?1? is TRUE</td>
+            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text = ?1?)</td>
+    </tr>
+        <tr class='rule-summary'>
+        <td></td>
+        <td class='coverage' rowspan='2'><strong>3</strong> - dead:&nbsp;0 count:&nbsp;2</td>
+        <td class='coverage' colspan='2'>
+            category: S type: N subtype: NF location: 1.w.1.[text]
+            <div class='params'>(run params not available)</div>
+        </td>
+    </tr>
+    <tr class='rule-sql'>
+        <td></td>
+            <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(N) text is NULL</td>
+            <td class='uncovered'><strong>SELECT</strong> *  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> (text IS NULL)</td>
     </tr>
         <tr><td></td></tr>
     </tbody>

@@ -36,6 +36,11 @@ namespace Giis.Qacover.Report
 			return XNodeAbstract.EncodeText(text);
 		}
 
+		public virtual string Coverage(int dead, int count)
+		{
+			return "<strong>" + Percent(count, dead) + "</strong>&nbsp;(" + dead + "/" + count + ")";
+		}
+
 		public static string Percent(int count, int dead)
 		{
 			return count == 0 ? string.Empty : ((dead * 100) / count).ToString() + "%";

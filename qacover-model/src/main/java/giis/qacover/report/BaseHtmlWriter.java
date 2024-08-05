@@ -43,6 +43,10 @@ public abstract class BaseHtmlWriter {
 		return XNodeAbstract.encodeText(text);
 	}
 
+	public String coverage(int dead, int count) {
+		return "<strong>" + percent(count, dead) + "</strong>&nbsp;(" + dead + "/" + count + ")";
+	}
+	
 	public static String percent(int count, int dead) {
 		return count == 0 ? "" : String.valueOf((dead * 100) / count) + "%";
 	}

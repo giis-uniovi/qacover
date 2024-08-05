@@ -35,6 +35,12 @@ import test4giis.qacoverapp.AppSimpleJdbc3Errors;
  * most relevant situations that have been unit tested before,
  * but here, the goal is to check everything in an integrated way.
  * Configures QACover to send rules and reports under a different folder (qacover-report).
+ * 
+ * NOTE: when changing the report format, in addition to the htmls of 
+ * qacover-core/src/test/resources/qacover-report, the following must be updted too:
+ * - dotnet reports at net/resources/qacover-report
+ * - IT reports at qacover-core/src/test/resources/qacover-uber-main 
+ * - IT reports at qacover-core/src/test/resources/spring-petclinic-main
  */
 public class TestReport extends Base {
 	// All comparisons are made over expected and actual files

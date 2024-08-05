@@ -41,7 +41,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "    tr.query-run td, tr.rule-summary td, tr.rule-sql td, tr.rule-error td { padding-top:0; padding-bottom:0 }"
 				+ "    code { color: DimGray; position: absolute; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n"
 				+ "    tbody.query { background: lightgrey; }\n"
-				+ "    td.nowrap { white-space: nowrap; }\n"
+				+ "    td.nowrap, span.nowrap { white-space: nowrap; }\n"
 				+ "    td.covered { background:aquamarine; }\n"
 				+ "    td.uncovered { background:lightyellow; }\n"
 				+ "    .params  { font-size: small; font-style: italic }\n"
@@ -81,32 +81,33 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "</body>\n";
 	}
 	
-	public String getLineContent(QueryReader query) {
+	public String getLineContent(int lineNumber, String coverage, String methodName, String sourceCode) {
 		String template = "    <tr class='line line-coverage'>\n"
 				+ "        <td>$lineNumber$</td>\n"
-				+ "        <td class='nowrap'><strong>$percentCoverage$</strong> ($deadCount$/$runCount$)</td>\n"
+				+ "        <td class='nowrap'>$coverage$</td>\n"
 				+ "        <td colspan='2'>\n"
-				+ "            <span class='text-primary font-weight-bold method'>$methodName$</span>\n"
+				+ "            <span class='text-primary font-weight-bold $methodCssClass$'>$methodName$</span>\n"
 				+ "            <code>$sourceCode$</code>\n"
 				+ "        </td>\n"
 				+ "    </tr>\n";
 		return template
-				.replace("$lineNumber$", query.getKey().getClassLine())
-				.replace("$deadCount$", String.valueOf(query.getModel().getDead()))
-				.replace("$runCount$", String.valueOf(query.getModel().getCount()))
-				.replace("$percentCoverage$", percent(query.getModel().getCount(), query.getModel().getDead()))
-				.replace("$methodName$", query.getKey().getMethodName())
-				.replace("$sourceCode$", "(source code not available) (source code not available) (source code not available)");
+				.replace("$lineNumber$", String.valueOf(lineNumber))
+				.replace("$coverage$", coverage)
+				.replace("$methodName$", methodName)
+				// if source code not available, the css class for method is empty (it will be shown even if hidden by the ui)
+				.replace("$methodCssClass$", sourceCode == null ? "" : "method")
+				.replace("$sourceCode$", sourceCode == null ? " &nbsp; (source code not available)" : sourceCode);
 	}
 	
-	public String getQueryContent(QueryReader query) {
+	public String getQueryContent(QueryReader query, String coverage) {
 		String template="    <tbody class='query'>\n"
 				+ "    <tr class='query-run'>\n"
 				+ "        <td></td>\n"
 				+ "        <td class='nowrap'>\n"
 				+ "            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>\n"
 				+ "            $runCount$ run(s)\n"
-				+ "            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>\n"
+				+ "            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span> "
+				+ "            $coverage$\n"
 				+ "        </td>\n"
 				+ "        <td colspan='2'>\n"
 				+ "            <div class='params'>(run params not available)</div>\n"
@@ -115,6 +116,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "    </tr>\n"
 				+ "    </tbody>\n";
 		return template.replace("$runCount$", String.valueOf(query.getModel().getQrun()))
+				.replace("$coverage$", coverage)
 				.replace("$sqlQuery$", getSqlHtml(encode(query.getSql())))
 				// encode and remove line endings (to allow use a regex to replace platform dependent messages)
 				.replace("$errorsQuery$", getErrorsHtml(encode(

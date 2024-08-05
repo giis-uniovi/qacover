@@ -1,12 +1,17 @@
 package giis.qacover.report;
 
+import java.util.Map;
+
 import giis.portable.util.FileUtil;
+import giis.qacover.model.QueryModel;
 import giis.qacover.model.Variability;
 import giis.qacover.reader.CoverageCollection;
 import giis.qacover.reader.CoverageReader;
 import giis.qacover.reader.CoverageSummary;
 import giis.qacover.reader.QueryCollection;
 import giis.qacover.reader.QueryReader;
+import giis.qacover.reader.SourceCodeCollection;
+import giis.qacover.reader.SourceCodeLine;
 
 /**
  * Main class to generate html reports with all details of the coverage.
@@ -57,19 +62,49 @@ public class ReportManager {
 		consoleWrite(classes.size() + " classes generated, see index.html at reports folder");
 	}
 	
-	private String getClassCoverage(QueryCollection query, ClassHtmlWriter writer) {
-		StringBuilder csb=new StringBuilder();
-		for (int j = 0; j < query.size(); j++) {
-			QueryReader thisQuery=query.get(j);
-			csb.append(writer.getLineContent(thisQuery))
-				.append(writer.getQueryContent(query.get(j)));
-			
-			StringBuilder rsb=new StringBuilder();
-			for (int k=0; k<thisQuery.getModel().getRules().size(); k++)
-				rsb.append(writer.getRuleContent(thisQuery.getModel().getRules().get(k)));
-			csb.append(writer.getRulesContent(rsb.toString()));
+	private String getClassCoverage(QueryCollection queries, ClassHtmlWriter writer) {
+		// first makes groups by line number, each line can have zero, one or more queries
+		SourceCodeCollection lineCollection = new SourceCodeCollection();
+		lineCollection.addQueries(queries); // groups by line number
+		
+		StringBuilder csb = new StringBuilder();
+		for (Map.Entry<Integer, SourceCodeLine> line : lineCollection.getLines().entrySet()) {
+			// Coverage and source Code of the line, or method if no line is available
+			QueryReader query0 = line.getValue().getQueries().get(0);
+			csb.append(writer.getLineContent(line.getKey(), 
+					getLineCoverage(line.getValue(), writer),
+					query0.getKey().getMethodName(), 
+					line.getValue().getSource()));
+
+			// Each query (if any) and details of their rules
+			for (QueryReader thisQuery : line.getValue().getQueries()) {
+				String queryCoverage = getQueryCoverage(thisQuery.getModel(), line.getValue(), writer);
+				csb.append(writer.getQueryContent(thisQuery, queryCoverage));
+
+				StringBuilder rsb = new StringBuilder();
+				for (int k = 0; k < thisQuery.getModel().getRules().size(); k++)
+					rsb.append(writer.getRuleContent(thisQuery.getModel().getRules().get(k)));
+				csb.append(writer.getRulesContent(rsb.toString()));
+			}
 		}
 		return csb.toString();
+	}
+	private String getLineCoverage(SourceCodeLine line, ClassHtmlWriter writer) {
+		// If only a query, returns its coverage, if more, returns the aggregate
+		// coverage of all queries
+		// If there is no queries returns empty
+		if (line.getQueries().size() == 1)
+			return writer.coverage(line.getQueries().get(0).getModel().getDead(), line.getQueries().get(0).getModel().getCount());
+		else if (line.getQueries().size() > 1)
+			return writer.coverage(line.getDead(), line.getCount());
+		return "";
+	}
+	private String getQueryCoverage(QueryModel query, SourceCodeLine line, ClassHtmlWriter writer) {
+		// If more than a query returns the query coverage, if not, empty (coverage
+		// should be shown in the line)
+		if (line.getQueries().size() > 1)
+			return writer.coverage(query.getDead(), query.getCount());
+		return "";
 	}
 
 }
