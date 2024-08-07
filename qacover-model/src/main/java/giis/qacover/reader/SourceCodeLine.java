@@ -14,6 +14,10 @@ public class SourceCodeLine {
 		return source;
 	}
 	
+	public void setSource(String source) {
+		this.source = source;
+	}
+	
 	public List<QueryReader> getQueries() {
 		return queries;
 	}

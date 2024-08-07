@@ -72,13 +72,22 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "\n"
 				+ "<div>\n"
 				+ "<table class='table table-sm table-borderless'>\n"
-				+ "    <thead><th>Line</th><th>Coverage</th><th>Source code/method, queries and rules</th></thead>\n"
+				+ "    <thead><th style='width:1%'>Line</th><th style='width:1%'>Coverage</th><th>Source code/method, queries and rules</th></thead>\n"
 				+ content + "\n"
 				+ "</table>\n"
 				+ "</div>\n"
 				+ getFooter()
 				+ "</div>\n"
 				+ "</body>\n";
+	}
+	
+	public String getLineWithoutCoverage(int lineNumber, String sourceCode) {
+		String template =  "<tr class='line line-code'><td>$lineNumber$</td><td></td>"
+				+ "<td colspan='2'><code>$sourceCode$</code></td>"
+				+ "</tr>\n";
+		return template
+				.replace("$lineNumber$", String.valueOf(lineNumber))
+				.replace("$sourceCode$", getSourceHtml(sourceCode));
 	}
 	
 	public String getLineContent(int lineNumber, String coverage, String methodName, String sourceCode) {
@@ -96,7 +105,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				.replace("$methodName$", methodName)
 				// if source code not available, the css class for method is empty (it will be shown even if hidden by the ui)
 				.replace("$methodCssClass$", sourceCode == null ? "" : "method")
-				.replace("$sourceCode$", sourceCode == null ? " &nbsp; (source code not available)" : sourceCode);
+				.replace("$sourceCode$", sourceCode == null ? " &nbsp; (source code not available)" : getSourceHtml(sourceCode));
 	}
 	
 	public String getQueryContent(QueryReader query, String coverage) {
@@ -175,6 +184,10 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 			return "<tr class='rule-error'><td colspan='2'></td><td colspan='2'><span style=\"color:red;\">"
 					+ "Rule error: " + errors.replace("\n", "\n<br/>") + "</span></td></tr>\n";
 		return ""; // no error
+	}
+	
+	private String getSourceHtml(String sourceCode) {
+		return encode(sourceCode).replace("\t", "    ").replace(" ", "&nbsp;");
 	}
 	
 	private String getSqlHtml(String sql) {

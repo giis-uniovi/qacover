@@ -61,7 +61,7 @@ namespace Giis.Qacover.Core
 				rm = MainProcessError(svc, store, stmt, e);
 			}
 			log.Debug("Saving evaluation results");
-			rm.GetModel().SetLocation(stack.GetClassName(), stack.GetMethodName(), stack.GetLineNumber(), stack.GetFileName());
+			rm.GetModel().SetLocation(stack.GetClassName(), stack.GetMethodName(), stack.GetLineNumber(), stack.GetFileName(), stack.GetSourceFileName());
 			store.Put(stack, stmt.GetSql(), stmt.GetParameters(), rm.GetModel(), rm.GetSchemaAtRuleGeneration());
 		}
 

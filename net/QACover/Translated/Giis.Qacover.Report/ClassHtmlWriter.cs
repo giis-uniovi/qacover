@@ -31,8 +31,14 @@ namespace Giis.Qacover.Report
 			return "<body style='overflow-x: hidden;'>\n" + "<div class='container fill'>\n" + "<div class='sticky-md-top text-bg-light'>\n" + "  <h4><a href='./index.html'>[Index]</a> " + title + "</h4>\n" + "  <div class='col-auto'>\n" + "    <div  class='form-check form-check-inline'>\n" +
 				 "    <input class='form-check-input' id='view-source' type='checkbox' value='' checked>\n" + "    <label class='form-check-label' for='view-source'>View source</label>\n" + "    </div>\n" + "    <div  class='form-check form-check-inline'>\n" + "    <input class='form-check-input' id='format-queries' type='checkbox' value=''>\n"
 				 + "    <label class='form-check-label' for='format-queries'>Format queries</label>\n" + "    </div>\n" + "    <div  class='form-check form-check-inline'>\n" + "    <input class='form-check-input' id='format-rules' type='checkbox' value='' checked>\n" + "    <label class='form-check-label' for='format-rules'>Format rules</label>\n"
-				 + "    </div>\n" + "  </div>\n" + "</div>\n" + "\n" + "<div>\n" + "<table class='table table-sm table-borderless'>\n" + "    <thead><th>Line</th><th>Coverage</th><th>Source code/method, queries and rules</th></thead>\n" + content + "\n" + "</table>\n" + "</div>\n" + GetFooter() 
-				+ "</div>\n" + "</body>\n";
+				 + "    </div>\n" + "  </div>\n" + "</div>\n" + "\n" + "<div>\n" + "<table class='table table-sm table-borderless'>\n" + "    <thead><th style='width:1%'>Line</th><th style='width:1%'>Coverage</th><th>Source code/method, queries and rules</th></thead>\n" + content + "\n" + "</table>\n"
+				 + "</div>\n" + GetFooter() + "</div>\n" + "</body>\n";
+		}
+
+		public virtual string GetLineWithoutCoverage(int lineNumber, string sourceCode)
+		{
+			string template = "<tr class='line line-code'><td>$lineNumber$</td><td></td>" + "<td colspan='2'><code>$sourceCode$</code></td>" + "</tr>\n";
+			return template.Replace("$lineNumber$", lineNumber.ToString()).Replace("$sourceCode$", GetSourceHtml(sourceCode));
 		}
 
 		public virtual string GetLineContent(int lineNumber, string coverage, string methodName, string sourceCode)
@@ -40,7 +46,7 @@ namespace Giis.Qacover.Report
 			string template = "    <tr class='line line-coverage'>\n" + "        <td>$lineNumber$</td>\n" + "        <td class='nowrap'>$coverage$</td>\n" + "        <td colspan='2'>\n" + "            <span class='text-primary font-weight-bold $methodCssClass$'>$methodName$</span>\n" + "            <code>$sourceCode$</code>\n"
 				 + "        </td>\n" + "    </tr>\n";
 			return template.Replace("$lineNumber$", lineNumber.ToString()).Replace("$coverage$", coverage).Replace("$methodName$", methodName).Replace("$methodCssClass$", sourceCode == null ? string.Empty : "method").Replace("$sourceCode$", sourceCode == null ? " &nbsp; (source code not available)"
-				 : sourceCode);
+				 : GetSourceHtml(sourceCode));
 		}
 
 		// if source code not available, the css class for method is empty (it will be shown even if hidden by the ui)
@@ -97,6 +103,11 @@ namespace Giis.Qacover.Report
 		}
 
 		// no error
+		private string GetSourceHtml(string sourceCode)
+		{
+			return Encode(sourceCode).Replace("\t", "    ").Replace(" ", "&nbsp;");
+		}
+
 		private string GetSqlHtml(string sql)
 		{
 			string br = " <br class='canhide'/>";

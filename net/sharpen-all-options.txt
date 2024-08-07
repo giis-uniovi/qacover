@@ -2,7 +2,7 @@
 -cp sharpen-temp/lib/tdrules-client-4.2.0.jar
 -cp sharpen-temp/lib/tdrules-client-rdb-4.2.0.jar
 -cp sharpen-temp/lib/tdrules-store-rdb-4.2.0.jar
--cp sharpen-temp/lib/portable-java-2.2.0.jar
+-cp sharpen-temp/lib/portable-java-2.3.0.jar
 -cp sharpen-temp/lib/visual-assert-2.4.1.jar
 -cp sharpen-temp/lib/p6spy-3.9.0.jar
 -cp sharpen-temp/lib/junit-4.13.jar

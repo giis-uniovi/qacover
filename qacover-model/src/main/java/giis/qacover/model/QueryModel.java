@@ -23,6 +23,7 @@ public class QueryModel extends RuleBase {
 	private static final String METHOD_NAME = "method";
 	private static final String LINE_NUMBER = "line";
 	private static final String CLASS_FILE_NAME = "file";
+	private static final String SOURCE_FILE_NAME = "source";
 
 	// The model of the rules that is wrapped here
 	protected TdRules model = null;
@@ -76,11 +77,12 @@ public class QueryModel extends RuleBase {
 		return sb.toString();
 	}
 
-	public void setLocation(String className, String methodName, int lineNumber, String fileName) {
+	public void setLocation(String className, String methodName, int lineNumber, String fileName, String sourceFileName) {
 		setAttribute(CLASS_NAME, className);
 		setAttribute(METHOD_NAME, methodName);
 		setAttribute(LINE_NUMBER, String.valueOf(lineNumber));
 		setAttribute(CLASS_FILE_NAME, fileName);
+		setAttribute(SOURCE_FILE_NAME, sourceFileName);
 	}
 
 	public int getQrun() {
@@ -97,6 +99,9 @@ public class QueryModel extends RuleBase {
 	}
 	public String getSql() {
 		return model.getQuery();
+	}
+	public String getSourceLocation() {
+		return getAttribute(SOURCE_FILE_NAME);
 	}
 
 	public List<RuleModel> getRules() {

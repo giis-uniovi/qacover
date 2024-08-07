@@ -19,7 +19,21 @@ namespace Giis.Qacover.Report
 			}
 			else
 			{
-				ReportManager.ConsoleWrite("Two parameters are required: rulesFolder reportFolder");
+				if (args.Length == 3)
+				{
+					new ReportManager().Run(args[0], args[1], args[2], string.Empty);
+				}
+				else
+				{
+					if (args.Length == 4)
+					{
+						new ReportManager().Run(args[0], args[1], args[2], args[3]);
+					}
+					else
+					{
+						ReportManager.ConsoleWrite("At least two parameters are required: rulesFolder reportFolder [sourceFolders [projecFolder]]");
+					}
+				}
 			}
 		}
 	}

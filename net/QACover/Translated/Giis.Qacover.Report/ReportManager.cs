@@ -21,9 +21,22 @@ namespace Giis.Qacover.Report
 		// NOSONAR for console app
 		public virtual void Run(string rulesFolder, string reportFolder)
 		{
+			Run(rulesFolder, reportFolder, string.Empty, string.Empty);
+		}
+
+		public virtual void Run(string rulesFolder, string reportFolder, string sourceFolders, string projectFolder)
+		{
 			ConsoleWrite("QACover version " + new Variability().GetVersion());
 			ConsoleWrite("Rules folder: " + FileUtil.GetFullPath(rulesFolder));
 			ConsoleWrite("Report folder: " + FileUtil.GetFullPath(reportFolder));
+			if (!JavaCs.IsEmpty(sourceFolders))
+			{
+				ConsoleWrite("Source folders: " + sourceFolders);
+			}
+			if (!JavaCs.IsEmpty(projectFolder))
+			{
+				ConsoleWrite("Project folder: " + projectFolder);
+			}
 			FileUtil.CreateDirectory(reportFolder);
 			// Report index
 			IndextHtmlWriter indexWriter = new IndextHtmlWriter();
@@ -40,30 +53,45 @@ namespace Giis.Qacover.Report
 				indexRowsSb.Append(indexWriter.GetBodyRow(className, summary.GetQrun(), summary.GetQcount(), summary.GetQerror(), summary.GetCount(), summary.GetDead(), summary.GetError()));
 				// Generates a file for this class
 				ClassHtmlWriter classWriter = new ClassHtmlWriter();
-				string htmlCoverage = GetClassCoverage(query, classWriter);
+				string htmlCoverage = GetClassCoverage(query, classWriter, sourceFolders, projectFolder);
 				string htmlCoverageContent = classWriter.GetHeader(className) + classWriter.GetBodyContent(className, htmlCoverage);
 				FileUtil.FileWrite(reportFolder, className + ".html", htmlCoverageContent);
 			}
 			// Puts everything, with totals as first line
 			CoverageSummary totals = classes.GetSummary();
 			string indexRowsHeader = indexWriter.GetBodyRow("TOTAL", totals.GetQrun(), totals.GetQcount(), totals.GetQerror(), totals.GetCount(), totals.GetDead(), totals.GetError());
-			string indexContent = indexWriter.GetHeader("SQL Query Fpc Coverage") + indexWriter.GetBodyContent("SQL Query Fpc Coverage", indexRowsHeader + indexRowsSb.ToString());
+			string indexContent = indexWriter.GetHeader("SQL Query FPC Coverage") + indexWriter.GetBodyContent("SQL Query FPC Coverage", indexRowsHeader + indexRowsSb.ToString());
 			FileUtil.FileWrite(reportFolder, "index.html", indexContent);
 			ConsoleWrite(classes.Size() + " classes generated, see index.html at reports folder");
 		}
 
-		private string GetClassCoverage(QueryCollection queries, ClassHtmlWriter writer)
+		private string GetClassCoverage(QueryCollection queries, ClassHtmlWriter writer, string sourceFolders, string projectFolders)
 		{
 			// first makes groups by line number, each line can have zero, one or more queries
 			SourceCodeCollection lineCollection = new SourceCodeCollection();
 			lineCollection.AddQueries(queries);
 			// groups by line number
+			// locates the source code for this class
+			if (queries.Size() > 0)
+			{
+				// it is assumed that all queries are in the same class file
+				lineCollection.AddSources(queries.Get(0), sourceFolders, projectFolders);
+			}
 			StringBuilder csb = new StringBuilder();
 			foreach (KeyValuePair<int, SourceCodeLine> line in lineCollection.GetLines())
 			{
-				// Coverage and source Code of the line, or method if no line is available
-				QueryReader query0 = line.Value.GetQueries()[0];
-				csb.Append(writer.GetLineContent(line.Key, GetLineCoverage(line.Value, writer), query0.GetKey().GetMethodName(), line.Value.GetSource()));
+				if (line.Value.GetQueries().Count == 0)
+				{
+					// NOSONAR for net compatibility
+					// only the source code if there are no queries
+					csb.Append(writer.GetLineWithoutCoverage(line.Key, line.Value.GetSource()));
+				}
+				else
+				{
+					// Coverage and source Code of the line, or method if no line is available
+					QueryReader query0 = line.Value.GetQueries()[0];
+					csb.Append(writer.GetLineContent(line.Key, GetLineCoverage(line.Value, writer), query0.GetKey().GetMethodName(), line.Value.GetSource()));
+				}
 				// Each query (if any) and details of their rules
 				foreach (QueryReader thisQuery in line.Value.GetQueries())
 				{

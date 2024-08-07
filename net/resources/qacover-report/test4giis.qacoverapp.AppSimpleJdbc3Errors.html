@@ -67,13 +67,34 @@
 
 <div>
 <table class='table table-sm table-borderless'>
-    <thead><th>Line</th><th>Coverage</th><th>Source code/method, queries and rules</th></thead>
+    <thead><th style='width:1%'>Line</th><th style='width:1%'>Coverage</th><th>Source code/method, queries and rules</th></thead>
+<tr class='line line-code'><td>1</td><td></td><td colspan='2'><code>/////////////////////////////////////////////////////////////////////////////////////////////</code></td></tr>
+<tr class='line line-code'><td>2</td><td></td><td colspan='2'><code>///////&nbsp;THIS&nbsp;FILE&nbsp;HAS&nbsp;BEEN&nbsp;AUTOMATICALLY&nbsp;CONVERTED&nbsp;FROM&nbsp;THE&nbsp;JAVA&nbsp;SOURCES.&nbsp;DO&nbsp;NOT&nbsp;EDIT&nbsp;///////</code></td></tr>
+<tr class='line line-code'><td>3</td><td></td><td colspan='2'><code>/////////////////////////////////////////////////////////////////////////////////////////////</code></td></tr>
+<tr class='line line-code'><td>4</td><td></td><td colspan='2'><code>using&nbsp;Giis.Qacover.Model;</code></td></tr>
+<tr class='line line-code'><td>5</td><td></td><td colspan='2'><code>using&nbsp;Java.Sql;</code></td></tr>
+<tr class='line line-code'><td>6</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>7</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>8</td><td></td><td colspan='2'><code>namespace&nbsp;Test4giis.Qacoverapp</code></td></tr>
+<tr class='line line-code'><td>9</td><td></td><td colspan='2'><code>{</code></td></tr>
+<tr class='line line-code'><td>10</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;summary&gt;Simple&nbsp;mock&nbsp;application&nbsp;to&nbsp;test&nbsp;errors&lt;/summary&gt;</code></td></tr>
+<tr class='line line-code'><td>11</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;AppSimpleJdbc3Errors&nbsp;:&nbsp;AppBase</code></td></tr>
+<tr class='line line-code'><td>12</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>13</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
+<tr class='line line-code'><td>14</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AppSimpleJdbc3Errors(Variability&nbsp;targetVariant)</code></td></tr>
+<tr class='line line-code'><td>15</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;base(targetVariant)</code></td></tr>
+<tr class='line line-code'><td>16</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>17</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>18</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>19</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
+<tr class='line line-code'><td>20</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;Query0Errors()</code></td></tr>
+<tr class='line line-code'><td>21</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
         <td>22</td>
         <td class='nowrap'><strong>50%</strong>&nbsp;(1/2)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>Query0Errors</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>Query0Errors</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&lt;9");</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -119,12 +140,17 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>23</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>24</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>25</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
+<tr class='line line-code'><td>26</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;Query1ErrorAtQuery()</code></td></tr>
+<tr class='line line-code'><td>27</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
         <td>28</td>
         <td class='nowrap'><strong></strong>&nbsp;(0/0)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>Query1ErrorAtQuery</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>Query1ErrorAtQuery</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&lt;10");</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -146,12 +172,17 @@
     <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>29</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>30</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>31</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
+<tr class='line line-code'><td>32</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;Query1ErrorAtRule()</code></td></tr>
+<tr class='line line-code'><td>33</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
         <td>34</td>
         <td class='nowrap'><strong>0%</strong>&nbsp;(0/3)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>Query1ErrorAtRule</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>Query1ErrorAtRule</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&nbsp;&lt;&nbsp;11");</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -214,12 +245,17 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>35</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>36</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>37</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
+<tr class='line line-code'><td>38</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryMultipleErrors()</code></td></tr>
+<tr class='line line-code'><td>39</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
         <td>40</td>
         <td class='nowrap'><strong>0%</strong>&nbsp;(0/3)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>QueryMultipleErrors</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>QueryMultipleErrors</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&lt;9");</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -284,12 +320,15 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>41</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>42</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>43</td><td></td><td colspan='2'><code>}</code></td></tr>
 
 </table>
 </div>
 
 <div><span style="float:right;"><small>
-Generated by: QACover netcore - [version 1.6.4-SNAPSHOT+4adbee92072890b2f32f10a11a5f58c1ba022c9d] - <a href="https://github.com/giis-uniovi/qacover/issues/new">[Submit a problem report]</a>
+Generated by: QACover netcore - [version 1.6.4-SNAPSHOT+6be8f4f1171c3da404206b011da77bce865eb1a2] - <a href="https://github.com/giis-uniovi/qacover/issues/new">[Submit a problem report]</a>
 </small></span></div>
 </div>
 </body>

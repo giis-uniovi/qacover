@@ -48,7 +48,7 @@ public class Controller {
 		}
 		log.debug("Saving evaluation results");
 		rm.getModel().setLocation(stack.getClassName(), stack.getMethodName(), stack.getLineNumber(),
-				stack.getFileName());
+				stack.getFileName(), stack.getSourceFileName());
 		store.put(stack, stmt.getSql(), stmt.getParameters(), rm.getModel(), rm.getSchemaAtRuleGeneration());
 	}
 

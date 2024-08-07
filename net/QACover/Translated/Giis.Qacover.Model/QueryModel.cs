@@ -28,6 +28,8 @@ namespace Giis.Qacover.Model
 
 		private const string ClassFileName = "file";
 
+		private const string SourceFileName = "source";
+
 		protected internal TdRules model = null;
 
 		// In addition to the standard attributes, indicates if the query itself 
@@ -93,12 +95,13 @@ namespace Giis.Qacover.Model
 			return sb.ToString();
 		}
 
-		public virtual void SetLocation(string className, string methodName, int lineNumber, string fileName)
+		public virtual void SetLocation(string className, string methodName, int lineNumber, string fileName, string sourceFileName)
 		{
 			SetAttribute(ClassName, className);
 			SetAttribute(MethodName, methodName);
 			SetAttribute(LineNumber, lineNumber.ToString());
 			SetAttribute(ClassFileName, fileName);
+			SetAttribute(SourceFileName, sourceFileName);
 		}
 
 		public virtual int GetQrun()
@@ -124,6 +127,11 @@ namespace Giis.Qacover.Model
 		public virtual string GetSql()
 		{
 			return model.GetQuery();
+		}
+
+		public virtual string GetSourceLocation()
+		{
+			return GetAttribute(SourceFileName);
 		}
 
 		public virtual IList<RuleModel> GetRules()

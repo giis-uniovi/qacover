@@ -198,16 +198,67 @@ namespace Test4giis.Qacover.Model
 			}
 		}
 
+		// Collect the source code lines with coverage of queries
+		// Basic test of main situations: 
+		// - only queries, with source, source not found
+		// - path with leading/railing spaces
+		// - sorting by line
+		// - multiple queries in class, multiple queries in line (tested in TestReport)
+		// Integrated test in TestReport
+		/// <exception cref="Java.Sql.SQLException"/>
 		[Test]
-		public virtual void TestJavaCsFilePath()
+		public virtual void TestSourceCodeCollection()
 		{
-			// getPath uses apache commons to concatenate paths, but returns null
-			// if first parameter is relative.
-			// Check that patch to solve this works
-			AssertContains("aa/xx", FileUtil.GetPath("aa", "xx").Replace("\\", "/"));
-			AssertContains("aa/xx", FileUtil.GetPath("./aa", "xx").Replace("\\", "/"));
-			AssertContains("bb/aa/xx", FileUtil.GetPath("../bb/aa", "xx").Replace("\\", "/"));
-			AssertContains("bb/aa/xx", FileUtil.GetPath("../../bb/aa", "xx").Replace("\\", "/"));
+			bool isJava = new Variability().IsJava();
+			QueryCollection queries = GetCoverageReader().GetByClass().Get(0);
+			// (1) Only queries, no source code
+			SourceCodeCollection sources = new SourceCodeCollection();
+			sources.AddQueries(queries);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(2, sources.GetLines().Count);
+			// Position of each query and basic content
+			IList<int> keys = sources.GetLineNumbers();
+			int key0 = keys[0];
+			int key1 = keys[1];
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, sources.GetLines()[key0].GetQueries().Count);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, sources.GetLines()[key1].GetQueries().Count);
+			NUnit.Framework.Legacy.ClassicAssert.IsNull(sources.GetLines()[key0].GetSource());
+			NUnit.Framework.Legacy.ClassicAssert.IsNull(sources.GetLines()[key1].GetSource());
+			// Order of execution: queryParameters queryNoParameters1Condition queryParameters
+			// but the second is in a line before the first, it appear at the first position
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("select id,num,text from test where num>=-1", sources.GetLines()[key0].GetQueries()[0].GetSql());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(isJava ? "SELECT id , num , text FROM test WHERE num > ?1? AND text = ?2?" : "select id,num,text from test where num>@param1 and text=@param2", sources.GetLines()[key1].GetQueries()[0].GetSql());
+			// Test location of source code (net stores an absolute path, note that this test is run 4 levels below solution folder)
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(isJava ? "test4giis/qacoverapp/AppSimpleJdbc.java" : FileUtil.GetFullPath("../../../../QACoverTest/Translated/Test4giis.Qacoverapp/AppSimpleJdbc.cs").Replace("\\", "/"), sources.GetLines()[key0].GetQueries()[0].GetModel().GetSourceLocation
+				());
+			// Source folder/files setup. In net the rules have an absolute path that requires a projectRoot to resolve
+			string projectFolder = isJava ? string.Empty : "../../../../../net";
+			// this solution root
+			string sourceFolder = isJava ? "src/test/java" : "../../../..";
+			// in this case sources are just under project root
+			string noSourceFolder = isJava ? "src/nosources" : "../../../../../otherproject/QACoverTest";
+			// (2) Add source code (found in second path, that requires trim), now there is source content and coverage
+			sources.AddSources(queries.Get(0), noSourceFolder + ", " + sourceFolder + " ", projectFolder);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, sources.GetLines()[key0].GetQueries().Count);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, sources.GetLines()[key1].GetQueries().Count);
+			NUnit.Framework.Legacy.ClassicAssert.IsNotNull(sources.GetLines()[key0].GetSource());
+			NUnit.Framework.Legacy.ClassicAssert.IsNotNull(sources.GetLines()[key1].GetSource());
+			// Check first and last line, with source content, without coverage
+			int numLines = sources.GetLines().Count;
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, sources.GetLines()[1].GetQueries().Count);
+			NUnit.Framework.Legacy.ClassicAssert.IsNotNull(sources.GetLines()[1]);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, sources.GetLines()[numLines].GetQueries().Count);
+			NUnit.Framework.Legacy.ClassicAssert.IsNotNull(sources.GetLines()[numLines]);
+			// (3) Source code can't be located at any file
+			// Queries are already generated, reset the sources
+			sources = new SourceCodeCollection();
+			sources.AddQueries(queries);
+			sources.AddSources(queries.Get(0), noSourceFolder, projectFolder);
+			// Same checks than at the beginning of this test
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(2, sources.GetLines().Count);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, sources.GetLines()[key0].GetQueries().Count);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, sources.GetLines()[key1].GetQueries().Count);
+			NUnit.Framework.Legacy.ClassicAssert.IsNull(sources.GetLines()[key0].GetSource());
+			NUnit.Framework.Legacy.ClassicAssert.IsNull(sources.GetLines()[key1].GetSource());
 		}
 	}
 }

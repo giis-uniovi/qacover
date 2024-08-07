@@ -1,7 +1,16 @@
 package giis.qacover.reader;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import giis.portable.util.FileUtil;
+import giis.portable.util.JavaCs;
+
 
 /**
  * Collects all info about source code and coverage of queries executed at each
@@ -9,10 +18,19 @@ import java.util.TreeMap;
  */
 public class SourceCodeCollection {
 
+	private static final Logger log = LoggerFactory.getLogger(SourceCodeCollection.class);
+
 	private TreeMap<Integer, SourceCodeLine> lines = new TreeMap<>();
 	
 	public SortedMap<Integer, SourceCodeLine> getLines() {
 		return lines;
+	}
+	
+	public List<Integer> getLineNumbers() {
+		List<Integer> ret = new ArrayList<>();
+		for (int key : lines.keySet())
+			ret.add(key);
+		return ret;
 	}
 
 	// Gets the indicated Line object, creates a new if not exists
@@ -41,6 +59,69 @@ public class SourceCodeCollection {
 		int lineNumber = Integer.parseInt(query.getKey().getClassLine());
 		SourceCodeLine line = getLine(lineNumber);
 		line.getQueries().add(query);
+	}
+	
+	/**
+	 * Adds the source file that can be found from the comma separated
+	 * list of source folders at the source path indicated by query
+	 */
+	public void addSources(QueryReader query, String sourceFolders, String projectFolder) {
+		String[] locations = JavaCs.splitByChar(sourceFolders, ',');
+		for (String sourceFolder : locations) {
+			String sourceFile = query.getModel().getSourceLocation();
+			String resolvedFile = resolveSourcePath(sourceFolder, projectFolder, sourceFile);
+			if ("".equals(resolvedFile)) // skip: empty return means that path can't be resolved
+				continue;
+			List<String> allLines = FileUtil.fileReadLines(resolvedFile, false);
+			if (!JavaCs.isEmpty(allLines)) {
+				addSources(allLines);
+				return;
+			} else {
+				log.debug("File can't be read or is empty: " + resolvedFile);
+			}
+		}
+	}
+
+	private void addSources(List<String> sources) {
+		for (int i = 0; i < sources.size(); i++) {
+			SourceCodeLine line = getLine(i + 1); // line numbers begin with 1
+			line.setSource(sources.get(i));
+		}
+	}
+
+	public String resolveSourcePath(String sourceFolder, String projectFolder, String sourceFile) {
+		log.debug("Try to resolve: Source: [" + sourceFolder + "] Project: [" + projectFolder + "] File: [" + sourceFile
+				+ "]");
+		sourceFolder = JavaCs.isEmpty(sourceFolder) ? "" : sourceFolder.trim();
+		projectFolder = JavaCs.isEmpty(projectFolder) ? "" : projectFolder.trim();
+		sourceFile = JavaCs.isEmpty(sourceFile) ? "" : sourceFile.trim();
+
+		// Source folder and source file are required, if not, the empty return means that source can't be fount
+		if ("".equals(sourceFolder) || "".equals(sourceFile)) {
+			log.debug("Not resolved, source folder or file are empty");
+			return "";
+		}
+
+		// If projectFolder specified (for net generated coverage), it is expected a full path source File
+		// that is converted to relative to projectFolder
+		if (!"".equals(projectFolder)) {
+			// unifies separators (linux/windows) and simplifies double separators that appear sometimes
+			sourceFile = FileUtil.getFullPath(sourceFile.replace("\\", "/")).replace("\\", "/").replace("//", "/");
+			String prefix = FileUtil.getFullPath(projectFolder.replace("\\", "/")).replace("\\", "/").replace("//", "/");
+			if (!prefix.endsWith("/"))
+				prefix = prefix + "/";
+
+			if (sourceFile.startsWith(prefix)) {
+				sourceFile = JavaCs.substring(sourceFile, prefix.length(), sourceFile.length());
+				log.debug("Using project folder, resolved absolute file name to relative: " + sourceFile);
+			} else {
+				log.debug("Using project folder, not resolved: prefix [" + prefix + "] is not part of source file [" + sourceFile + "]");
+				return "";
+			}
+		}
+		String resolvedFile = FileUtil.getPath(sourceFolder, sourceFile);
+		log.debug("Resolved to: " + resolvedFile);
+		return resolvedFile;
 	}
 
 }

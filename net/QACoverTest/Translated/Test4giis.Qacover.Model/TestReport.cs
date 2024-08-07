@@ -102,7 +102,8 @@ namespace Test4giis.Qacover.Model
 			AssertReaderKeysByRunOrderAll();
 			AssertReaderDataByRunOrderAll();
 			// Generate and test the html report
-			new ReportManager().Run(Configuration.GetInstance().GetStoreRulesLocation(), Configuration.GetInstance().GetStoreReportsLocation());
+			// note that net runs four levels before solution root
+			new ReportManager().Run(Configuration.GetInstance().GetStoreRulesLocation(), Configuration.GetInstance().GetStoreReportsLocation(), new Variability().IsJava() ? "src/test/java" : "../../../..", new Variability().IsJava() ? string.Empty : "../../../..");
 			string indexContent = FileUtil.FileRead(outPath, "index.html");
 			FileUtil.FileWrite(outPath, "index.html", indexContent);
 			AssertReports(string.Empty, "index.html");
