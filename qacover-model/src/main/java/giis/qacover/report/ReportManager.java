@@ -3,6 +3,7 @@ package giis.qacover.report;
 import java.util.Map;
 
 import giis.portable.util.FileUtil;
+import giis.portable.util.JavaCs;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.Variability;
 import giis.qacover.reader.CoverageCollection;
@@ -22,9 +23,16 @@ public class ReportManager {
 		System.out.println(value); // NOSONAR for console app
 	}
 	public void run(String rulesFolder, String reportFolder) {
+		run(rulesFolder, reportFolder, "", "");
+	}
+	public void run(String rulesFolder, String reportFolder, String sourceFolders, String projectFolder) {
 		consoleWrite("QACover version " + new Variability().getVersion());
 		consoleWrite("Rules folder: " + FileUtil.getFullPath(rulesFolder));
 		consoleWrite("Report folder: " + FileUtil.getFullPath(reportFolder));
+		if (!JavaCs.isEmpty(sourceFolders))
+			consoleWrite("Source folders: " + sourceFolders);
+		if (!JavaCs.isEmpty(projectFolder))
+			consoleWrite("Project folder: " + projectFolder);
 		FileUtil.createDirectory(reportFolder);
 
 		// Report index
@@ -46,7 +54,7 @@ public class ReportManager {
 
 			// Generates a file for this class
 			ClassHtmlWriter classWriter = new ClassHtmlWriter();
-			String htmlCoverage = getClassCoverage(query, classWriter);
+			String htmlCoverage = getClassCoverage(query, classWriter, sourceFolders, projectFolder);
 			String htmlCoverageContent = classWriter.getHeader(className) 
 					+ classWriter.getBodyContent(className, htmlCoverage);
 			FileUtil.fileWrite(reportFolder, className + ".html", htmlCoverageContent);
@@ -56,26 +64,35 @@ public class ReportManager {
 		CoverageSummary totals = classes.getSummary();
 		String indexRowsHeader = indexWriter.getBodyRow("TOTAL", totals.getQrun(), totals.getQcount(), totals.getQerror(), totals.getCount(),
 				totals.getDead(), totals.getError());
-		String indexContent = indexWriter.getHeader("SQL Query Fpc Coverage")
-				+ indexWriter.getBodyContent("SQL Query Fpc Coverage", indexRowsHeader + indexRowsSb.toString());
+		String indexContent = indexWriter.getHeader("SQL Query FPC Coverage")
+				+ indexWriter.getBodyContent("SQL Query FPC Coverage", indexRowsHeader + indexRowsSb.toString());
 		FileUtil.fileWrite(reportFolder, "index.html", indexContent);
 		consoleWrite(classes.size() + " classes generated, see index.html at reports folder");
 	}
 	
-	private String getClassCoverage(QueryCollection queries, ClassHtmlWriter writer) {
+	private String getClassCoverage(QueryCollection queries, ClassHtmlWriter writer, String sourceFolders, String projectFolders) {
 		// first makes groups by line number, each line can have zero, one or more queries
 		SourceCodeCollection lineCollection = new SourceCodeCollection();
 		lineCollection.addQueries(queries); // groups by line number
 		
+		// locates the source code for this class
+		if (queries.size() > 0) // it is assumed that all queries are in the same class file
+			lineCollection.addSources(queries.get(0), sourceFolders, projectFolders);
+		
 		StringBuilder csb = new StringBuilder();
 		for (Map.Entry<Integer, SourceCodeLine> line : lineCollection.getLines().entrySet()) {
-			// Coverage and source Code of the line, or method if no line is available
-			QueryReader query0 = line.getValue().getQueries().get(0);
-			csb.append(writer.getLineContent(line.getKey(), 
+			if (line.getValue().getQueries().size() == 0) { // NOSONAR for net compatibility
+				// only the source code if there are no queries
+				csb.append(writer.getLineWithoutCoverage(line.getKey(), line.getValue().getSource()));
+			} else {
+				// Coverage and source Code of the line, or method if no line is available
+				QueryReader query0 = line.getValue().getQueries().get(0);
+				csb.append(writer.getLineContent(line.getKey(), 
 					getLineCoverage(line.getValue(), writer),
 					query0.getKey().getMethodName(), 
 					line.getValue().getSource()));
-
+			}
+			
 			// Each query (if any) and details of their rules
 			for (QueryReader thisQuery : line.getValue().getQueries()) {
 				String queryCoverage = getQueryCoverage(thisQuery.getModel(), line.getValue(), writer);

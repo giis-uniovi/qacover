@@ -1,6 +1,8 @@
 package test4giis.qacover.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.sql.SQLException;
@@ -22,6 +24,7 @@ import giis.qacover.reader.CoverageCollection;
 import giis.qacover.reader.CoverageReader;
 import giis.qacover.reader.QueryCollection;
 import giis.qacover.reader.QueryReader;
+import giis.qacover.reader.SourceCodeCollection;
 import test4giis.qacover.Base;
 import test4giis.qacoverapp.AppSimpleJdbc;
 
@@ -200,14 +203,80 @@ public class TestReader extends Base {
 		}
 	}
 
+	// Collect the source code lines with coverage of queries
+	// Basic test of main situations: 
+	// - only queries, with source, source not found
+	// - path with leading/railing spaces
+	// - sorting by line
+	// - multiple queries in class, multiple queries in line (tested in TestReport)
+	// Integrated test in TestReport
 	@Test
-	public void testJavaCsFilePath() {
-		// getPath uses apache commons to concatenate paths, but returns null
-		// if first parameter is relative.
-		// Check that patch to solve this works
-		assertContains("aa/xx", FileUtil.getPath("aa", "xx").replace("\\", "/"));
-		assertContains("aa/xx", FileUtil.getPath("./aa", "xx").replace("\\", "/"));
-		assertContains("bb/aa/xx", FileUtil.getPath("../bb/aa", "xx").replace("\\", "/"));
-		assertContains("bb/aa/xx", FileUtil.getPath("../../bb/aa", "xx").replace("\\", "/"));
+	public void testSourceCodeCollection() throws SQLException {
+		boolean isJava = new Variability().isJava();
+		QueryCollection queries = getCoverageReader().getByClass().get(0);
+		
+		// (1) Only queries, no source code
+		SourceCodeCollection sources = new SourceCodeCollection();
+		sources.addQueries(queries);
+		assertEquals(2, sources.getLines().size());
+
+		// Position of each query and basic content
+		List<Integer> keys = sources.getLineNumbers();
+		int key0 = keys.get(0);
+		int key1 = keys.get(1);
+		assertEquals(1, sources.getLines().get(key0).getQueries().size());
+		assertEquals(1, sources.getLines().get(key1).getQueries().size());
+		assertNull(sources.getLines().get(key0).getSource());
+		assertNull(sources.getLines().get(key1).getSource());
+		
+		// Order of execution: queryParameters queryNoParameters1Condition queryParameters
+		// but the second is in a line before the first, it appear at the first position
+		assertEquals("select id,num,text from test where num>=-1", 
+				sources.getLines().get(key0).getQueries().get(0).getSql());
+		assertEquals(isJava
+				? "SELECT id , num , text FROM test WHERE num > ?1? AND text = ?2?"
+				: "select id,num,text from test where num>@param1 and text=@param2", 
+				sources.getLines().get(key1).getQueries().get(0).getSql());
+		
+		// Test location of source code (net stores an absolute path, note that this test is run 4 levels below solution folder)
+		assertEquals(isJava
+				? "test4giis/qacoverapp/AppSimpleJdbc.java"
+				: FileUtil.getFullPath("../../../../QACoverTest/Translated/Test4giis.Qacoverapp/AppSimpleJdbc.cs").replace("\\", "/"), 
+				sources.getLines().get(key0).getQueries().get(0).getModel().getSourceLocation());
+		
+		// Source folder/files setup. In net the rules have an absolute path that requires a projectRoot to resolve
+		String projectFolder = isJava ? "" : "../../../../../net"; // this solution root
+		String sourceFolder = isJava
+				? "src/test/java"
+				: "../../../.."; // in this case sources are just under project root
+		String noSourceFolder = isJava
+				? "src/nosources"
+				: "../../../../../otherproject/QACoverTest";
+		
+		// (2) Add source code (found in second path, that requires trim), now there is source content and coverage
+		sources.addSources(queries.get(0), noSourceFolder + ", " + sourceFolder + " ", projectFolder);
+		assertEquals(1, sources.getLines().get(key0).getQueries().size());
+		assertEquals(1, sources.getLines().get(key1).getQueries().size());
+		assertNotNull(sources.getLines().get(key0).getSource());
+		assertNotNull(sources.getLines().get(key1).getSource());
+		// Check first and last line, with source content, without coverage
+		int numLines = sources.getLines().size();
+		assertEquals(0, sources.getLines().get(1).getQueries().size());
+		assertNotNull(sources.getLines().get(1));
+		assertEquals(0, sources.getLines().get(numLines).getQueries().size());
+		assertNotNull(sources.getLines().get(numLines));
+		
+		// (3) Source code can't be located at any file
+		// Queries are already generated, reset the sources
+		sources = new SourceCodeCollection();
+		sources.addQueries(queries);
+		sources.addSources(queries.get(0), noSourceFolder, projectFolder);
+		// Same checks than at the beginning of this test
+		assertEquals(2, sources.getLines().size());
+		assertEquals(1, sources.getLines().get(key0).getQueries().size());
+		assertEquals(1, sources.getLines().get(key1).getQueries().size());
+		assertNull(sources.getLines().get(key0).getSource());
+		assertNull(sources.getLines().get(key1).getSource());
 	}
+		
 }

@@ -96,7 +96,11 @@ public class TestReport extends Base {
 		assertReaderDataByRunOrderAll();
 		
 		// Generate and test the html report
-		new ReportManager().run(Configuration.getInstance().getStoreRulesLocation(), Configuration.getInstance().getStoreReportsLocation());
+		// note that net runs four levels before solution root
+		new ReportManager().run(Configuration.getInstance().getStoreRulesLocation(), 
+				Configuration.getInstance().getStoreReportsLocation(),
+				new Variability().isJava() ? "src/test/java" : "../../../..", 
+				new Variability().isJava() ? "" : "../../../..");
 		String indexContent = FileUtil.fileRead(outPath, "index.html");
 		FileUtil.fileWrite(outPath, "index.html", indexContent);
 		assertReports("", "index.html");

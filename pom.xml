@@ -38,7 +38,7 @@
 			<dependency>
 				<groupId>io.github.javiertuya</groupId>
 				<artifactId>portable-java</artifactId>
-				<version>2.2.3</version>
+				<version>2.3.0</version>
 			</dependency>
 			<dependency>
 				<groupId>p6spy</groupId>
@@ -307,8 +307,18 @@
 	<repositories>
 		<!-- GitHub snapshots repositories -->
 		<repository>
-			<id>github</id>
+			<id>github-giis-uniovi</id>
 			<url>https://maven.pkg.github.com/giis-uniovi/*</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+      		<releases>
+        		<enabled>false</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>github-javiertuya</id>
+			<url>https://maven.pkg.github.com/javiertuya/*</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>

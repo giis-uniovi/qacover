@@ -67,13 +67,35 @@
 
 <div>
 <table class='table table-sm table-borderless'>
-    <thead><th>Line</th><th>Coverage</th><th>Source code/method, queries and rules</th></thead>
+    <thead><th style='width:1%'>Line</th><th style='width:1%'>Coverage</th><th>Source code/method, queries and rules</th></thead>
+<tr class='line line-code'><td>1</td><td></td><td colspan='2'><code>package&nbsp;test4giis.qacoverapp;</code></td></tr>
+<tr class='line line-code'><td>2</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>3</td><td></td><td colspan='2'><code>import&nbsp;java.sql.ResultSet;</code></td></tr>
+<tr class='line line-code'><td>4</td><td></td><td colspan='2'><code>import&nbsp;java.sql.SQLException;</code></td></tr>
+<tr class='line line-code'><td>5</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>6</td><td></td><td colspan='2'><code>import&nbsp;giis.qacover.core.services.StackLocator;</code></td></tr>
+<tr class='line line-code'><td>7</td><td></td><td colspan='2'><code>import&nbsp;giis.qacover.model.Variability;</code></td></tr>
+<tr class='line line-code'><td>8</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>9</td><td></td><td colspan='2'><code>/**</code></td></tr>
+<tr class='line line-code'><td>10</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;Simple&nbsp;mock&nbsp;application</code></td></tr>
+<tr class='line line-code'><td>11</td><td></td><td colspan='2'><code>&nbsp;*/</code></td></tr>
+<tr class='line line-code'><td>12</td><td></td><td colspan='2'><code>public&nbsp;class&nbsp;AppSimpleJdbc&nbsp;extends&nbsp;AppBase&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>13</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>14</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AppSimpleJdbc(Variability&nbsp;targetVariant)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>15</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super(targetVariant);</code></td></tr>
+<tr class='line line-code'><td>16</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>17</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;//para&nbsp;pruebas&nbsp;de&nbsp;stacktrace</code></td></tr>
+<tr class='line line-code'><td>18</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;StackLocator&nbsp;myGetStackTraceTargetMethod()&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>19</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;myGetStackTraceIgnoredMethod();</code></td></tr>
+<tr class='line line-code'><td>20</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>21</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>22</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoParameters1Condition(int&nbsp;param1)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
         <td>23</td>
         <td class='nowrap'><strong>50%</strong>&nbsp;(1/2)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>queryNoParameters1Condition</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>queryNoParameters1Condition</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;executeQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&gt;="&nbsp;+&nbsp;param1);</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -119,12 +141,14 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>24</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>25</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoParameters2Condition(int&nbsp;param1,&nbsp;String&nbsp;param2)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
         <td>26</td>
         <td class='nowrap'><strong>50%</strong>&nbsp;(2/4)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>queryNoParameters2Condition</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>queryNoParameters2Condition</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;executeQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&gt;"&nbsp;+&nbsp;param1&nbsp;+&nbsp;"&nbsp;and&nbsp;text='"&nbsp;+&nbsp;param2&nbsp;+&nbsp;"'");</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -196,12 +220,20 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>27</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>28</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryParameters(int&nbsp;param1,&nbsp;String&nbsp;param2)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>29</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;executeQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&gt;?&nbsp;and&nbsp;text=?",param1,&nbsp;param2);</code></td></tr>
+<tr class='line line-code'><td>30</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>31</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;</code></td></tr>
+<tr class='line line-code'><td>32</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;//multiples&nbsp;queries&nbsp;en&nbsp;un&nbsp;metodo&nbsp;(misma&nbsp;y&nbsp;distinta&nbsp;linea)</code></td></tr>
+<tr class='line line-code'><td>33</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;queryDifferentSingleLine(boolean&nbsp;run1,&nbsp;int&nbsp;param1,&nbsp;boolean&nbsp;run2,&nbsp;String&nbsp;param2)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>34</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//dos&nbsp;queries&nbsp;en&nbsp;misma&nbsp;linea&nbsp;con&nbsp;distintas&nbsp;reglas</code></td></tr>
     <tr class='line line-coverage'>
         <td>35</td>
         <td class='nowrap'><strong>40%</strong>&nbsp;(2/5)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>queryDifferentSingleLine</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>queryDifferentSingleLine</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(run1)&nbsp;{rs=executeQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;num="&nbsp;+&nbsp;param1);&nbsp;rs.close();}&nbsp;if&nbsp;(run2)&nbsp;{rs=executeQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param2);&nbsp;rs.close();}</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -303,12 +335,17 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>36</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>37</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;queryEqualSingleLine(String&nbsp;param1,&nbsp;String&nbsp;param2)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>38</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs=executeQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param1);&nbsp;rs.close();&nbsp;executeQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param2);</code></td></tr>
+<tr class='line line-code'><td>39</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>40</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;void&nbsp;queryEqualDifferentLine(String&nbsp;param1,&nbsp;String&nbsp;param2)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
         <td>41</td>
         <td class='nowrap'><strong>33%</strong>&nbsp;(1/3)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>queryEqualDifferentLine</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>queryEqualDifferentLine</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs=executeQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param1);&nbsp;</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -367,12 +404,14 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>42</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs.close();</code></td></tr>
+<tr class='line line-code'><td>43</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//la&nbsp;misma&nbsp;en&nbsp;otra&nbsp;linea</code></td></tr>
     <tr class='line line-coverage'>
         <td>44</td>
         <td class='nowrap'><strong>33%</strong>&nbsp;(1/3)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>queryEqualDifferentLine</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>queryEqualDifferentLine</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs=executeQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param2);</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -431,6 +470,29 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>45</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>46</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoConditions()&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>47</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;executeQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test");</code></td></tr>
+<tr class='line line-code'><td>48</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>49</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoParametersQuotes(String&nbsp;param1,&nbsp;boolean&nbsp;bracketAtTable,&nbsp;boolean&nbsp;bracketAtColumn)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>50</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;executeQuery("select&nbsp;id,num,text&nbsp;from&nbsp;"&nbsp;+&nbsp;quoteIdentifier("test",&nbsp;bracketAtTable)</code></td></tr>
+<tr class='line line-code'><td>51</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;"&nbsp;where&nbsp;"&nbsp;+&nbsp;quoteIdentifier("text",&nbsp;bracketAtColumn)&nbsp;+&nbsp;"='"&nbsp;+&nbsp;param1&nbsp;+&nbsp;"'");</code></td></tr>
+<tr class='line line-code'><td>52</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>53</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoParametersBrackets(String&nbsp;param1,&nbsp;boolean&nbsp;bracketAtTable,&nbsp;boolean&nbsp;bracketAtColumn)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>54</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;executeQuery("select&nbsp;id,num,text&nbsp;from&nbsp;"&nbsp;+&nbsp;(bracketAtTable?"[test]":"test")&nbsp;</code></td></tr>
+<tr class='line line-code'><td>55</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;"&nbsp;where&nbsp;"&nbsp;+&nbsp;(bracketAtColumn?"[text]":"text")&nbsp;+&nbsp;"='"&nbsp;+&nbsp;param1&nbsp;+&nbsp;"'");</code></td></tr>
+<tr class='line line-code'><td>56</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>57</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;String&nbsp;quoteIdentifier(String&nbsp;name,&nbsp;boolean&nbsp;doQuote)&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>58</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(doQuote)&nbsp;//oracle&nbsp;ademas&nbsp;siempre&nbsp;pasa&nbsp;todo&nbsp;a&nbsp;mayusculas,&nbsp;luego&nbsp;debe&nbsp;estar&nbsp;mayusculas&nbsp;al&nbsp;poner&nbsp;quotes</code></td></tr>
+<tr class='line line-code'><td>59</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;"\""&nbsp;+&nbsp;(variant.isOracle()&nbsp;||&nbsp;variant.isH2()&nbsp;?&nbsp;name.toUpperCase()&nbsp;:&nbsp;name)&nbsp;+&nbsp;"\"";</code></td></tr>
+<tr class='line line-code'><td>60</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else</code></td></tr>
+<tr class='line line-code'><td>61</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;name;</code></td></tr>
+<tr class='line line-code'><td>62</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>63</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>64</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryParametersNamed(int&nbsp;param1,&nbsp;int&nbsp;param2,&nbsp;String&nbsp;param3)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>65</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;executeQuery("/*&nbsp;params=?1?,?1?,?2?&nbsp;*/&nbsp;select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;id=?&nbsp;or&nbsp;num=?&nbsp;or&nbsp;text=?",param1,&nbsp;param2,&nbsp;param3);</code></td></tr>
+<tr class='line line-code'><td>66</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>67</td><td></td><td colspan='2'><code>}</code></td></tr>
 
 </table>
 </div>

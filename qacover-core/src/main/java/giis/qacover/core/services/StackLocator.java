@@ -16,6 +16,7 @@ public class StackLocator {
 	private String className = UNDEFINED;
 	private String methodName = UNDEFINED;
 	private String fileName = UNDEFINED;
+	private String fullFileName = UNDEFINED;
 	private int lineNumber = 0;
 
 	public StackLocator() {
@@ -30,6 +31,7 @@ public class StackLocator {
 			if (!excludeClassName(stack.getClassName(i))) {
 				this.className = stack.getClassName(i);
 				this.methodName = stack.getMethodName(i);
+				this.fullFileName = stack.getFullFileName(i);
 				this.fileName = stack.getFileName(i);
 				this.lineNumber = stack.getLineNumber(i);
 				return;
@@ -62,6 +64,9 @@ public class StackLocator {
 	}
 	public String getFileName() {
 		return fileName;
+	}
+	public String getSourceFileName() {
+		return fullFileName;
 	}
 	public int getLineNumber() {
 		return lineNumber;

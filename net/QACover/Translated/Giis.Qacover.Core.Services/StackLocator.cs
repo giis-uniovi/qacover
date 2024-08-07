@@ -25,6 +25,8 @@ namespace Giis.Qacover.Core.Services
 
 		private string fileName = Undefined;
 
+		private string fullFileName = Undefined;
+
 		private int lineNumber = 0;
 
 		public StackLocator()
@@ -42,6 +44,7 @@ namespace Giis.Qacover.Core.Services
 				{
 					this.className = stack.GetClassName(i);
 					this.methodName = stack.GetMethodName(i);
+					this.fullFileName = stack.GetFullFileName(i);
 					this.fileName = stack.GetFileName(i);
 					this.lineNumber = stack.GetLineNumber(i);
 					return;
@@ -87,6 +90,11 @@ namespace Giis.Qacover.Core.Services
 		public virtual string GetFileName()
 		{
 			return fileName;
+		}
+
+		public virtual string GetSourceFileName()
+		{
+			return fullFileName;
 		}
 
 		public virtual int GetLineNumber()

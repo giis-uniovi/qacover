@@ -20,6 +20,11 @@ namespace Giis.Qacover.Reader
 			return source;
 		}
 
+		public virtual void SetSource(string source)
+		{
+			this.source = source;
+		}
+
 		public virtual IList<QueryReader> GetQueries()
 		{
 			return queries;
