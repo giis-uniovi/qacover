@@ -63,21 +63,4 @@ public class CoverageReader {
 		return new HistoryReader(hitems);
 	}
 
-	/**
-	 * Gets a QueryCollection with all data of the executions in time order
-	 */
-	public QueryCollection getByRunOrder() {
-		log.trace("CoverageReader.getByRunOrder, Processing history for folder: " + rulesFolder);
-		LocalStore storage = new LocalStore(rulesFolder);
-		List<HistoryModel> hitems = storage.getHistoryItems();
-		QueryCollection target = new QueryCollection(rulesFolder, "all-executions");
-		for (HistoryModel hitem : hitems) {
-			QueryReader item = new QueryReader(rulesFolder, hitem.getKey());
-			item.setTimestamp(hitem.getTimestampString());
-			item.setParams(hitem.getParams());
-			target.add(item);
-		}
-		return target;
-	}
-
 }

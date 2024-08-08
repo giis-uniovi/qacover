@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import giis.portable.xml.tiny.XNodeAbstract;
-
 /**
  * Map of parameter-value of a query that is being evaluated. Internally stores
  * two maps that differ on the value: 
@@ -35,14 +33,12 @@ public class QueryParameters {
 		return "{" + sb.toString() + "}";
 	}
 
-	public String toXml() {
-		StringBuilder sb = new StringBuilder();
+	public List<ParameterDao> toDao() {
+		List<ParameterDao> dao = new ArrayList<>();
 		List<String> keys = this.keySet();
 		for (String key : keys)
-			sb.append("<parameter name=\"").append(XNodeAbstract.encodeAttribute(key))
-				.append("\" value=\"").append(XNodeAbstract.encodeAttribute(parameters.get(key)))
-				.append("\" />");
-		return "<parameters>" + sb.toString() + "</parameters>";
+			dao.add(new ParameterDao(key, parameters.get(key)));
+		return dao;
 	}
 
 	public void put(String name, String valueString, Object valueObject) {

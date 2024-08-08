@@ -155,7 +155,7 @@ public class TestReader extends Base {
 	public void testReaderInvalidIndexNotExist() {
 		try {
 			CoverageReader reader = new CoverageReader("."); // folder exists, but no index
-			reader.getByRunOrder();
+			reader.getHistory();
 			fail("Deberia producirse una excepcion");
 		} catch (RuntimeException e) {
 			assertContains("Error reading file", e.getMessage());
@@ -182,7 +182,7 @@ public class TestReader extends Base {
 		HistoryReader history = all.getHistoryAtQuery(query.get(0).getKey());
 		List<HistoryModel> model = history.getItems();
 		assertEquals(1, model.size());
-		assertEquals("<parameters></parameters>", model.get(0).getParams());
+		assertEquals("<parameters></parameters>", model.get(0).getParamsXml());
 
 		// Second query has two executions
 		assertEquals("queryparameters", query.get(1).getKey().getMethodName().toLowerCase());
@@ -190,9 +190,9 @@ public class TestReader extends Base {
 		model = history.getItems();
 		assertEquals(2, model.size());
 		assertEquals(javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"),
-				model.get(0).getParams());
+				model.get(0).getParamsXml());
 		assertEquals(javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"),
-				model.get(1).getParams());
+				model.get(1).getParamsXml());
 
 		// Invalid query, creates a query key by changing the class name of an existing key
 		QueryKey invalid = new QueryKey(query.get(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));

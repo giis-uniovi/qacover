@@ -87,8 +87,8 @@ namespace Giis.Qacover.Storage
 
 		private void AddHistoryItem(DateTime timestamp, string queryKey, QueryParameters @params)
 		{
-			HistoryModel historyLog = new HistoryModel(timestamp, queryKey, @params.ToXml());
-			FileUtil.FileAppend(storeLocation, HistoryFileName, historyLog.ToString() + "\n");
+			HistoryModel historyLog = new HistoryModel(timestamp, queryKey, @params);
+			FileUtil.FileAppend(storeLocation, HistoryFileName, historyLog.ToStringV1() + "\n");
 		}
 
 		private void PutSchema(string queryKey, SchemaModel schema)

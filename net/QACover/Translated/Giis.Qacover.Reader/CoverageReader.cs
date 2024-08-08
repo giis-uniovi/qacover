@@ -73,22 +73,5 @@ namespace Giis.Qacover.Reader
 			IList<HistoryModel> hitems = storage.GetHistoryItems();
 			return new HistoryReader(hitems);
 		}
-
-		/// <summary>Gets a QueryCollection with all data of the executions in time order</summary>
-		public virtual QueryCollection GetByRunOrder()
-		{
-			log.Trace("CoverageReader.getByRunOrder, Processing history for folder: " + rulesFolder);
-			LocalStore storage = new LocalStore(rulesFolder);
-			IList<HistoryModel> hitems = storage.GetHistoryItems();
-			QueryCollection target = new QueryCollection(rulesFolder, "all-executions");
-			foreach (HistoryModel hitem in hitems)
-			{
-				QueryReader item = new QueryReader(rulesFolder, hitem.GetKey());
-				item.SetTimestamp(hitem.GetTimestampString());
-				item.SetParams(hitem.GetParams());
-				target.Add(item);
-			}
-			return target;
-		}
 	}
 }

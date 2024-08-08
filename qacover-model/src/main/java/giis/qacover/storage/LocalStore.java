@@ -79,8 +79,8 @@ public class LocalStore {
 	}
 	
 	private void addHistoryItem(Date timestamp, String queryKey, QueryParameters params) {
-		HistoryModel historyLog = new HistoryModel(timestamp, queryKey, params.toXml());
-		FileUtil.fileAppend(storeLocation, HISTORY_FILE_NAME, historyLog.toString() + "\n");
+		HistoryModel historyLog = new HistoryModel(timestamp, queryKey, params);
+		FileUtil.fileAppend(storeLocation, HISTORY_FILE_NAME, historyLog.toStringV1() + "\n");
 	}
 	
 	private void putSchema(String queryKey, SchemaModel schema) {

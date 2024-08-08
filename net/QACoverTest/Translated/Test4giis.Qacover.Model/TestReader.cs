@@ -146,7 +146,7 @@ namespace Test4giis.Qacover.Model
 			{
 				CoverageReader reader = new CoverageReader(".");
 				// folder exists, but no index
-				reader.GetByRunOrder();
+				reader.GetHistory();
 				NUnit.Framework.Legacy.ClassicAssert.Fail("Deberia producirse una excepcion");
 			}
 			catch (Exception e)
@@ -177,14 +177,14 @@ namespace Test4giis.Qacover.Model
 			HistoryReader history = all.GetHistoryAtQuery(query.Get(0).GetKey());
 			IList<HistoryModel> model = history.GetItems();
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, model.Count);
-			NUnit.Framework.Legacy.ClassicAssert.AreEqual("<parameters></parameters>", model[0].GetParams());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("<parameters></parameters>", model[0].GetParamsXml());
 			// Second query has two executions
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual("queryparameters", query.Get(1).GetKey().GetMethodName().ToLower());
 			history = all.GetHistoryAtQuery(query.Get(1).GetKey());
 			model = history.GetItems();
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual(2, model.Count);
-			NUnit.Framework.Legacy.ClassicAssert.AreEqual(Javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"), model[0].GetParams());
-			NUnit.Framework.Legacy.ClassicAssert.AreEqual(Javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"), model[1].GetParams());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(Javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"), model[0].GetParamsXml());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(Javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"), model[1].GetParamsXml());
 			// Invalid query, creates a query key by changing the class name of an existing key
 			QueryKey invalid = new QueryKey(query.Get(0).GetKey().GetKey().Replace("AppSimpleJdbc", "InvalidClass"));
 			history = all.GetHistoryAtQuery(invalid);

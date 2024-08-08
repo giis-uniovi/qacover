@@ -1,8 +1,12 @@
 package giis.qacover.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import giis.portable.util.JavaCs;
+import giis.portable.xml.tiny.XNode;
+import giis.portable.xml.tiny.XNodeAbstract;
 
 /**
  * The history model holds secuentially the reference to each query evaluation:
@@ -13,41 +17,70 @@ import giis.portable.util.JavaCs;
  * The string representation of each item is a csv with | as separator
  */
 public class HistoryModel {
-	private Date timestamp;
-	private String key = "";
-	private String params = "";
+	private HistoryDao dao;
 
-	public HistoryModel(Date timestamp, String key, String params) {
-		this.timestamp = timestamp;
-		this.key = key;
-		this.params = params;
+	/**
+	 * Creates an history model from a query that has been evaluated with the given parameters
+	 */
+	public HistoryModel(Date timestamp, String key, QueryParameters params) {
+		this.dao = new HistoryDao();
+		this.dao.at = JavaCs.getIsoDate(timestamp);
+		this.dao.key = key;
+		this.dao.params = params.toDao();
 	}
 
+	/**
+	 * Create an history model from a string read from the storage
+	 */
 	public HistoryModel(String item) {
+		if (item.startsWith("{"))
+			throw new RuntimeException("V2 history still not implemented");
+		else
+			loadHistoryItemV1(item);
+	}
+	
+	private void loadHistoryItemV1(String item) {
 		String[] splitted = JavaCs.splitByBar(item); // should have 3 at least
-		timestamp = JavaCs.parseIsoDate(splitted[0]);
-		key = splitted[1];
+		this.dao = new HistoryDao();
+		this.dao.at = JavaCs.getIsoDate(JavaCs.parseIsoDate(splitted[0]));
+		this.dao.key = splitted[1];
 		// If more than 3, joins the remaining items
+		String paramStr = "";
 		for (int i = 2; i < splitted.length; i++)
-			params = getParams() + (i == 2 ? "" : "|") + splitted[i]; // NOSONAR
+			paramStr += (i == 2 ? "" : "|") + splitted[i]; // NOSONAR
+		this.dao.params = paramsFromXml(paramStr);
 	}
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
 	public String getTimestampString() {
-		return JavaCs.getIsoDate(timestamp);
+		return dao.at;
 	}
 	public String getKey() {
-		return key;
+		return dao.key;
 	}
-	public String getParams() {
-		return params;
+	public String getParamsXml() {
+		return paramsToXml(dao.params);
+	}
+	
+	private String paramsToXml(List<ParameterDao> params) {
+		StringBuilder sb = new StringBuilder();
+		for (ParameterDao param : params)
+			sb.append("<parameter name=\"")
+					.append(XNodeAbstract.encodeAttribute(param.name)).append("\" value=\"")
+					.append(XNodeAbstract.encodeAttribute(param.value)).append("\" />");
+		return "<parameters>" + sb.toString() + "</parameters>";
 	}
 
-	@Override
-	public String toString() {
-		return JavaCs.getIsoDate(getTimestamp()) + "|" + getKey() + "|" + getParams();
+	private List<ParameterDao> paramsFromXml(String paramXml) {
+		List<ParameterDao> dao = new ArrayList<>();
+		List<XNode> paramNodes = new XNode(paramXml).getChildren("parameter");
+		for (XNode paramNode : paramNodes)
+			dao.add(new ParameterDao(XNodeAbstract.decodeAttribute(paramNode.getAttribute("name")),
+					XNodeAbstract.decodeAttribute(paramNode.getAttribute("value"))));
+		return dao;
+	}
+
+	public String toStringV1() {
+		return getTimestampString() + "|" + getKey() + "|" + getParamsXml();
 	}
 
 }

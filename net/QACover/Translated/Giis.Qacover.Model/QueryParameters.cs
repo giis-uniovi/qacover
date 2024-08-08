@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Giis.Portable.Xml.Tiny;
 
 
 namespace Giis.Qacover.Model
@@ -43,15 +42,15 @@ namespace Giis.Qacover.Model
 			return "{" + sb.ToString() + "}";
 		}
 
-		public virtual string ToXml()
+		public virtual IList<ParameterDao> ToDao()
 		{
-			StringBuilder sb = new StringBuilder();
+			IList<ParameterDao> dao = new List<ParameterDao>();
 			IList<string> keys = this.KeySet();
 			foreach (string key in keys)
 			{
-				sb.Append("<parameter name=\"").Append(XNodeAbstract.EncodeAttribute(key)).Append("\" value=\"").Append(XNodeAbstract.EncodeAttribute(parameters[key])).Append("\" />");
+				dao.Add(new ParameterDao(key, parameters[key]));
 			}
-			return "<parameters>" + sb.ToString() + "</parameters>";
+			return dao;
 		}
 
 		public virtual void Put(string name, string valueString, object valueObject)

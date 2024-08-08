@@ -198,10 +198,10 @@ namespace Test4giis.Qacover.Model
 		{
 			StringBuilder allKeys = new StringBuilder();
 			CoverageReader cr = new CoverageReader(Configuration.GetInstance().GetStoreRulesLocation());
-			QueryCollection cc = cr.GetByRunOrder();
-			for (int i = 0; i < cc.Size(); i++)
+			HistoryReader cc = cr.GetHistory();
+			for (int i = 0; i < cc.GetItems().Count; i++)
 			{
-				allKeys.Append(cc.Get(i).GetKey() + "|" + cc.Get(i).GetParametersXml() + "\n");
+				allKeys.Append(cc.GetItems()[i].GetKey() + "|" + cc.GetItems()[i].GetParamsXml() + "\n");
 			}
 			FileUtil.FileWrite(outPath, "all-keys-by-run-order.txt", allKeys.ToString());
 			string actualKeys = FileUtil.FileRead(outPath, "all-keys-by-run-order.txt");
@@ -212,20 +212,25 @@ namespace Test4giis.Qacover.Model
 		private void AssertReaderDataByRunOrderAll()
 		{
 			StringBuilder allData = new StringBuilder();
-			CoverageReader cr = new CoverageReader(Configuration.GetInstance().GetStoreRulesLocation());
-			QueryCollection cc = cr.GetByRunOrder();
-			for (int i = 0; i < cc.Size(); i++)
+			string rulesFolder = Configuration.GetInstance().GetStoreRulesLocation();
+			CoverageReader cr = new CoverageReader(rulesFolder);
+			HistoryReader cc = cr.GetHistory();
+			for (int i = 0; i < cc.GetItems().Count; i++)
 			{
-				allData.Append("*** " + cc.Get(i).GetKey() + "\n");
-				allData.Append("sql: " + cc.Get(i).GetModel().GetSql() + "\n");
-				allData.Append("parameters: " + cc.Get(i).GetParametersXml() + "\n");
-				for (int j = 0; j < cc.Get(i).GetModel().GetRules().Count; j++)
+				allData.Append("*** " + cc.GetItems()[i].GetKey() + "\n");
+				// The history reader is independent from the models (the only join is the key),
+				// we use a standalone query reader to get the model
+				QueryReader qr = new QueryReader(rulesFolder, cc.GetItems()[i].GetKey());
+				QueryModel model = qr.GetModel();
+				allData.Append("sql: " + model.GetSql() + "\n");
+				allData.Append("parameters: " + cc.GetItems()[i].GetParamsXml() + "\n");
+				for (int j = 0; j < model.GetRules().Count; j++)
 				{
-					allData.Append("rule" + j + ": " + new TdRulesXmlSerializer().Serialize(cc.Get(i).GetModel().GetRules()[j].GetModel(), "fpcrule").Trim() + "\n");
+					allData.Append("rule" + j + ": " + new TdRulesXmlSerializer().Serialize(model.GetRules()[j].GetModel(), "fpcrule").Trim() + "\n");
 				}
-				if (!string.Empty.Equals(cc.Get(i).GetModel().GetErrorString()) || cc.Get(i).GetModel().GetRules().Count > 0)
+				if (!string.Empty.Equals(model.GetErrorString()) || model.GetRules().Count > 0)
 				{
-					SchemaModel schema = cc.Get(i).GetSchema();
+					SchemaModel schema = qr.GetSchema();
 					allData.Append("schema: " + new TdSchemaXmlSerializer().Serialize(schema.GetModel()) + "\n");
 				}
 			}

@@ -141,7 +141,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 		for (int i=0; i<history.getItems().size(); i++) {
 			HistoryModel item = history.getItems().get(i);
 			sb.append(i!=0 ? "<br/>":"").append("<strong>").append(i+1).append("</strong>. ")
-				.append(encode(item.getParams()));
+				.append(encode(item.getParamsXml()));
 		}
 		return sb.toString();
 	}

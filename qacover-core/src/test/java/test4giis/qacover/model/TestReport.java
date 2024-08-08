@@ -14,11 +14,13 @@ import giis.qacover.core.QueryStatement;
 import giis.qacover.core.services.FaultInjector;
 import giis.qacover.core.services.Configuration;
 import giis.qacover.core.services.StoreService;
+import giis.qacover.model.QueryModel;
 import giis.qacover.model.SchemaModel;
 import giis.qacover.model.Variability;
 import giis.qacover.reader.CoverageCollection;
 import giis.qacover.reader.CoverageReader;
-import giis.qacover.reader.QueryCollection;
+import giis.qacover.reader.HistoryReader;
+import giis.qacover.reader.QueryReader;
 import giis.qacover.report.ReportManager;
 import giis.tdrules.model.io.TdRulesXmlSerializer;
 import giis.tdrules.model.io.TdSchemaXmlSerializer;
@@ -201,9 +203,9 @@ public class TestReport extends Base {
 	private void assertReaderKeysByRunOrderAll() {
 		StringBuilder allKeys = new StringBuilder();
 		CoverageReader cr = new CoverageReader(Configuration.getInstance().getStoreRulesLocation());
-		QueryCollection cc = cr.getByRunOrder();
-		for (int i = 0; i < cc.size(); i++)
-			allKeys.append(cc.get(i).getKey() + "|" + cc.get(i).getParametersXml() + "\n");
+		HistoryReader cc = cr.getHistory();
+		for (int i = 0; i < cc.getItems().size(); i++)
+			allKeys.append(cc.getItems().get(i).getKey() + "|" + cc.getItems().get(i).getParamsXml() + "\n");
 		FileUtil.fileWrite(outPath, "all-keys-by-run-order.txt", allKeys.toString());
 		
 		String actualKeys = FileUtil.fileRead(outPath, "all-keys-by-run-order.txt");
@@ -213,16 +215,21 @@ public class TestReport extends Base {
 	
 	private void assertReaderDataByRunOrderAll() {
 		StringBuilder allData = new StringBuilder();
-		CoverageReader cr = new CoverageReader(Configuration.getInstance().getStoreRulesLocation());
-		QueryCollection cc = cr.getByRunOrder();
-		for (int i = 0; i < cc.size(); i++) {
-			allData.append("*** " + cc.get(i).getKey() + "\n");
-			allData.append("sql: " + cc.get(i).getModel().getSql() + "\n");
-			allData.append("parameters: " + cc.get(i).getParametersXml() + "\n");
-			for (int j = 0; j < cc.get(i).getModel().getRules().size(); j++)
-				allData.append("rule" + j + ": " + new TdRulesXmlSerializer().serialize(cc.get(i).getModel().getRules().get(j).getModel(), "fpcrule").trim() + "\n");
-			if (!"".equals(cc.get(i).getModel().getErrorString()) || cc.get(i).getModel().getRules().size() > 0) {
-				SchemaModel schema = cc.get(i).getSchema();
+		String rulesFolder = Configuration.getInstance().getStoreRulesLocation();
+		CoverageReader cr = new CoverageReader(rulesFolder);
+		HistoryReader cc = cr.getHistory();
+		for (int i = 0; i < cc.getItems().size(); i++) {
+			allData.append("*** " + cc.getItems().get(i).getKey() + "\n");
+			// The history reader is independent from the models (the only join is the key),
+			// we use a standalone query reader to get the model
+			QueryReader qr = new QueryReader(rulesFolder, cc.getItems().get(i).getKey());
+			QueryModel model = qr.getModel();
+			allData.append("sql: " + model.getSql() + "\n");
+			allData.append("parameters: " + cc.getItems().get(i).getParamsXml() + "\n");
+			for (int j = 0; j < model.getRules().size(); j++)
+				allData.append("rule" + j + ": " + new TdRulesXmlSerializer().serialize(model.getRules().get(j).getModel(), "fpcrule").trim() + "\n");
+			if (!"".equals(model.getErrorString()) || model.getRules().size() > 0) {
+				SchemaModel schema = qr.getSchema();
 				allData.append("schema: " + new TdSchemaXmlSerializer().serialize(schema.getModel()) + "\n");
 			}
 		}
