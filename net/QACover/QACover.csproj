@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="PortableCs" Version="2.2.3" />
+    <PackageReference Include="PortableCs" Version="2.3.0" />
 
     <PackageReference Include="TdRules" Version="4.3.0" />
   </ItemGroup>
