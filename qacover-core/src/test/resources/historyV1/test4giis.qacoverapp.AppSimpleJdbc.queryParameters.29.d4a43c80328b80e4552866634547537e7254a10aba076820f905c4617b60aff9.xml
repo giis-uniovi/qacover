@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlfpc class="test4giis.qacoverapp.AppSimpleJdbc" count="6" dbms="sqlite" dead="0" file="AppSimpleJdbc.java" line="29" method="queryParameters" qrun="2" source="test4giis/qacoverapp/AppSimpleJdbc.java">
+<version>4.3.21<development/></version>
+<sql>SELECT id , num , text FROM test WHERE num &gt; ?1? AND text = ?2?</sql>
+<fpcrules>
+  <fpcrule count="2" dead="0"><id>1</id><category>S</category><type>B</type><subtype>B+T</subtype><location>1.w.1.[num &gt; ?1?]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = ?1? + 1) AND (text = ?2?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B+) num = ?1? + 1
+  --(T) text = ?2? is TRUE</description>
+  </fpcrule>
+  <fpcrule count="2" dead="0"><id>2</id><category>S</category><type>B</type><subtype>B=T</subtype><location>1.w.1.[num &gt; ?1?]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = ?1?) AND (text = ?2?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B=) num = ?1?
+  --(T) text = ?2? is TRUE</description>
+  </fpcrule>
+  <fpcrule count="2" dead="0"><id>3</id><category>S</category><type>B</type><subtype>B-T</subtype><location>1.w.1.[num &gt; ?1?]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = ?1? - 1) AND (text = ?2?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B-) num = ?1? - 1
+  --(T) text = ?2? is TRUE</description>
+  </fpcrule>
+  <fpcrule count="2" dead="0"><id>4</id><category>S</category><type>T</type><subtype>TT</subtype><location>1.w.2.[text = ?2?]</location>
+    <sql>SELECT id , num , text FROM test WHERE (text = ?2?) AND (num &gt; ?1?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(T) text = ?2? is TRUE
+  --(T) num &gt; ?1? is TRUE</description>
+  </fpcrule>
+  <fpcrule count="2" dead="0"><id>5</id><category>S</category><type>T</type><subtype>FT</subtype><location>1.w.2.[text = ?2?]</location>
+    <sql>SELECT id , num , text FROM test WHERE NOT(text = ?2?) AND (num &gt; ?1?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(F) text = ?2? is FALSE
+  --(T) num &gt; ?1? is TRUE</description>
+  </fpcrule>
+  <fpcrule count="2" dead="0"><id>6</id><category>S</category><type>N</type><subtype>NT</subtype><location>1.w.2.[text]</location>
+    <sql>SELECT id , num , text FROM test WHERE (text IS NULL) AND (num &gt; ?1?)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(N) text is NULL
+  --(T) num &gt; ?1? is TRUE</description>
+  </fpcrule>
+</fpcrules>
+</sqlfpc>

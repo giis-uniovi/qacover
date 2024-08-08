@@ -67,7 +67,11 @@ namespace Giis.Qacover.Report
 			for (int i = 0; i < history.GetItems().Count; i++)
 			{
 				HistoryModel item = history.GetItems()[i];
-				sb.Append(i != 0 ? "<br/>" : string.Empty).Append("<strong>").Append(i + 1).Append("</strong>. ").Append(Encode(item.GetParamsXml()));
+				sb.Append(i != 0 ? "<br/>" : string.Empty).Append("<strong>").Append(i + 1).Append("</strong>.");
+				foreach (ParameterDao param in item.GetParams())
+				{
+					sb.Append(" ").Append(Encode(param.ToString()));
+				}
 			}
 			return sb.ToString();
 		}

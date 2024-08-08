@@ -164,10 +164,13 @@ public class TestReader extends Base {
 	}
 	
 	// Collect the history items to access to the list of parameters used to run
-	// each query
+	// each query using a V1 history store format
 	@Test
-	public void testHistoryReader() throws SQLException, ParseException {
-		CoverageReader reader = getCoverageReader();
+	public void testHistoryReaderV1() throws SQLException, ParseException {
+		//Creates a coverage reader from the already saved v1 files
+		CoverageReader reader = new CoverageReader(new giis.qacover.model.Variability().isJava()
+				? "src/test/resources/historyV1"
+				: "../../../../../qacover-core/src/test/resources/historyV1");
 		HistoryReader all = reader.getHistory();
 
 		// Reads all classes to get the query keys used to select queries in the history
@@ -189,10 +192,48 @@ public class TestReader extends Base {
 		history = all.getHistoryAtQuery(query.get(1).getKey());
 		model = history.getItems();
 		assertEquals(2, model.size());
-		assertEquals(javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"),
+		assertEquals("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>",
 				model.get(0).getParamsXml());
-		assertEquals(javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"),
+		assertEquals("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>",
 				model.get(1).getParamsXml());
+
+		// Invalid query, creates a query key by changing the class name of an existing key
+		QueryKey invalid = new QueryKey(query.get(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));
+		history = all.getHistoryAtQuery(invalid);
+		model = history.getItems();
+		assertEquals(0, model.size());
+	}
+
+	// Collect the history items to access to the list of parameters used to run
+	// each query
+	@Test
+	public void testHistoryReader() throws SQLException, ParseException {
+		CoverageReader reader = getCoverageReader();
+		HistoryReader all = reader.getHistory();
+
+		// Reads all classes to get the query keys used to select queries in the history
+		CoverageCollection classes = reader.getByClass();
+		assertEquals(1, classes.size());
+		QueryCollection query = classes.get(0);
+		assertEqualsCs("test4giis.qacoverapp.appsimplejdbc", query.getName().toLowerCase());
+		assertEquals(2, query.size()); // two methods
+
+		// First query has only one execution
+		assertEquals("querynoparameters1condition", query.get(0).getKey().getMethodName().toLowerCase());
+		HistoryReader history = all.getHistoryAtQuery(query.get(0).getKey());
+		List<HistoryModel> model = history.getItems();
+		assertEquals(1, model.size());
+		assertEquals("[]", model.get(0).getParamsJson());
+
+		// Second query has two executions
+		assertEquals("queryparameters", query.get(1).getKey().getMethodName().toLowerCase());
+		history = all.getHistoryAtQuery(query.get(1).getKey());
+		model = history.getItems();
+		assertEquals(2, model.size());
+		assertEquals(javacsparm("[{\"name\":\"?1?\",\"value\":\"98\"},{\"name\":\"?2?\",\"value\":\"'abc'\"}]"),
+				model.get(0).getParamsJson());
+		assertEquals(javacsparm("[{\"name\":\"?1?\",\"value\":\"98\"},{\"name\":\"?2?\",\"value\":\"'a|c'\"}]"),
+				model.get(1).getParamsJson());
 
 		// Invalid query, creates a query key by changing the class name of an existing key
 		QueryKey invalid = new QueryKey(query.get(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));

@@ -12,7 +12,7 @@ namespace Giis.Qacover.Model
 
 		public string key;
 
-		public IList<ParameterDao> @params;
+		public IList<ParameterDao> @params = new List<ParameterDao>();
 		// NOSONAR public access to allow direct serialization in the .NET version
 		// NOSONAR
 		// NOSONAR

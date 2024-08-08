@@ -7,20 +7,25 @@ import java.util.List;
 import giis.portable.util.JavaCs;
 import giis.portable.xml.tiny.XNode;
 import giis.portable.xml.tiny.XNodeAbstract;
+import giis.tdrules.model.io.ModelJsonSerializer;
 
 /**
- * The history model holds secuentially the reference to each query evaluation:
- * (1) datetime
- * (2) QueryKey
- * (3) Parameters used in the evaluation
+ * The history store holds sequentially the reference to each query evaluation;
+ * Each query evaluation is represented in an instance of this class that
+ * is instantiated from a line read from the history store.
  * 
- * The string representation of each item is a csv with | as separator
+ * There are two formats that can be read:
+ * V1 (legacy): a csv separated with a vertical bar: timestamp | query key | parameters in xml
+ * V2 (current): a json string with timestam, query key and parameters
+ * 
+ * Currently QACover writes in V2 format, but V1 is keep for compatibility
+ * with legacy stores created before QACover version 2.0.0
  */
 public class HistoryModel {
-	private HistoryDao dao;
+	private HistoryDao dao; // data is kept in the dao for easier serialization
 
 	/**
-	 * Creates an history model from a query that has been evaluated with the given parameters
+	 * Creates an history model with the given parameters from a query that has been evaluated
 	 */
 	public HistoryModel(Date timestamp, String key, QueryParameters params) {
 		this.dao = new HistoryDao();
@@ -30,15 +35,20 @@ public class HistoryModel {
 	}
 
 	/**
-	 * Create an history model from a string read from the storage
+	 * Create an history model from a string that is read from the history storage
+	 * (supports V1 and V2 formats)
 	 */
 	public HistoryModel(String item) {
 		if (item.startsWith("{"))
-			throw new RuntimeException("V2 history still not implemented");
+			loadHistoryItemV2(item);
 		else
 			loadHistoryItemV1(item);
 	}
 	
+	private void loadHistoryItemV2(String item) {
+		this.dao = (HistoryDao) new ModelJsonSerializer().deserialize(item, HistoryDao.class);
+	}
+
 	private void loadHistoryItemV1(String item) {
 		String[] splitted = JavaCs.splitByBar(item); // should have 3 at least
 		this.dao = new HistoryDao();
@@ -51,12 +61,17 @@ public class HistoryModel {
 		this.dao.params = paramsFromXml(paramStr);
 	}
 
-	public String getTimestampString() {
-		return dao.at;
-	}
 	public String getKey() {
 		return dao.key;
 	}
+	public List<ParameterDao> getParams() {
+		return dao.params;
+	}
+	
+	public String getParamsJson() {
+		return new ModelJsonSerializer().serialize(dao.params, false);
+	}
+	
 	public String getParamsXml() {
 		return paramsToXml(dao.params);
 	}
@@ -79,8 +94,12 @@ public class HistoryModel {
 		return dao;
 	}
 
-	public String toStringV1() {
-		return getTimestampString() + "|" + getKey() + "|" + getParamsXml();
+	public String toStringV2() {
+		return new ModelJsonSerializer().serialize(dao, false);
 	}
 
+	public String toStringV1() {
+		return dao.at + "|" + dao.key + "|" + getParamsXml();
+	}
+	
 }

@@ -6,41 +6,59 @@ using System.Collections.Generic;
 using System.Text;
 using Giis.Portable.Util;
 using Giis.Portable.Xml.Tiny;
+using Giis.Tdrules.Model.IO;
 
 
 namespace Giis.Qacover.Model
 {
 	/// <summary>
-	/// The history model holds secuentially the reference to each query evaluation:
-	/// (1) datetime
-	/// (2) QueryKey
-	/// (3) Parameters used in the evaluation
-	/// The string representation of each item is a csv with | as separator
+	/// The history store holds sequentially the reference to each query evaluation;
+	/// Each query evaluation is represented in an instance of this class that
+	/// is instantiated from a line read from the history store.
 	/// </summary>
+	/// <remarks>
+	/// The history store holds sequentially the reference to each query evaluation;
+	/// Each query evaluation is represented in an instance of this class that
+	/// is instantiated from a line read from the history store.
+	/// There are two formats that can be read:
+	/// V1 (legacy): a csv separated with a vertical bar: timestamp | query key | parameters in xml
+	/// V2 (current): a json string with timestam, query key and parameters
+	/// Currently QACover writes in V2 format, but V1 is keep for compatibility
+	/// with legacy stores created before QACover version 2.0.0
+	/// </remarks>
 	public class HistoryModel
 	{
 		private HistoryDao dao;
 
-		/// <summary>Creates an history model from a query that has been evaluated with the given parameters</summary>
+		/// <summary>Creates an history model with the given parameters from a query that has been evaluated</summary>
 		public HistoryModel(DateTime timestamp, string key, QueryParameters @params)
 		{
+			// data is kept in the dao for easier serialization
 			this.dao = new HistoryDao();
 			this.dao.at = JavaCs.GetIsoDate(timestamp);
 			this.dao.key = key;
 			this.dao.@params = @params.ToDao();
 		}
 
-		/// <summary>Create an history model from a string read from the storage</summary>
+		/// <summary>
+		/// Create an history model from a string that is read from the history storage
+		/// (supports V1 and V2 formats)
+		/// </summary>
 		public HistoryModel(string item)
 		{
 			if (item.StartsWith("{"))
 			{
-				throw new Exception("V2 history still not implemented");
+				LoadHistoryItemV2(item);
 			}
 			else
 			{
 				LoadHistoryItemV1(item);
 			}
+		}
+
+		private void LoadHistoryItemV2(string item)
+		{
+			this.dao = (HistoryDao)new ModelJsonSerializer().Deserialize(item, typeof(HistoryDao));
 		}
 
 		private void LoadHistoryItemV1(string item)
@@ -60,14 +78,19 @@ namespace Giis.Qacover.Model
 			this.dao.@params = ParamsFromXml(paramStr);
 		}
 
-		public virtual string GetTimestampString()
-		{
-			return dao.at;
-		}
-
 		public virtual string GetKey()
 		{
 			return dao.key;
+		}
+
+		public virtual IList<ParameterDao> GetParams()
+		{
+			return dao.@params;
+		}
+
+		public virtual string GetParamsJson()
+		{
+			return new ModelJsonSerializer().Serialize(dao.@params, false);
 		}
 
 		public virtual string GetParamsXml()
@@ -96,9 +119,14 @@ namespace Giis.Qacover.Model
 			return dao;
 		}
 
+		public virtual string ToStringV2()
+		{
+			return new ModelJsonSerializer().Serialize(dao, false);
+		}
+
 		public virtual string ToStringV1()
 		{
-			return GetTimestampString() + "|" + GetKey() + "|" + GetParamsXml();
+			return dao.at + "|" + dao.key + "|" + GetParamsXml();
 		}
 	}
 }

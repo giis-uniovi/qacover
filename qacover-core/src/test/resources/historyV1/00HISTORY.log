@@ -1,0 +1,3 @@
+2024-08-08T16:30:49.137|test4giis.qacoverapp.AppSimpleJdbc.queryParameters.29.d4a43c80328b80e4552866634547537e7254a10aba076820f905c4617b60aff9|<parameters><parameter name="?1?" value="98" /><parameter name="?2?" value="'abc'" /></parameters>
+2024-08-08T16:30:49.201|test4giis.qacoverapp.AppSimpleJdbc.queryNoParameters1Condition.23.63629c65b13acf17c46df6199346b2fa414b78edfddccf3ba7f875eca30393b3|<parameters></parameters>
+2024-08-08T16:30:49.237|test4giis.qacoverapp.AppSimpleJdbc.queryParameters.29.d4a43c80328b80e4552866634547537e7254a10aba076820f905c4617b60aff9|<parameters><parameter name="?1?" value="98" /><parameter name="?2?" value="'a|c'" /></parameters>

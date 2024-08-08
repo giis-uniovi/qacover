@@ -157,6 +157,43 @@ namespace Test4giis.Qacover.Model
 		}
 
 		// Collect the history items to access to the list of parameters used to run
+		// each query using a V1 history store format
+		/// <exception cref="Java.Sql.SQLException"/>
+		/// <exception cref="Java.Text.ParseException"/>
+		[Test]
+		public virtual void TestHistoryReaderV1()
+		{
+			//Creates a coverage reader from the already saved v1 files
+			CoverageReader reader = new CoverageReader(new Variability().IsJava() ? "src/test/resources/historyV1" : "../../../../../qacover-core/src/test/resources/historyV1");
+			HistoryReader all = reader.GetHistory();
+			// Reads all classes to get the query keys used to select queries in the history
+			CoverageCollection classes = reader.GetByClass();
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, classes.Size());
+			QueryCollection query = classes.Get(0);
+			AssertEqualsCs("test4giis.qacoverapp.appsimplejdbc", query.GetName().ToLower());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(2, query.Size());
+			// two methods
+			// First query has only one execution
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("querynoparameters1condition", query.Get(0).GetKey().GetMethodName().ToLower());
+			HistoryReader history = all.GetHistoryAtQuery(query.Get(0).GetKey());
+			IList<HistoryModel> model = history.GetItems();
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, model.Count);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("<parameters></parameters>", model[0].GetParamsXml());
+			// Second query has two executions
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("queryparameters", query.Get(1).GetKey().GetMethodName().ToLower());
+			history = all.GetHistoryAtQuery(query.Get(1).GetKey());
+			model = history.GetItems();
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(2, model.Count);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>", model[0].GetParamsXml());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>", model[1].GetParamsXml());
+			// Invalid query, creates a query key by changing the class name of an existing key
+			QueryKey invalid = new QueryKey(query.Get(0).GetKey().GetKey().Replace("AppSimpleJdbc", "InvalidClass"));
+			history = all.GetHistoryAtQuery(invalid);
+			model = history.GetItems();
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, model.Count);
+		}
+
+		// Collect the history items to access to the list of parameters used to run
 		// each query
 		/// <exception cref="Java.Sql.SQLException"/>
 		/// <exception cref="Java.Text.ParseException"/>
@@ -177,14 +214,14 @@ namespace Test4giis.Qacover.Model
 			HistoryReader history = all.GetHistoryAtQuery(query.Get(0).GetKey());
 			IList<HistoryModel> model = history.GetItems();
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual(1, model.Count);
-			NUnit.Framework.Legacy.ClassicAssert.AreEqual("<parameters></parameters>", model[0].GetParamsXml());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual("[]", model[0].GetParamsJson());
 			// Second query has two executions
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual("queryparameters", query.Get(1).GetKey().GetMethodName().ToLower());
 			history = all.GetHistoryAtQuery(query.Get(1).GetKey());
 			model = history.GetItems();
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual(2, model.Count);
-			NUnit.Framework.Legacy.ClassicAssert.AreEqual(Javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"), model[0].GetParamsXml());
-			NUnit.Framework.Legacy.ClassicAssert.AreEqual(Javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"), model[1].GetParamsXml());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(Javacsparm("[{\"name\":\"?1?\",\"value\":\"98\"},{\"name\":\"?2?\",\"value\":\"'abc'\"}]"), model[0].GetParamsJson());
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(Javacsparm("[{\"name\":\"?1?\",\"value\":\"98\"},{\"name\":\"?2?\",\"value\":\"'a|c'\"}]"), model[1].GetParamsJson());
 			// Invalid query, creates a query key by changing the class name of an existing key
 			QueryKey invalid = new QueryKey(query.Get(0).GetKey().GetKey().Replace("AppSimpleJdbc", "InvalidClass"));
 			history = all.GetHistoryAtQuery(invalid);

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqlfpc dbms="sqlite" count="3" dead="1" qrun="1" class="test4giis.qacoverapp.AppSimpleJdbc" method="queryNoParameters1Condition" line="23" file="AppSimpleJdbc.java" source="test4giis/qacoverapp/AppSimpleJdbc.java">
+<version>4.3.21<development/></version>
+<sql>select id,num,text from test where num&gt;=-1</sql>
+<fpcrules>
+  <fpcrule count="1" dead="1"><id>1</id><category>S</category><type>B</type><subtype>B+F</subtype><location>1.w.1.[WHERE num &gt;= -1]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = 0)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B+) num = 0</description>
+  </fpcrule>
+  <fpcrule count="1" dead="0"><id>2</id><category>S</category><type>B</type><subtype>B=F</subtype><location>1.w.1.[WHERE num &gt;= -1]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = -1)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B=) num = -1</description>
+  </fpcrule>
+  <fpcrule count="1" dead="0"><id>3</id><category>S</category><type>B</type><subtype>B-F</subtype><location>1.w.1.[WHERE num &gt;= -1]</location>
+    <sql>SELECT id , num , text FROM test WHERE (num = -2)</sql>
+    <description>--Some row in the table such that:
+--The WHERE condition fulfills:
+  --(B-) num = -2</description>
+  </fpcrule>
+</fpcrules>
+</sqlfpc>

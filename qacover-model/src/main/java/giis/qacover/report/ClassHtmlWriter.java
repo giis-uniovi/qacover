@@ -1,6 +1,7 @@
 package giis.qacover.report;
 
 import giis.qacover.model.HistoryModel;
+import giis.qacover.model.ParameterDao;
 import giis.qacover.model.RuleModel;
 import giis.qacover.reader.HistoryReader;
 import giis.qacover.reader.QueryReader;
@@ -140,8 +141,9 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 		StringBuilder sb = new StringBuilder();
 		for (int i=0; i<history.getItems().size(); i++) {
 			HistoryModel item = history.getItems().get(i);
-			sb.append(i!=0 ? "<br/>":"").append("<strong>").append(i+1).append("</strong>. ")
-				.append(encode(item.getParamsXml()));
+			sb.append(i!=0 ? "<br/>":"").append("<strong>").append(i+1).append("</strong>.");
+			for (ParameterDao param : item.getParams())
+				sb.append(" ").append(encode(param.toString()));
 		}
 		return sb.toString();
 	}
