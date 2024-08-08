@@ -65,6 +65,15 @@ namespace Giis.Qacover.Reader
 			return target;
 		}
 
+		/// <summary>Gets a list of History models with data of the executions in time order</summary>
+		public virtual HistoryReader GetHistory()
+		{
+			log.Trace("CoverageReader.getHistory, Processing history for folder: " + rulesFolder);
+			LocalStore storage = new LocalStore(rulesFolder);
+			IList<HistoryModel> hitems = storage.GetHistoryItems();
+			return new HistoryReader(hitems);
+		}
+
 		/// <summary>Gets a QueryCollection with all data of the executions in time order</summary>
 		public virtual QueryCollection GetByRunOrder()
 		{

@@ -1,6 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 /////////////////////////////////////////////////////////////////////////////////////////////
+using System.Text;
 using Giis.Qacover.Model;
 using Giis.Qacover.Reader;
 
@@ -50,16 +51,27 @@ namespace Giis.Qacover.Report
 		}
 
 		// if source code not available, the css class for method is empty (it will be shown even if hidden by the ui)
-		public virtual string GetQueryContent(QueryReader query, string coverage)
+		public virtual string GetQueryContent(QueryReader query, string coverage, HistoryReader history)
 		{
 			string template = "    <tbody class='query'>\n" + "    <tr class='query-run'>\n" + "        <td></td>\n" + "        <td class='nowrap'>\n" + "            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>\n" + "            $runCount$ run(s)\n"
-				 + "            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span> " + "            $coverage$\n" + "        </td>\n" + "        <td colspan='2'>\n" + "            <div class='params'>(run params not available)</div>\n"
+				 + "            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span> " + "            $coverage$\n" + "        </td>\n" + "        <td colspan='2'>\n" + "            <div class='params'>$parameters$</div>\n"
 				 + "            $sqlQuery$ $errorsQuery$" + "        </td>\n" + "    </tr>\n" + "    </tbody>\n";
-			return template.Replace("$runCount$", query.GetModel().GetQrun().ToString()).Replace("$coverage$", coverage).Replace("$sqlQuery$", GetSqlHtml(Encode(query.GetSql()))).Replace("$errorsQuery$", GetErrorsHtml(Encode(query.GetModel().GetErrorString().Replace("\n", string.Empty).Replace
-				("\r", string.Empty)), query.GetModel().GetError()));
+			return template.Replace("$runCount$", query.GetModel().GetQrun().ToString()).Replace("$coverage$", coverage).Replace("$sqlQuery$", GetSqlHtml(Encode(query.GetSql()))).Replace("$parameters$", GetHistoryItems(history)).Replace("$errorsQuery$", GetErrorsHtml(Encode(query.GetModel().GetErrorString
+				().Replace("\n", string.Empty).Replace("\r", string.Empty)), query.GetModel().GetError()));
 		}
 
 		// encode and remove line endings (to allow use a regex to replace platform dependent messages)
+		private string GetHistoryItems(HistoryReader history)
+		{
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < history.GetItems().Count; i++)
+			{
+				HistoryModel item = history.GetItems()[i];
+				sb.Append(i != 0 ? "<br/>" : string.Empty).Append("<strong>").Append(i + 1).Append("</strong>. ").Append(Encode(item.GetParams()));
+			}
+			return sb.ToString();
+		}
+
 		public virtual string GetRulesContent(string rulesContent)
 		{
 			return "    <tbody class='rules'>\n" + rulesContent + "    <tr><td></td></tr>\n" + "    </tbody>\n\n";

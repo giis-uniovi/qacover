@@ -1,6 +1,8 @@
 package giis.qacover.report;
 
+import giis.qacover.model.HistoryModel;
 import giis.qacover.model.RuleModel;
+import giis.qacover.reader.HistoryReader;
 import giis.qacover.reader.QueryReader;
 
 public class ClassHtmlWriter extends BaseHtmlWriter {
@@ -108,7 +110,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				.replace("$sourceCode$", sourceCode == null ? " &nbsp; (source code not available)" : getSourceHtml(sourceCode));
 	}
 	
-	public String getQueryContent(QueryReader query, String coverage) {
+	public String getQueryContent(QueryReader query, String coverage, HistoryReader history) {
 		String template="    <tbody class='query'>\n"
 				+ "    <tr class='query-run'>\n"
 				+ "        <td></td>\n"
@@ -119,7 +121,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "            $coverage$\n"
 				+ "        </td>\n"
 				+ "        <td colspan='2'>\n"
-				+ "            <div class='params'>(run params not available)</div>\n"
+				+ "            <div class='params'>$parameters$</div>\n"
 				+ "            $sqlQuery$ $errorsQuery$"
 				+ "        </td>\n"
 				+ "    </tr>\n"
@@ -127,11 +129,21 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 		return template.replace("$runCount$", String.valueOf(query.getModel().getQrun()))
 				.replace("$coverage$", coverage)
 				.replace("$sqlQuery$", getSqlHtml(encode(query.getSql())))
+				.replace("$parameters$", getHistoryItems(history))
 				// encode and remove line endings (to allow use a regex to replace platform dependent messages)
 				.replace("$errorsQuery$", getErrorsHtml(encode(
 						query.getModel().getErrorString().replace("\n", "").replace("\r", "")), 
 						query.getModel().getError()
 						));
+	}
+	private String getHistoryItems(HistoryReader history) {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<history.getItems().size(); i++) {
+			HistoryModel item = history.getItems().get(i);
+			sb.append(i!=0 ? "<br/>":"").append("<strong>").append(i+1).append("</strong>. ")
+				.append(encode(item.getParams()));
+		}
+		return sb.toString();
 	}
 	
 	public String getRulesContent(String rulesContent) {

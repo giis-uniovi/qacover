@@ -42,6 +42,7 @@ namespace Giis.Qacover.Report
 			IndextHtmlWriter indexWriter = new IndextHtmlWriter();
 			// Using a CoverageReader to access the store by class and then by query
 			CoverageCollection classes = new CoverageReader(rulesFolder).GetByClass();
+			HistoryReader history = new CoverageReader(rulesFolder).GetHistory();
 			StringBuilder indexRowsSb = new StringBuilder();
 			for (int i = 0; i < classes.Size(); i++)
 			{
@@ -53,7 +54,7 @@ namespace Giis.Qacover.Report
 				indexRowsSb.Append(indexWriter.GetBodyRow(className, summary.GetQrun(), summary.GetQcount(), summary.GetQerror(), summary.GetCount(), summary.GetDead(), summary.GetError()));
 				// Generates a file for this class
 				ClassHtmlWriter classWriter = new ClassHtmlWriter();
-				string htmlCoverage = GetClassCoverage(query, classWriter, sourceFolders, projectFolder);
+				string htmlCoverage = GetClassCoverage(query, history, classWriter, sourceFolders, projectFolder);
 				string htmlCoverageContent = classWriter.GetHeader(className) + classWriter.GetBodyContent(className, htmlCoverage);
 				FileUtil.FileWrite(reportFolder, className + ".html", htmlCoverageContent);
 			}
@@ -65,7 +66,7 @@ namespace Giis.Qacover.Report
 			ConsoleWrite(classes.Size() + " classes generated, see index.html at reports folder");
 		}
 
-		private string GetClassCoverage(QueryCollection queries, ClassHtmlWriter writer, string sourceFolders, string projectFolders)
+		private string GetClassCoverage(QueryCollection queries, HistoryReader history, ClassHtmlWriter writer, string sourceFolders, string projectFolders)
 		{
 			// first makes groups by line number, each line can have zero, one or more queries
 			SourceCodeCollection lineCollection = new SourceCodeCollection();
@@ -92,11 +93,12 @@ namespace Giis.Qacover.Report
 					QueryReader query0 = line.Value.GetQueries()[0];
 					csb.Append(writer.GetLineContent(line.Key, GetLineCoverage(line.Value, writer), query0.GetKey().GetMethodName(), line.Value.GetSource()));
 				}
-				// Each query (if any) and details of their rules
+				// Each query (if any) and details of their rules and history
 				foreach (QueryReader thisQuery in line.Value.GetQueries())
 				{
 					string queryCoverage = GetQueryCoverage(thisQuery.GetModel(), line.Value, writer);
-					csb.Append(writer.GetQueryContent(thisQuery, queryCoverage));
+					HistoryReader queryHistory = history.GetHistoryAtQuery(thisQuery.GetKey());
+					csb.Append(writer.GetQueryContent(thisQuery, queryCoverage, queryHistory));
 					StringBuilder rsb = new StringBuilder();
 					for (int k = 0; k < thisQuery.GetModel().GetRules().Count; k++)
 					{

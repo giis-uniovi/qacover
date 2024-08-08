@@ -54,6 +54,16 @@ public class CoverageReader {
 	}
 
 	/**
+	 * Gets a list of History models with data of the executions in time order
+	 */
+	public HistoryReader getHistory() {
+		log.trace("CoverageReader.getHistory, Processing history for folder: " + rulesFolder);
+		LocalStore storage = new LocalStore(rulesFolder);
+		List<HistoryModel> hitems = storage.getHistoryItems();
+		return new HistoryReader(hitems);
+	}
+
+	/**
 	 * Gets a QueryCollection with all data of the executions in time order
 	 */
 	public QueryCollection getByRunOrder() {

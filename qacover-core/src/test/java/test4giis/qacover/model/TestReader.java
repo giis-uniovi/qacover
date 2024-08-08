@@ -14,14 +14,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import giis.portable.util.FileUtil;
-import giis.portable.util.JavaCs;
 import giis.qacover.core.services.Configuration;
 import giis.qacover.core.services.StoreService;
+import giis.qacover.model.HistoryModel;
+import giis.qacover.model.QueryKey;
 import giis.qacover.model.RuleModel;
 import giis.qacover.model.SchemaModel;
 import giis.qacover.model.Variability;
 import giis.qacover.reader.CoverageCollection;
 import giis.qacover.reader.CoverageReader;
+import giis.qacover.reader.HistoryReader;
 import giis.qacover.reader.QueryCollection;
 import giis.qacover.reader.QueryReader;
 import giis.qacover.reader.SourceCodeCollection;
@@ -136,48 +138,6 @@ public class TestReader extends Base {
 		assertEquals("qcount=2,qerror=0,count=9,dead=1,error=0", query.getSummary().toString());
 	}
 
-	@Test
-	public void testReaderByRunOrder() throws SQLException, ParseException {
-		CoverageReader reader = getCoverageReader();
-		// This should return the collection with an evaluation in each item
-		QueryCollection query = reader.getByRunOrder();
-		assertEquals(3, query.size());
-
-		QueryReader item = query.get(0);
-		assertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.getKey().getClassName());
-		assertEqualsCs("queryParameters", item.getKey().getMethodName());
-		assertEqualsCs(sqlCs("SELECT id , num , text FROM test WHERE num > ?1? AND text = ?2?"), item.getSql());
-
-		JavaCs.parseIsoDate(item.getTimestamp());
-		assertEquals(sqlCs(
-				"<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"),
-				item.getParametersXml());
-
-		item = query.get(1);
-		assertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.getKey().getClassName());
-		assertEqualsCs("queryNoParameters1Condition", item.getKey().getMethodName());
-		assertEquals("select id,num,text from test where num>=-1", item.getSql());
-		JavaCs.parseIsoDate(item.getTimestamp());
-		assertEquals("<parameters></parameters>", item.getParametersXml());
-
-		item = query.get(2);
-		assertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.getKey().getClassName());
-		assertEqualsCs("queryParameters", item.getKey().getMethodName());
-		assertEqualsCs(sqlCs("SELECT id , num , text FROM test WHERE num > ?1? AND text = ?2?"), item.getSql());
-		JavaCs.parseIsoDate(item.getTimestamp());
-		assertEquals(sqlCs(
-				"<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"),
-				item.getParametersXml());
-	}
-
-	private String sqlCs(String sql) { // for compatibility between java and .net parameters
-		if (new Variability().isNetCore())
-			return sql.replace(" , ", ",").replace(" = ", "=").replace(" > ", ">").replace("?1?", "@param1")
-					.replace("?2?", "@param2");
-		else
-			return sql;
-	}
-
 	// Main invalid situations
 
 	@Test
@@ -201,6 +161,47 @@ public class TestReader extends Base {
 			assertContains("Error reading file", e.getMessage());
 			assertContains("00HISTORY.log", e.getMessage());
 		}
+	}
+	
+	// Collect the history items to access to the list of parameters used to run
+	// each query
+	@Test
+	public void testHistoryReader() throws SQLException, ParseException {
+		CoverageReader reader = getCoverageReader();
+		HistoryReader all = reader.getHistory();
+
+		// Reads all classes to get the query keys used to select queries in the history
+		CoverageCollection classes = reader.getByClass();
+		assertEquals(1, classes.size());
+		QueryCollection query = classes.get(0);
+		assertEqualsCs("test4giis.qacoverapp.appsimplejdbc", query.getName().toLowerCase());
+		assertEquals(2, query.size()); // two methods
+
+		// First query has only one execution
+		assertEquals("querynoparameters1condition", query.get(0).getKey().getMethodName().toLowerCase());
+		HistoryReader history = all.getHistoryAtQuery(query.get(0).getKey());
+		List<HistoryModel> model = history.getItems();
+		assertEquals(1, model.size());
+		assertEquals("<parameters></parameters>", model.get(0).getParams());
+
+		// Second query has two executions
+		assertEquals("queryparameters", query.get(1).getKey().getMethodName().toLowerCase());
+		history = all.getHistoryAtQuery(query.get(1).getKey());
+		model = history.getItems();
+		assertEquals(2, model.size());
+		assertEquals(javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>"),
+				model.get(0).getParams());
+		assertEquals(javacsparm("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'a|c'\" /></parameters>"),
+				model.get(1).getParams());
+
+		// Invalid query, creates a query key by changing the class name of an existing key
+		QueryKey invalid = new QueryKey(query.get(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));
+		history = all.getHistoryAtQuery(invalid);
+		model = history.getItems();
+		assertEquals(0, model.size());
+	}
+	private String javacsparm(String params) {
+		return new Variability().isJava() ? params : params.replace("?1?", "@param1").replace("?2?", "@param2");
 	}
 
 	// Collect the source code lines with coverage of queries

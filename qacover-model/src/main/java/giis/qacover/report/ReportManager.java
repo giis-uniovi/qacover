@@ -9,6 +9,7 @@ import giis.qacover.model.Variability;
 import giis.qacover.reader.CoverageCollection;
 import giis.qacover.reader.CoverageReader;
 import giis.qacover.reader.CoverageSummary;
+import giis.qacover.reader.HistoryReader;
 import giis.qacover.reader.QueryCollection;
 import giis.qacover.reader.QueryReader;
 import giis.qacover.reader.SourceCodeCollection;
@@ -40,6 +41,7 @@ public class ReportManager {
 
 		// Using a CoverageReader to access the store by class and then by query
 		CoverageCollection classes = new CoverageReader(rulesFolder).getByClass();
+		HistoryReader history = new CoverageReader(rulesFolder).getHistory();
 		StringBuilder indexRowsSb = new StringBuilder();
 
 		for (int i = 0; i < classes.size(); i++) {
@@ -54,7 +56,7 @@ public class ReportManager {
 
 			// Generates a file for this class
 			ClassHtmlWriter classWriter = new ClassHtmlWriter();
-			String htmlCoverage = getClassCoverage(query, classWriter, sourceFolders, projectFolder);
+			String htmlCoverage = getClassCoverage(query, history, classWriter, sourceFolders, projectFolder);
 			String htmlCoverageContent = classWriter.getHeader(className) 
 					+ classWriter.getBodyContent(className, htmlCoverage);
 			FileUtil.fileWrite(reportFolder, className + ".html", htmlCoverageContent);
@@ -70,7 +72,7 @@ public class ReportManager {
 		consoleWrite(classes.size() + " classes generated, see index.html at reports folder");
 	}
 	
-	private String getClassCoverage(QueryCollection queries, ClassHtmlWriter writer, String sourceFolders, String projectFolders) {
+	private String getClassCoverage(QueryCollection queries, HistoryReader history, ClassHtmlWriter writer, String sourceFolders, String projectFolders) {
 		// first makes groups by line number, each line can have zero, one or more queries
 		SourceCodeCollection lineCollection = new SourceCodeCollection();
 		lineCollection.addQueries(queries); // groups by line number
@@ -93,10 +95,11 @@ public class ReportManager {
 					line.getValue().getSource()));
 			}
 			
-			// Each query (if any) and details of their rules
+			// Each query (if any) and details of their rules and history
 			for (QueryReader thisQuery : line.getValue().getQueries()) {
 				String queryCoverage = getQueryCoverage(thisQuery.getModel(), line.getValue(), writer);
-				csb.append(writer.getQueryContent(thisQuery, queryCoverage));
+				HistoryReader queryHistory = history.getHistoryAtQuery(thisQuery.getKey());
+				csb.append(writer.getQueryContent(thisQuery, queryCoverage, queryHistory));
 
 				StringBuilder rsb = new StringBuilder();
 				for (int k = 0; k < thisQuery.getModel().getRules().size(); k++)
