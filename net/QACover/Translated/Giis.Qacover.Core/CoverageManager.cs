@@ -25,6 +25,8 @@ namespace Giis.Qacover.Core
 
 		private SchemaModel schema;
 
+		private ResultVector result = new ResultVector(0);
+
 		public CoverageManager()
 			: base()
 		{
@@ -33,6 +35,7 @@ namespace Giis.Qacover.Core
 		public CoverageManager(QueryModel model)
 		{
 			// generation process interrupted for any reason
+			// to avoid null if fails before generating rules
 			// Different constructors for new rules, existing and errors
 			this.model = model;
 		}
@@ -55,6 +58,11 @@ namespace Giis.Qacover.Core
 		public virtual SchemaModel GetSchemaAtRuleGeneration()
 		{
 			return this.schema;
+		}
+
+		public virtual ResultVector GetResult()
+		{
+			return result;
 		}
 
 		public virtual bool IsAborted()
@@ -111,6 +119,7 @@ namespace Giis.Qacover.Core
 				rules[0].SetSql(injector.GetSingleRuleFault());
 			}
 			model.Reset();
+			result = new ResultVector(rules.Count);
 			stmt.SetVariant(new Variability(model.GetDbms()));
 			// Executes and annotates the coverage/status of each rule
 			for (int i = 0; i < rules.Count; i++)
@@ -119,17 +128,18 @@ namespace Giis.Qacover.Core
 				string res;
 				if (options.GetOptimizeRuleEvaluation() && rule.GetModel().GetDead() > 0)
 				{
-					res = ManagedRule.AlreadyCovered;
+					res = ResultVector.AlreadyCovered;
 				}
 				else
 				{
 					res = rule.Run(stmt);
 				}
-				// Restults for logging
+				// Results for logging
 				string logString = GetLogString(rule, stmt, res);
 				logsb.Append((i == 0 ? string.Empty : "\n") + logString);
 				log.Debug(logString);
 				// store results
+				result.SetResult(i, res);
 				if (rule.GetModel().GetDead() > 0)
 				{
 					model.AddDead(1);
@@ -148,8 +158,8 @@ namespace Giis.Qacover.Core
 		private string GetLogString(ManagedRule rule, QueryStatement stmt, string res)
 		{
 			string ruleWithSql = rule.GetSqlWithValues(stmt).Replace("\r", string.Empty).Replace("\n", " ").Trim();
-			string logString = res + " " + (ManagedRule.Covered.Equals(res) ? "  " : string.Empty) + ruleWithSql;
-			logString += ManagedRule.RuntimeError.Equals(res) ? "\n" + rule.GetModel().GetRuntimeError() : string.Empty;
+			string logString = res + " " + (ResultVector.Covered.Equals(res) ? "  " : string.Empty) + ruleWithSql;
+			logString += ResultVector.RuntimeError.Equals(res) ? "\n" + rule.GetModel().GetRuntimeError() : string.Empty;
 			return logString;
 		}
 	}

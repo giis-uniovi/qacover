@@ -7,4 +7,5 @@ public class HistoryDao {
 	public String at; // NOSONAR public access to allow direct serialization in the .NET version
 	public String key; // NOSONAR
 	public List<ParameterDao> params = new ArrayList<>(); // NOSONAR
+	public String result; // NOSONAR
 }

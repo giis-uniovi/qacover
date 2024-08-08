@@ -31,13 +31,14 @@ namespace Giis.Qacover.Model
 		private HistoryDao dao;
 
 		/// <summary>Creates an history model with the given parameters from a query that has been evaluated</summary>
-		public HistoryModel(DateTime timestamp, string key, QueryParameters @params)
+		public HistoryModel(DateTime timestamp, string key, QueryParameters @params, ResultVector resultVector)
 		{
 			// data is kept in the dao for easier serialization
 			this.dao = new HistoryDao();
 			this.dao.at = JavaCs.GetIsoDate(timestamp);
 			this.dao.key = key;
 			this.dao.@params = @params.ToDao();
+			this.dao.result = resultVector.ToString();
 		}
 
 		/// <summary>
@@ -81,6 +82,11 @@ namespace Giis.Qacover.Model
 		public virtual string GetKey()
 		{
 			return dao.key;
+		}
+
+		public virtual string GetResult()
+		{
+			return dao.result;
 		}
 
 		public virtual IList<ParameterDao> GetParams()

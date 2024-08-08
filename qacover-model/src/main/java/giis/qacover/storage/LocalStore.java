@@ -12,6 +12,7 @@ import giis.portable.util.FileUtil;
 import giis.qacover.model.HistoryModel;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.QueryParameters;
+import giis.qacover.model.ResultVector;
 import giis.qacover.model.SchemaModel;
 import giis.tdrules.model.io.TdRulesXmlSerializer;
 import giis.tdrules.model.io.TdSchemaXmlSerializer;
@@ -68,18 +69,18 @@ public class LocalStore {
 	/**
 	 * Stores the query model, overwrite if already exists
 	 */
-	public void putQueryModel(String queryKey, QueryModel queryModel, QueryParameters params, SchemaModel schemaModel, Date timestamp) {
+	public void putQueryModel(String queryKey, QueryModel queryModel, QueryParameters params, SchemaModel schemaModel, Date timestamp, ResultVector resultVector) {
 		FileUtil.fileWrite(storeLocation, queryKey + ".xml",
 				new TdRulesXmlSerializer().serialize(queryModel.getModel()));
-		addHistoryItem(timestamp, queryKey, params);
+		addHistoryItem(timestamp, queryKey, params, resultVector);
 		// The schema model is only available for new generated rules, second time that a rule is evaluated
 		// it is read from the store and does not need the schema
 		if (schemaModel != null)
 			putSchema(queryKey, schemaModel);
 	}
 	
-	private void addHistoryItem(Date timestamp, String queryKey, QueryParameters params) {
-		HistoryModel historyLog = new HistoryModel(timestamp, queryKey, params);
+	private void addHistoryItem(Date timestamp, String queryKey, QueryParameters params, ResultVector resultVector) {
+		HistoryModel historyLog = new HistoryModel(timestamp, queryKey, params, resultVector);
 		FileUtil.fileAppend(storeLocation, HISTORY_FILE_NAME, historyLog.toStringV2() + "\n");
 	}
 	

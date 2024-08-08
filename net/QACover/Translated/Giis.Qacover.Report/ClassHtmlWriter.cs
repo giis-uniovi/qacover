@@ -23,8 +23,8 @@ namespace Giis.Qacover.Report
 		protected internal override string GetStyles()
 		{
 			return "<style>\n" + "    .fill { min-width: 100%; width: 100%; } \n" + "    tr.line, tr.line td { line-height:18px; padding-top:0; padding-bottom:0 }\n" + "    tr.query-run td, tr.rule-summary td, tr.rule-sql td, tr.rule-error td { padding-top:0; padding-bottom:0 }" + "    code { color: DimGray; position: absolute; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }\n"
-				 + "    tbody.query { background: lightgrey; }\n" + "    td.nowrap, span.nowrap { white-space: nowrap; }\n" + "    td.covered { background:aquamarine; }\n" + "    td.uncovered { background:lightyellow; }\n" + "    .params  { font-size: small; font-style: italic }\n" + "    .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }\n"
-				 + "</style>\n";
+				 + "    tbody.query { background: lightgrey; }\n" + "    td.nowrap, span.nowrap { white-space: nowrap; }\n" + "    td.covered { background:aquamarine; }\n" + "    td.uncovered { background:lightyellow; }\n" + "    .params  { font-size: small; }\n" + "    .result-vector  { font-family: 'Lucida Console', 'Courier New', monospace; }\n"
+				 + "    .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }\n" + "</style>\n";
 		}
 
 		public virtual string GetBodyContent(string title, string content)
@@ -68,6 +68,10 @@ namespace Giis.Qacover.Report
 			{
 				HistoryModel item = history.GetItems()[i];
 				sb.Append(i != 0 ? "<br/>" : string.Empty).Append("<strong>").Append(i + 1).Append("</strong>.");
+				string result = item.GetResult() == null ? string.Empty : item.GetResult();
+				// can be null if query failed
+				sb.Append(" Result: [<span class='result-vector'>" + result + "</span>]");
+				sb.Append(" Params:");
 				foreach (ParameterDao param in item.GetParams())
 				{
 					sb.Append(" ").Append(Encode(param.ToString()));

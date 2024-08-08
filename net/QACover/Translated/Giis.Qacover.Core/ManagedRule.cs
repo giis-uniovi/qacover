@@ -10,14 +10,6 @@ namespace Giis.Qacover.Core
 	/// <summary>Wraps a rule, providing actions needed by the CoverageManager</summary>
 	public class ManagedRule
 	{
-		public const string RuntimeError = "RUNTIME_ERROR";
-
-		public const string Uncovered = "UNCOVERED";
-
-		public const string Covered = "COVERED";
-
-		public const string AlreadyCovered = "ALREADY_COVERED";
-
 		private RuleModel model;
 
 		public ManagedRule(RuleModel model)
@@ -40,14 +32,14 @@ namespace Giis.Qacover.Core
 				// save results
 				bool isCovered = stmt.HasRows(sqlWithoutValues);
 				model.AddDead(isCovered ? 1 : 0);
-				return isCovered ? Covered : Uncovered;
+				return isCovered ? ResultVector.Covered : ResultVector.Uncovered;
 			}
 			catch (Exception e)
 			{
 				model.AddError(1);
 				model.AddErrorString(e.ToString());
 				model.SetRuntimeError(e.ToString());
-				return RuntimeError;
+				return ResultVector.RuntimeError;
 			}
 		}
 

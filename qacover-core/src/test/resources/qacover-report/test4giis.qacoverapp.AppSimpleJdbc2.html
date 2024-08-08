@@ -16,7 +16,8 @@
     td.nowrap, span.nowrap { white-space: nowrap; }
     td.covered { background:aquamarine; }
     td.uncovered { background:lightyellow; }
-    .params  { font-size: small; font-style: italic }
+    .params  { font-size: small; }
+    .result-vector  { font-family: 'Lucida Console', 'Courier New', monospace; }
     .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }
 </style>
 <script>
@@ -98,7 +99,7 @@
             <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
         </td>
         <td colspan='2'>
-            <div class='params'><strong>1</strong>. ?1?=-1<br/><strong>2</strong>. ?1?=-1<br/><strong>3</strong>. ?1?=-1</div>
+            <div class='params'><strong>1</strong>. Result: [<span class='result-vector'>o#</span>] Params: ?1?=-1<br/><strong>2</strong>. Result: [<span class='result-vector'>o#</span>] Params: ?1?=-1<br/><strong>3</strong>. Result: [<span class='result-vector'>o#</span>] Params: ?1?=-1</div>
             <strong>SELECT</strong> id , num , text  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> num &gt;= ?1?         </td>
     </tr>
     </tbody>
@@ -151,7 +152,7 @@
             <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
         </td>
         <td colspan='2'>
-            <div class='params'><strong>1</strong>. ?1?=98 ?2?='abc'</div>
+            <div class='params'><strong>1</strong>. Result: [<span class='result-vector'>o###</span>] Params: ?1?=98 ?2?='abc'</div>
             <strong>SELECT</strong> id , num , text  <br class='canhide'/><strong>FROM</strong> test  <br class='canhide'/><strong>WHERE</strong> num &gt; ?1? AND text = ?2?         </td>
     </tr>
     </tbody>

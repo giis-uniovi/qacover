@@ -47,7 +47,8 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "    td.nowrap, span.nowrap { white-space: nowrap; }\n"
 				+ "    td.covered { background:aquamarine; }\n"
 				+ "    td.uncovered { background:lightyellow; }\n"
-				+ "    .params  { font-size: small; font-style: italic }\n"
+				+ "    .params  { font-size: small; }\n"
+				+ "    .result-vector  { font-family: 'Lucida Console', 'Courier New', monospace; }\n"
 				+ "    .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }\n"
 				+ "</style>\n";
 	}
@@ -142,6 +143,9 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 		for (int i=0; i<history.getItems().size(); i++) {
 			HistoryModel item = history.getItems().get(i);
 			sb.append(i!=0 ? "<br/>":"").append("<strong>").append(i+1).append("</strong>.");
+			String result = item.getResult() == null ? "" : item.getResult(); // can be null if query failed
+			sb.append(" Result: [<span class='result-vector'>" + result + "</span>]");
+			sb.append(" Params:");
 			for (ParameterDao param : item.getParams())
 				sb.append(" ").append(encode(param.toString()));
 		}

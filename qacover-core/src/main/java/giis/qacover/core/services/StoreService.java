@@ -9,6 +9,7 @@ import giis.portable.util.JavaCs;
 import giis.qacover.model.QueryKey;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.QueryParameters;
+import giis.qacover.model.ResultVector;
 import giis.qacover.model.SchemaModel;
 import giis.qacover.storage.LocalStore;
 
@@ -58,7 +59,7 @@ public class StoreService {
 	/**
 	 * Saves the set of rules for a query in the persistent store
 	 */
-	public void put(StackLocator stack, String sql, QueryParameters params, QueryModel queryModel, SchemaModel schemaModel) {
+	public void put(StackLocator stack, String sql, QueryParameters params, QueryModel queryModel, SchemaModel schemaModel, ResultVector resultVector) {
 		String className = stack.getClassName();
 		String methodName = stack.getMethodName();
 		int lineNumber = stack.getLineNumber();
@@ -66,7 +67,7 @@ public class StoreService {
 		Date lastTimestamp = JavaCs.getCurrentDate(); 
 		String queryKey = new QueryKey(className, methodName, lineNumber, sql).toString();
 		log.debug("Save file to store: " + queryKey);
-		storage.putQueryModel(queryKey, queryModel, params, schemaModel, lastTimestamp);
+		storage.putQueryModel(queryKey, queryModel, params, schemaModel, lastTimestamp, resultVector);
 		
 		// Additional info for testing and debugging purposes
 		setLastSavedQueryKey(queryKey);

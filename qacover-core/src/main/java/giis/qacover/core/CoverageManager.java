@@ -11,6 +11,7 @@ import giis.qacover.core.services.Configuration;
 import giis.qacover.core.services.RuleServices;
 import giis.qacover.core.services.StoreService;
 import giis.qacover.model.QueryModel;
+import giis.qacover.model.ResultVector;
 import giis.qacover.model.RuleModel;
 import giis.qacover.model.SchemaModel;
 import giis.qacover.model.Variability;
@@ -24,6 +25,7 @@ public class CoverageManager {
 	private static final Logger log = LoggerFactory.getLogger(CoverageManager.class);
 	private QueryModel model;
 	private SchemaModel schema;
+	private ResultVector result = new ResultVector(0); // to avoid null if fails before generating rules
 
 	// Different constructors for new rules, existing and errors
 	public CoverageManager() {
@@ -46,6 +48,9 @@ public class CoverageManager {
 	 */
 	public SchemaModel getSchemaAtRuleGeneration() {
 		return this.schema;
+	}
+	public ResultVector getResult() {
+		return result;
 	}
 	public boolean isAborted() {
 		return abortedStatus;
@@ -100,22 +105,24 @@ public class CoverageManager {
 		if (injector != null && injector.isSingleRuleFaulty())
 			rules.get(0).setSql(injector.getSingleRuleFault());
 		model.reset();
+		result = new ResultVector(rules.size());
 		stmt.setVariant(new Variability(model.getDbms()));
 		// Executes and annotates the coverage/status of each rule
 		for (int i = 0; i < rules.size(); i++) {
 			ManagedRule rule = new ManagedRule(rules.get(i));
 			String res;
 			if (options.getOptimizeRuleEvaluation() && rule.getModel().getDead() > 0)
-				res = ManagedRule.ALREADY_COVERED;
+				res = ResultVector.ALREADY_COVERED;
 			else
 				res = rule.run(stmt);
 			
-			// Restults for logging
+			// Results for logging
 			String logString = getLogString(rule, stmt, res);
 			logsb.append((i == 0 ? "" : "\n") + logString);
 			log.debug(logString);
 			
 			// store results
+			result.setResult(i, res);
 			if (rule.getModel().getDead() > 0)
 				model.addDead(1);
 			if (rule.getModel().getError() > 0)
@@ -129,8 +136,8 @@ public class CoverageManager {
 
 	private String getLogString(ManagedRule rule, QueryStatement stmt, String res) {
 		String ruleWithSql = rule.getSqlWithValues(stmt).replace("\r", "").replace("\n", " ").trim();
-		String logString = res + " " + (ManagedRule.COVERED.equals(res) ? "  " : "") + ruleWithSql;
-		logString += ManagedRule.RUNTIME_ERROR.equals(res) ? "\n" + rule.getModel().getRuntimeError() : "";
+		String logString = res + " " + (ResultVector.COVERED.equals(res) ? "  " : "") + ruleWithSql;
+		logString += ResultVector.RUNTIME_ERROR.equals(res) ? "\n" + rule.getModel().getRuntimeError() : "";
 		return logString;
 	}
 

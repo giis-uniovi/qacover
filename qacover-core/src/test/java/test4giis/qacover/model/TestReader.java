@@ -224,6 +224,7 @@ public class TestReader extends Base {
 		List<HistoryModel> model = history.getItems();
 		assertEquals(1, model.size());
 		assertEquals("[]", model.get(0).getParamsJson());
+		assertEquals("#oo", model.get(0).getResult());
 
 		// Second query has two executions
 		assertEquals("queryparameters", query.get(1).getKey().getMethodName().toLowerCase());
@@ -232,8 +233,10 @@ public class TestReader extends Base {
 		assertEquals(2, model.size());
 		assertEquals(javacsparm("[{\"name\":\"?1?\",\"value\":\"98\"},{\"name\":\"?2?\",\"value\":\"'abc'\"}]"),
 				model.get(0).getParamsJson());
+		assertEquals("oooooo", model.get(0).getResult());
 		assertEquals(javacsparm("[{\"name\":\"?1?\",\"value\":\"98\"},{\"name\":\"?2?\",\"value\":\"'a|c'\"}]"),
 				model.get(1).getParamsJson());
+		assertEquals("oooooo", model.get(1).getResult());
 
 		// Invalid query, creates a query key by changing the class name of an existing key
 		QueryKey invalid = new QueryKey(query.get(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));

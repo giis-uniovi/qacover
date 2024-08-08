@@ -49,7 +49,7 @@ public class Controller {
 		log.debug("Saving evaluation results");
 		rm.getModel().setLocation(stack.getClassName(), stack.getMethodName(), stack.getLineNumber(),
 				stack.getFileName(), stack.getSourceFileName());
-		store.put(stack, stmt.getSql(), stmt.getParameters(), rm.getModel(), rm.getSchemaAtRuleGeneration());
+		store.put(stack, stmt.getSql(), stmt.getParameters(), rm.getModel(), rm.getSchemaAtRuleGeneration(), rm.getResult());
 	}
 
 	private CoverageManager mainProcessError(RuleServices svc, StoreService store, QueryStatement stmt, Throwable e) {

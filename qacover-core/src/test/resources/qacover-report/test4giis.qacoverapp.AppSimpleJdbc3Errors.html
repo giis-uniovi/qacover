@@ -16,7 +16,8 @@
     td.nowrap, span.nowrap { white-space: nowrap; }
     td.covered { background:aquamarine; }
     td.uncovered { background:lightyellow; }
-    .params  { font-size: small; font-style: italic }
+    .params  { font-size: small; }
+    .result-vector  { font-family: 'Lucida Console', 'Courier New', monospace; }
     .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }
 </style>
 <script>
@@ -98,7 +99,7 @@
             <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
         </td>
         <td colspan='2'>
-            <div class='params'><strong>1</strong>.</div>
+            <div class='params'><strong>1</strong>. Result: [<span class='result-vector'>#o</span>] Params:</div>
             select id,num,text from test where num&lt;9         </td>
     </tr>
     </tbody>
@@ -151,7 +152,7 @@
             <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
         </td>
         <td colspan='2'>
-            <div class='params'><strong>1</strong>.</div>
+            <div class='params'><strong>1</strong>. Result: [<span class='result-vector'></span>] Params:</div>
             select id,num,text from test where num&lt;10 
 <br/><span style='color:red;'>Query error: Error at Get query table names: ApiException{code=0, responseHeaders=null, responseBody='null'}</span>
         </td>
@@ -180,7 +181,7 @@
             <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
         </td>
         <td colspan='2'>
-            <div class='params'><strong>1</strong>.</div>
+            <div class='params'><strong>1</strong>. Result: [<span class='result-vector'>!oo</span>] Params:</div>
             select id,num,text from test where num &lt; 11 
 <br/><span style='color:red;'>1 rule(s) with error</span>
         </td>
@@ -249,7 +250,7 @@
             <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
         </td>
         <td colspan='2'>
-            <div class='params'><strong>1</strong>.<br/><strong>2</strong>.<br/><strong>3</strong>.</div>
+            <div class='params'><strong>1</strong>. Result: [<span class='result-vector'>!oo</span>] Params:<br/><strong>2</strong>. Result: [<span class='result-vector'>!oo</span>] Params:<br/><strong>3</strong>. Result: [<span class='result-vector'>!oo</span>] Params:</div>
             select id,num,text from test where num&lt;9 
 <br/><span style='color:red;'>1 rule(s) with error</span>
         </td>

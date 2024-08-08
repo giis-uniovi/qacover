@@ -73,7 +73,7 @@ namespace Giis.Qacover.Core.Services
 		}
 
 		/// <summary>Saves the set of rules for a query in the persistent store</summary>
-		public virtual void Put(StackLocator stack, string sql, QueryParameters @params, QueryModel queryModel, SchemaModel schemaModel)
+		public virtual void Put(StackLocator stack, string sql, QueryParameters @params, QueryModel queryModel, SchemaModel schemaModel, ResultVector resultVector)
 		{
 			string className = stack.GetClassName();
 			string methodName = stack.GetMethodName();
@@ -82,7 +82,7 @@ namespace Giis.Qacover.Core.Services
 			DateTime lastTimestamp = JavaCs.GetCurrentDate();
 			string queryKey = new QueryKey(className, methodName, lineNumber, sql).ToString();
 			log.Debug("Save file to store: " + queryKey);
-			storage.PutQueryModel(queryKey, queryModel, @params, schemaModel, lastTimestamp);
+			storage.PutQueryModel(queryKey, queryModel, @params, schemaModel, lastTimestamp, resultVector);
 			// Additional info for testing and debugging purposes
 			SetLastSavedQueryKey(queryKey);
 			if (this.lastGeneratedSql != null)

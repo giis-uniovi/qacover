@@ -73,10 +73,10 @@ namespace Giis.Qacover.Storage
 		}
 
 		/// <summary>Stores the query model, overwrite if already exists</summary>
-		public virtual void PutQueryModel(string queryKey, QueryModel queryModel, QueryParameters @params, SchemaModel schemaModel, DateTime timestamp)
+		public virtual void PutQueryModel(string queryKey, QueryModel queryModel, QueryParameters @params, SchemaModel schemaModel, DateTime timestamp, ResultVector resultVector)
 		{
 			FileUtil.FileWrite(storeLocation, queryKey + ".xml", new TdRulesXmlSerializer().Serialize(queryModel.GetModel()));
-			AddHistoryItem(timestamp, queryKey, @params);
+			AddHistoryItem(timestamp, queryKey, @params, resultVector);
 			// The schema model is only available for new generated rules, second time that a rule is evaluated
 			// it is read from the store and does not need the schema
 			if (schemaModel != null)
@@ -85,9 +85,9 @@ namespace Giis.Qacover.Storage
 			}
 		}
 
-		private void AddHistoryItem(DateTime timestamp, string queryKey, QueryParameters @params)
+		private void AddHistoryItem(DateTime timestamp, string queryKey, QueryParameters @params, ResultVector resultVector)
 		{
-			HistoryModel historyLog = new HistoryModel(timestamp, queryKey, @params);
+			HistoryModel historyLog = new HistoryModel(timestamp, queryKey, @params, resultVector);
 			FileUtil.FileAppend(storeLocation, HistoryFileName, historyLog.ToStringV2() + "\n");
 		}
 

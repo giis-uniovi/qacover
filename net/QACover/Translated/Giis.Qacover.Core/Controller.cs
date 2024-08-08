@@ -62,7 +62,7 @@ namespace Giis.Qacover.Core
 			}
 			log.Debug("Saving evaluation results");
 			rm.GetModel().SetLocation(stack.GetClassName(), stack.GetMethodName(), stack.GetLineNumber(), stack.GetFileName(), stack.GetSourceFileName());
-			store.Put(stack, stmt.GetSql(), stmt.GetParameters(), rm.GetModel(), rm.GetSchemaAtRuleGeneration());
+			store.Put(stack, stmt.GetSql(), stmt.GetParameters(), rm.GetModel(), rm.GetSchemaAtRuleGeneration(), rm.GetResult());
 		}
 
 		private CoverageManager MainProcessError(RuleServices svc, StoreService store, QueryStatement stmt, Exception e)

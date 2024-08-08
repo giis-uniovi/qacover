@@ -27,11 +27,12 @@ public class HistoryModel {
 	/**
 	 * Creates an history model with the given parameters from a query that has been evaluated
 	 */
-	public HistoryModel(Date timestamp, String key, QueryParameters params) {
+	public HistoryModel(Date timestamp, String key, QueryParameters params, ResultVector resultVector) {
 		this.dao = new HistoryDao();
 		this.dao.at = JavaCs.getIsoDate(timestamp);
 		this.dao.key = key;
 		this.dao.params = params.toDao();
+		this.dao.result = resultVector.toString();
 	}
 
 	/**
@@ -63,6 +64,9 @@ public class HistoryModel {
 
 	public String getKey() {
 		return dao.key;
+	}
+	public String getResult() {
+		return dao.result;
 	}
 	public List<ParameterDao> getParams() {
 		return dao.params;

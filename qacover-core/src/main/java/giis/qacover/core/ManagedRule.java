@@ -1,15 +1,12 @@
 package giis.qacover.core;
 
+import giis.qacover.model.ResultVector;
 import giis.qacover.model.RuleModel;
 
 /**
  * Wraps a rule, providing actions needed by the CoverageManager
  */
 public class ManagedRule {
-	public static final String RUNTIME_ERROR = "RUNTIME_ERROR";
-	public static final String UNCOVERED = "UNCOVERED";
-	public static final String COVERED = "COVERED";
-	public static final String ALREADY_COVERED = "ALREADY_COVERED";
 	private RuleModel model;
 
 	public ManagedRule(RuleModel model) {
@@ -29,12 +26,12 @@ public class ManagedRule {
 		try { // save results
 			boolean isCovered = stmt.hasRows(sqlWithoutValues);
 			model.addDead(isCovered ? 1 : 0);
-			return isCovered ? COVERED : UNCOVERED;
+			return isCovered ? ResultVector.COVERED : ResultVector.UNCOVERED;
 		} catch (Exception e) {
 			model.addError(1);
 			model.addErrorString(e.toString());
 			model.setRuntimeError(e.toString());
-			return RUNTIME_ERROR;
+			return ResultVector.RUNTIME_ERROR;
 		}
 	}
 
