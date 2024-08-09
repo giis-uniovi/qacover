@@ -58,6 +58,7 @@ namespace Giis.Qacover.Report
 				string htmlCoverageContent = classWriter.GetHeader(className) + classWriter.GetBodyContent(className, htmlCoverage);
 				FileUtil.FileWrite(reportFolder, className + ".html", htmlCoverageContent);
 			}
+			ConsoleWrite("Report index.");
 			// Puts everything, with totals as first line
 			CoverageSummary totals = classes.GetSummary();
 			string indexRowsHeader = indexWriter.GetBodyRow("TOTAL", totals.GetQrun(), totals.GetQcount(), totals.GetQerror(), totals.GetCount(), totals.GetDead(), totals.GetError());
@@ -72,8 +73,8 @@ namespace Giis.Qacover.Report
 			SourceCodeCollection lineCollection = new SourceCodeCollection();
 			lineCollection.AddQueries(queries);
 			// groups by line number
-			// locates the source code for this class
-			if (queries.Size() > 0)
+			// locates the source code for this class (requires the source folders as parameter)
+			if (!JavaCs.IsEmpty(sourceFolders) && queries.Size() > 0)
 			{
 				// it is assumed that all queries are in the same class file
 				lineCollection.AddSources(queries.Get(0), sourceFolders, projectFolders);

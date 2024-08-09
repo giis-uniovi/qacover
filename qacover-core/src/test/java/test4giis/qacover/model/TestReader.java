@@ -151,18 +151,6 @@ public class TestReader extends Base {
 		}
 	}
 
-	@Test
-	public void testReaderInvalidIndexNotExist() {
-		try {
-			CoverageReader reader = new CoverageReader("."); // folder exists, but no index
-			reader.getHistory();
-			fail("Deberia producirse una excepcion");
-		} catch (RuntimeException e) {
-			assertContains("Error reading file", e.getMessage());
-			assertContains("00HISTORY.log", e.getMessage());
-		}
-	}
-	
 	// Collect the history items to access to the list of parameters used to run
 	// each query using a V1 history store format
 	@Test
@@ -246,6 +234,13 @@ public class TestReader extends Base {
 	}
 	private String javacsparm(String params) {
 		return new Variability().isJava() ? params : params.replace("?1?", "@param1").replace("?2?", "@param2");
+	}
+	
+	@Test
+	public void testReaderEmptyIfIndexNotExist() {
+		CoverageReader reader = new CoverageReader("."); // folder exists, but no index, do not throw exception
+		HistoryReader history = reader.getHistory();
+		assertEquals(0, history.getItems().size());
 	}
 
 	// Collect the source code lines with coverage of queries

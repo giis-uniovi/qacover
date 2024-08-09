@@ -61,6 +61,7 @@ public class ReportManager {
 					+ classWriter.getBodyContent(className, htmlCoverage);
 			FileUtil.fileWrite(reportFolder, className + ".html", htmlCoverageContent);
 		}
+		consoleWrite("Report index.");
 		
 		// Puts everything, with totals as first line
 		CoverageSummary totals = classes.getSummary();
@@ -77,8 +78,8 @@ public class ReportManager {
 		SourceCodeCollection lineCollection = new SourceCodeCollection();
 		lineCollection.addQueries(queries); // groups by line number
 		
-		// locates the source code for this class
-		if (queries.size() > 0) // it is assumed that all queries are in the same class file
+		// locates the source code for this class (requires the source folders as parameter)
+		if (!JavaCs.isEmpty(sourceFolders) && queries.size() > 0) // it is assumed that all queries are in the same class file
 			lineCollection.addSources(queries.get(0), sourceFolders, projectFolders);
 		
 		StringBuilder csb = new StringBuilder();

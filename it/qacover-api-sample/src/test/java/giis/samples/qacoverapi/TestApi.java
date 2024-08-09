@@ -21,48 +21,11 @@ public class TestApi extends TestCase
 	private String outPath="target/qacover/reports";
 	// Input is a copy of the rules that were generaged by TestReport (copied from qacover-core/target/qacover-report/rules)
 	private String inpPath="../../qacover-core/src/test/resources/qacover-api-sample-rules-from-test-report";
-    public void testByRunOrder() {
-    	String allRuns = getReaderByRunOrderAll(inpPath);
-		FileUtil.fileWrite(outPath, "by-run-order.txt", allRuns);
-    }
+
     public void testByClass() {
     	String allQueries = getReaderByClass(inpPath);
 		FileUtil.fileWrite(outPath, "by-class.txt", allQueries);
     }
-    /**
-     * Ejemplo de uso de un CoverageReader para obtener toda la informacion sobre 
-     * cada una de las ejecuciones de las 
-     * queries y reglas generadas durante la evaluacion de la cobertura con QACover
-     * @param rulesFolder Carpeta donde se encuentra el resultado de la evaluacion
-     * @return un string con toda la informacion obtenida
-     */
-	private String getReaderByRunOrderAll(String rulesFolder) {
-		StringBuilder allData=new StringBuilder();
-		//Obtiene cada una de las ejecuciones de reglas de cobertura (en orden temporal)
-		//creando una coleccion QueryCollection que contiene objetos QueryReader
-		CoverageReader cr=new CoverageReader(rulesFolder);
-		QueryCollection qc=cr.getByRunOrder();
-		for (int i=0; i<qc.size(); i++) {
-			QueryReader qi=qc.get(i);
-			//todos los datos de la query ejecutada en un momento dado
-			allData.append("\n***** Execution " + qi.getKey() + "\n");
-			allData.append("* timestamp: " + qi.getTimestamp() + "\n");
-			allData.append("* class: " + qi.getKey().getClassName() + "\n");
-			allData.append("* line: " + qi.getKey().getClassLine() + "\n");
-			allData.append("* method: " + qi.getKey().getMethodName() + "\n");
-			allData.append("* sql: " + qi.getSql() + "\n");
-			allData.append("* parameters: " + qi.getParametersXml() + "\n");
-			//muestra el esquema solo para la primera regla
-			if (i==0)
-				allData.append("* schema xml: " + new TdSchemaXmlSerializer().serialize(qi.getSchema().getModel()) + "\n");
-			//las reglas, solo muestra el sql
-			QueryModel model=qi.getModel();
-			allData.append("* Using the model to iterate over " + model.getRules().size() + " rules\n");
-			for (int j=0; j<model.getRules().size(); j++)
-				allData.append("rule" + j + ": " + model.getRules().get(j).getSql() + "\n");
-		}
-		return allData.toString();
-	}
     /**
      * Ejemplo de uso de un CoverageReader para obtener toda la informacion sobre las 
      * queries y reglas generadas durante la evaluacion de la cobertura con QACover

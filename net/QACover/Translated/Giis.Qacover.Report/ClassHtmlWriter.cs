@@ -54,7 +54,7 @@ namespace Giis.Qacover.Report
 		public virtual string GetQueryContent(QueryReader query, string coverage, HistoryReader history)
 		{
 			string template = "    <tbody class='query'>\n" + "    <tr class='query-run'>\n" + "        <td></td>\n" + "        <td class='nowrap'>\n" + "            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>\n" + "            $runCount$ run(s)\n"
-				 + "            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span> " + "            $coverage$\n" + "        </td>\n" + "        <td colspan='2'>\n" + "            <div class='params'>$parameters$</div>\n"
+				 + "            <span class='params-show' title='Show eval result and params'>&#9655;</span><span class='params-hide' title='Hide eval result and params'>&#9665;</span> " + "            $coverage$\n" + "        </td>\n" + "        <td colspan='2'>\n" + "            <div class='params'>$parameters$</div>\n"
 				 + "            $sqlQuery$ $errorsQuery$" + "        </td>\n" + "    </tr>\n" + "    </tbody>\n";
 			return template.Replace("$runCount$", query.GetModel().GetQrun().ToString()).Replace("$coverage$", coverage).Replace("$sqlQuery$", GetSqlHtml(Encode(query.GetSql()))).Replace("$parameters$", GetHistoryItems(history)).Replace("$errorsQuery$", GetErrorsHtml(Encode(query.GetModel().GetErrorString
 				().Replace("\n", string.Empty).Replace("\r", string.Empty)), query.GetModel().GetError()));
@@ -64,13 +64,18 @@ namespace Giis.Qacover.Report
 		private string GetHistoryItems(HistoryReader history)
 		{
 			StringBuilder sb = new StringBuilder();
+			if (history.GetItems() == null || history.GetItems().Count == 0)
+			{
+				// NOSONAR for net compatibility
+				return "(Eval result and params are not available)";
+			}
 			for (int i = 0; i < history.GetItems().Count; i++)
 			{
 				HistoryModel item = history.GetItems()[i];
 				sb.Append(i != 0 ? "<br/>" : string.Empty).Append("<strong>").Append(i + 1).Append("</strong>.");
 				string result = item.GetResult() == null ? string.Empty : item.GetResult();
 				// can be null if query failed
-				sb.Append(" Result: [<span class='result-vector'>" + result + "</span>]");
+				sb.Append(" Eval result: [<span class='result-vector'>" + result + "</span>]");
 				sb.Append(" Params:");
 				foreach (ParameterDao param in item.GetParams())
 				{

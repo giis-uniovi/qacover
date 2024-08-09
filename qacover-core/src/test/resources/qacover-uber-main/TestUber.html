@@ -16,7 +16,8 @@
     td.nowrap, span.nowrap { white-space: nowrap; }
     td.covered { background:aquamarine; }
     td.uncovered { background:lightyellow; }
-    .params  { font-size: small; font-style: italic }
+    .params  { font-size: small; }
+    .result-vector  { font-family: 'Lucida Console', 'Courier New', monospace; }
     .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }
 </style>
 <script>
@@ -82,10 +83,10 @@
         <td class='nowrap'>
             <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
             1 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             
+            <span class='params-show' title='Show eval result and params'>&#9655;</span><span class='params-hide' title='Hide eval result and params'>&#9665;</span>             
         </td>
         <td colspan='2'>
-            <div class='params'>(run params not available)</div>
+            <div class='params'><strong>1</strong>. Eval result: [<span class='result-vector'>o#o</span>] Params:</div>
             select * from test where text = 'abc'         </td>
     </tr>
     </tbody>

@@ -35,9 +35,11 @@
 			<useProjectArtifact>true</useProjectArtifact>
 			<unpack>true</unpack>
 			<scope>runtime</scope>
+			<!-- Since v2 serialization is needed
 			<excludes>
 				<exclude>com.fasterxml.*</exclude>
 			</excludes>
+			-->
 		</dependencySet>
 		<!-- Logger implementation must be also included because its scope is test -->
 		<dependencySet>

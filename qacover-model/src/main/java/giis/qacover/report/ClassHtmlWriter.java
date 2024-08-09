@@ -119,7 +119,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "        <td class='nowrap'>\n"
 				+ "            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>\n"
 				+ "            $runCount$ run(s)\n"
-				+ "            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span> "
+				+ "            <span class='params-show' title='Show eval result and params'>&#9655;</span><span class='params-hide' title='Hide eval result and params'>&#9665;</span> "
 				+ "            $coverage$\n"
 				+ "        </td>\n"
 				+ "        <td colspan='2'>\n"
@@ -140,11 +140,13 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 	}
 	private String getHistoryItems(HistoryReader history) {
 		StringBuilder sb = new StringBuilder();
+		if (history.getItems() == null || history.getItems().size() == 0) // NOSONAR for net compatibility
+			return "(Eval result and params are not available)";
 		for (int i=0; i<history.getItems().size(); i++) {
 			HistoryModel item = history.getItems().get(i);
 			sb.append(i!=0 ? "<br/>":"").append("<strong>").append(i+1).append("</strong>.");
 			String result = item.getResult() == null ? "" : item.getResult(); // can be null if query failed
-			sb.append(" Result: [<span class='result-vector'>" + result + "</span>]");
+			sb.append(" Eval result: [<span class='result-vector'>" + result + "</span>]");
 			sb.append(" Params:");
 			for (ParameterDao param : item.getParams())
 				sb.append(" ").append(encode(param.toString()));

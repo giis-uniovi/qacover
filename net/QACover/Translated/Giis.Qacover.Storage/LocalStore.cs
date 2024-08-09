@@ -118,8 +118,12 @@ namespace Giis.Qacover.Storage
 		public virtual IList<HistoryModel> GetHistoryItems()
 		{
 			string logFile = FileUtil.GetPath(storeLocation, HistoryFileName);
-			IList<string> lines = FileUtil.FileReadLines(logFile);
+			IList<string> lines = FileUtil.FileReadLines(logFile, false);
 			IList<HistoryModel> items = new List<HistoryModel>();
+			if (JavaCs.IsEmpty(lines))
+			{
+				log.Warn("Storage of eval status and params can not be found or is empty: " + logFile);
+			}
 			foreach (string line in lines)
 			{
 				items.Add(new HistoryModel(line));

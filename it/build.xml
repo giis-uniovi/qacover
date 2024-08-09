@@ -59,7 +59,8 @@
 		<mvn folder="spring-petclinic-main" arg1="versions:set" arg2="-DnewVersion=${project.version}" />
 		<delete dir="spring-petclinic-main/target" />
 		<mvn folder="spring-petclinic-main" arg1="clean" arg2="test" />
-		<report rules="spring-petclinic-main/target/qacover/rules" reports="spring-petclinic-main/target/qacover/reports" />
+		<report rules="spring-petclinic-main/target/qacover/rules" reports="spring-petclinic-main/target/qacover/reports" 
+			sources="spring-petclinic-main/src/main/java,spring-petclinic-main/src/test/java" />
 		<echo>*** END RUNNING SPRING-PETCLINIC-MAIN ***</echo>
 	  </sequential>
 	</macrodef>
@@ -123,7 +124,7 @@
 				<pathelement location="qacover-uber-main/target/lib/sqlite-jdbc.jar"/>
 			</classpath>
 		</java>
-		<report rules="qacover-uber-main/target/qacover/rules" reports="qacover-uber-main/target/qacover/reports" />
+		<report rules="qacover-uber-main/target/qacover/rules" reports="qacover-uber-main/target/qacover/reports" sources="" />
 		<echo>*** END RUNNING QACOVER-UBER-MAIN ***</echo>
 	  </sequential>
 	</macrodef>
@@ -158,12 +159,14 @@
 	<macrodef name="report">
 	    <attribute name="rules" description="input folder with the rules" />
 	    <attribute name="reports" description="output folder with generated reports" />
+	    <attribute name="sources" description="folder to locate source files" />
 		<sequential>
 			<echo message="*** Executing qacover-report.jar from @{rules} to @{reports}" />
 			<mkdir dir="@{reports}" />
 			<java jar="../qacover-model/target/qacover-model-${project.version}-report.jar" fork="true" failonerror="true" output="@{reports}/report.log">
 				  <arg value="@{rules}" />
 				  <arg value="@{reports}" />
+				  <arg value="@{sources}" />
 			</java>
 		</sequential>
 	</macrodef>

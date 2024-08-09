@@ -16,7 +16,8 @@
     td.nowrap, span.nowrap { white-space: nowrap; }
     td.covered { background:aquamarine; }
     td.uncovered { background:lightyellow; }
-    .params  { font-size: small; font-style: italic }
+    .params  { font-size: small; }
+    .result-vector  { font-family: 'Lucida Console', 'Courier New', monospace; }
     .rules-show, .rules-hide, .params-show, .params-hide { cursor: pointer; }
 </style>
 <script>
@@ -68,12 +69,43 @@
 <div>
 <table class='table table-sm table-borderless'>
     <thead><th style='width:1%'>Line</th><th style='width:1%'>Coverage</th><th>Source code/method, queries and rules</th></thead>
+<tr class='line line-code'><td>1</td><td></td><td colspan='2'><code>/*</code></td></tr>
+<tr class='line line-code'><td>2</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;Copyright&nbsp;2012-2019&nbsp;the&nbsp;original&nbsp;author&nbsp;or&nbsp;authors.</code></td></tr>
+<tr class='line line-code'><td>3</td><td></td><td colspan='2'><code>&nbsp;*</code></td></tr>
+<tr class='line line-code'><td>4</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;Licensed&nbsp;under&nbsp;the&nbsp;Apache&nbsp;License,&nbsp;Version&nbsp;2.0&nbsp;(the&nbsp;"License");</code></td></tr>
+<tr class='line line-code'><td>5</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;you&nbsp;may&nbsp;not&nbsp;use&nbsp;this&nbsp;file&nbsp;except&nbsp;in&nbsp;compliance&nbsp;with&nbsp;the&nbsp;License.</code></td></tr>
+<tr class='line line-code'><td>6</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;You&nbsp;may&nbsp;obtain&nbsp;a&nbsp;copy&nbsp;of&nbsp;the&nbsp;License&nbsp;at</code></td></tr>
+<tr class='line line-code'><td>7</td><td></td><td colspan='2'><code>&nbsp;*</code></td></tr>
+<tr class='line line-code'><td>8</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://www.apache.org/licenses/LICENSE-2.0</code></td></tr>
+<tr class='line line-code'><td>9</td><td></td><td colspan='2'><code>&nbsp;*</code></td></tr>
+<tr class='line line-code'><td>10</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;Unless&nbsp;required&nbsp;by&nbsp;applicable&nbsp;law&nbsp;or&nbsp;agreed&nbsp;to&nbsp;in&nbsp;writing,&nbsp;software</code></td></tr>
+<tr class='line line-code'><td>11</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;distributed&nbsp;under&nbsp;the&nbsp;License&nbsp;is&nbsp;distributed&nbsp;on&nbsp;an&nbsp;"AS&nbsp;IS"&nbsp;BASIS,</code></td></tr>
+<tr class='line line-code'><td>12</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;WITHOUT&nbsp;WARRANTIES&nbsp;OR&nbsp;CONDITIONS&nbsp;OF&nbsp;ANY&nbsp;KIND,&nbsp;either&nbsp;express&nbsp;or&nbsp;implied.</code></td></tr>
+<tr class='line line-code'><td>13</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;See&nbsp;the&nbsp;License&nbsp;for&nbsp;the&nbsp;specific&nbsp;language&nbsp;governing&nbsp;permissions&nbsp;and</code></td></tr>
+<tr class='line line-code'><td>14</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;limitations&nbsp;under&nbsp;the&nbsp;License.</code></td></tr>
+<tr class='line line-code'><td>15</td><td></td><td colspan='2'><code>&nbsp;*/</code></td></tr>
+<tr class='line line-code'><td>16</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>17</td><td></td><td colspan='2'><code>package&nbsp;org.springframework.samples.petclinic;</code></td></tr>
+<tr class='line line-code'><td>18</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>19</td><td></td><td colspan='2'><code>import&nbsp;org.junit.jupiter.api.Test;</code></td></tr>
+<tr class='line line-code'><td>20</td><td></td><td colspan='2'><code>import&nbsp;org.springframework.beans.factory.annotation.Autowired;</code></td></tr>
+<tr class='line line-code'><td>21</td><td></td><td colspan='2'><code>import&nbsp;org.springframework.boot.test.context.SpringBootTest;</code></td></tr>
+<tr class='line line-code'><td>22</td><td></td><td colspan='2'><code>import&nbsp;org.springframework.samples.petclinic.vet.VetRepository;</code></td></tr>
+<tr class='line line-code'><td>23</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>24</td><td></td><td colspan='2'><code>@SpringBootTest</code></td></tr>
+<tr class='line line-code'><td>25</td><td></td><td colspan='2'><code>class&nbsp;PetclinicIntegrationTests&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>26</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>27</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;@Autowired</code></td></tr>
+<tr class='line line-code'><td>28</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;VetRepository&nbsp;vets;</code></td></tr>
+<tr class='line line-code'><td>29</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>30</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;@Test</code></td></tr>
+<tr class='line line-code'><td>31</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;void&nbsp;testFindAll()&nbsp;throws&nbsp;Exception&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
         <td>32</td>
         <td class='nowrap'><strong>66%</strong>&nbsp;(2/3)</td>
         <td colspan='2'>
-            <span class='text-primary font-weight-bold '>testFindAll</span>
-            <code> &nbsp; (source code not available)</code>
+            <span class='text-primary font-weight-bold method'>testFindAll</span>
+            <code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vets.findAll();</code>
         </td>
     </tr>
     <tbody class='query'>
@@ -82,10 +114,10 @@
         <td class='nowrap'>
             <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
             1 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             <strong></strong>&nbsp;(0/0)
+            <span class='params-show' title='Show eval result and params'>&#9655;</span><span class='params-hide' title='Hide eval result and params'>&#9665;</span>             <strong></strong>&nbsp;(0/0)
         </td>
         <td colspan='2'>
-            <div class='params'>(run params not available)</div>
+            <div class='params'><strong>1</strong>. Eval result: [<span class='result-vector'></span>] Params:</div>
             select vet0_.id as id1_5_, vet0_.first_name as first_na2_5_, vet0_.last_name as last_nam3_5_ from vets vet0_         </td>
     </tr>
     </tbody>
@@ -99,10 +131,10 @@
         <td class='nowrap'>
             <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>
             6 run(s)
-            <span class='params-show' title='Show run params'>&#9655;</span><span class='params-hide' title='Hide run paramss'>&#9665;</span>             <strong>66%</strong>&nbsp;(2/3)
+            <span class='params-show' title='Show eval result and params'>&#9655;</span><span class='params-hide' title='Hide eval result and params'>&#9665;</span>             <strong>66%</strong>&nbsp;(2/3)
         </td>
         <td colspan='2'>
-            <div class='params'>(run params not available)</div>
+            <div class='params'><strong>1</strong>. Eval result: [<span class='result-vector'>#oo</span>] Params: ?1?=6<br/><strong>2</strong>. Eval result: [<span class='result-vector'>##o</span>] Params: ?1?=5<br/><strong>3</strong>. Eval result: [<span class='result-vector'>##o</span>] Params: ?1?=4<br/><strong>4</strong>. Eval result: [<span class='result-vector'>##o</span>] Params: ?1?=3<br/><strong>5</strong>. Eval result: [<span class='result-vector'>##o</span>] Params: ?1?=2<br/><strong>6</strong>. Eval result: [<span class='result-vector'>#oo</span>] Params: ?1?=1</div>
             <strong>SELECT</strong> specialtie0_.vet_id AS vet_id1_4_0_ , specialtie0_.specialty_id AS specialt2_4_0_ , specialty1_.id AS id1_2_1_ , specialty1_.name AS name2_2_1_  <br class='canhide'/><strong>FROM</strong> vet_specialties specialtie0_  <br class='canhide'/><strong>INNER JOIN</strong> specialties specialty1_ ON specialtie0_.specialty_id = specialty1_.id  <br class='canhide'/><strong>WHERE</strong> specialtie0_.vet_id = ?1?         </td>
     </tr>
     </tbody>
@@ -149,6 +181,10 @@
         <tr><td></td></tr>
     </tbody>
 
+<tr class='line line-code'><td>33</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vets.findAll();&nbsp;//&nbsp;served&nbsp;from&nbsp;cache</code></td></tr>
+<tr class='line line-code'><td>34</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>35</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>36</td><td></td><td colspan='2'><code>}</code></td></tr>
 
 </table>
 </div>

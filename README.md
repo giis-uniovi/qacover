@@ -261,14 +261,15 @@ where:
 - count: number of coverage rules generated.
 - error: number of coverage rules that have not been evaluated because some error.
 
-Each class name is clickable to display a report that contains the details for queries that have been evaluated:
+Each class name is clickable to display a report that contains the details for queries that have been evaluated.
+The report for a class looks like:
 
 ![Example of a summary report](docs/image-class-1.png)
 ...
 ![Example of a summary report](docs/image-class-2.png)
 
-Clicking the down arrow near the percent coverage and the query executed
-shows the details of each coverage rule (covered in green, uncovered in yellow):
+Clicking the down arrow near the percent coverage at the query evaluated
+expands the details of each coverage rule (covered in green, uncovered in yellow):
 - A textual message that explains the test situation that the coverage rule represents.
   If a coverage rule is not covered, a test and/or the appropriate test data may be added in order to cover it.
 - The SQL representation of the coverage rule.
@@ -280,21 +281,22 @@ shows the details of each coverage rule (covered in green, uncovered in yellow):
 
 ### Include the source code
 
-The general syntax of the report generator has four parameters, only the two first ones are required
-if you do not include the source code of the classes under test:
+The general syntax of the report generator has four parameters (only the two first ones are required
+if you do not include the source code of the classes under test):
 ```
-<rules-folder> <reports-folder> [<source-folders> [project-folder]]
+<rules-folder> <reports-folder> [<source-folders> [<project-folder>]]
 ```
 
 On Java, if you want to include the source code in the reports, you have to set a value for the third parameter 
-`<source-folders>` to include a comma-separate list of the path(s) to locate the sources. For example:
+`<source-folders>` to include a comma-separated list of the path(s) to locate the sources. For example:
 - If executing the reports from the root of a maven Java project, 
   set `src/main/java`.
 - If executing the reports form the root of a multimodule Java project (parent project) with two modules,
   set `module1/src/main/java,module2/src/main/java`.
 
-On .NET, you have to set a value for the third and fourth parameter.
-The reason is that the location of source files does not exactly match the namespaces, so that,
+On .NET, you have to set a value for both the third and fourth parameters: 
+`<source-folders>` and `<project-folder>`.
+The reason is that the location of .NET source files does not exactly match the namespaces, so that,
 the FPC coverage rules store the absolute path of the class source files that has to be
 resolved to a relative path before report generation. For example:
 - If executing the reports from a solution folder that contains a project, set both parameters to `.`

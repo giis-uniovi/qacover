@@ -77,9 +77,11 @@ public class SourceCodeCollection {
 				addSources(allLines);
 				return;
 			} else {
-				log.debug("File can't be read or is empty: " + resolvedFile);
+				log.debug("Source file can't be read or is empty: " + resolvedFile);
 			}
 		}
+		// if sources have not added, no file could found, inform the error
+		log.error("Source file can't be read from any of the source folders: " + sourceFolders);
 	}
 
 	private void addSources(List<String> sources) {
@@ -90,7 +92,7 @@ public class SourceCodeCollection {
 	}
 
 	public String resolveSourcePath(String sourceFolder, String projectFolder, String sourceFile) {
-		log.debug("Try to resolve: Source: [" + sourceFolder + "] Project: [" + projectFolder + "] File: [" + sourceFile
+		log.debug("Using project folder - Try to resolve: Source: [" + sourceFolder + "] Project: [" + projectFolder + "] File: [" + sourceFile
 				+ "]");
 		sourceFolder = JavaCs.isEmpty(sourceFolder) ? "" : sourceFolder.trim();
 		projectFolder = JavaCs.isEmpty(projectFolder) ? "" : projectFolder.trim();
@@ -98,7 +100,7 @@ public class SourceCodeCollection {
 
 		// Source folder and source file are required, if not, the empty return means that source can't be fount
 		if ("".equals(sourceFolder) || "".equals(sourceFile)) {
-			log.debug("Not resolved, source folder or file are empty");
+			log.error("Can not resolve source code location: Source folder or file are empty");
 			return "";
 		}
 
@@ -113,9 +115,9 @@ public class SourceCodeCollection {
 
 			if (sourceFile.startsWith(prefix)) {
 				sourceFile = JavaCs.substring(sourceFile, prefix.length(), sourceFile.length());
-				log.debug("Using project folder, resolved absolute file name to relative: " + sourceFile);
+				log.info("Using project folder - Resolved absolute source file name to relative: " + sourceFile);
 			} else {
-				log.debug("Using project folder, not resolved: prefix [" + prefix + "] is not part of source file [" + sourceFile + "]");
+				log.error("Using project folder - Not resolved: prefix [" + prefix + "] is not part of source file [" + sourceFile + "]");
 				return "";
 			}
 		}

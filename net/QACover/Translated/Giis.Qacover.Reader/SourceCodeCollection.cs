@@ -98,9 +98,11 @@ namespace Giis.Qacover.Reader
 				}
 				else
 				{
-					log.Debug("File can't be read or is empty: " + resolvedFile);
+					log.Debug("Source file can't be read or is empty: " + resolvedFile);
 				}
 			}
+			// if sources have not added, no file could found, inform the error
+			log.Error("Source file can't be read from any of the source folders: " + sourceFolders);
 		}
 
 		private void AddSources(IList<string> sources)
@@ -115,14 +117,14 @@ namespace Giis.Qacover.Reader
 
 		public virtual string ResolveSourcePath(string sourceFolder, string projectFolder, string sourceFile)
 		{
-			log.Debug("Try to resolve: Source: [" + sourceFolder + "] Project: [" + projectFolder + "] File: [" + sourceFile + "]");
+			log.Debug("Using project folder - Try to resolve: Source: [" + sourceFolder + "] Project: [" + projectFolder + "] File: [" + sourceFile + "]");
 			sourceFolder = JavaCs.IsEmpty(sourceFolder) ? string.Empty : sourceFolder.Trim();
 			projectFolder = JavaCs.IsEmpty(projectFolder) ? string.Empty : projectFolder.Trim();
 			sourceFile = JavaCs.IsEmpty(sourceFile) ? string.Empty : sourceFile.Trim();
 			// Source folder and source file are required, if not, the empty return means that source can't be fount
 			if (string.Empty.Equals(sourceFolder) || string.Empty.Equals(sourceFile))
 			{
-				log.Debug("Not resolved, source folder or file are empty");
+				log.Error("Can not resolve source code location: Source folder or file are empty");
 				return string.Empty;
 			}
 			// If projectFolder specified (for net generated coverage), it is expected a full path source File
@@ -139,11 +141,11 @@ namespace Giis.Qacover.Reader
 				if (sourceFile.StartsWith(prefix))
 				{
 					sourceFile = JavaCs.Substring(sourceFile, prefix.Length, sourceFile.Length);
-					log.Debug("Using project folder, resolved absolute file name to relative: " + sourceFile);
+					log.Info("Using project folder - Resolved absolute source file name to relative: " + sourceFile);
 				}
 				else
 				{
-					log.Debug("Using project folder, not resolved: prefix [" + prefix + "] is not part of source file [" + sourceFile + "]");
+					log.Error("Using project folder - Not resolved: prefix [" + prefix + "] is not part of source file [" + sourceFile + "]");
 					return string.Empty;
 				}
 			}

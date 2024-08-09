@@ -43,7 +43,6 @@ public class ITTests {
 		String expFolder=FileUtil.getPath(bmk, "qacover-api-sample");
 		String actFolder=FileUtil.getPath("..", "it", "qacover-api-sample", "target", "qacover", "reports");
 		assertFiles(expFolder, actFolder, "by-class.txt");
-		assertFiles(expFolder, actFolder, "by-run-order.txt", true);
 	}
 	
 	/**

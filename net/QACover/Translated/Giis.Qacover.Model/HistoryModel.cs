@@ -116,13 +116,13 @@ namespace Giis.Qacover.Model
 
 		private IList<ParameterDao> ParamsFromXml(string paramXml)
 		{
-			IList<ParameterDao> dao = new List<ParameterDao>();
+			IList<ParameterDao> paramDao = new List<ParameterDao>();
 			IList<XNode> paramNodes = new XNode(paramXml).GetChildren("parameter");
 			foreach (XNode paramNode in paramNodes)
 			{
-				dao.Add(new ParameterDao(XNodeAbstract.DecodeAttribute(paramNode.GetAttribute("name")), XNodeAbstract.DecodeAttribute(paramNode.GetAttribute("value"))));
+				paramDao.Add(new ParameterDao(XNodeAbstract.DecodeAttribute(paramNode.GetAttribute("name")), XNodeAbstract.DecodeAttribute(paramNode.GetAttribute("value"))));
 			}
-			return dao;
+			return paramDao;
 		}
 
 		public virtual string ToStringV2()

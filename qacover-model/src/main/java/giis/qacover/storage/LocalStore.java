@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import giis.portable.util.FileUtil;
+import giis.portable.util.JavaCs;
 import giis.qacover.model.HistoryModel;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.QueryParameters;
@@ -110,8 +111,10 @@ public class LocalStore {
 	 */
 	public List<HistoryModel> getHistoryItems() {
 		String logFile = FileUtil.getPath(storeLocation, HISTORY_FILE_NAME);
-		List<String> lines = FileUtil.fileReadLines(logFile);
+		List<String> lines = FileUtil.fileReadLines(logFile, false);
 		List<HistoryModel> items = new ArrayList<>();
+		if (JavaCs.isEmpty(lines))
+			log.warn("Storage of eval status and params can not be found or is empty: " + logFile);
 		for (String line : lines)
 			items.add(new HistoryModel(line));
 		return items;

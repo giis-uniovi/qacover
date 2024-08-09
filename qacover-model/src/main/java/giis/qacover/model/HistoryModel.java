@@ -90,12 +90,12 @@ public class HistoryModel {
 	}
 
 	private List<ParameterDao> paramsFromXml(String paramXml) {
-		List<ParameterDao> dao = new ArrayList<>();
+		List<ParameterDao> paramDao = new ArrayList<>();
 		List<XNode> paramNodes = new XNode(paramXml).getChildren("parameter");
 		for (XNode paramNode : paramNodes)
-			dao.add(new ParameterDao(XNodeAbstract.decodeAttribute(paramNode.getAttribute("name")),
+			paramDao.add(new ParameterDao(XNodeAbstract.decodeAttribute(paramNode.getAttribute("name")),
 					XNodeAbstract.decodeAttribute(paramNode.getAttribute("value"))));
-		return dao;
+		return paramDao;
 	}
 
 	public String toStringV2() {

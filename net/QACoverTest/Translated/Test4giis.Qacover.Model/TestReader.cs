@@ -139,23 +139,6 @@ namespace Test4giis.Qacover.Model
 			}
 		}
 
-		[Test]
-		public virtual void TestReaderInvalidIndexNotExist()
-		{
-			try
-			{
-				CoverageReader reader = new CoverageReader(".");
-				// folder exists, but no index
-				reader.GetHistory();
-				NUnit.Framework.Legacy.ClassicAssert.Fail("Deberia producirse una excepcion");
-			}
-			catch (Exception e)
-			{
-				AssertContains("Error reading file", e.Message);
-				AssertContains("00HISTORY.log", e.Message);
-			}
-		}
-
 		// Collect the history items to access to the list of parameters used to run
 		// each query using a V1 history store format
 		/// <exception cref="Java.Sql.SQLException"/>
@@ -235,6 +218,15 @@ namespace Test4giis.Qacover.Model
 		private string Javacsparm(string @params)
 		{
 			return new Variability().IsJava() ? @params : @params.Replace("?1?", "@param1").Replace("?2?", "@param2");
+		}
+
+		[Test]
+		public virtual void TestReaderEmptyIfIndexNotExist()
+		{
+			CoverageReader reader = new CoverageReader(".");
+			// folder exists, but no index, do not throw exception
+			HistoryReader history = reader.GetHistory();
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual(0, history.GetItems().Count);
 		}
 
 		// Collect the source code lines with coverage of queries
