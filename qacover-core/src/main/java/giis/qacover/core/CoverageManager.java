@@ -25,17 +25,20 @@ public class CoverageManager {
 	private static final Logger log = LoggerFactory.getLogger(CoverageManager.class);
 	private QueryModel model;
 	private SchemaModel schema;
+	private RuleDriver ruleDriver; // a delegate to get and evaluate the rules
 	private ResultVector result = new ResultVector(0); // to avoid null if fails before generating rules
 
 	// Different constructors for new rules, existing and errors
-	public CoverageManager() {
-		super();
+	public CoverageManager(RuleDriver ruleDriver) {
+		this.ruleDriver = ruleDriver;
 	}
-	public CoverageManager(QueryModel model) {
+	public CoverageManager(RuleDriver ruleDriver, QueryModel model) {
 		this.model = model;
+		this.ruleDriver = ruleDriver;
 	}
-	public CoverageManager(String sql, String error) {
+	public CoverageManager(RuleDriver ruleDriver, String sql, String error) {
 		this.model = new QueryModel(sql, error);
+		this.ruleDriver = ruleDriver;
 	}
 
 	public QueryModel getModel() {
@@ -87,7 +90,7 @@ public class CoverageManager {
 		String fpcOptions = "clientname=" + config.getName() + new Variability().getVariantId() + " clientversion=" + clientVersion
 				+ " numberjdbcparam" + " " + config.getFpcServiceOptions();
 		store.setLastGeneratedInRules(svc.getRulesInput(sql, this.schema, fpcOptions));
-		model = svc.getRulesModel(sql, this.schema, fpcOptions);
+		model = ruleDriver.getRules(svc, sql, this.schema, fpcOptions);
 		// The DBMS is stored too to manage its variability in further actions
 		model.setDbms(this.schema.getDbms());
 	}
@@ -109,36 +112,29 @@ public class CoverageManager {
 		stmt.setVariant(new Variability(model.getDbms()));
 		// Executes and annotates the coverage/status of each rule
 		for (int i = 0; i < rules.size(); i++) {
-			ManagedRule rule = new ManagedRule(rules.get(i));
+			RuleModel ruleModel = rules.get(i);
 			String res;
-			if (options.getOptimizeRuleEvaluation() && rule.getModel().getDead() > 0)
+			if (options.getOptimizeRuleEvaluation() && ruleModel.getDead() > 0)
 				res = ResultVector.ALREADY_COVERED;
 			else
-				res = rule.run(stmt);
+				res = ruleDriver.evaluateRule(ruleModel, stmt);
 			
 			// Results for logging
-			String logString = getLogString(rule, stmt, res);
+			String logString = ruleDriver.getLogString(ruleModel, stmt, res);
 			logsb.append((i == 0 ? "" : "\n") + logString);
 			log.debug(logString);
 			
 			// store results
 			result.setResult(i, res);
-			if (rule.getModel().getDead() > 0)
+			if (ruleModel.getDead() > 0)
 				model.addDead(1);
-			if (rule.getModel().getError() > 0)
+			if (ruleModel.getError() > 0)
 				model.addError(1);
 		}
 		model.setCount(rules.size());
 		model.addQrun(1);
 		log.info(" SUMMARY: Covered " + model.getDead() + " out of " + model.getCount());
 		store.setLastRulesLog(logsb.toString());
-	}
-
-	private String getLogString(ManagedRule rule, QueryStatement stmt, String res) {
-		String ruleWithSql = rule.getSqlWithValues(stmt).replace("\r", "").replace("\n", " ").trim();
-		String logString = res + " " + (ResultVector.COVERED.equals(res) ? "  " : "") + ruleWithSql;
-		logString += ResultVector.RUNTIME_ERROR.equals(res) ? "\n" + rule.getModel().getRuntimeError() : "";
-		return logString;
 	}
 
 }

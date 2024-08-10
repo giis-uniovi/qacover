@@ -55,7 +55,8 @@ public class Controller {
 	private CoverageManager mainProcessError(RuleServices svc, StoreService store, QueryStatement stmt, Throwable e) {
 		String errorMsg = "Error at " + svc.getErrorContext() + ": " + QaCoverException.getString(e);
 		String sql = stmt != null ? stmt.getSql() : "";
-		CoverageManager rm = new CoverageManager(sql, errorMsg); // construye error en el formato xml de las reglas
+		RuleDriver rd = new RuleDriverFactory().getDriver();
+		CoverageManager rm = new CoverageManager(rd, sql, errorMsg); // construye error en el formato xml de las reglas
 		store.setLastGenStatus(errorMsg);
 		log.error("  ERROR: " + errorMsg, e);
 		return rm;
@@ -78,10 +79,11 @@ public class Controller {
 
 		// CoverageManager is constructed from rules generated in a previous query
 		// or by generating a fresh set of rules
-		CoverageManager rm = getCoverageManager(store, stack, stmt);
+		RuleDriver rd = new RuleDriverFactory().getDriver(); // delegate to get and evaluate the rules
+		CoverageManager rm = getCoverageManager(rd, store, stack, stmt);
 		if (rm == null) {
 			log.debug("Generating new coverage rules for this query");
-			rm = new CoverageManager();
+			rm = new CoverageManager(rd);
 			rm.generate(svc, store, stmt, stmt.getSql(), options);
 		} else {
 			log.debug("Using existing coverage rules for this query");
@@ -101,9 +103,9 @@ public class Controller {
 		return rm;
 	}
 
-	private CoverageManager getCoverageManager(StoreService store, StackLocator stack, QueryStatement stmt) {
+	private CoverageManager getCoverageManager(RuleDriver ruleDriver, StoreService store, StackLocator stack, QueryStatement stmt) {
 		QueryModel model = store.get(stack.getClassName(), stack.getMethodName(), stack.getLineNumber(), stmt.getSql());
-		return model == null ? null : new CoverageManager(model);
+		return model == null ? null : new CoverageManager(ruleDriver, model);
 	}
 
 }

@@ -69,7 +69,8 @@ namespace Giis.Qacover.Core
 		{
 			string errorMsg = "Error at " + svc.GetErrorContext() + ": " + QaCoverException.GetString(e);
 			string sql = stmt != null ? stmt.GetSql() : string.Empty;
-			CoverageManager rm = new CoverageManager(sql, errorMsg);
+			RuleDriver rd = new RuleDriverFactory().GetDriver();
+			CoverageManager rm = new CoverageManager(rd, sql, errorMsg);
 			// construye error en el formato xml de las reglas
 			store.SetLastGenStatus(errorMsg);
 			log.Error("  ERROR: " + errorMsg, e);
@@ -94,11 +95,13 @@ namespace Giis.Qacover.Core
 			store.SetLastParametersRun(stmt.GetParameters().ToString());
 			// CoverageManager is constructed from rules generated in a previous query
 			// or by generating a fresh set of rules
-			CoverageManager rm = GetCoverageManager(store, stack, stmt);
+			RuleDriver rd = new RuleDriverFactory().GetDriver();
+			// delegate to get and evaluate the rules
+			CoverageManager rm = GetCoverageManager(rd, store, stack, stmt);
 			if (rm == null)
 			{
 				log.Debug("Generating new coverage rules for this query");
-				rm = new CoverageManager();
+				rm = new CoverageManager(rd);
 				rm.Generate(svc, store, stmt, stmt.GetSql(), options);
 			}
 			else
@@ -122,10 +125,10 @@ namespace Giis.Qacover.Core
 			return rm;
 		}
 
-		private CoverageManager GetCoverageManager(StoreService store, StackLocator stack, QueryStatement stmt)
+		private CoverageManager GetCoverageManager(RuleDriver ruleDriver, StoreService store, StackLocator stack, QueryStatement stmt)
 		{
 			QueryModel model = store.Get(stack.GetClassName(), stack.GetMethodName(), stack.GetLineNumber(), stmt.GetSql());
-			return model == null ? null : new CoverageManager(model);
+			return model == null ? null : new CoverageManager(ruleDriver, model);
 		}
 	}
 }

@@ -25,24 +25,29 @@ namespace Giis.Qacover.Core
 
 		private SchemaModel schema;
 
+		private RuleDriver ruleDriver;
+
 		private ResultVector result = new ResultVector(0);
 
-		public CoverageManager()
-			: base()
-		{
-		}
-
-		public CoverageManager(QueryModel model)
+		public CoverageManager(RuleDriver ruleDriver)
 		{
 			// generation process interrupted for any reason
+			// a delegate to get and evaluate the rules
 			// to avoid null if fails before generating rules
 			// Different constructors for new rules, existing and errors
-			this.model = model;
+			this.ruleDriver = ruleDriver;
 		}
 
-		public CoverageManager(string sql, string error)
+		public CoverageManager(RuleDriver ruleDriver, QueryModel model)
+		{
+			this.model = model;
+			this.ruleDriver = ruleDriver;
+		}
+
+		public CoverageManager(RuleDriver ruleDriver, string sql, string error)
 		{
 			this.model = new QueryModel(sql, error);
+			this.ruleDriver = ruleDriver;
 		}
 
 		public virtual QueryModel GetModel()
@@ -101,7 +106,7 @@ namespace Giis.Qacover.Core
 			string clientVersion = new Variability().GetVersion();
 			string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + " " + config.GetFpcServiceOptions();
 			store.SetLastGeneratedInRules(svc.GetRulesInput(sql, this.schema, fpcOptions));
-			model = svc.GetRulesModel(sql, this.schema, fpcOptions);
+			model = ruleDriver.GetRules(svc, sql, this.schema, fpcOptions);
 			// The DBMS is stored too to manage its variability in further actions
 			model.SetDbms(this.schema.GetDbms());
 		}
@@ -124,27 +129,27 @@ namespace Giis.Qacover.Core
 			// Executes and annotates the coverage/status of each rule
 			for (int i = 0; i < rules.Count; i++)
 			{
-				ManagedRule rule = new ManagedRule(rules[i]);
+				RuleModel ruleModel = rules[i];
 				string res;
-				if (options.GetOptimizeRuleEvaluation() && rule.GetModel().GetDead() > 0)
+				if (options.GetOptimizeRuleEvaluation() && ruleModel.GetDead() > 0)
 				{
 					res = ResultVector.AlreadyCovered;
 				}
 				else
 				{
-					res = rule.Run(stmt);
+					res = ruleDriver.EvaluateRule(ruleModel, stmt);
 				}
 				// Results for logging
-				string logString = GetLogString(rule, stmt, res);
+				string logString = ruleDriver.GetLogString(ruleModel, stmt, res);
 				logsb.Append((i == 0 ? string.Empty : "\n") + logString);
 				log.Debug(logString);
 				// store results
 				result.SetResult(i, res);
-				if (rule.GetModel().GetDead() > 0)
+				if (ruleModel.GetDead() > 0)
 				{
 					model.AddDead(1);
 				}
-				if (rule.GetModel().GetError() > 0)
+				if (ruleModel.GetError() > 0)
 				{
 					model.AddError(1);
 				}
@@ -153,14 +158,6 @@ namespace Giis.Qacover.Core
 			model.AddQrun(1);
 			log.Info(" SUMMARY: Covered " + model.GetDead() + " out of " + model.GetCount());
 			store.SetLastRulesLog(logsb.ToString());
-		}
-
-		private string GetLogString(ManagedRule rule, QueryStatement stmt, string res)
-		{
-			string ruleWithSql = rule.GetSqlWithValues(stmt).Replace("\r", string.Empty).Replace("\n", " ").Trim();
-			string logString = res + " " + (ResultVector.Covered.Equals(res) ? "  " : string.Empty) + ruleWithSql;
-			logString += ResultVector.RuntimeError.Equals(res) ? "\n" + rule.GetModel().GetRuntimeError() : string.Empty;
-			return logString;
 		}
 	}
 }
