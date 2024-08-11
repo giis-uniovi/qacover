@@ -117,4 +117,9 @@ public class StatementAdapter extends QueryStatement {
 		return p6stmt.getConnectionInformation().getConnection();
 	}
 	
+	@Override
+	public IQueryStatementReader getReader(String sql) {
+		return new QueryStatementReader(this.getConnection(), getSqlWithValues(sql));
+	}
+
 }

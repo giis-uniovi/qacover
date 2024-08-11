@@ -88,7 +88,9 @@ public class CoverageManager {
 		log.debug("Getting sql coverage rules");
 		String clientVersion = new Variability().getVersion();
 		String fpcOptions = "clientname=" + config.getName() + new Variability().getVariantId() + " clientversion=" + clientVersion
-				+ " numberjdbcparam" + " " + config.getFpcServiceOptions();
+				+ " numberjdbcparam" 
+				+ ("mutation".equals(config.getRuleServiceType()) ? " getparsedquery" : "") // required to evaluate query
+				+ " " + config.getFpcServiceOptions();
 		store.setLastGeneratedInRules(svc.getRulesInput(sql, this.schema, fpcOptions));
 		model = ruleDriver.getRules(svc, sql, this.schema, fpcOptions);
 		// The DBMS is stored too to manage its variability in further actions
@@ -102,7 +104,7 @@ public class CoverageManager {
 		svc.setErrorContext("Run SQLFpc coverage rules");
 		store.setLastSqlRun(stmt.getSql());
 		StringBuilder logsb = new StringBuilder();
-
+		
 		List<RuleModel> rules = model.getRules();
 		FaultInjector injector = stmt.getFaultInjector();
 		if (injector != null && injector.isSingleRuleFaulty())
@@ -110,6 +112,12 @@ public class CoverageManager {
 		model.reset();
 		result = new ResultVector(rules.size());
 		stmt.setVariant(new Variability(model.getDbms()));
+		
+		// Mutation requires a previous step to read query results
+		// note that it requires generate the rules to get the parsed query
+		// that includes numbers in the parameters
+		ruleDriver.prepareEvaluation(stmt, model.getModel().getParsedquery());
+
 		// Executes and annotates the coverage/status of each rule
 		for (int i = 0; i < rules.size(); i++) {
 			RuleModel ruleModel = rules.get(i);

@@ -28,6 +28,7 @@ public class Configuration { // NOSONAR singleton allowed
 	private String storeRulesLocation;
 	private String cacheRulesLocation;
 	private String storeReportsLocation;
+	private String ruleServiceType;
 	private String fpcServiceUrl;
 	private String fpcServiceOptions;
 	private boolean optimizeRuleEvaluation;
@@ -55,6 +56,7 @@ public class Configuration { // NOSONAR singleton allowed
 		String defaultReportsSubDir = FileUtil.getPath(Parameters.getReportSubdir(), QACOVER_NAME, "reports");
 		storeRulesLocation = FileUtil.getPath(storeRootLocation, getProperty("qacover.store.rules", defaultRulesSubDir));
 		storeReportsLocation = FileUtil.getPath(storeRootLocation, getProperty("qacover.store.reports", defaultReportsSubDir));
+		ruleServiceType = "fpc";
 		fpcServiceUrl = getProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
 		fpcServiceOptions = getProperty("qacover.fpc.options", "");
 		optimizeRuleEvaluation = JavaCs.equalsIgnoreCase("true", getProperty("qacover.optimize.rule.evaluation", "false"));
@@ -202,11 +204,18 @@ public class Configuration { // NOSONAR singleton allowed
 		storeReportsLocation = location;
 	}
 
+	public String getRuleServiceType() {
+		return ruleServiceType;
+	}
 	public String getFpcServiceUrl() {
 		return fpcServiceUrl;
 	}
 	public String getFpcServiceOptions() {
 		return fpcServiceOptions;
+	}
+	public Configuration setRuleServiceType(String ruleServiceType) {
+		this.ruleServiceType = ruleServiceType;
+		return this;
 	}
 	public Configuration setFpcServiceOptions(String fpcServiceOptions) {
 		this.fpcServiceOptions = fpcServiceOptions;

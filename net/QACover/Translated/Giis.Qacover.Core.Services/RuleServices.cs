@@ -54,10 +54,22 @@ namespace Giis.Qacover.Core.Services
 			return api;
 		}
 
-		public virtual QueryModel GetRulesModel(string sql, SchemaModel schema, string fpcOptions)
+		public virtual QueryModel GetFpcRulesModel(string sql, SchemaModel schema, string fpcOptions)
 		{
 			this.SetErrorContext("Generate SQLFpc coverage rules");
 			TdRules model = GetApi().GetRules(schema.GetModel(), sql, fpcOptions);
+			InjectFaultIfNeeded(model);
+			if (!string.Empty.Equals(model.GetError()))
+			{
+				throw new QaCoverException(model.GetError());
+			}
+			return new QueryModel(model);
+		}
+
+		public virtual QueryModel GetMutationRulesModel(string sql, SchemaModel schema, string fpcOptions)
+		{
+			this.SetErrorContext("Generate SQLMutation coverage rules");
+			TdRules model = GetApi().GetMutants(schema.GetModel(), sql, fpcOptions);
 			InjectFaultIfNeeded(model);
 			if (!string.Empty.Equals(model.GetError()))
 			{

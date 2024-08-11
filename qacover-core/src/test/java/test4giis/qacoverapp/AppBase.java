@@ -203,4 +203,13 @@ public class AppBase {
 	public StackLocator myGetStackTraceIgnoredMethod() {
 		return new StackLocator();
 	}
+	
+	public Connection getConnectionNative() throws SQLException {
+		return cf.getNativeConnection();
+	}
+	public ResultSet queryMutParameters(String param1) throws SQLException {
+		PreparedStatement pstmt = conn.prepareStatement("select id,txt from test where txt=?");
+		pstmt.setString(1, param1);
+		return pstmt.executeQuery();
+	}
 }

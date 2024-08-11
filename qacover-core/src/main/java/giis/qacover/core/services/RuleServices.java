@@ -51,9 +51,18 @@ public class RuleServices {
 		return api;
 	}
 
-	public QueryModel getRulesModel(String sql, SchemaModel schema, String fpcOptions) {
+	public QueryModel getFpcRulesModel(String sql, SchemaModel schema, String fpcOptions) {
 		this.setErrorContext("Generate SQLFpc coverage rules");
 		TdRules model = getApi().getRules(schema.getModel(), sql, fpcOptions);
+		injectFaultIfNeeded(model);
+		if (!"".equals(model.getError()))
+			throw new QaCoverException(model.getError());
+		return new QueryModel(model);
+	}
+
+	public QueryModel getMutationRulesModel(String sql, SchemaModel schema, String fpcOptions) {
+		this.setErrorContext("Generate SQLMutation coverage rules");
+		TdRules model = getApi().getMutants(schema.getModel(), sql, fpcOptions);
 		injectFaultIfNeeded(model);
 		if (!"".equals(model.getError()))
 			throw new QaCoverException(model.getError());

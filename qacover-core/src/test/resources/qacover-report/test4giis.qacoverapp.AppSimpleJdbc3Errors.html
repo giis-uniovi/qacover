@@ -201,7 +201,7 @@
             <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(B+) num = 12</td>
             <td class='uncovered'>selectar id,num,text from test where num &lt; 9</td>
     </tr>
-    <tr class='rule-error'><td colspan='2'></td><td colspan='2'><span style="color:red;">Rule error: giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near "selectar": syntax error)</span></td></tr>
+    <tr class='rule-error'><td colspan='2'></td><td colspan='2'><span style="color:red;">Rule error: giis.qacover.portable.QaCoverException: QueryReader.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near "selectar": syntax error)</span></td></tr>
     <tr class='rule-summary'>
         <td></td>
         <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;0 count:&nbsp;1</td>
@@ -270,8 +270,8 @@
             <td class='uncovered'>--Some row in the table such that: <br class='canhide'/>--The WHERE condition fulfills: <br class='canhide'/>  --(B+) num = 10</td>
             <td class='uncovered'>select id,num,text from notable where num &lt; 9</td>
     </tr>
-    <tr class='rule-error'><td colspan='2'></td><td colspan='2'><span style="color:red;">Rule error: giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near "selectar": syntax error)
-<br/>giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: notable)</span></td></tr>
+    <tr class='rule-error'><td colspan='2'></td><td colspan='2'><span style="color:red;">Rule error: giis.qacover.portable.QaCoverException: QueryReader.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near "selectar": syntax error)
+<br/>giis.qacover.portable.QaCoverException: QueryReader.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: notable)</span></td></tr>
     <tr class='rule-summary'>
         <td></td>
         <td class='coverage' rowspan='2'><strong>2</strong> - dead:&nbsp;0 count:&nbsp;3</td>

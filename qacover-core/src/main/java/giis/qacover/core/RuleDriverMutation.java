@@ -1,28 +1,32 @@
 package giis.qacover.core;
 
+import java.util.List;
+
 import giis.qacover.core.services.RuleServices;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.SchemaModel;
 
 /**
  * Delegate that performs the required actions
- * on the SQLfpc coverage rules (get and evaluate the rules)
+ * on the SQLMutation rules (get and evaluate the rules)
  */
-public class RuleDriverFpc extends RuleDriver {
+public class RuleDriverMutation extends RuleDriver {
 
+	private List<String[]> rows;
+	
 	@Override
 	public QueryModel getRules(RuleServices svc, String sql, SchemaModel schema, String fpcOptions) {
-		return svc.getFpcRulesModel(sql, schema, fpcOptions);
+		return svc.getMutationRulesModel(sql, schema, fpcOptions);
 	}
 
 	@Override
 	public void prepareEvaluation(QueryStatement stmt, String sql) {
-		// no preparation actions, evaluation is made by checking number of rows for each rule
+		this.rows = stmt.getReader(sql).getRows();
 	}
 	
 	@Override
 	protected boolean isCovered(QueryStatement stmt, String sql) {
-		return stmt.getReader(sql).hasRows();
+		return !stmt.getReader(sql).equalRows(this.rows);
 	}
-	
+
 }

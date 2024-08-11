@@ -1,9 +1,6 @@
 package giis.qacover.core;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +12,6 @@ import giis.qacover.core.services.RuleServices;
 import giis.qacover.model.QueryParameters;
 import giis.qacover.model.QueryWithParameters;
 import giis.qacover.model.Variability;
-import giis.qacover.portable.QaCoverException;
 
 /**
  * Representation of a jdbc Statement that has been intercepted by p6spy.
@@ -111,27 +107,10 @@ public abstract class QueryStatement {
 	public abstract Connection getConnection();
 
 	/**
-	 * Determines if the execution of a query returns at least one row
-	 * (to evaluate the fpc coverage)
+	 * Returns an object to browse the data accessed from the current connection
 	 */
-	public boolean hasRows(String sql) {
-		String sqlWithValues = getSqlWithValues(sql);
-		// any exception is propagated to detect failures in individual rules
-		Statement stmt = null;
-		ResultSet rs = null;
-		try { // do not use try with resources for java 1.6 compatibility
-			stmt = this.getConnection().createStatement(); // NOSONAR
-			stmt.setMaxRows(1);
-			rs = stmt.executeQuery(sqlWithValues); // NOSONAR
-			return rs.next();
-		} catch (SQLException e) {
-			throw new QaCoverException("SpyStatementAdapter.hasRows", e);
-		} finally {
-			safeClose(rs);
-			safeClose(stmt);
-		}
-	}
-
+	public abstract IQueryStatementReader getReader(String sql);
+	
 	/**
 	 * Determines if the query is a select, needed to filter other statements
 	 * when a generic jdbc execute() method is used (does not differentiates
@@ -145,22 +124,6 @@ public abstract class QueryStatement {
 		return false;
 	}
 
-	private void safeClose(Statement stmt) {
-		try {
-			if (stmt != null)
-				stmt.close();
-		} catch (SQLException e) {
-			// no action
-		}
-	}
-	private void safeClose(ResultSet rs) {
-		try {
-			if (rs != null)
-				rs.close();
-		} catch (SQLException e) {
-			// no action
-		}
-	}
 	public Exception getException() {
 		return exception;
 	}

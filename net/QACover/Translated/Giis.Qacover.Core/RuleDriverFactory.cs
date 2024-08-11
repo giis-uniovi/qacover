@@ -1,6 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 /////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 /////////////////////////////////////////////////////////////////////////////////////////////
+using Giis.Qacover.Core.Services;
 
 
 namespace Giis.Qacover.Core
@@ -17,7 +18,15 @@ namespace Giis.Qacover.Core
 		/// </remarks>
 		public virtual RuleDriver GetDriver()
 		{
-			return new RuleDriverFpc();
+			if ("mutation".Equals(Configuration.GetInstance().GetRuleServiceType()))
+			{
+				return new RuleDriverMutation();
+			}
+			else
+			{
+				// fpc
+				return new RuleDriverFpc();
+			}
 		}
 	}
 }

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Giis.Portable.Util;
 using Giis.Qacover.Core.Services;
 using Giis.Qacover.Model;
-using Giis.Qacover.Portable;
 using Java.Sql;
 using NLog;
 
@@ -140,36 +139,8 @@ namespace Giis.Qacover.Core
 
 		public abstract Connection GetConnection();
 
-		/// <summary>
-		/// Determines if the execution of a query returns at least one row
-		/// (to evaluate the fpc coverage)
-		/// </summary>
-		public virtual bool HasRows(string sql)
-		{
-			string sqlWithValues = GetSqlWithValues(sql);
-			// any exception is propagated to detect failures in individual rules
-			Statement stmt = null;
-			ResultSet rs = null;
-			try
-			{
-				// do not use try with resources for java 1.6 compatibility
-				stmt = this.GetConnection().CreateStatement();
-				// NOSONAR
-				stmt.SetMaxRows(1);
-				rs = stmt.ExecuteQuery(sqlWithValues);
-				// NOSONAR
-				return rs.Next();
-			}
-			catch (SQLException e)
-			{
-				throw new QaCoverException("SpyStatementAdapter.hasRows", e);
-			}
-			finally
-			{
-				SafeClose(rs);
-				SafeClose(stmt);
-			}
-		}
+		/// <summary>Returns an object to browse the data accessed from the current connection</summary>
+		public abstract IQueryStatementReader GetReader(string sql);
 
 		/// <summary>
 		/// Determines if the query is a select, needed to filter other statements
@@ -187,36 +158,6 @@ namespace Giis.Qacover.Core
 			return false;
 		}
 
-		private void SafeClose(Statement stmt)
-		{
-			try
-			{
-				if (stmt != null)
-				{
-					stmt.Close();
-				}
-			}
-			catch (SQLException)
-			{
-			}
-		}
-
-		// no action
-		private void SafeClose(ResultSet rs)
-		{
-			try
-			{
-				if (rs != null)
-				{
-					rs.Close();
-				}
-			}
-			catch (SQLException)
-			{
-			}
-		}
-
-		// no action
 		public virtual Exception GetException()
 		{
 			return exception;

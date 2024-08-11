@@ -20,6 +20,12 @@ public abstract class RuleDriver {
 	public abstract QueryModel getRules(RuleServices svc, String sql, SchemaModel schema, String fpcOptions);
 
 	/**
+	 * Executes the preliminary actions on the query before evaluating each rule
+	 * (only needed for mutation)
+	 */
+	public abstract void prepareEvaluation(QueryStatement stmt, String sql);
+	
+	/**
 	 * Determines the coverage of a rule, saving the results and returning if it is covered
 	 */
 	public String evaluateRule( RuleModel model, QueryStatement stmt) {

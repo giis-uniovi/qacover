@@ -1,5 +1,7 @@
 package giis.qacover.core;
 
+import giis.qacover.core.services.Configuration;
+
 public class RuleDriverFactory {
 
 	/**
@@ -7,6 +9,9 @@ public class RuleDriverFactory {
 	 * options. At this moment, only fpc
 	 */
 	public RuleDriver getDriver() {
-		return new RuleDriverFpc();
+		if ("mutation".equals(Configuration.getInstance().getRuleServiceType()))
+			return new RuleDriverMutation();
+		else // fpc
+			return new RuleDriverFpc();
 	}
 }

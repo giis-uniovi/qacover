@@ -175,9 +175,9 @@ public class TestFaults extends Base {
 		List<RuleModel> rules=model.getRules(); //NOSONAR no using typed names for compatibility with downgrade to jdk 1.4
 		String errorString=rules.get(0).getErrorString();
 		assertExceptionMessage(variant.isJava()
-				? (variant.isJava8() ? "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)"
-						   : "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
-				: "Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error\nnear \"selectar\": syntax error"
+				? (variant.isJava8() ? "giis.qacover.portable.QaCoverException: QueryReader.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)"
+						   : "giis.qacover.portable.QaCoverException: QueryReader.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
+				: "Giis.Qacover.Portable.QaCoverException: QueryReader.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error\nnear \"selectar\": syntax error"
 				//: "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'."
 				, errorString);
 	}
@@ -205,9 +205,9 @@ public class TestFaults extends Base {
 	}
 	String exceptionInvalidSql=new Variability().isJava()
 			? (new Variability().isJava8()
-						? "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)"
-						: "giis.qacover.portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
-			: "Giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error\nnear \"selectar\": syntax error"
+						? "giis.qacover.portable.QaCoverException: QueryReader.hasRows. Caused by: org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"selectar\": syntax error)"
+						: "giis.qacover.portable.QaCoverException: QueryReader.hasRows. Caused by: org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
+			: "Giis.Qacover.Portable.QaCoverException: QueryReader.hasRows. Caused by: System.Data.SQLite.SQLiteException: SQL logic error\nnear \"selectar\": syntax error"
 			//: "giis.Qacover.Portable.QaCoverException: SpyStatementAdapter.hasRows. Caused by: Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"selectar\": syntax error'."
 			;
 

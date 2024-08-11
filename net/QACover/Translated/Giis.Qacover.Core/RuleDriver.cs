@@ -23,6 +23,12 @@ namespace Giis.Qacover.Core
 		/// <summary>Generate the model with the rules</summary>
 		public abstract QueryModel GetRules(RuleServices svc, string sql, SchemaModel schema, string fpcOptions);
 
+		/// <summary>
+		/// Executes the preliminary actions on the query before evaluating each rule
+		/// (only needed for mutation)
+		/// </summary>
+		public abstract void PrepareEvaluation(QueryStatement stmt, string sql);
+
 		/// <summary>Determines the coverage of a rule, saving the results and returning if it is covered</summary>
 		public virtual string EvaluateRule(RuleModel model, QueryStatement stmt)
 		{

@@ -172,8 +172,10 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "    </tr>\n"
 				+ "    <tr class='rule-sql'>\n"
 				+ "        <td></td>\n"
-				+ "            <td class='$ruleStatus$'>$ruleDescription$</td>\n"
-				+ "            <td class='$ruleStatus$'>$ruleSql$</td>\n"
+				+ ("".equals(rule.getDescription())
+				? "            <td class='$ruleStatus$ rowspan='2'>$ruleSql$</td>\n"
+				: "            <td class='$ruleStatus$'>$ruleDescription$</td>\n"
+				+ "            <td class='$ruleStatus$'>$ruleSql$</td>\n")
 				+ "    </tr>\n"
 				// needs a complete row to allow error message span across description and sql columns
 				+ "    $ruleErrors$";

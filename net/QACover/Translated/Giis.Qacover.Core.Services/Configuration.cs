@@ -33,6 +33,8 @@ namespace Giis.Qacover.Core.Services
 
 		private string storeReportsLocation;
 
+		private string ruleServiceType;
+
 		private string fpcServiceUrl;
 
 		private string fpcServiceOptions;
@@ -77,6 +79,7 @@ namespace Giis.Qacover.Core.Services
 			string defaultReportsSubDir = FileUtil.GetPath(Parameters.GetReportSubdir(), QacoverName, "reports");
 			storeRulesLocation = FileUtil.GetPath(storeRootLocation, GetProperty("qacover.store.rules", defaultRulesSubDir));
 			storeReportsLocation = FileUtil.GetPath(storeRootLocation, GetProperty("qacover.store.reports", defaultReportsSubDir));
+			ruleServiceType = "fpc";
 			fpcServiceUrl = GetProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
 			fpcServiceOptions = GetProperty("qacover.fpc.options", string.Empty);
 			optimizeRuleEvaluation = JavaCs.EqualsIgnoreCase("true", GetProperty("qacover.optimize.rule.evaluation", "false"));
@@ -261,6 +264,11 @@ namespace Giis.Qacover.Core.Services
 			storeReportsLocation = location;
 		}
 
+		public virtual string GetRuleServiceType()
+		{
+			return ruleServiceType;
+		}
+
 		public virtual string GetFpcServiceUrl()
 		{
 			return fpcServiceUrl;
@@ -269,6 +277,12 @@ namespace Giis.Qacover.Core.Services
 		public virtual string GetFpcServiceOptions()
 		{
 			return fpcServiceOptions;
+		}
+
+		public virtual Giis.Qacover.Core.Services.Configuration SetRuleServiceType(string ruleServiceType)
+		{
+			this.ruleServiceType = ruleServiceType;
+			return this;
 		}
 
 		public virtual Giis.Qacover.Core.Services.Configuration SetFpcServiceOptions(string fpcServiceOptions)

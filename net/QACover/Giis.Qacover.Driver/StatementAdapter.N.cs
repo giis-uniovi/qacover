@@ -64,13 +64,9 @@ namespace Giis.Qacover.Driver
         {
             return new Connection(nativeConn);
         }
-        /**
-         * Determina si la ejecucion del sql devuelve alguna fila (usada para evaluar reglas fpc)
-         */
-        public override bool HasRows(string sql)
+
+        public override IQueryStatementReader GetReader(String sql)
         {
-            try
-            {
                 DbCommand cmd = this.nativeConn.CreateCommand();
                 //El remplazo de parametros tiene tres situaciones:
                 //-no hay parametros
@@ -86,15 +82,7 @@ namespace Giis.Qacover.Driver
                 else if (this.parameters != null && this.parameters.Size() > 0)
                     cmd.CommandText = GetSqlWithValues(sql);
 
-                DbDataReader reader = cmd.ExecuteReader();
-                bool hasNext = reader.Read();
-                reader.Close();
-                return hasNext;
-            }
-            catch (Exception e)
-            {
-                throw new QaCoverException("SpyStatementAdapter.hasRows", e);
-            }
+                return new QueryStatementReader(cmd);
         }
         private void AddParameters(DbCommand cmd, DbParameterCollection parameters)
         {
@@ -114,6 +102,7 @@ namespace Giis.Qacover.Driver
                     cmd.Parameters.Add(param);
             }
         }
+
     }
 
 }

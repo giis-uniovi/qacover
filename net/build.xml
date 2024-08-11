@@ -30,7 +30,7 @@
   </target>
 
   <target name="sharpen.preprocess">
-    <!-- Copy the source files (code+test) to a temproal folder where will be preprocessed -->
+    <!-- Copy the source files (code+test) to a temporary folder where will be preprocessed -->
       <mkdir dir="sharpen-temp/lib"/>
       <copy todir="sharpen-temp/java">
         <fileset dir="../qacover-model/src/main/java" >
@@ -41,6 +41,8 @@
         </fileset>
         <fileset dir="../qacover-core/src/test/java" >
           <exclude name="**/test4giis/qacoversample/*.java" />
+          <exclude name="**/test4giis/qacover/TestMutation*.java" />
+          <exclude name="**/test4giis/qacover/**/Test*Mutation*.java" />
         </fileset>
       </copy>
       <!-- As of VisualAssert 2.4.1 the use of generics in the hierarchy of SoftVisualAssert

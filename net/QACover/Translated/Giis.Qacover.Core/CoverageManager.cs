@@ -104,7 +104,8 @@ namespace Giis.Qacover.Core
 			// Gets the rules, always numbering jdbc parameters for further substitution
 			log.Debug("Getting sql coverage rules");
 			string clientVersion = new Variability().GetVersion();
-			string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + " " + config.GetFpcServiceOptions();
+			string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + ("mutation".Equals(config.GetRuleServiceType()) ? " getparsedquery" : string.Empty) + " " + config.GetFpcServiceOptions();
+			// required to evaluate query
 			store.SetLastGeneratedInRules(svc.GetRulesInput(sql, this.schema, fpcOptions));
 			model = ruleDriver.GetRules(svc, sql, this.schema, fpcOptions);
 			// The DBMS is stored too to manage its variability in further actions
@@ -126,6 +127,10 @@ namespace Giis.Qacover.Core
 			model.Reset();
 			result = new ResultVector(rules.Count);
 			stmt.SetVariant(new Variability(model.GetDbms()));
+			// Mutation requires a previous step to read query results
+			// note that it requires generate the rules to get the parsed query
+			// that includes numbers in the parameters
+			ruleDriver.PrepareEvaluation(stmt, model.GetModel().GetParsedquery());
 			// Executes and annotates the coverage/status of each rule
 			for (int i = 0; i < rules.Count; i++)
 			{
