@@ -89,7 +89,9 @@ public class CoverageManager {
 		String clientVersion = new Variability().getVersion();
 		String fpcOptions = "clientname=" + config.getName() + new Variability().getVariantId() + " clientversion=" + clientVersion
 				+ " numberjdbcparam" 
-				+ ("mutation".equals(config.getRuleServiceType()) ? " getparsedquery" : "") // required to evaluate query
+				// mutation requires the parsed query to set the expected values 
+				// and the columns that must be used to order the resultsets
+				+ ("mutation".equals(config.getRuleServiceType()) ? " getordercols getparsedquery" : "")
 				+ " " + config.getFpcServiceOptions();
 		store.setLastGeneratedInRules(svc.getRulesInput(sql, this.schema, fpcOptions));
 		model = ruleDriver.getRules(svc, sql, this.schema, fpcOptions);
@@ -116,7 +118,8 @@ public class CoverageManager {
 		// Mutation requires a previous step to read query results
 		// note that it requires generate the rules to get the parsed query
 		// that includes numbers in the parameters
-		ruleDriver.prepareEvaluation(stmt, model.getModel().getParsedquery());
+		String orderCols = ruleDriver.getOrderCols(model);
+		ruleDriver.prepareEvaluation(stmt, model, orderCols);
 
 		// Executes and annotates the coverage/status of each rule
 		for (int i = 0; i < rules.size(); i++) {
@@ -125,7 +128,7 @@ public class CoverageManager {
 			if (options.getOptimizeRuleEvaluation() && ruleModel.getDead() > 0)
 				res = ResultVector.ALREADY_COVERED;
 			else
-				res = ruleDriver.evaluateRule(ruleModel, stmt);
+				res = ruleDriver.evaluateRule(ruleModel, stmt, orderCols);
 			
 			// Results for logging
 			String logString = ruleDriver.getLogString(ruleModel, stmt, res);

@@ -16,7 +16,7 @@ public class RuleDriverFpc extends RuleDriver {
 	}
 
 	@Override
-	public void prepareEvaluation(QueryStatement stmt, String sql) {
+	public void prepareEvaluation(QueryStatement stmt, QueryModel model, String orderCols) {
 		// no preparation actions, evaluation is made by checking number of rows for each rule
 	}
 	

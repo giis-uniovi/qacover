@@ -23,13 +23,14 @@ public abstract class RuleDriver {
 	 * Executes the preliminary actions on the query before evaluating each rule
 	 * (only needed for mutation)
 	 */
-	public abstract void prepareEvaluation(QueryStatement stmt, String sql);
+	public abstract void prepareEvaluation(QueryStatement stmt, QueryModel model, String orderCols);
 	
 	/**
 	 * Determines the coverage of a rule, saving the results and returning if it is covered
 	 */
-	public String evaluateRule( RuleModel model, QueryStatement stmt) {
+	public String evaluateRule(RuleModel model, QueryStatement stmt, String orderCols) {
 		String sql = model.getSql();
+		sql = addOrderBy(sql, orderCols); // only needed for mutation
 		model.addCount(1);
 		try { // save results
 			boolean isCovered = isCovered(stmt, sql);
@@ -48,6 +49,28 @@ public abstract class RuleDriver {
 	 */
 	protected abstract boolean isCovered(QueryStatement stmt, String sql);
 
+	/**
+	 * Gets the columns to order the queries from the model (only for mutations),
+	 * returns emtpy string if no found
+	 */
+	public String getOrderCols(QueryModel model) {
+		String orderCols = "";
+		// checks with containsKey for net compatibility (that fails if key does not exists)
+		if (model.getModel().getSummary() != null && model.getModel().getSummary().containsKey("ordercols"))
+			orderCols = model.getModel().getSummary().get("ordercols");
+		return orderCols;
+	}
+
+	/**
+	 * Transforms the sql query to add an order by that includes the orderCols, 
+	 * if not empty
+	 */
+	protected String addOrderBy(String sql, String orderCols) {
+		if (!"".equals(orderCols))
+			sql += "\nORDER BY " + orderCols;
+		return sql;
+	}
+	
 	String getLogString(RuleModel ruleModel, QueryStatement stmt, String res) {
 		String sql = stmt.getSqlWithValues(ruleModel.getSql());
 		String ruleWithSql = sql.replace("\r", "").replace("\n", " ").trim();

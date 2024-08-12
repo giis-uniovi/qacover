@@ -27,12 +27,14 @@ namespace Giis.Qacover.Core
 		/// Executes the preliminary actions on the query before evaluating each rule
 		/// (only needed for mutation)
 		/// </summary>
-		public abstract void PrepareEvaluation(QueryStatement stmt, string sql);
+		public abstract void PrepareEvaluation(QueryStatement stmt, QueryModel model, string orderCols);
 
 		/// <summary>Determines the coverage of a rule, saving the results and returning if it is covered</summary>
-		public virtual string EvaluateRule(RuleModel model, QueryStatement stmt)
+		public virtual string EvaluateRule(RuleModel model, QueryStatement stmt, string orderCols)
 		{
 			string sql = model.GetSql();
+			sql = AddOrderBy(sql, orderCols);
+			// only needed for mutation
 			model.AddCount(1);
 			try
 			{
@@ -52,6 +54,34 @@ namespace Giis.Qacover.Core
 
 		/// <summary>Determines if the sql of a rule generated for a query statement is covered</summary>
 		protected internal abstract bool IsCovered(QueryStatement stmt, string sql);
+
+		/// <summary>
+		/// Gets the columns to order the queries from the model (only for mutations),
+		/// returns emtpy string if no found
+		/// </summary>
+		public virtual string GetOrderCols(QueryModel model)
+		{
+			string orderCols = string.Empty;
+			// checks with containsKey for net compatibility (that fails if key does not exists)
+			if (model.GetModel().GetSummary() != null && model.GetModel().GetSummary().ContainsKey("ordercols"))
+			{
+				orderCols = model.GetModel().GetSummary()["ordercols"];
+			}
+			return orderCols;
+		}
+
+		/// <summary>
+		/// Transforms the sql query to add an order by that includes the orderCols,
+		/// if not empty
+		/// </summary>
+		protected internal virtual string AddOrderBy(string sql, string orderCols)
+		{
+			if (!string.Empty.Equals(orderCols))
+			{
+				sql += "\nORDER BY " + orderCols;
+			}
+			return sql;
+		}
 
 		internal virtual string GetLogString(RuleModel ruleModel, QueryStatement stmt, string res)
 		{

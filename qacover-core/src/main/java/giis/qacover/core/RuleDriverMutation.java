@@ -20,7 +20,9 @@ public class RuleDriverMutation extends RuleDriver {
 	}
 
 	@Override
-	public void prepareEvaluation(QueryStatement stmt, String sql) {
+	public void prepareEvaluation(QueryStatement stmt, QueryModel model, String orderCols) {
+		String sql = model.getModel().getParsedquery();
+		sql = addOrderBy(sql, orderCols);
 		this.rows = stmt.getReader(sql).getRows();
 	}
 	

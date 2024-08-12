@@ -18,7 +18,7 @@ namespace Giis.Qacover.Core
 			return svc.GetFpcRulesModel(sql, schema, fpcOptions);
 		}
 
-		public override void PrepareEvaluation(QueryStatement stmt, string sql)
+		public override void PrepareEvaluation(QueryStatement stmt, QueryModel model, string orderCols)
 		{
 		}
 

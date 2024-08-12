@@ -104,8 +104,9 @@ namespace Giis.Qacover.Core
 			// Gets the rules, always numbering jdbc parameters for further substitution
 			log.Debug("Getting sql coverage rules");
 			string clientVersion = new Variability().GetVersion();
-			string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + ("mutation".Equals(config.GetRuleServiceType()) ? " getparsedquery" : string.Empty) + " " + config.GetFpcServiceOptions();
-			// required to evaluate query
+			string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + ("mutation".Equals(config.GetRuleServiceType()) ? " getordercols getparsedquery" : string.Empty) + " " + config.GetFpcServiceOptions();
+			// mutation requires the parsed query to set the expected values 
+			// and the columns that must be used to order the resultsets
 			store.SetLastGeneratedInRules(svc.GetRulesInput(sql, this.schema, fpcOptions));
 			model = ruleDriver.GetRules(svc, sql, this.schema, fpcOptions);
 			// The DBMS is stored too to manage its variability in further actions
@@ -130,7 +131,8 @@ namespace Giis.Qacover.Core
 			// Mutation requires a previous step to read query results
 			// note that it requires generate the rules to get the parsed query
 			// that includes numbers in the parameters
-			ruleDriver.PrepareEvaluation(stmt, model.GetModel().GetParsedquery());
+			string orderCols = ruleDriver.GetOrderCols(model);
+			ruleDriver.PrepareEvaluation(stmt, model, orderCols);
 			// Executes and annotates the coverage/status of each rule
 			for (int i = 0; i < rules.Count; i++)
 			{
@@ -142,7 +144,7 @@ namespace Giis.Qacover.Core
 				}
 				else
 				{
-					res = ruleDriver.EvaluateRule(ruleModel, stmt);
+					res = ruleDriver.EvaluateRule(ruleModel, stmt, orderCols);
 				}
 				// Results for logging
 				string logString = ruleDriver.GetLogString(ruleModel, stmt, res);

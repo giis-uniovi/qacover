@@ -21,8 +21,10 @@ namespace Giis.Qacover.Core
 			return svc.GetMutationRulesModel(sql, schema, fpcOptions);
 		}
 
-		public override void PrepareEvaluation(QueryStatement stmt, string sql)
+		public override void PrepareEvaluation(QueryStatement stmt, QueryModel model, string orderCols)
 		{
+			string sql = model.GetModel().GetParsedquery();
+			sql = AddOrderBy(sql, orderCols);
 			this.rows = stmt.GetReader(sql).GetRows();
 		}
 
