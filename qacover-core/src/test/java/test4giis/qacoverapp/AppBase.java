@@ -204,12 +204,15 @@ public class AppBase {
 		return new StackLocator();
 	}
 	
+	// To test mutations (java only)
+	
 	public Connection getConnectionNative() throws SQLException {
 		return cf.getNativeConnection();
 	}
-	public ResultSet queryMutParameters(String param1) throws SQLException {
-		PreparedStatement pstmt = conn.prepareStatement("select id,txt from test where txt=?");
+	public ResultSet executeQueryMut(String sql, String param1) throws SQLException {
+		PreparedStatement pstmt = conn.prepareStatement(sql);
 		pstmt.setString(1, param1);
 		return pstmt.executeQuery();
 	}
+
 }

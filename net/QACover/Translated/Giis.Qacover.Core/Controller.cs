@@ -97,7 +97,7 @@ namespace Giis.Qacover.Core
 			// or by generating a fresh set of rules
 			RuleDriver rd = new RuleDriverFactory().GetDriver();
 			// delegate to get and evaluate the rules
-			CoverageManager rm = GetCoverageManager(rd, store, stack, stmt);
+			CoverageManager rm = GetCoverageManager(rd, store, stack, stmt, options.GetRuleCriterion());
 			if (rm == null)
 			{
 				log.Debug("Generating new coverage rules for this query");
@@ -125,10 +125,25 @@ namespace Giis.Qacover.Core
 			return rm;
 		}
 
-		private CoverageManager GetCoverageManager(RuleDriver ruleDriver, StoreService store, StackLocator stack, QueryStatement stmt)
+		private CoverageManager GetCoverageManager(RuleDriver ruleDriver, StoreService store, StackLocator stack, QueryStatement stmt, string currentCriterion)
 		{
 			QueryModel model = store.Get(stack.GetClassName(), stack.GetMethodName(), stack.GetLineNumber(), stmt.GetSql());
-			return model == null ? null : new CoverageManager(ruleDriver, model);
+			if (model == null)
+			{
+				return null;
+			}
+			// to signal the need to create a new model
+			// If a previous run generated a model with a different criterion, 
+			// a new coverage manager must be created to overwrite the existing model
+			string ruleCriterion = model.GetModel().GetRulesClass();
+			if (!ruleCriterion.Equals(currentCriterion))
+			{
+				log.Warn("Current {} coverage criterion does not match with the stored rule {} criterion." + " Existing rule will be overwritten", currentCriterion, ruleCriterion);
+				return null;
+			}
+			// to signal the need to create a new model that will overwrite the stored rule
+			// new empty rule
+			return new CoverageManager(ruleDriver, model);
 		}
 	}
 }

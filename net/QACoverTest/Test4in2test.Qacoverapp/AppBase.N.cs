@@ -192,5 +192,13 @@ namespace Test4giis.Qacoverapp
 		{
 			return new StackLocator();
 		}
-	}
+
+        // Mutant test not run in net, this is only to compile the base class (that is translated)
+        public virtual ResultSet ExecuteQueryMut(string sql, string param1)
+        {
+            return new ResultSet(conn.ExecuteQuery(JdbcParamsToAssert(sql, 1),
+                new DbParameter[] { GetNetParam(1, param1) }));
+        }
+
+    }
 }

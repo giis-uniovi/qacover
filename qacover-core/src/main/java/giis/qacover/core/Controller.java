@@ -80,7 +80,7 @@ public class Controller {
 		// CoverageManager is constructed from rules generated in a previous query
 		// or by generating a fresh set of rules
 		RuleDriver rd = new RuleDriverFactory().getDriver(); // delegate to get and evaluate the rules
-		CoverageManager rm = getCoverageManager(rd, store, stack, stmt);
+		CoverageManager rm = getCoverageManager(rd, store, stack, stmt, options.getRuleCriterion());
 		if (rm == null) {
 			log.debug("Generating new coverage rules for this query");
 			rm = new CoverageManager(rd);
@@ -103,9 +103,20 @@ public class Controller {
 		return rm;
 	}
 
-	private CoverageManager getCoverageManager(RuleDriver ruleDriver, StoreService store, StackLocator stack, QueryStatement stmt) {
+	private CoverageManager getCoverageManager(RuleDriver ruleDriver, StoreService store, StackLocator stack, QueryStatement stmt, String currentCriterion) {
 		QueryModel model = store.get(stack.getClassName(), stack.getMethodName(), stack.getLineNumber(), stmt.getSql());
-		return model == null ? null : new CoverageManager(ruleDriver, model);
+		if (model == null)
+			return null; // to signal the need to create a new model
+		// If a previous run generated a model with a different criterion, 
+		// a new coverage manager must be created to overwrite the existing model
+		String ruleCriterion = model.getModel().getRulesClass();
+		if (!ruleCriterion.equals(currentCriterion)) {
+			log.warn("Current {} coverage criterion does not match with the stored rule {} criterion."
+					+ " Existing rule will be overwritten", currentCriterion, ruleCriterion);
+			return null; // to signal the need to create a new model that will overwrite the stored rule
+		}
+		// new empty rule
+		return new CoverageManager(ruleDriver, model);
 	}
 
 }

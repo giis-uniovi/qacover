@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import giis.qacover.core.services.Configuration;
 import giis.qacover.driver.QueryStatementReader;
 import giis.qacover.model.Variability;
 import test4giis.qacoverapp.AppSimpleJdbc;
@@ -44,8 +45,25 @@ public class TestMutation extends Base {
 
 	@Test
 	public void testEvalMutants() throws SQLException {
-		configureTestOptions().setRuleCriterion("mutation")
-			.setRuleOptions("nomutate=equivalent,ir,abs,uoi,lcr,nl");
+		configureTestOptions().setRuleCriterion("mutation").setRuleOptions("nomutate=equivalent,ir,abs,uoi,lcr,nl");
+		doEvalMutation();
+		
+		// Updates the current configuration to generate fpc.
+		// Although a mutation rule is stored for this query, it will be replaced by a new fpc rule
+		Configuration.getInstance().setRuleCriterion("fpc").setRuleOptions("");
+		doEvalFpc();
+	}
+	
+	@Test
+	public void testEvalMutantsAfterFpc() throws SQLException {
+		// Same than before, but first fpc and then mutation
+		configureTestOptions().setRuleCriterion("fpc");
+		doEvalFpc();
+		Configuration.getInstance().setRuleCriterion("mutation").setRuleOptions("nomutate=equivalent,ir,abs,uoi,lcr,nl");
+		doEvalMutation();
+	}
+	
+	private void doEvalMutation() throws SQLException {
 		rs = app.queryMutParameters("abc");
 		assertEvalResults("select id,txt from test where txt=?", "1 abc", SqlUtil.resultSet2csv(rs, " "),
 				"UNCOVERED SELECT DISTINCT id , txt FROM test WHERE txt = 'abc'\n"
@@ -56,6 +74,14 @@ public class TestMutation extends Base {
 						+ "UNCOVERED SELECT id , txt FROM test WHERE txt <= 'abc'\n"
 						+ "COVERED   SELECT id , txt FROM test WHERE (1=1)\n"
 						+ "COVERED   SELECT id , txt FROM test WHERE (1=0)",
+				"{?1?='abc'}", false, new Variability().isNetCore());
+	}
+	private void doEvalFpc() throws SQLException {
+		rs = app.queryMutParameters("abc");
+		assertEvalResults("select id,txt from test where txt=?", "1 abc", SqlUtil.resultSet2csv(rs, " "),
+				"UNCOVERED SELECT id , txt FROM test WHERE NOT(txt = 'abc')\n"
+				+ "COVERED   SELECT id , txt FROM test WHERE (txt = 'abc')\n"
+				+ "COVERED   SELECT id , txt FROM test WHERE (txt IS NULL)",
 				"{?1?='abc'}", false, new Variability().isNetCore());
 	}
 

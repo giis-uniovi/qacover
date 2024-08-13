@@ -64,4 +64,12 @@ public class AppSimpleJdbc extends AppBase {
 	public ResultSet queryParametersNamed(int param1, int param2, String param3) throws SQLException {
 		return executeQuery("/* params=?1?,?1?,?2? */ select id,num,text from test where id=? or num=? or text=?",param1, param2, param3);
 	}
+	
+	public ResultSet queryMutParameters(String param1) throws SQLException {
+		return executeQueryMut("select id,txt from test where txt=?", param1);
+		//PreparedStatement pstmt = conn.prepareStatement("select id,txt from test where txt=?");
+		//pstmt.setString(1, param1);
+		//return pstmt.executeQuery();
+	}
+
 }
