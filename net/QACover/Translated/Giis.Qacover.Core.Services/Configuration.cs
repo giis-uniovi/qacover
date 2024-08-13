@@ -33,11 +33,11 @@ namespace Giis.Qacover.Core.Services
 
 		private string storeReportsLocation;
 
-		private string ruleServiceType;
+		private string ruleCriterion;
 
-		private string fpcServiceUrl;
+		private string ruleUrl;
 
-		private string fpcServiceOptions;
+		private string ruleOptions;
 
 		private bool optimizeRuleEvaluation;
 
@@ -74,15 +74,24 @@ namespace Giis.Qacover.Core.Services
 		public virtual Giis.Qacover.Core.Services.Configuration Reset()
 		{
 			this.properties = GetProperties(OptionsFileProperty);
+			// First verification that there are no old properties
+			VerifyRemovedProperty("qacover.optimize.rule.evaluation", "It MUST be renamed to: qacover.rule.optimize.evaluation");
+			VerifyRemovedProperty("qacover.fpc.url", "It MUST be renamed to: qacover.rule.url");
+			VerifyRemovedProperty("qacover.fpc.options", "It MUST be renamed to: qacover.rule.options");
 			string storeRootLocation = GetProperty("qacover.store.root", Parameters.GetProjectRoot());
 			string defaultRulesSubDir = FileUtil.GetPath(Parameters.GetReportSubdir(), QacoverName, "rules");
 			string defaultReportsSubDir = FileUtil.GetPath(Parameters.GetReportSubdir(), QacoverName, "reports");
 			storeRulesLocation = FileUtil.GetPath(storeRootLocation, GetProperty("qacover.store.rules", defaultRulesSubDir));
 			storeReportsLocation = FileUtil.GetPath(storeRootLocation, GetProperty("qacover.store.reports", defaultReportsSubDir));
-			ruleServiceType = "fpc";
-			fpcServiceUrl = GetProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
-			fpcServiceOptions = GetProperty("qacover.fpc.options", string.Empty);
-			optimizeRuleEvaluation = JavaCs.EqualsIgnoreCase("true", GetProperty("qacover.optimize.rule.evaluation", "false"));
+			ruleCriterion = GetProperty("qacover.rule.criterion", "fpc");
+			if (!"fpc".Equals(ruleCriterion) && !"mutation".Equals(ruleCriterion))
+			{
+				log.Warn("Invalid value " + ruleCriterion + ". Using fpc as fallback");
+				ruleCriterion = "fpc";
+			}
+			ruleUrl = GetProperty("qacover.rule.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
+			ruleOptions = GetProperty("qacover.rule.options", string.Empty);
+			optimizeRuleEvaluation = JavaCs.EqualsIgnoreCase("true", GetProperty("qacover.rule.optimize.evaluation", "false"));
 			inferQueryParameters = JavaCs.EqualsIgnoreCase("true", GetProperty("qacover.query.infer.parameters", "false"));
 			// Includes some predefined stack exclusions
 			stackExclusions = new List<string>();
@@ -185,6 +194,15 @@ namespace Giis.Qacover.Core.Services
 			return value;
 		}
 
+		private void VerifyRemovedProperty(string name, string message)
+		{
+			string value = GetProperty(name, string.Empty);
+			if (!string.Empty.Equals(value))
+			{
+				throw new QaCoverException("Property " + name + " has been removed. " + message);
+			}
+		}
+
 		/// <summary>Reads a property that represents a list of comma separated values</summary>
 		private IList<string> GetMultiValueProperty(string name)
 		{
@@ -264,36 +282,36 @@ namespace Giis.Qacover.Core.Services
 			storeReportsLocation = location;
 		}
 
-		public virtual string GetRuleServiceType()
+		public virtual string GetRuleCriterion()
 		{
-			return ruleServiceType;
+			return ruleCriterion;
 		}
 
-		public virtual string GetFpcServiceUrl()
+		public virtual string GetRuleServiceUrl()
 		{
-			return fpcServiceUrl;
+			return ruleUrl;
 		}
 
-		public virtual string GetFpcServiceOptions()
+		public virtual string GetRuleOptions()
 		{
-			return fpcServiceOptions;
+			return ruleOptions;
 		}
 
-		public virtual Giis.Qacover.Core.Services.Configuration SetRuleServiceType(string ruleServiceType)
+		public virtual Giis.Qacover.Core.Services.Configuration SetRuleCriterion(string ruleCriterion)
 		{
-			this.ruleServiceType = ruleServiceType;
+			this.ruleCriterion = ruleCriterion;
 			return this;
 		}
 
-		public virtual Giis.Qacover.Core.Services.Configuration SetFpcServiceOptions(string fpcServiceOptions)
+		public virtual Giis.Qacover.Core.Services.Configuration SetRuleOptions(string ruleOptions)
 		{
-			this.fpcServiceOptions = fpcServiceOptions;
+			this.ruleOptions = ruleOptions;
 			return this;
 		}
 
-		public virtual Giis.Qacover.Core.Services.Configuration SetFpcServiceUrl(string fpcServiceUrl)
+		public virtual Giis.Qacover.Core.Services.Configuration SetRuleServiceUrl(string ruleUrl)
 		{
-			this.fpcServiceUrl = fpcServiceUrl;
+			this.ruleUrl = ruleUrl;
 			return this;
 		}
 

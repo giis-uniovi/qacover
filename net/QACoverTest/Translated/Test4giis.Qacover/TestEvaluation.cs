@@ -86,7 +86,7 @@ namespace Test4giis.Qacover
 		[Test]
 		public virtual void TestEvalFpcOptions()
 		{
-			ConfigureTestOptions().SetFpcServiceOptions("noboundaries");
+			ConfigureTestOptions().SetRuleOptions("noboundaries");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertEvalResults("select id,num,text from test where num>=-1", "1 0 abc\n2 99 xyz\n3 99 NULL", SqlUtil.ResultSet2csv(rs, " "), "UNCOVERED SELECT id , num , text FROM test WHERE NOT(num >= -1)\n" + "COVERED   SELECT id , num , text FROM test WHERE (num >= -1)");
 		}
@@ -110,7 +110,7 @@ namespace Test4giis.Qacover
 			{
 				return;
 			}
-			Configuration.GetInstance().SetInferQueryParameters(false).SetFpcServiceOptions("noboundaries");
+			Configuration.GetInstance().SetInferQueryParameters(false).SetRuleOptions("noboundaries");
 			rs = app.QueryParametersNamed(1, 1, "abc");
 			AssertEvalResults("/* params=?1?,?1?,?2? */ select id,num,text from test where id=? or num=? or text=?", "1 0 abc", SqlUtil.ResultSet2csv(rs, " "), "COVERED   /*params=1,1,'abc'*/ SELECT id , num , text FROM test WHERE NOT(id = 1) AND NOT(num = 1) AND NOT(text = 'abc')\n" + "UNCOVERED /*params=1,1,'abc'*/ SELECT id , num , text FROM test WHERE (id = 1) AND NOT(num = 1) AND NOT(text = 'abc')\n"
 				 + "UNCOVERED /*params=1,1,'abc'*/ SELECT id , num , text FROM test WHERE (num = 1) AND NOT(id = 1) AND NOT(text = 'abc')\n" + "UNCOVERED /*params=1,1,'abc'*/ SELECT id , num , text FROM test WHERE (text = 'abc') AND NOT(id = 1) AND NOT(num = 1)\n" + "COVERED   /*params=1,1,'abc'*/ SELECT id , num , text FROM test WHERE (text IS NULL) AND NOT(id = 1) AND NOT(num = 1)"
@@ -128,7 +128,7 @@ namespace Test4giis.Qacover
 			{
 				return;
 			}
-			Configuration.GetInstance().SetInferQueryParameters(false).SetFpcServiceOptions("noboundaries");
+			Configuration.GetInstance().SetInferQueryParameters(false).SetRuleOptions("noboundaries");
 			rs = app.QueryParametersNamed(1, 2, "abc");
 			NUnit.Framework.Legacy.ClassicAssert.AreEqual("Error at : giis.qacover.portable.QaCoverException: StatementAdapter: Parameter ?1? had been assigned to 1. Can't be assigned to a new value 2", StoreService.GetLast().GetLastGenStatus());
 		}

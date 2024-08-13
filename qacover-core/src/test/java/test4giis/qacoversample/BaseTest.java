@@ -53,7 +53,7 @@ public class BaseTest {
 	public static void classSetUp() {
 		log.info("Reset coverage parameters");
 		Configuration options = Base.configureTestOptions().setName("qacoversample")
-				.setFpcServiceOptions("noboundaries notautology");
+				.setRuleOptions("noboundaries notautology");
 		// instantiates an store to reset rules
 		new StoreService(options).dropRules().dropLast();
 	}

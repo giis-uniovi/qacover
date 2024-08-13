@@ -33,7 +33,7 @@ public class TestStore extends Base {
 	@Before
 	public void setUp() throws SQLException {
 		super.setUp();
-		options.setFpcServiceOptions("noboundaries");
+		options.setRuleOptions("noboundaries");
 		app = new AppSimpleJdbc(variant); // aplicacion con los metodos a probar
 		setUpTestData();
 	}
@@ -228,11 +228,11 @@ public class TestStore extends Base {
 	@Test
 	public void testAbortByTableExclusion() throws SQLException {
 		// full match (implies an abort on the rule evaluation)
-		Base.configureTestOptions().setFpcServiceOptions("noboundaries").addTableExclusionExact("test");
+		Base.configureTestOptions().setRuleOptions("noboundaries").addTableExclusionExact("test");
 		rs = app.queryNoParameters1Condition(-1);
 		assertAbort("{}");
 		// approximate match (no abort)
-		Base.configureTestOptions().setFpcServiceOptions("noboundaries").addTableExclusionExact("tes");
+		Base.configureTestOptions().setRuleOptions("noboundaries").addTableExclusionExact("tes");
 		rs = app.queryNoParameters1Condition(-1);
 		assertNoAbort();
 	}
@@ -240,17 +240,17 @@ public class TestStore extends Base {
 	@Test
 	public void testAbortByClassExclusion() throws SQLException {
 		// full match (abort)
-		Base.configureTestOptions().setFpcServiceOptions("noboundaries")
+		Base.configureTestOptions().setRuleOptions("noboundaries")
 				.addClassExclusion("test4giis.qacoverapp.AppSimpleJdbc");
 		rs = app.queryNoParameters1Condition(-1);
 		assertAbort("");
 		// partial match
-		Base.configureTestOptions().setFpcServiceOptions("noboundaries")
+		Base.configureTestOptions().setRuleOptions("noboundaries")
 				.addClassExclusion("test4giis.qacoverapp.AppSimpleJdb");
 		rs = app.queryNoParameters1Condition(-1);
 		assertAbort("");
 		// no match, normal processing
-		Base.configureTestOptions().setFpcServiceOptions("noboundaries")
+		Base.configureTestOptions().setRuleOptions("noboundaries")
 				.addClassExclusion("test4giis.qacoverapp.AppSimpleJdbx");
 		rs = app.queryNoParameters1Condition(-1);
 		assertNoAbort();

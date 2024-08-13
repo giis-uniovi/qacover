@@ -37,7 +37,7 @@ namespace Test4giis.Qacover
 		public override void SetUp()
 		{
 			base.SetUp();
-			options.SetFpcServiceOptions("noboundaries");
+			options.SetRuleOptions("noboundaries");
 			app = new AppSimpleJdbc3Errors(variant);
 			SetUpTestData();
 		}
@@ -83,7 +83,7 @@ namespace Test4giis.Qacover
 		[Test]
 		public virtual void TestFaultConnectingService()
 		{
-			options.SetFpcServiceUrl("http://giis.uniovi.es/noexiste.xml").SetCacheRulesLocation(string.Empty);
+			options.SetRuleServiceUrl("http://giis.uniovi.es/noexiste.xml").SetCacheRulesLocation(string.Empty);
 			// disable cache to run the actual service
 			rs = app.ExecuteQuery("select id,num,text from test where num<9");
 			AssertExceptionMessage(new Variability().IsJava() ? "Error at Get query table names: ApiException" : "Error at Get query table names: Giis.Tdrules.Openapi.Client.ApiException: Error calling QueryEntitiesPost", StoreService.GetLast().GetLastGenStatus());

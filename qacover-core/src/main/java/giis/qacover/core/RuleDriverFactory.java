@@ -9,9 +9,9 @@ public class RuleDriverFactory {
 	 * options. At this moment, only fpc
 	 */
 	public RuleDriver getDriver() {
-		if ("mutation".equals(Configuration.getInstance().getRuleServiceType()))
+		if ("mutation".equals(Configuration.getInstance().getRuleCriterion()))
 			return new RuleDriverMutation();
-		else // fpc
+		else // fpc by default
 			return new RuleDriverFpc();
 	}
 }

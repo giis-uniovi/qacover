@@ -18,13 +18,13 @@ namespace Giis.Qacover.Core
 		/// </remarks>
 		public virtual RuleDriver GetDriver()
 		{
-			if ("mutation".Equals(Configuration.GetInstance().GetRuleServiceType()))
+			if ("mutation".Equals(Configuration.GetInstance().GetRuleCriterion()))
 			{
 				return new RuleDriverMutation();
 			}
 			else
 			{
-				// fpc
+				// fpc by default
 				return new RuleDriverFpc();
 			}
 		}

@@ -44,8 +44,8 @@ public class TestMutation extends Base {
 
 	@Test
 	public void testEvalMutants() throws SQLException {
-		configureTestOptions().setRuleServiceType("mutation")
-			.setFpcServiceOptions("nomutate=equivalent,ir,abs,uoi,lcr,nl");
+		configureTestOptions().setRuleCriterion("mutation")
+			.setRuleOptions("nomutate=equivalent,ir,abs,uoi,lcr,nl");
 		rs = app.queryMutParameters("abc");
 		assertEvalResults("select id,txt from test where txt=?", "1 abc", SqlUtil.resultSet2csv(rs, " "),
 				"UNCOVERED SELECT DISTINCT id , txt FROM test WHERE txt = 'abc'\n"

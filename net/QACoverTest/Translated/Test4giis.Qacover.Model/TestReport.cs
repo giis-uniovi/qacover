@@ -77,7 +77,7 @@ namespace Test4giis.Qacover.Model
 			options.SetInferQueryParameters(inferQueryParameters);
 			if (!boundaries)
 			{
-				options.SetFpcServiceOptions("noboundaries");
+				options.SetRuleOptions("noboundaries");
 			}
 			QueryStatement.SetFaultInjector(null);
 			options.SetStoreRulesLocation(rulesPath);
@@ -164,7 +164,7 @@ namespace Test4giis.Qacover.Model
 			rs.Close();
 			// error in query
 			Reset(false, false);
-			options.SetFpcServiceUrl("http://giis.uniovi.es/noexiste.xml");
+			options.SetRuleServiceUrl("http://giis.uniovi.es/noexiste.xml");
 			rs = app.Query1ErrorAtQuery();
 			rs.Close();
 			Reset(false, true);

@@ -27,7 +27,7 @@ public class TestExecute extends Base {
 		super.setUp();
 		app = new AppSimpleJdbc(variant); // aplicacion con los metodos a probar
 		setUpTestData();
-		Configuration.getInstance().setFpcServiceOptions("noboundaries");
+		Configuration.getInstance().setRuleOptions("noboundaries");
 	}
 
 	@After

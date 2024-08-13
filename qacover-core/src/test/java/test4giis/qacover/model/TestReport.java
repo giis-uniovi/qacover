@@ -75,7 +75,7 @@ public class TestReport extends Base {
 		options.reset();
 		options.setInferQueryParameters(inferQueryParameters);
 		if (!boundaries)
-			options.setFpcServiceOptions("noboundaries");
+			options.setRuleOptions("noboundaries");
 		QueryStatement.setFaultInjector(null);
 		options.setStoreRulesLocation(rulesPath);
 		options.setStoreReportsLocation(outPath);
@@ -164,7 +164,7 @@ public class TestReport extends Base {
 		rs.close();
 		// error in query
 		reset(false, false);
-		options.setFpcServiceUrl("http://giis.uniovi.es/noexiste.xml");
+		options.setRuleServiceUrl("http://giis.uniovi.es/noexiste.xml");
 		rs = app.query1ErrorAtQuery();
 		rs.close();
 		reset(false, true);

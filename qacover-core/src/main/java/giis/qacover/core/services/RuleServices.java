@@ -42,7 +42,7 @@ public class RuleServices {
 	}
 
 	private TdRulesApi getApi() {
-		String uri = Configuration.getInstance().getFpcServiceUrl();
+		String uri = Configuration.getInstance().getRuleServiceUrl();
 		String cacheLocation = Configuration.getInstance().getCacheRulesLocation();
 		log.debug("Call service: {}, cache: {}", uri, cacheLocation);
 		TdRulesApi api = new TdRulesApi(uri);

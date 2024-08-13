@@ -68,7 +68,7 @@ namespace Test4giis.Qacover.Ef
         [Test()]
         public virtual void TestEvalEfParameters()
         {
-            options.SetFpcServiceOptions("noboundaries");
+            options.SetRuleOptions("noboundaries");
             AppSimpleEf app = new AppSimpleEf();
             List<TestEfEntity> pojo = app.QueryEfParams(99, "xyz");
             string efSql = "SELECT [t].[Id], [t].[Num], [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] = @__param1_0) AND ([t].[Num] > @__param2_1) ORDER BY [t].[Id]";

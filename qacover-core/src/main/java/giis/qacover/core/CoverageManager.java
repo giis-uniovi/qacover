@@ -91,8 +91,8 @@ public class CoverageManager {
 				+ " numberjdbcparam" 
 				// mutation requires the parsed query to set the expected values 
 				// and the columns that must be used to order the resultsets
-				+ ("mutation".equals(config.getRuleServiceType()) ? " getordercols getparsedquery" : "")
-				+ " " + config.getFpcServiceOptions();
+				+ ("mutation".equals(config.getRuleCriterion()) ? " getordercols getparsedquery" : "")
+				+ " " + config.getRuleOptions();
 		store.setLastGeneratedInRules(svc.getRulesInput(sql, this.schema, fpcOptions));
 		model = ruleDriver.getRules(svc, sql, this.schema, fpcOptions);
 		// The DBMS is stored too to manage its variability in further actions

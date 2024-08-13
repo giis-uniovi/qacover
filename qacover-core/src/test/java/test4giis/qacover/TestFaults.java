@@ -42,7 +42,7 @@ public class TestFaults extends Base {
 	@Before
 	public void setUp() throws SQLException {
 		super.setUp();
-		options.setFpcServiceOptions("noboundaries");
+		options.setRuleOptions("noboundaries");
 		app = new AppSimpleJdbc3Errors(variant);
 		setUpTestData();
 	}
@@ -77,7 +77,7 @@ public class TestFaults extends Base {
 
 	@Test
 	public void testFaultConnectingService() throws SQLException {
-		options.setFpcServiceUrl("http://giis.uniovi.es/noexiste.xml")
+		options.setRuleServiceUrl("http://giis.uniovi.es/noexiste.xml")
 			.setCacheRulesLocation(""); // disable cache to run the actual service
 		rs=app.executeQuery("select id,num,text from test where num<9");
 		assertExceptionMessage(new Variability().isJava()

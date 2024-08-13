@@ -33,7 +33,7 @@ namespace Test4giis.Qacover
 		public override void SetUp()
 		{
 			base.SetUp();
-			options.SetFpcServiceOptions("noboundaries");
+			options.SetRuleOptions("noboundaries");
 			app = new AppSimpleJdbc(variant);
 			// aplicacion con los metodos a probar
 			SetUpTestData();
@@ -229,11 +229,11 @@ namespace Test4giis.Qacover
 		public virtual void TestAbortByTableExclusion()
 		{
 			// full match (implies an abort on the rule evaluation)
-			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddTableExclusionExact("test");
+			Base.ConfigureTestOptions().SetRuleOptions("noboundaries").AddTableExclusionExact("test");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertAbort("{}");
 			// approximate match (no abort)
-			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddTableExclusionExact("tes");
+			Base.ConfigureTestOptions().SetRuleOptions("noboundaries").AddTableExclusionExact("tes");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertNoAbort();
 		}
@@ -243,15 +243,15 @@ namespace Test4giis.Qacover
 		public virtual void TestAbortByClassExclusion()
 		{
 			// full match (abort)
-			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdbc");
+			Base.ConfigureTestOptions().SetRuleOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdbc");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertAbort(string.Empty);
 			// partial match
-			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdb");
+			Base.ConfigureTestOptions().SetRuleOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdb");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertAbort(string.Empty);
 			// no match, normal processing
-			Base.ConfigureTestOptions().SetFpcServiceOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdbx");
+			Base.ConfigureTestOptions().SetRuleOptions("noboundaries").AddClassExclusion("test4giis.qacoverapp.AppSimpleJdbx");
 			rs = app.QueryNoParameters1Condition(-1);
 			AssertNoAbort();
 		}

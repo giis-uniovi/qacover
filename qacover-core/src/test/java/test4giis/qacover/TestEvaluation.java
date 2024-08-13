@@ -94,7 +94,7 @@ public class TestEvaluation extends Base {
 	
 	@Test
 	public void testEvalFpcOptions() throws SQLException {
-		configureTestOptions().setFpcServiceOptions("noboundaries");
+		configureTestOptions().setRuleOptions("noboundaries");
 		rs = app.queryNoParameters1Condition(-1);
 		assertEvalResults("select id,num,text from test where num>=-1", 
 				"1 0 abc\n2 99 xyz\n3 99 NULL", SqlUtil.resultSet2csv(rs," "), 
@@ -121,7 +121,7 @@ public class TestEvaluation extends Base {
 	public void testEvalParametersNamed() throws SQLException {
 		if (new Variability().isJava4() || new Variability().isNetCore())
 			return;
-		Configuration.getInstance().setInferQueryParameters(false).setFpcServiceOptions("noboundaries");
+		Configuration.getInstance().setInferQueryParameters(false).setRuleOptions("noboundaries");
 		rs = app.queryParametersNamed(1,1,"abc");
 		assertEvalResults("/* params=?1?,?1?,?2? */ select id,num,text from test where id=? or num=? or text=?", 
 				"1 0 abc", SqlUtil.resultSet2csv(rs," "), 
@@ -140,7 +140,7 @@ public class TestEvaluation extends Base {
 	public void testEvalParametersNamedInconsistency() throws SQLException {
 		if (new Variability().isJava4() || new Variability().isNetCore())
 			return;
-		Configuration.getInstance().setInferQueryParameters(false).setFpcServiceOptions("noboundaries");
+		Configuration.getInstance().setInferQueryParameters(false).setRuleOptions("noboundaries");
 		rs = app.queryParametersNamed(1,2,"abc");
 		assertEquals("Error at : giis.qacover.portable.QaCoverException: StatementAdapter: Parameter ?1? had been assigned to 1. Can't be assigned to a new value 2",
 				StoreService.getLast().getLastGenStatus());

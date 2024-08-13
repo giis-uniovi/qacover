@@ -104,7 +104,7 @@ namespace Giis.Qacover.Core
 			// Gets the rules, always numbering jdbc parameters for further substitution
 			log.Debug("Getting sql coverage rules");
 			string clientVersion = new Variability().GetVersion();
-			string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + ("mutation".Equals(config.GetRuleServiceType()) ? " getordercols getparsedquery" : string.Empty) + " " + config.GetFpcServiceOptions();
+			string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + ("mutation".Equals(config.GetRuleCriterion()) ? " getordercols getparsedquery" : string.Empty) + " " + config.GetRuleOptions();
 			// mutation requires the parsed query to set the expected values 
 			// and the columns that must be used to order the resultsets
 			store.SetLastGeneratedInRules(svc.GetRulesInput(sql, this.schema, fpcOptions));

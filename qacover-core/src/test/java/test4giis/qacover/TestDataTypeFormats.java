@@ -24,7 +24,7 @@ public class TestDataTypeFormats extends Base {
 		com.p6spy.engine.spy.P6SpyOptions.getActiveInstance().setDatabaseDialectBooleanFormat("numeric");
 		com.p6spy.engine.spy.P6SpyOptions.getActiveInstance().setDatabaseDialectDateFormat("yyyy-MM-dd");
 		setUpTestData();
-		Configuration.getInstance().setFpcServiceOptions("noboundaries");
+		Configuration.getInstance().setRuleOptions("noboundaries");
 	}
 
 	@After

@@ -28,9 +28,9 @@ public class Configuration { // NOSONAR singleton allowed
 	private String storeRulesLocation;
 	private String cacheRulesLocation;
 	private String storeReportsLocation;
-	private String ruleServiceType;
-	private String fpcServiceUrl;
-	private String fpcServiceOptions;
+	private String ruleCriterion;
+	private String ruleUrl;
+	private String ruleOptions;
 	private boolean optimizeRuleEvaluation;
 	private boolean inferQueryParameters;
 	private List<String> stackExclusions;
@@ -51,15 +51,26 @@ public class Configuration { // NOSONAR singleton allowed
 
 	public Configuration reset() {
 		this.properties = getProperties(OPTIONS_FILE_PROPERTY);
+		// First verification that there are no old properties
+		verifyRemovedProperty("qacover.optimize.rule.evaluation", "It MUST be renamed to: qacover.rule.optimize.evaluation");
+		verifyRemovedProperty("qacover.fpc.url", "It MUST be renamed to: qacover.rule.url");
+		verifyRemovedProperty("qacover.fpc.options", "It MUST be renamed to: qacover.rule.options");
+
 		String storeRootLocation = getProperty("qacover.store.root", Parameters.getProjectRoot());
 		String defaultRulesSubDir = FileUtil.getPath(Parameters.getReportSubdir(), QACOVER_NAME, "rules");
 		String defaultReportsSubDir = FileUtil.getPath(Parameters.getReportSubdir(), QACOVER_NAME, "reports");
 		storeRulesLocation = FileUtil.getPath(storeRootLocation, getProperty("qacover.store.rules", defaultRulesSubDir));
 		storeReportsLocation = FileUtil.getPath(storeRootLocation, getProperty("qacover.store.reports", defaultReportsSubDir));
-		ruleServiceType = "fpc";
-		fpcServiceUrl = getProperty("qacover.fpc.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
-		fpcServiceOptions = getProperty("qacover.fpc.options", "");
-		optimizeRuleEvaluation = JavaCs.equalsIgnoreCase("true", getProperty("qacover.optimize.rule.evaluation", "false"));
+
+		ruleCriterion = getProperty("qacover.rule.criterion", "fpc");
+		if (!"fpc".equals(ruleCriterion) && !"mutation".equals(ruleCriterion)) {
+			log.warn("Invalid value " + ruleCriterion + ". Using fpc as fallback");
+			ruleCriterion = "fpc";
+		}
+ 		ruleUrl = getProperty("qacover.rule.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
+		ruleOptions = getProperty("qacover.rule.options", "");
+		optimizeRuleEvaluation = JavaCs.equalsIgnoreCase("true", getProperty("qacover.rule.optimize.evaluation", "false"));
+		
 		inferQueryParameters = JavaCs.equalsIgnoreCase("true", getProperty("qacover.query.infer.parameters", "false"));
 
 		// Includes some predefined stack exclusions
@@ -147,6 +158,12 @@ public class Configuration { // NOSONAR singleton allowed
 		return value;
 	}
 
+	private void verifyRemovedProperty(String name, String message) {
+		String value = getProperty(name, "");
+		if (!"".equals(value))
+			throw new QaCoverException("Property " + name + " has been removed. " + message);
+	}
+
 	/**
 	 * Reads a property that represents a list of comma separated values
 	 */
@@ -204,25 +221,25 @@ public class Configuration { // NOSONAR singleton allowed
 		storeReportsLocation = location;
 	}
 
-	public String getRuleServiceType() {
-		return ruleServiceType;
+	public String getRuleCriterion() {
+		return ruleCriterion;
 	}
-	public String getFpcServiceUrl() {
-		return fpcServiceUrl;
+	public String getRuleServiceUrl() {
+		return ruleUrl;
 	}
-	public String getFpcServiceOptions() {
-		return fpcServiceOptions;
+	public String getRuleOptions() {
+		return ruleOptions;
 	}
-	public Configuration setRuleServiceType(String ruleServiceType) {
-		this.ruleServiceType = ruleServiceType;
+	public Configuration setRuleCriterion(String ruleCriterion) {
+		this.ruleCriterion = ruleCriterion;
 		return this;
 	}
-	public Configuration setFpcServiceOptions(String fpcServiceOptions) {
-		this.fpcServiceOptions = fpcServiceOptions;
+	public Configuration setRuleOptions(String ruleOptions) {
+		this.ruleOptions = ruleOptions;
 		return this;
 	}
-	public Configuration setFpcServiceUrl(String fpcServiceUrl) {
-		this.fpcServiceUrl = fpcServiceUrl;
+	public Configuration setRuleServiceUrl(String ruleUrl) {
+		this.ruleUrl = ruleUrl;
 		return this;
 	}
 

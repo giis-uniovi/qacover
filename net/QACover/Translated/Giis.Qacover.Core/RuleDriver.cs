@@ -16,7 +16,7 @@ namespace Giis.Qacover.Core
 	/// Base class of the delegates that perform the required actions
 	/// on the coverage rules (get and evaluate the rules).
 	/// Subclasses will implement the specific actions that depend
-	/// on the coverage rule class (fpc or mutation).
+	/// on the coverage criterion (fpc or mutation).
 	/// </remarks>
 	public abstract class RuleDriver
 	{

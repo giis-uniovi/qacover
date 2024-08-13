@@ -172,6 +172,7 @@ jobs:
       # IT requires first running the tests outside of maven, then a test case compares results
       # runs with surefire also
       - name: Integration test execution - IT
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |

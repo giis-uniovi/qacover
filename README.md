@@ -14,6 +14,7 @@ a variant of MCDC tailored to SQL queries.
 The criterion determines the situations of interest (test coverage items) 
 to test a SQL query against the test database. 
 These situations are represented as a set of *Coverage Rules*.
+There is also an option to measure the coverage of *Mutants for SQL queries* (SQLMutation criterion).
 
 Each time that the application executes a query, QACover intercepts the query execution, 
 generates and evaluates the coverage rules, and stores the results in the local development environment.

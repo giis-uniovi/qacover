@@ -26,7 +26,7 @@ namespace Test4giis.Qacover
 			//P6SpyOptions.GetActiveInstance().SetDatabaseDialectBooleanFormat("numeric");
 			//P6SpyOptions.GetActiveInstance().SetDatabaseDialectDateFormat("yyyy-MM-dd");
 			SetUpTestData();
-			Configuration.GetInstance().SetFpcServiceOptions("noboundaries");
+			Configuration.GetInstance().SetRuleOptions("noboundaries");
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>
