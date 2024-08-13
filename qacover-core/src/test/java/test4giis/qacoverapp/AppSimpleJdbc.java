@@ -65,11 +65,10 @@ public class AppSimpleJdbc extends AppBase {
 		return executeQuery("/* params=?1?,?1?,?2? */ select id,num,text from test where id=? or num=? or text=?",param1, param2, param3);
 	}
 	
+	// This is for testing mutants
+	
 	public ResultSet queryMutParameters(String param1) throws SQLException {
 		return executeQueryMut("select id,txt from test where txt=?", param1);
-		//PreparedStatement pstmt = conn.prepareStatement("select id,txt from test where txt=?");
-		//pstmt.setString(1, param1);
-		//return pstmt.executeQuery();
 	}
 
 }

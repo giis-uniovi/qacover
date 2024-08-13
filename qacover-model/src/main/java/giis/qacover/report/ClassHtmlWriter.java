@@ -167,7 +167,6 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "        <td class='coverage' rowspan='2'><strong>$ruleId$</strong> - dead:&nbsp;$ruleDead$ count:&nbsp;$ruleCount$</td>\n"
 				+ "        <td class='coverage' colspan='2'>\n"
 				+ "            category: $ruleCategory$ type: $ruleType$ subtype: $ruleSubtype$ location: $ruleLocation$\n"
-				+ "            <div class='params'>(run params not available)</div>\n"
 				+ "        </td>\n"
 				+ "    </tr>\n"
 				+ "    <tr class='rule-sql'>\n"

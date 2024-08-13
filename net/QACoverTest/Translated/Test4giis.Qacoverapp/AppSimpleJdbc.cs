@@ -112,13 +112,11 @@ namespace Test4giis.Qacoverapp
 			return ExecuteQuery("/* params=?1?,?1?,?2? */ select id,num,text from test where id=? or num=? or text=?", param1, param2, param3);
 		}
 
+		// This is for testing mutants
 		/// <exception cref="Java.Sql.SQLException"/>
 		public virtual ResultSet QueryMutParameters(string param1)
 		{
 			return ExecuteQueryMut("select id,txt from test where txt=?", param1);
 		}
-		//PreparedStatement pstmt = conn.prepareStatement("select id,txt from test where txt=?");
-		//pstmt.setString(1, param1);
-		//return pstmt.executeQuery();
 	}
 }

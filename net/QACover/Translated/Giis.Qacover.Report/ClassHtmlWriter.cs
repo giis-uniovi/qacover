@@ -94,8 +94,8 @@ namespace Giis.Qacover.Report
 		public virtual string GetRuleContent(RuleModel rule)
 		{
 			string template = "    <tr class='rule-summary'>\n" + "        <td></td>\n" + "        <td class='coverage' rowspan='2'><strong>$ruleId$</strong> - dead:&nbsp;$ruleDead$ count:&nbsp;$ruleCount$</td>\n" + "        <td class='coverage' colspan='2'>\n" + "            category: $ruleCategory$ type: $ruleType$ subtype: $ruleSubtype$ location: $ruleLocation$\n"
-				 + "            <div class='params'>(run params not available)</div>\n" + "        </td>\n" + "    </tr>\n" + "    <tr class='rule-sql'>\n" + "        <td></td>\n" + (string.Empty.Equals(rule.GetDescription()) ? "            <td class='$ruleStatus$ rowspan='2'>$ruleSql$</td>\n" : 
-				"            <td class='$ruleStatus$'>$ruleDescription$</td>\n" + "            <td class='$ruleStatus$'>$ruleSql$</td>\n") + "    </tr>\n" + "    $ruleErrors$";
+				 + "        </td>\n" + "    </tr>\n" + "    <tr class='rule-sql'>\n" + "        <td></td>\n" + (string.Empty.Equals(rule.GetDescription()) ? "            <td class='$ruleStatus$ rowspan='2'>$ruleSql$</td>\n" : "            <td class='$ruleStatus$'>$ruleDescription$</td>\n" + "            <td class='$ruleStatus$'>$ruleSql$</td>\n"
+				) + "    </tr>\n" + "    $ruleErrors$";
 			// needs a complete row to allow error message span across description and sql columns
 			return template.Replace("$ruleId$", rule.GetId()).Replace("$ruleDead$", rule.GetDead().ToString()).Replace("$ruleCount$", rule.GetCount().ToString()).Replace("$ruleCategory$", rule.GetCategory()).Replace("$ruleType$", rule.GetMainType()).Replace("$ruleSubtype$", rule.GetSubtype())
 				.Replace("$ruleLocation$", Encode(rule.GetLocation())).Replace("$ruleStatus$", rule.GetDead() > 0 ? "covered" : "uncovered").Replace("$ruleDescription$", GetDescriptionHtml(Encode(rule.GetDescription()))).Replace("$ruleSql$", GetSqlHtml(Encode(rule.GetSql()))).Replace("$ruleErrors$"

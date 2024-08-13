@@ -44,6 +44,7 @@ namespace Giis.Qacover.Report
 			CoverageCollection classes = new CoverageReader(rulesFolder).GetByClass();
 			HistoryReader history = new CoverageReader(rulesFolder).GetHistory();
 			StringBuilder indexRowsSb = new StringBuilder();
+			string coverageCriterion = string.Empty;
 			for (int i = 0; i < classes.Size(); i++)
 			{
 				QueryCollection query = classes.Get(i);
@@ -52,17 +53,21 @@ namespace Giis.Qacover.Report
 				CoverageSummary summary = query.GetSummary();
 				ConsoleWrite("Report for class: " + className + " " + summary.ToString());
 				indexRowsSb.Append(indexWriter.GetBodyRow(className, summary.GetQrun(), summary.GetQcount(), summary.GetQerror(), summary.GetCount(), summary.GetDead(), summary.GetError()));
+				// to customize headings
+				coverageCriterion = query.Get(0).GetModel().GetModel().GetRulesClass();
 				// Generates a file for this class
 				ClassHtmlWriter classWriter = new ClassHtmlWriter();
 				string htmlCoverage = GetClassCoverage(query, history, classWriter, sourceFolders, projectFolder);
-				string htmlCoverageContent = classWriter.GetHeader(className) + classWriter.GetBodyContent(className, htmlCoverage);
+				string classTitle = className + " (" + coverageCriterion + " coverage)";
+				string htmlCoverageContent = classWriter.GetHeader(classTitle) + classWriter.GetBodyContent(classTitle, htmlCoverage);
 				FileUtil.FileWrite(reportFolder, className + ".html", htmlCoverageContent);
 			}
 			ConsoleWrite("Report index.");
 			// Puts everything, with totals as first line
 			CoverageSummary totals = classes.GetSummary();
 			string indexRowsHeader = indexWriter.GetBodyRow("TOTAL", totals.GetQrun(), totals.GetQcount(), totals.GetQerror(), totals.GetCount(), totals.GetDead(), totals.GetError());
-			string indexContent = indexWriter.GetHeader("SQL Query FPC Coverage") + indexWriter.GetBodyContent("SQL Query FPC Coverage", indexRowsHeader + indexRowsSb.ToString());
+			string indexTitle = "QACover - SQL Query " + coverageCriterion.ToUpper() + " Coverage";
+			string indexContent = indexWriter.GetHeader(indexTitle) + indexWriter.GetBodyContent(indexTitle, indexRowsHeader + indexRowsSb.ToString());
 			FileUtil.FileWrite(reportFolder, "index.html", indexContent);
 			ConsoleWrite(classes.Size() + " classes generated, see index.html at reports folder");
 		}

@@ -44,6 +44,7 @@ public class ReportManager {
 		HistoryReader history = new CoverageReader(rulesFolder).getHistory();
 		StringBuilder indexRowsSb = new StringBuilder();
 
+		String coverageCriterion = "";
 		for (int i = 0; i < classes.size(); i++) {
 			QueryCollection query = classes.get(i);
 			// a line of the index report
@@ -54,11 +55,15 @@ public class ReportManager {
 					summary.getQrun(), summary.getQcount(), summary.getQerror(),
 					summary.getCount(), summary.getDead(), summary.getError()));
 
+			// to customize headings
+			coverageCriterion = query.get(0).getModel().getModel().getRulesClass();
+			
 			// Generates a file for this class
 			ClassHtmlWriter classWriter = new ClassHtmlWriter();
 			String htmlCoverage = getClassCoverage(query, history, classWriter, sourceFolders, projectFolder);
-			String htmlCoverageContent = classWriter.getHeader(className) 
-					+ classWriter.getBodyContent(className, htmlCoverage);
+			String classTitle = className + " (" + coverageCriterion + " coverage)";
+			String htmlCoverageContent = classWriter.getHeader(classTitle) 
+					+ classWriter.getBodyContent(classTitle, htmlCoverage);
 			FileUtil.fileWrite(reportFolder, className + ".html", htmlCoverageContent);
 		}
 		consoleWrite("Report index.");
@@ -67,8 +72,9 @@ public class ReportManager {
 		CoverageSummary totals = classes.getSummary();
 		String indexRowsHeader = indexWriter.getBodyRow("TOTAL", totals.getQrun(), totals.getQcount(), totals.getQerror(), totals.getCount(),
 				totals.getDead(), totals.getError());
-		String indexContent = indexWriter.getHeader("SQL Query FPC Coverage")
-				+ indexWriter.getBodyContent("SQL Query FPC Coverage", indexRowsHeader + indexRowsSb.toString());
+		String indexTitle = "QACover - SQL Query " + coverageCriterion.toUpperCase() + " Coverage";
+		String indexContent = indexWriter.getHeader(indexTitle)
+				+ indexWriter.getBodyContent(indexTitle, indexRowsHeader + indexRowsSb.toString());
 		FileUtil.fileWrite(reportFolder, "index.html", indexContent);
 		consoleWrite(classes.size() + " classes generated, see index.html at reports folder");
 	}
