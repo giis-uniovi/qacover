@@ -19,7 +19,7 @@ namespace Test4giis.Qacoverapp.Ef
             string user = new JdbcProperties().GetProp(DatabaseProperties, "qacover.netcore.qacoverdb.sqlserver.user");
             string EnvironmentProperties = FileUtil.GetPath(SetupPath, "environment.properties");
             string password = new JdbcProperties().GetEnvVar(EnvironmentProperties, "TEST_" + "sqlserver".ToUpper() + "_PWD");
-            return url + ";UID=" + user + ";PWD=" + password;
+            return url + ";UID=" + user + ";PWD=" + password + ";TrustServerCertificate=true";
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

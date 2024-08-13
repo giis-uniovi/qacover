@@ -54,15 +54,15 @@ namespace Test4giis.Qacover.Ef
             ClassicAssert.AreEqual(99, pojo[0].Num);
             ClassicAssert.AreEqual("xyz", pojo[0].Txt);
             //compara eliminando las comillas dobles que inserta EntityFramework en tablas y columnas
-            string efSql= "SELECT [t].[Id], [t].[Num], [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] = 'xyz') AND ([t].[Num] = 99) ORDER BY [t].[Id]";
+            string efSql= "SELECT [t].[Id], [t].[Num], [t].[Txt] FROM [TestEfTable] AS [t] WHERE [t].[Txt] = 'xyz' AND [t].[Num] = 99 ORDER BY [t].[Id]";
             AssertEvalResults(efSql,
                 string.Empty, string.Empty,
-                    "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE (([t].[Txt] = 'xyz')) AND (([t].[Num] = 99))\n"
-                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT(([t].[Txt] = 'xyz')) AND (([t].[Num] = 99))\n"
-                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] IS NULL) AND (([t].[Num] = 99))\n"
-                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 100) AND (([t].[Txt] = 'xyz'))\n"
-                + "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 99) AND (([t].[Txt] = 'xyz'))\n"
-                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 98) AND (([t].[Txt] = 'xyz'))",
+                    "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] = 'xyz') AND ([t].[Num] = 99)\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT([t].[Txt] = 'xyz') AND ([t].[Num] = 99)\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] IS NULL) AND ([t].[Num] = 99)\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 100) AND ([t].[Txt] = 'xyz')\n"
+                + "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 99) AND ([t].[Txt] = 'xyz')\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Num] = 98) AND ([t].[Txt] = 'xyz')",
                   "{}", true, false);
         }
         [Test()]
@@ -71,12 +71,12 @@ namespace Test4giis.Qacover.Ef
             options.SetRuleOptions("noboundaries");
             AppSimpleEf app = new AppSimpleEf();
             List<TestEfEntity> pojo = app.QueryEfParams(99, "xyz");
-            string efSql = "SELECT [t].[Id], [t].[Num], [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] = @__param1_0) AND ([t].[Num] > @__param2_1) ORDER BY [t].[Id]";
+            string efSql = "SELECT [t].[Id], [t].[Num], [t].[Txt] FROM [TestEfTable] AS [t] WHERE [t].[Txt] = @__param1_0 AND [t].[Num] > @__param2_1 ORDER BY [t].[Id]";
             AssertEvalResults(efSql, string.Empty, string.Empty,
-                "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE (([t].[Txt] = 'xyz')) AND (([t].[Num] > 99))\n"
-                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT(([t].[Txt] = 'xyz')) AND (([t].[Num] > 99))\n"
-                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] IS NULL) AND (([t].[Num] > 99))\n"
-                + "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT(([t].[Num] > 99)) AND (([t].[Txt] = 'xyz'))",
+                "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] = 'xyz') AND ([t].[Num] > 99)\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT([t].[Txt] = 'xyz') AND ([t].[Num] > 99)\n"
+                + "UNCOVERED SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE ([t].[Txt] IS NULL) AND ([t].[Num] > 99)\n"
+                + "COVERED   SELECT [t].[Id] , [t].[Num] , [t].[Txt] FROM [TestEfTable] AS [t] WHERE NOT([t].[Num] > 99) AND ([t].[Txt] = 'xyz')",
                 "{@__param1_0='xyz', @__param2_1=99}", true, false);
         }
     }

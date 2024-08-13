@@ -83,6 +83,7 @@ public class Configuration { // NOSONAR singleton allowed
 		stackExclusions.add("javax.");
 		stackExclusions.add("jdk.internal."); // for jdk11 (not needed in jdk8)
 		stackExclusions.add("System."); // for .net
+		stackExclusions.add("InvokeStub_EventListener"); // since .net8.0
 		for (String item : getMultiValueProperty("qacover.stack.exclusions"))
 			stackExclusions.add(item);
 		

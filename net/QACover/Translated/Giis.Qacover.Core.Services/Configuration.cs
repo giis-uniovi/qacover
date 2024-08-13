@@ -105,6 +105,8 @@ namespace Giis.Qacover.Core.Services
 			// for jdk11 (not needed in jdk8)
 			stackExclusions.Add("System.");
 			// for .net
+			stackExclusions.Add("InvokeStub_EventListener");
+			// since .net8.0
 			foreach (string item in GetMultiValueProperty("qacover.stack.exclusions"))
 			{
 				stackExclusions.Add(item);
