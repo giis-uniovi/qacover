@@ -14,6 +14,8 @@ import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import giis.portable.util.FileUtil;
+import giis.portable.util.Parameters;
 import giis.qacover.core.QueryStatement;
 import giis.qacover.core.services.FaultInjector;
 import giis.qacover.core.services.Configuration;
@@ -67,7 +69,7 @@ public class Base {
 	public static Configuration configureTestOptions() {
 		return Configuration.getInstance().reset()
 				.setName("qacovertest")
-				.setCacheRulesLocation(".tdrules-cache");
+				.setRuleCacheFolder(FileUtil.getPath(Parameters.getProjectRoot(), ".tdrules-cache"));
 	}
 
 	@After

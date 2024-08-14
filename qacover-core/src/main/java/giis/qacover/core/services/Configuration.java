@@ -26,7 +26,7 @@ public class Configuration { // NOSONAR singleton allowed
 	private static Configuration instance;
 	private String name=QACOVER_NAME;
 	private String storeRulesLocation;
-	private String cacheRulesLocation;
+	private String ruleCache;
 	private String storeReportsLocation;
 	private String ruleCriterion;
 	private String ruleUrl;
@@ -69,6 +69,7 @@ public class Configuration { // NOSONAR singleton allowed
 		}
  		ruleUrl = getProperty("qacover.rule.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
 		ruleOptions = getProperty("qacover.rule.options", "");
+		ruleCache = getProperty("qacover.rule.cache", "");
 		optimizeRuleEvaluation = JavaCs.equalsIgnoreCase("true", getProperty("qacover.rule.optimize.evaluation", "false"));
 		
 		inferQueryParameters = JavaCs.equalsIgnoreCase("true", getProperty("qacover.query.infer.parameters", "false"));
@@ -206,14 +207,6 @@ public class Configuration { // NOSONAR singleton allowed
 	public void setStoreRulesLocation(String location) {
 		storeRulesLocation = location;
 	}
-	public String getCacheRulesLocation() {
-		return cacheRulesLocation;
-	}
-	public Configuration setCacheRulesLocation(String location) {
-		// Ensures that location is relative to project root and not null
-		cacheRulesLocation = location != null && !"".equals(location) ? FileUtil.getPath(Parameters.getProjectRoot(), location) : "";
-		return this;
-	}
 	public String getStoreReportsLocation() {
 		return storeReportsLocation;
 	}
@@ -240,6 +233,14 @@ public class Configuration { // NOSONAR singleton allowed
 	}
 	public Configuration setRuleServiceUrl(String ruleUrl) {
 		this.ruleUrl = ruleUrl;
+		return this;
+	}
+
+	public String getRuleCacheFolder() {
+		return ruleCache;
+	}
+	public Configuration setRuleCacheFolder(String folder) {
+		ruleCache = folder;
 		return this;
 	}
 

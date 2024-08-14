@@ -29,7 +29,7 @@ namespace Giis.Qacover.Core.Services
 
 		private string storeRulesLocation;
 
-		private string cacheRulesLocation;
+		private string ruleCache;
 
 		private string storeReportsLocation;
 
@@ -91,6 +91,7 @@ namespace Giis.Qacover.Core.Services
 			}
 			ruleUrl = GetProperty("qacover.rule.url", "https://in2test.lsi.uniovi.es/tdrules/api/v4");
 			ruleOptions = GetProperty("qacover.rule.options", string.Empty);
+			ruleCache = GetProperty("qacover.rule.cache", string.Empty);
 			optimizeRuleEvaluation = JavaCs.EqualsIgnoreCase("true", GetProperty("qacover.rule.optimize.evaluation", "false"));
 			inferQueryParameters = JavaCs.EqualsIgnoreCase("true", GetProperty("qacover.query.infer.parameters", "false"));
 			// Includes some predefined stack exclusions
@@ -260,18 +261,6 @@ namespace Giis.Qacover.Core.Services
 			storeRulesLocation = location;
 		}
 
-		public virtual string GetCacheRulesLocation()
-		{
-			return cacheRulesLocation;
-		}
-
-		public virtual Giis.Qacover.Core.Services.Configuration SetCacheRulesLocation(string location)
-		{
-			// Ensures that location is relative to project root and not null
-			cacheRulesLocation = location != null && !string.Empty.Equals(location) ? FileUtil.GetPath(Parameters.GetProjectRoot(), location) : string.Empty;
-			return this;
-		}
-
 		public virtual string GetStoreReportsLocation()
 		{
 			return storeReportsLocation;
@@ -312,6 +301,17 @@ namespace Giis.Qacover.Core.Services
 		public virtual Giis.Qacover.Core.Services.Configuration SetRuleServiceUrl(string ruleUrl)
 		{
 			this.ruleUrl = ruleUrl;
+			return this;
+		}
+
+		public virtual string GetRuleCacheFolder()
+		{
+			return ruleCache;
+		}
+
+		public virtual Giis.Qacover.Core.Services.Configuration SetRuleCacheFolder(string folder)
+		{
+			ruleCache = folder;
 			return this;
 		}
 

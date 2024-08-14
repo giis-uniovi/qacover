@@ -76,7 +76,7 @@ namespace Test4giis.Qacover
 		// Default configuration for tests
 		public static Configuration ConfigureTestOptions()
 		{
-			return Configuration.GetInstance().Reset().SetName("qacovertest").SetCacheRulesLocation(".tdrules-cache");
+			return Configuration.GetInstance().Reset().SetName("qacovertest").SetRuleCacheFolder(FileUtil.GetPath(Parameters.GetProjectRoot(), ".tdrules-cache"));
 		}
 
 		/// <exception cref="Java.Sql.SQLException"/>

@@ -44,8 +44,8 @@ namespace Giis.Qacover.Core.Services
 		private TdRulesApi GetApi()
 		{
 			string uri = Configuration.GetInstance().GetRuleServiceUrl();
-			string cacheLocation = Configuration.GetInstance().GetCacheRulesLocation();
-			log.Debug("Call service: {}, cache: {}", uri, cacheLocation);
+			string cacheLocation = Configuration.GetInstance().GetRuleCacheFolder();
+			log.Debug("Call service: {}, using cache: {}", uri, cacheLocation);
 			TdRulesApi api = new TdRulesApi(uri);
 			if (!string.Empty.Equals(cacheLocation))
 			{

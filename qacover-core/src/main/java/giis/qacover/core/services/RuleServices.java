@@ -43,8 +43,8 @@ public class RuleServices {
 
 	private TdRulesApi getApi() {
 		String uri = Configuration.getInstance().getRuleServiceUrl();
-		String cacheLocation = Configuration.getInstance().getCacheRulesLocation();
-		log.debug("Call service: {}, cache: {}", uri, cacheLocation);
+		String cacheLocation = Configuration.getInstance().getRuleCacheFolder();
+		log.debug("Call service: {}, using cache: {}", uri, cacheLocation);
 		TdRulesApi api = new TdRulesApi(uri);
 		if (!"".equals(cacheLocation))
 			api.setCache(cacheLocation);
