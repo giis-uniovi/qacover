@@ -64,7 +64,7 @@
     <PackageReference Include="NLog" Version="5.2.4" />
     -->
 
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
 
 </Project>
