@@ -91,7 +91,7 @@
 			<dependency>
 				<groupId>com.microsoft.sqlserver</groupId>
 				<artifactId>mssql-jdbc</artifactId>
-				<version>12.8.1.jre8</version>
+				<version>12.9.0.jre8-preview</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -113,7 +113,7 @@
 			<dependency>
 				<groupId>org.xerial</groupId>
 				<artifactId>sqlite-jdbc</artifactId>
-				<version>3.47.0.0</version>
+				<version>3.47.1.0</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
