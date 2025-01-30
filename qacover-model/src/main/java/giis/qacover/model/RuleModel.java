@@ -1,6 +1,6 @@
 package giis.qacover.model;
 
-import giis.tdrules.model.ModelUtil;
+import giis.tdrules.model.shared.ModelUtil;
 import giis.tdrules.openapi.model.TdRule;
 
 /**

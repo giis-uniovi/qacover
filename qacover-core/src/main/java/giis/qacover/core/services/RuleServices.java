@@ -1,6 +1,6 @@
 package giis.qacover.core.services;
 
-import static giis.tdrules.model.ModelUtil.safe;
+import static giis.tdrules.model.shared.ModelUtil.safe;
 
 import java.sql.Connection;
 

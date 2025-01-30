@@ -1,6 +1,6 @@
 package giis.qacover.model;
 
-import static giis.tdrules.model.ModelUtil.safe;
+import static giis.tdrules.model.shared.ModelUtil.safe;
 
 import java.util.ArrayList;
 import java.util.List;

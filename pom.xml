@@ -18,6 +18,8 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<tdrules.version>4.4.0</tdrules.version>
+
 		<surefire.version>3.5.2</surefire.version>
 	</properties>
 
@@ -31,7 +33,7 @@
 			<dependency>
 				<groupId>io.github.giis-uniovi</groupId>
 				<artifactId>tdrules-bom</artifactId>
-				<version>4.3.1</version>
+				<version>${tdrules.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -311,7 +313,7 @@
 	<repositories>
 		<!-- GitHub snapshots repositories -->
 		<repository>
-			<id>github-giis-uniovi</id>
+			<id>github</id>
 			<url>https://maven.pkg.github.com/giis-uniovi/*</url>
 			<snapshots>
 				<enabled>true</enabled>

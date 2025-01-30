@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
 using System.Collections.Generic;
 using System.Text;
-using Giis.Tdrules.Model;
+using Giis.Tdrules.Model.Shared;
 using Giis.Tdrules.Openapi.Model;
 
 
