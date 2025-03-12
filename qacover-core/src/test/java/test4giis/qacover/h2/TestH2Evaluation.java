@@ -9,6 +9,7 @@ import test4giis.qacover.TestEvaluation;
 
 public class TestH2Evaluation extends TestEvaluation {
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("h2");
 	}

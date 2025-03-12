@@ -1,7 +1,5 @@
 package giis.qacover.core.services;
 
-import static giis.tdrules.model.shared.ModelUtil.safe;
-
 import java.sql.Connection;
 
 import org.slf4j.Logger;
@@ -15,6 +13,7 @@ import giis.qacover.portable.QaCoverException;
 import giis.tdrules.client.TdRulesApi;
 import giis.tdrules.client.rdb.DbSchemaApi;
 import giis.tdrules.model.io.TdRulesXmlSerializer;
+import giis.tdrules.model.shared.ModelUtil;
 import giis.tdrules.openapi.model.QueryEntitiesBody;
 import giis.tdrules.openapi.model.QueryParam;
 import giis.tdrules.openapi.model.QueryParametersBody;
@@ -83,7 +82,7 @@ public class RuleServices {
 		injectFaultIfNeeded(model);
 		if (!"".equals(model.getError()))
 			throw new QaCoverException(model.getError());
-		return JavaCs.toArray(safe(model.getEntities()));
+		return JavaCs.toArray(ModelUtil.safe(model.getEntities()));
 	}
 
 	public QueryWithParameters inferQueryWithParameters(String sql, String storetype) {
@@ -95,7 +94,7 @@ public class RuleServices {
 		// determines the QueryStatement parameters
 		QueryWithParameters ret = new QueryWithParameters();
 		ret.setSql(model.getParsedquery());
-		for (QueryParam param : safe(model.getParameters()))
+		for (QueryParam param : ModelUtil.safe(model.getParameters()))
 			ret.putParam(param.getName(), param.getValue());
 		return ret;
 	}

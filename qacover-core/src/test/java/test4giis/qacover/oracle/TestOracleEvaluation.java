@@ -5,6 +5,7 @@ import test4giis.qacover.TestEvaluation;
 
 public class TestOracleEvaluation extends TestEvaluation {
 	
+	@Override
 	protected Variability getVariant() {
 		return new Variability("oracle");
 	}

@@ -1,14 +1,16 @@
 package giis.qacover.report;
 
+import giis.portable.util.JavaCs;
+
 public class IndextHtmlWriter extends BaseHtmlWriter {
 	
 	@Override
-	protected String getScripts() {
+	public String getScripts() {
 		return "";
 	}
 	
 	@Override
-	protected String getStyles() {
+	public String getStyles() {
 		return "<style>\n"
 				+ "    .fill { min-width: 100%; width: 100%; }\n"
 				+ "    .progress {margin-bottom: 0 !important; }\n"
@@ -42,12 +44,12 @@ public class IndextHtmlWriter extends BaseHtmlWriter {
 				.replace("$classLink", "TOTAL".equals(className) ? className : "<a href=\"" + className + ".html\">" + className + "</a>")
 				.replace("$percent", percent(count,dead))
 				.replace("$progbarvalue", percent(count,dead).replace("%", ""))
-				.replace("$qrun", String.valueOf(qrun))
-				.replace("$qcount", String.valueOf(qcount))
-				.replace("$qerror", qerror > 0 ? "<span style=\"color:red;\">" + qerror + "</span>" : String.valueOf(qerror))
-				.replace("$count", String.valueOf(count))
-				.replace("$dead", String.valueOf(dead))
-				.replace("$error", error>0 ? "<span style=\"color:red;\">" + error + "</span>" : String.valueOf(error));
+				.replace("$qrun", JavaCs.numToString(qrun))
+				.replace("$qcount", JavaCs.numToString(qcount))
+				.replace("$qerror", qerror > 0 ? "<span style=\"color:red;\">" + qerror + "</span>" : JavaCs.numToString(qerror))
+				.replace("$count", JavaCs.numToString(count))
+				.replace("$dead", JavaCs.numToString(dead))
+				.replace("$error", error>0 ? "<span style=\"color:red;\">" + error + "</span>" : JavaCs.numToString(error));
 	}
 
 }

@@ -11,6 +11,7 @@ import test4giis.qacover.TestDataTypeFormats;
 
 public class TestOracleDataTypeFormats extends TestDataTypeFormats {
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("oracle");
 	}

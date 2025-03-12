@@ -1,6 +1,6 @@
 package test4giis.qacover;
 
-import java.sql.*;
+import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -17,6 +17,7 @@ public class TestDataTypeFormats extends Base {
 	protected AppSimpleJdbc app;
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		app = new AppSimpleJdbc(variant);
@@ -28,6 +29,7 @@ public class TestDataTypeFormats extends Base {
 	}
 
 	@After
+	@Override
 	public void tearDown() throws SQLException {
 		super.tearDown();
 		app.close();

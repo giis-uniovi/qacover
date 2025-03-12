@@ -5,6 +5,7 @@ import test4giis.qacover.TestEvaluationNulls;
 
 public class TestH2EvaluationNulls extends TestEvaluationNulls {
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("h2");
 	}

@@ -31,6 +31,7 @@ public class TestStore extends Base {
 	private AppSimpleJdbc app;
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		options.setRuleOptions("noboundaries");
@@ -39,6 +40,7 @@ public class TestStore extends Base {
 	}
 
 	@After
+	@Override
 	public void tearDown() throws SQLException {
 		super.tearDown();
 		app.close();

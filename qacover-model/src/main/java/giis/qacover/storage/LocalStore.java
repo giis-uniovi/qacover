@@ -112,7 +112,7 @@ public class LocalStore {
 	public List<HistoryModel> getHistoryItems() {
 		String logFile = FileUtil.getPath(storeLocation, HISTORY_FILE_NAME);
 		List<String> lines = FileUtil.fileReadLines(logFile, false);
-		List<HistoryModel> items = new ArrayList<>();
+		List<HistoryModel> items = new ArrayList<HistoryModel>();
 		if (JavaCs.isEmpty(lines))
 			log.warn("Storage of eval status and params can not be found or is empty: " + logFile);
 		for (String line : lines)

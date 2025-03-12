@@ -1,10 +1,10 @@
 package giis.qacover.model;
 
-import static giis.tdrules.model.shared.ModelUtil.safe;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import giis.portable.util.JavaCs;
+import giis.tdrules.model.shared.ModelUtil;
 import giis.tdrules.openapi.model.TdRule;
 import giis.tdrules.openapi.model.TdRules;
 
@@ -30,7 +30,7 @@ public class QueryModel extends RuleBase {
 
 	@Override
 	protected String getAttribute(String name) {
-		return safe(model.getSummary(), name);
+		return ModelUtil.safe(model.getSummary(), name);
 	}
 	@Override
 	protected void setAttribute(String name, String value) {
@@ -80,7 +80,7 @@ public class QueryModel extends RuleBase {
 	public void setLocation(String className, String methodName, int lineNumber, String fileName, String sourceFileName) {
 		setAttribute(CLASS_NAME, className);
 		setAttribute(METHOD_NAME, methodName);
-		setAttribute(LINE_NUMBER, String.valueOf(lineNumber));
+		setAttribute(LINE_NUMBER, JavaCs.numToString(lineNumber));
 		setAttribute(CLASS_FILE_NAME, fileName);
 		setAttribute(SOURCE_FILE_NAME, sourceFileName);
 	}
@@ -95,7 +95,7 @@ public class QueryModel extends RuleBase {
 		return getIntAttribute(QERROR);
 	}
 	public void setQerror(int value) {
-		setAttribute(QERROR, String.valueOf(value));
+		setAttribute(QERROR, JavaCs.numToString(value));
 	}
 	public String getSql() {
 		return model.getQuery();
@@ -105,8 +105,8 @@ public class QueryModel extends RuleBase {
 	}
 
 	public List<RuleModel> getRules() {
-		List<RuleModel> rules = new ArrayList<>();
-		for (TdRule rule : safe(model.getRules()))
+		List<RuleModel> rules = new ArrayList<RuleModel>();
+		for (TdRule rule : ModelUtil.safe(model.getRules()))
 			rules.add(new RuleModel(rule));
 		return rules;
 	}

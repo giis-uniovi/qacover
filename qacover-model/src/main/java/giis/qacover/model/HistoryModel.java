@@ -90,7 +90,7 @@ public class HistoryModel {
 	}
 
 	private List<ParameterDao> paramsFromXml(String paramXml) {
-		List<ParameterDao> paramDao = new ArrayList<>();
+		List<ParameterDao> paramDao = new ArrayList<ParameterDao>();
 		List<XNode> paramNodes = new XNode(paramXml).getChildren("parameter");
 		for (XNode paramNode : paramNodes)
 			paramDao.add(new ParameterDao(XNodeAbstract.decodeAttribute(paramNode.getAttribute("name")),

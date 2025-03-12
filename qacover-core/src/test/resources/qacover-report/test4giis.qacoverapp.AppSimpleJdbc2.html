@@ -70,20 +70,22 @@
 <table class='table table-sm table-borderless'>
     <thead><th style='width:1%'>Line</th><th style='width:1%'>Coverage</th><th>Source code/method, queries and rules</th></thead>
 <tr class='line line-code'><td>1</td><td></td><td colspan='2'><code>package&nbsp;test4giis.qacoverapp;</code></td></tr>
-<tr class='line line-code'><td>2</td><td></td><td colspan='2'><code>import&nbsp;java.sql.*;</code></td></tr>
-<tr class='line line-code'><td>3</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>4</td><td></td><td colspan='2'><code>import&nbsp;giis.qacover.model.Variability;</code></td></tr>
+<tr class='line line-code'><td>2</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>3</td><td></td><td colspan='2'><code>import&nbsp;java.sql.ResultSet;</code></td></tr>
+<tr class='line line-code'><td>4</td><td></td><td colspan='2'><code>import&nbsp;java.sql.SQLException;</code></td></tr>
 <tr class='line line-code'><td>5</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>6</td><td></td><td colspan='2'><code>/**</code></td></tr>
-<tr class='line line-code'><td>7</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;Simple&nbsp;mock&nbsp;application&nbsp;only&nbsp;to&nbsp;test&nbsp;evaluation&nbsp;in&nbsp;different&nbsp;queries</code></td></tr>
-<tr class='line line-code'><td>8</td><td></td><td colspan='2'><code>&nbsp;*/</code></td></tr>
-<tr class='line line-code'><td>9</td><td></td><td colspan='2'><code>public&nbsp;class&nbsp;AppSimpleJdbc2&nbsp;extends&nbsp;AppBase&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>10</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AppSimpleJdbc2(Variability&nbsp;targetVariant)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>11</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super(targetVariant);</code></td></tr>
-<tr class='line line-code'><td>12</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>13</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoParameters1Condition(int&nbsp;param1)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>6</td><td></td><td colspan='2'><code>import&nbsp;giis.qacover.model.Variability;</code></td></tr>
+<tr class='line line-code'><td>7</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>8</td><td></td><td colspan='2'><code>/**</code></td></tr>
+<tr class='line line-code'><td>9</td><td></td><td colspan='2'><code>&nbsp;*&nbsp;Simple&nbsp;mock&nbsp;application&nbsp;only&nbsp;to&nbsp;test&nbsp;evaluation&nbsp;in&nbsp;different&nbsp;queries</code></td></tr>
+<tr class='line line-code'><td>10</td><td></td><td colspan='2'><code>&nbsp;*/</code></td></tr>
+<tr class='line line-code'><td>11</td><td></td><td colspan='2'><code>public&nbsp;class&nbsp;AppSimpleJdbc2&nbsp;extends&nbsp;AppBase&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>12</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AppSimpleJdbc2(Variability&nbsp;targetVariant)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>13</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super(targetVariant);</code></td></tr>
+<tr class='line line-code'><td>14</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>15</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoParameters1Condition(int&nbsp;param1)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
-        <td>14</td>
+        <td>16</td>
         <td class='nowrap'><strong>50%</strong>&nbsp;(1/2)</td>
         <td colspan='2'>
             <span class='text-primary font-weight-bold method'>queryNoParameters1Condition</span>
@@ -131,10 +133,10 @@
         <tr><td></td></tr>
     </tbody>
 
-<tr class='line line-code'><td>15</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>16</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoParameters2Condition(int&nbsp;param1,&nbsp;String&nbsp;param2)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>17</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>18</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;ResultSet&nbsp;queryNoParameters2Condition(int&nbsp;param1,&nbsp;String&nbsp;param2)&nbsp;throws&nbsp;SQLException&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
-        <td>17</td>
+        <td>19</td>
         <td class='nowrap'><strong>75%</strong>&nbsp;(3/4)</td>
         <td colspan='2'>
             <span class='text-primary font-weight-bold method'>queryNoParameters2Condition</span>
@@ -206,15 +208,15 @@
         <tr><td></td></tr>
     </tbody>
 
-<tr class='line line-code'><td>18</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>19</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>20</td><td></td><td colspan='2'><code>}</code></td></tr>
+<tr class='line line-code'><td>20</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>21</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>22</td><td></td><td colspan='2'><code>}</code></td></tr>
 
 </table>
 </div>
 
 <div><span style="float:right;"><small>
-Generated by: QACover java - [version 1.6.4-SNAPSHOT] - <a href="https://github.com/giis-uniovi/qacover/issues/new">[Submit a problem report]</a>
+Generated by: QACover java - [version 2.0.1-SNAPSHOT] - <a href="https://github.com/giis-uniovi/qacover/issues/new">[Submit a problem report]</a>
 </small></span></div>
 </div>
 </body>

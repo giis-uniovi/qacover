@@ -37,7 +37,7 @@ public class QueryStatementReader implements IQueryStatementReader {
 
 	@Override
 	public List<String[]> getRows() {
-		List<String[]> rows = new ArrayList<>();
+		List<String[]> rows = new ArrayList<String[]>();
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 			int numCols = rs.getMetaData().getColumnCount();
 			while (rs.next())

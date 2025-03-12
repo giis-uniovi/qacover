@@ -69,36 +69,37 @@
 <div>
 <table class='table table-sm table-borderless'>
     <thead><th style='width:1%'>Line</th><th style='width:1%'>Coverage</th><th>Source code/method, queries and rules</th></thead>
-<tr class='line line-code'><td>1</td><td></td><td colspan='2'><code>/////////////////////////////////////////////////////////////////////////////////////////////</code></td></tr>
-<tr class='line line-code'><td>2</td><td></td><td colspan='2'><code>///////&nbsp;THIS&nbsp;FILE&nbsp;HAS&nbsp;BEEN&nbsp;AUTOMATICALLY&nbsp;CONVERTED&nbsp;FROM&nbsp;THE&nbsp;JAVA&nbsp;SOURCES.&nbsp;DO&nbsp;NOT&nbsp;EDIT&nbsp;///////</code></td></tr>
-<tr class='line line-code'><td>3</td><td></td><td colspan='2'><code>/////////////////////////////////////////////////////////////////////////////////////////////</code></td></tr>
-<tr class='line line-code'><td>4</td><td></td><td colspan='2'><code>using&nbsp;Giis.Qacover.Core.Services;</code></td></tr>
-<tr class='line line-code'><td>5</td><td></td><td colspan='2'><code>using&nbsp;Giis.Qacover.Model;</code></td></tr>
-<tr class='line line-code'><td>6</td><td></td><td colspan='2'><code>using&nbsp;Java.Sql;</code></td></tr>
-<tr class='line line-code'><td>7</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>8</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>9</td><td></td><td colspan='2'><code>namespace&nbsp;Test4giis.Qacoverapp</code></td></tr>
-<tr class='line line-code'><td>10</td><td></td><td colspan='2'><code>{</code></td></tr>
-<tr class='line line-code'><td>11</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;summary&gt;Simple&nbsp;mock&nbsp;application&lt;/summary&gt;</code></td></tr>
-<tr class='line line-code'><td>12</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;AppSimpleJdbc&nbsp;:&nbsp;AppBase</code></td></tr>
-<tr class='line line-code'><td>13</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>14</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>15</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AppSimpleJdbc(Variability&nbsp;targetVariant)</code></td></tr>
-<tr class='line line-code'><td>16</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;base(targetVariant)</code></td></tr>
-<tr class='line line-code'><td>17</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>18</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>19</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>20</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//para&nbsp;pruebas&nbsp;de&nbsp;stacktrace</code></td></tr>
-<tr class='line line-code'><td>21</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;StackLocator&nbsp;MyGetStackTraceTargetMethod()</code></td></tr>
-<tr class='line line-code'><td>22</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>23</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;MyGetStackTraceIgnoredMethod();</code></td></tr>
-<tr class='line line-code'><td>24</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>25</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>26</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>27</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoParameters1Condition(int&nbsp;param1)</code></td></tr>
-<tr class='line line-code'><td>28</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>1</td><td></td><td colspan='2'><code>using&nbsp;Java.Sql;</code></td></tr>
+<tr class='line line-code'><td>2</td><td></td><td colspan='2'><code>using&nbsp;Giis.Qacover.Core.Services;</code></td></tr>
+<tr class='line line-code'><td>3</td><td></td><td colspan='2'><code>using&nbsp;Giis.Qacover.Model;</code></td></tr>
+<tr class='line line-code'><td>4</td><td></td><td colspan='2'><code>using&nbsp;System;</code></td></tr>
+<tr class='line line-code'><td>5</td><td></td><td colspan='2'><code>using&nbsp;System.Collections.Generic;</code></td></tr>
+<tr class='line line-code'><td>6</td><td></td><td colspan='2'><code>using&nbsp;System.Collections.ObjectModel;</code></td></tr>
+<tr class='line line-code'><td>7</td><td></td><td colspan='2'><code>using&nbsp;System.Linq;</code></td></tr>
+<tr class='line line-code'><td>8</td><td></td><td colspan='2'><code>using&nbsp;System.Text;</code></td></tr>
+<tr class='line line-code'><td>9</td><td></td><td colspan='2'><code>///////&nbsp;THIS&nbsp;FILE&nbsp;HAS&nbsp;BEEN&nbsp;AUTOMATICALLY&nbsp;CONVERTED&nbsp;FROM&nbsp;THE&nbsp;JAVA&nbsp;SOURCES.&nbsp;DO&nbsp;NOT&nbsp;EDIT&nbsp;///////</code></td></tr>
+<tr class='line line-code'><td>10</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>11</td><td></td><td colspan='2'><code>namespace&nbsp;Test4giis.Qacoverapp</code></td></tr>
+<tr class='line line-code'><td>12</td><td></td><td colspan='2'><code>{</code></td></tr>
+<tr class='line line-code'><td>13</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;summary&gt;</code></td></tr>
+<tr class='line line-code'><td>14</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;Simple&nbsp;mock&nbsp;application</code></td></tr>
+<tr class='line line-code'><td>15</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;/summary&gt;</code></td></tr>
+<tr class='line line-code'><td>16</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;class&nbsp;AppSimpleJdbc&nbsp;:&nbsp;AppBase</code></td></tr>
+<tr class='line line-code'><td>17</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>18</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AppSimpleJdbc(Variability&nbsp;targetVariant)&nbsp;:&nbsp;base(targetVariant)</code></td></tr>
+<tr class='line line-code'><td>19</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>20</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>21</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>22</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//para&nbsp;pruebas&nbsp;de&nbsp;stacktrace</code></td></tr>
+<tr class='line line-code'><td>23</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;StackLocator&nbsp;MyGetStackTraceTargetMethod()</code></td></tr>
+<tr class='line line-code'><td>24</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>25</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;MyGetStackTraceIgnoredMethod();</code></td></tr>
+<tr class='line line-code'><td>26</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>27</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>28</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoParameters1Condition(int&nbsp;param1)</code></td></tr>
+<tr class='line line-code'><td>29</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
-        <td>29</td>
+        <td>30</td>
         <td class='nowrap'><strong>50%</strong>&nbsp;(1/2)</td>
         <td colspan='2'>
             <span class='text-primary font-weight-bold method'>QueryNoParameters1Condition</span>
@@ -146,9 +147,8 @@
         <tr><td></td></tr>
     </tbody>
 
-<tr class='line line-code'><td>30</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>31</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>32</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
+<tr class='line line-code'><td>31</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>32</td><td></td><td colspan='2'><code></code></td></tr>
 <tr class='line line-code'><td>33</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoParameters2Condition(int&nbsp;param1,&nbsp;string&nbsp;param2)</code></td></tr>
 <tr class='line line-code'><td>34</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
@@ -226,21 +226,20 @@
 
 <tr class='line line-code'><td>36</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class='line line-code'><td>37</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>38</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>39</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;ResultSet&nbsp;QueryParameters(int&nbsp;param1,&nbsp;string&nbsp;param2)</code></td></tr>
-<tr class='line line-code'><td>40</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>41</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&gt;?&nbsp;and&nbsp;text=?",&nbsp;param1,&nbsp;param2);</code></td></tr>
-<tr class='line line-code'><td>42</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>43</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>44</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//multiples&nbsp;queries&nbsp;en&nbsp;un&nbsp;metodo&nbsp;(misma&nbsp;y&nbsp;distinta&nbsp;linea)</code></td></tr>
-<tr class='line line-code'><td>45</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>46</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;void&nbsp;QueryDifferentSingleLine(bool&nbsp;run1,&nbsp;int&nbsp;param1,&nbsp;bool&nbsp;run2,&nbsp;string&nbsp;param2)</code></td></tr>
-<tr class='line line-code'><td>47</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>48</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//dos&nbsp;queries&nbsp;en&nbsp;misma&nbsp;linea&nbsp;con&nbsp;distintas&nbsp;reglas</code></td></tr>
-<tr class='line line-code'><td>49</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(run1)</code></td></tr>
-<tr class='line line-code'><td>50</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>38</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;ResultSet&nbsp;QueryParameters(int&nbsp;param1,&nbsp;string&nbsp;param2)</code></td></tr>
+<tr class='line line-code'><td>39</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>40</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;num&gt;?&nbsp;and&nbsp;text=?",&nbsp;param1,&nbsp;param2);</code></td></tr>
+<tr class='line line-code'><td>41</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>42</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>43</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//multiples&nbsp;queries&nbsp;en&nbsp;un&nbsp;metodo&nbsp;(misma&nbsp;y&nbsp;distinta&nbsp;linea)</code></td></tr>
+<tr class='line line-code'><td>44</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;void&nbsp;QueryDifferentSingleLine(bool&nbsp;run1,&nbsp;int&nbsp;param1,&nbsp;bool&nbsp;run2,&nbsp;string&nbsp;param2)</code></td></tr>
+<tr class='line line-code'><td>45</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>46</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>47</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//dos&nbsp;queries&nbsp;en&nbsp;misma&nbsp;linea&nbsp;con&nbsp;distintas&nbsp;reglas</code></td></tr>
+<tr class='line line-code'><td>48</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(run1)</code></td></tr>
+<tr class='line line-code'><td>49</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
-        <td>51</td>
+        <td>50</td>
         <td class='nowrap'><strong>50%</strong>&nbsp;(1/2)</td>
         <td colspan='2'>
             <span class='text-primary font-weight-bold method'>QueryDifferentSingleLine</span>
@@ -288,8 +287,9 @@
         <tr><td></td></tr>
     </tbody>
 
-<tr class='line line-code'><td>52</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs.Close();</code></td></tr>
-<tr class='line line-code'><td>53</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>51</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs.Close();</code></td></tr>
+<tr class='line line-code'><td>52</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>53</td><td></td><td colspan='2'><code></code></td></tr>
 <tr class='line line-code'><td>54</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(run2)</code></td></tr>
 <tr class='line line-code'><td>55</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
@@ -357,19 +357,17 @@
 <tr class='line line-code'><td>58</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class='line line-code'><td>59</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
 <tr class='line line-code'><td>60</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>61</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>62</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;void&nbsp;QueryEqualSingleLine(string&nbsp;param1,&nbsp;string&nbsp;param2)</code></td></tr>
-<tr class='line line-code'><td>63</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>64</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs&nbsp;=&nbsp;ExecuteQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param1);</code></td></tr>
-<tr class='line line-code'><td>65</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs.Close();</code></td></tr>
-<tr class='line line-code'><td>66</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ExecuteQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param2);</code></td></tr>
-<tr class='line line-code'><td>67</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>68</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>69</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>70</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;void&nbsp;QueryEqualDifferentLine(string&nbsp;param1,&nbsp;string&nbsp;param2)</code></td></tr>
-<tr class='line line-code'><td>71</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>61</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;void&nbsp;QueryEqualSingleLine(string&nbsp;param1,&nbsp;string&nbsp;param2)</code></td></tr>
+<tr class='line line-code'><td>62</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>63</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs&nbsp;=&nbsp;ExecuteQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param1);</code></td></tr>
+<tr class='line line-code'><td>64</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs.Close();</code></td></tr>
+<tr class='line line-code'><td>65</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ExecuteQuery("select&nbsp;*&nbsp;from&nbsp;test&nbsp;where&nbsp;text="&nbsp;+&nbsp;param2);</code></td></tr>
+<tr class='line line-code'><td>66</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>67</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>68</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;void&nbsp;QueryEqualDifferentLine(string&nbsp;param1,&nbsp;string&nbsp;param2)</code></td></tr>
+<tr class='line line-code'><td>69</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
     <tr class='line line-coverage'>
-        <td>72</td>
+        <td>70</td>
         <td class='nowrap'><strong>33%</strong>&nbsp;(1/3)</td>
         <td colspan='2'>
             <span class='text-primary font-weight-bold method'>QueryEqualDifferentLine</span>
@@ -429,10 +427,11 @@
         <tr><td></td></tr>
     </tbody>
 
-<tr class='line line-code'><td>73</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs.Close();</code></td></tr>
-<tr class='line line-code'><td>74</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//la&nbsp;misma&nbsp;en&nbsp;otra&nbsp;linea</code></td></tr>
+<tr class='line line-code'><td>71</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rs.Close();</code></td></tr>
+<tr class='line line-code'><td>72</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>73</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//la&nbsp;misma&nbsp;en&nbsp;otra&nbsp;linea</code></td></tr>
     <tr class='line line-coverage'>
-        <td>75</td>
+        <td>74</td>
         <td class='nowrap'><strong>33%</strong>&nbsp;(1/3)</td>
         <td colspan='2'>
             <span class='text-primary font-weight-bold method'>QueryEqualDifferentLine</span>
@@ -492,59 +491,49 @@
         <tr><td></td></tr>
     </tbody>
 
-<tr class='line line-code'><td>76</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>77</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>78</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>79</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoConditions()</code></td></tr>
-<tr class='line line-code'><td>80</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>81</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test");</code></td></tr>
-<tr class='line line-code'><td>82</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>83</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>84</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>85</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoParametersQuotes(string&nbsp;param1,&nbsp;bool&nbsp;bracketAtTable,&nbsp;bool&nbsp;bracketAtColumn)</code></td></tr>
-<tr class='line line-code'><td>86</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>87</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;"&nbsp;+&nbsp;QuoteIdentifier("test",&nbsp;bracketAtTable)&nbsp;+&nbsp;"&nbsp;where&nbsp;"&nbsp;+&nbsp;QuoteIdentifier("text",&nbsp;bracketAtColumn)&nbsp;+&nbsp;"='"&nbsp;+&nbsp;param1&nbsp;+&nbsp;"'");</code></td></tr>
-<tr class='line line-code'><td>88</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>89</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>90</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>91</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoParametersBrackets(string&nbsp;param1,&nbsp;bool&nbsp;bracketAtTable,&nbsp;bool&nbsp;bracketAtColumn)</code></td></tr>
-<tr class='line line-code'><td>92</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>93</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;"&nbsp;+&nbsp;(bracketAtTable&nbsp;?&nbsp;"[test]"&nbsp;:&nbsp;"test")&nbsp;+&nbsp;"&nbsp;where&nbsp;"&nbsp;+&nbsp;(bracketAtColumn&nbsp;?&nbsp;"[text]"&nbsp;:&nbsp;"text")&nbsp;+&nbsp;"='"&nbsp;+&nbsp;param1&nbsp;+&nbsp;"'");</code></td></tr>
-<tr class='line line-code'><td>94</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>95</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>96</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;string&nbsp;QuoteIdentifier(string&nbsp;name,&nbsp;bool&nbsp;doQuote)</code></td></tr>
-<tr class='line line-code'><td>97</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>98</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(doQuote)</code></td></tr>
-<tr class='line line-code'><td>99</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>100</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//oracle&nbsp;ademas&nbsp;siempre&nbsp;pasa&nbsp;todo&nbsp;a&nbsp;mayusculas,&nbsp;luego&nbsp;debe&nbsp;estar&nbsp;mayusculas&nbsp;al&nbsp;poner&nbsp;quotes</code></td></tr>
-<tr class='line line-code'><td>101</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;"\""&nbsp;+&nbsp;(variant.IsOracle()&nbsp;||&nbsp;variant.IsH2()&nbsp;?&nbsp;name.ToUpper()&nbsp;:&nbsp;name)&nbsp;+&nbsp;"\"";</code></td></tr>
-<tr class='line line-code'><td>102</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>103</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else</code></td></tr>
-<tr class='line line-code'><td>104</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>105</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;name;</code></td></tr>
-<tr class='line line-code'><td>106</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>107</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>108</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>109</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>110</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryParametersNamed(int&nbsp;param1,&nbsp;int&nbsp;param2,&nbsp;string&nbsp;param3)</code></td></tr>
-<tr class='line line-code'><td>111</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>112</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("/*&nbsp;params=?1?,?1?,?2?&nbsp;*/&nbsp;select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;id=?&nbsp;or&nbsp;num=?&nbsp;or&nbsp;text=?",&nbsp;param1,&nbsp;param2,&nbsp;param3);</code></td></tr>
-<tr class='line line-code'><td>113</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>114</td><td></td><td colspan='2'><code></code></td></tr>
-<tr class='line line-code'><td>115</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;This&nbsp;is&nbsp;for&nbsp;testing&nbsp;mutants</code></td></tr>
-<tr class='line line-code'><td>116</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;///&nbsp;&lt;exception&nbsp;cref="Java.Sql.SQLException"/&gt;</code></td></tr>
-<tr class='line line-code'><td>117</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryMutParameters(string&nbsp;param1)</code></td></tr>
-<tr class='line line-code'><td>118</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
-<tr class='line line-code'><td>119</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQueryMut("select&nbsp;id,txt&nbsp;from&nbsp;test&nbsp;where&nbsp;txt=?",&nbsp;param1);</code></td></tr>
-<tr class='line line-code'><td>120</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>121</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
-<tr class='line line-code'><td>122</td><td></td><td colspan='2'><code>}</code></td></tr>
+<tr class='line line-code'><td>75</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>76</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>77</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoConditions()</code></td></tr>
+<tr class='line line-code'><td>78</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>79</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;test");</code></td></tr>
+<tr class='line line-code'><td>80</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>81</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>82</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoParametersQuotes(string&nbsp;param1,&nbsp;bool&nbsp;bracketAtTable,&nbsp;bool&nbsp;bracketAtColumn)</code></td></tr>
+<tr class='line line-code'><td>83</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>84</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;"&nbsp;+&nbsp;QuoteIdentifier("test",&nbsp;bracketAtTable)&nbsp;+&nbsp;"&nbsp;where&nbsp;"&nbsp;+&nbsp;QuoteIdentifier("text",&nbsp;bracketAtColumn)&nbsp;+&nbsp;"='"&nbsp;+&nbsp;param1&nbsp;+&nbsp;"'");</code></td></tr>
+<tr class='line line-code'><td>85</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>86</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>87</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryNoParametersBrackets(string&nbsp;param1,&nbsp;bool&nbsp;bracketAtTable,&nbsp;bool&nbsp;bracketAtColumn)</code></td></tr>
+<tr class='line line-code'><td>88</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>89</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("select&nbsp;id,num,text&nbsp;from&nbsp;"&nbsp;+&nbsp;(bracketAtTable&nbsp;?&nbsp;"[test]"&nbsp;:&nbsp;"test")&nbsp;+&nbsp;"&nbsp;where&nbsp;"&nbsp;+&nbsp;(bracketAtColumn&nbsp;?&nbsp;"[text]"&nbsp;:&nbsp;"text")&nbsp;+&nbsp;"='"&nbsp;+&nbsp;param1&nbsp;+&nbsp;"'");</code></td></tr>
+<tr class='line line-code'><td>90</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>91</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>92</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;string&nbsp;QuoteIdentifier(string&nbsp;name,&nbsp;bool&nbsp;doQuote)</code></td></tr>
+<tr class='line line-code'><td>93</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>94</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;(doQuote)</code></td></tr>
+<tr class='line line-code'><td>95</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;"\""&nbsp;+&nbsp;(variant.IsOracle()&nbsp;||&nbsp;variant.IsH2()&nbsp;?&nbsp;name.ToUpper()&nbsp;:&nbsp;name)&nbsp;+&nbsp;"\"";</code></td></tr>
+<tr class='line line-code'><td>96</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else</code></td></tr>
+<tr class='line line-code'><td>97</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;name;</code></td></tr>
+<tr class='line line-code'><td>98</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>99</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>100</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryParametersNamed(int&nbsp;param1,&nbsp;int&nbsp;param2,&nbsp;string&nbsp;param3)</code></td></tr>
+<tr class='line line-code'><td>101</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>102</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQuery("/*&nbsp;params=?1?,?1?,?2?&nbsp;*/&nbsp;select&nbsp;id,num,text&nbsp;from&nbsp;test&nbsp;where&nbsp;id=?&nbsp;or&nbsp;num=?&nbsp;or&nbsp;text=?",&nbsp;param1,&nbsp;param2,&nbsp;param3);</code></td></tr>
+<tr class='line line-code'><td>103</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>104</td><td></td><td colspan='2'><code></code></td></tr>
+<tr class='line line-code'><td>105</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;This&nbsp;is&nbsp;for&nbsp;testing&nbsp;mutants</code></td></tr>
+<tr class='line line-code'><td>106</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;virtual&nbsp;ResultSet&nbsp;QueryMutParameters(string&nbsp;param1)</code></td></tr>
+<tr class='line line-code'><td>107</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{</code></td></tr>
+<tr class='line line-code'><td>108</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;ExecuteQueryMut("select&nbsp;id,txt&nbsp;from&nbsp;test&nbsp;where&nbsp;txt=?",&nbsp;param1);</code></td></tr>
+<tr class='line line-code'><td>109</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>110</td><td></td><td colspan='2'><code>&nbsp;&nbsp;&nbsp;&nbsp;}</code></td></tr>
+<tr class='line line-code'><td>111</td><td></td><td colspan='2'><code>}</code></td></tr>
 
 </table>
 </div>
 
 <div><span style="float:right;"><small>
-Generated by: QACover netcore - [version 1.6.4-SNAPSHOT+1de0f4378c698dbf7f3c5f2615d637d6f1c66224] - <a href="https://github.com/giis-uniovi/qacover/issues/new">[Submit a problem report]</a>
+Generated by: QACover netcore - [version 2.0.1-SNAPSHOT+7413e31d74ac4cab839fb75ca69c21e80e7e8162] - <a href="https://github.com/giis-uniovi/qacover/issues/new">[Submit a problem report]</a>
 </small></span></div>
 </div>
 </body>

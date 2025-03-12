@@ -2,7 +2,7 @@ package giis.qacover.reader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.slf4j.Logger;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import giis.portable.util.FileUtil;
 import giis.portable.util.JavaCs;
-
 
 /**
  * Collects all info about source code and coverage of queries executed at each
@@ -20,14 +19,14 @@ public class SourceCodeCollection {
 
 	private static final Logger log = LoggerFactory.getLogger(SourceCodeCollection.class);
 
-	private TreeMap<Integer, SourceCodeLine> lines = new TreeMap<>();
+	private Map<Integer, SourceCodeLine> lines = new TreeMap<Integer, SourceCodeLine>();
 	
-	public SortedMap<Integer, SourceCodeLine> getLines() {
+	public Map<Integer, SourceCodeLine> getLines() {
 		return lines;
 	}
 	
 	public List<Integer> getLineNumbers() {
-		List<Integer> ret = new ArrayList<>();
+		List<Integer> ret = new ArrayList<Integer>();
 		for (int key : lines.keySet())
 			ret.add(key);
 		return ret;
@@ -47,8 +46,8 @@ public class SourceCodeCollection {
 	 * corresponds with the line where the query was run
 	 */
 	public void addQueries(QueryCollection queries) {
-		for (int i = 0; i < queries.size(); i++)
-			addQuery(queries.get(i));
+		for (int i = 0; i < queries.getSize(); i++)
+			addQuery(queries.getItem(i));
 	}
 
 	/**
@@ -56,7 +55,7 @@ public class SourceCodeCollection {
 	 * corresponds with the line where the query was run
 	 */
 	public void addQuery(QueryReader query) {
-		int lineNumber = Integer.parseInt(query.getKey().getClassLine());
+		int lineNumber = JavaCs.stringToInt(query.getKey().getClassLine());
 		SourceCodeLine line = getLine(lineNumber);
 		line.getQueries().add(query);
 	}

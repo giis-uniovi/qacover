@@ -25,6 +25,7 @@ public class Test3WithCoverageFixedAndPass extends Test2WithCoverageFaultyAndFai
 	 * Fixing the query: changes the way in which average is calculated
 	 * and checks the number of returned rows to avoid exceptions.
 	 */
+	@Override
 	protected double getSalaryWithBonus(Connection conn, int idEmp) throws SQLException {
 		String sql = "SELECT E.idEmp, basesalary, sum(Bonus)/count(*) as bonus " +
 				"FROM Employee E INNER JOIN Assignment A ON E.idEmp = A.idEmp " +

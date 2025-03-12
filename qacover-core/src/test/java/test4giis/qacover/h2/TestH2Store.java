@@ -5,6 +5,7 @@ import test4giis.qacover.TestStore;
 
 public class TestH2Store extends TestStore {
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("h2");
 	}

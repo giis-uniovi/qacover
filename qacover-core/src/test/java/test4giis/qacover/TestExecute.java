@@ -23,6 +23,7 @@ public class TestExecute extends Base {
 	private AppSimpleJdbc app;
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		app = new AppSimpleJdbc(variant); // aplicacion con los metodos a probar
@@ -31,6 +32,7 @@ public class TestExecute extends Base {
 	}
 
 	@After
+	@Override
 	public void tearDown() throws SQLException {
 		super.tearDown();
 		app.close(); // para la conexion abierta que mantiene la aplicacion

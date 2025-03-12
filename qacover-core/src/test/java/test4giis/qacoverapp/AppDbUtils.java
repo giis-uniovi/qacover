@@ -1,5 +1,6 @@
 package test4giis.qacoverapp;
-import java.sql.*;
+
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.dbutils.DbUtils;

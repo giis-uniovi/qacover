@@ -5,6 +5,7 @@ import test4giis.qacover.TestEvaluationNulls;
 
 public class TestPostgresEvaluationNulls extends TestEvaluationNulls {
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("postgres");
 	}

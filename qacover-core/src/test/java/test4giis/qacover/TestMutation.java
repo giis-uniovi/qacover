@@ -124,7 +124,7 @@ public class TestMutation extends Base {
 	}
 
 	private List<String[]> getList() {
-		List<String[]> lst = new ArrayList<>();
+		List<String[]> lst = new ArrayList<String[]>();
 		lst.add(new String[] { "1", "abc" });
 		lst.add(new String[] { "2", null });
 		return lst;

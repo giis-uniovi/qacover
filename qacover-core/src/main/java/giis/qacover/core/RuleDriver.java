@@ -71,7 +71,7 @@ public abstract class RuleDriver {
 		return sql;
 	}
 	
-	String getLogString(RuleModel ruleModel, QueryStatement stmt, String res) {
+	public String getLogString(RuleModel ruleModel, QueryStatement stmt, String res) {
 		String sql = stmt.getSqlWithValues(ruleModel.getSql());
 		String ruleWithSql = sql.replace("\r", "").replace("\n", " ").trim();
 		String logString = res + " " + (ResultVector.COVERED.equals(res) ? "  " : "") + ruleWithSql;

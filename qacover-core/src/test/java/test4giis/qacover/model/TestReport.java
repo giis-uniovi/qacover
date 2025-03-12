@@ -56,12 +56,14 @@ public class TestReport extends Base {
 	private SoftVisualAssert va;
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		va = new SoftVisualAssert().setFramework(Framework.JUNIT4).setCallStackLength(3).setBrightColors(true);
 	}
 
 	@After
+	@Override
 	public void tearDown() throws SQLException {
 		va.assertAll("diff-IntegratedTestReaderAndReport.html");
 		super.tearDown();

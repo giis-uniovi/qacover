@@ -1,5 +1,10 @@
 package test4giis.qacoverapp;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import giis.qacover.core.services.StackLocator;
 import giis.qacover.model.Variability;

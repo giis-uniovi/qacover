@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import giis.portable.util.FileUtil;
+import giis.portable.util.Parameters;
 import giis.qacover.reader.SourceCodeCollection;
 
 /**
@@ -21,7 +22,7 @@ public class TestResolveSourceFile {
 		assertPath("c:/a/b/c/x/y/Clazz.java", "c:\\a\\b\\c", "", "x\\y\\Clazz.java");
 
 		// current folder
-		boolean isJava = giis.portable.util.Parameters.isJava();
+		boolean isJava = Parameters.isJava();
 		assertPath(isJava ? full("x/y/Clazz.java") : "./x/y/Clazz.java", ".", "", "x/y/Clazz.java");
 		assertPath(isJava ? full("x/y/Clazz.java") : "./x/y/Clazz.java", "./", "", "x/y/Clazz.java");
 	}

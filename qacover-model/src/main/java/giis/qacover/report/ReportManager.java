@@ -45,8 +45,8 @@ public class ReportManager {
 		StringBuilder indexRowsSb = new StringBuilder();
 
 		String coverageCriterion = "";
-		for (int i = 0; i < classes.size(); i++) {
-			QueryCollection query = classes.get(i);
+		for (int i = 0; i < classes.getSize(); i++) {
+			QueryCollection query = classes.getItem(i);
 			// a line of the index report
 			String className = query.getName();
 			CoverageSummary summary = query.getSummary();
@@ -56,7 +56,7 @@ public class ReportManager {
 					summary.getCount(), summary.getDead(), summary.getError()));
 
 			// to customize headings
-			coverageCriterion = query.get(0).getModel().getModel().getRulesClass();
+			coverageCriterion = query.getItem(0).getModel().getModel().getRulesClass();
 			
 			// Generates a file for this class
 			ClassHtmlWriter classWriter = new ClassHtmlWriter();
@@ -76,7 +76,7 @@ public class ReportManager {
 		String indexContent = indexWriter.getHeader(indexTitle)
 				+ indexWriter.getBodyContent(indexTitle, indexRowsHeader + indexRowsSb.toString());
 		FileUtil.fileWrite(reportFolder, "index.html", indexContent);
-		consoleWrite(classes.size() + " classes generated, see index.html at reports folder");
+		consoleWrite(classes.getSize() + " classes generated, see index.html at reports folder");
 	}
 	
 	private String getClassCoverage(QueryCollection queries, HistoryReader history, ClassHtmlWriter writer, String sourceFolders, String projectFolders) {
@@ -85,26 +85,28 @@ public class ReportManager {
 		lineCollection.addQueries(queries); // groups by line number
 		
 		// locates the source code for this class (requires the source folders as parameter)
-		if (!JavaCs.isEmpty(sourceFolders) && queries.size() > 0) // it is assumed that all queries are in the same class file
-			lineCollection.addSources(queries.get(0), sourceFolders, projectFolders);
+		if (!JavaCs.isEmpty(sourceFolders) && queries.getSize() > 0) // it is assumed that all queries are in the same class file
+			lineCollection.addSources(queries.getItem(0), sourceFolders, projectFolders);
 		
 		StringBuilder csb = new StringBuilder();
-		for (Map.Entry<Integer, SourceCodeLine> line : lineCollection.getLines().entrySet()) {
-			if (line.getValue().getQueries().size() == 0) { // NOSONAR for net compatibility
+		Map<Integer, SourceCodeLine> lines = lineCollection.getLines();
+		for (int lineNumber : lines.keySet()) { // NOSONAR for net compatibility
+			SourceCodeLine lineContent = lines.get(lineNumber);
+			if (lineContent.getQueries().size() == 0) { // NOSONAR for net compatibility
 				// only the source code if there are no queries
-				csb.append(writer.getLineWithoutCoverage(line.getKey(), line.getValue().getSource()));
+				csb.append(writer.getLineWithoutCoverage(lineNumber, lineContent.getSource()));
 			} else {
 				// Coverage and source Code of the line, or method if no line is available
-				QueryReader query0 = line.getValue().getQueries().get(0);
-				csb.append(writer.getLineContent(line.getKey(), 
-					getLineCoverage(line.getValue(), writer),
+				QueryReader query0 = lineContent.getQueries().get(0);
+				csb.append(writer.getLineContent(lineNumber, 
+					getLineCoverage(lineContent, writer),
 					query0.getKey().getMethodName(), 
-					line.getValue().getSource()));
+					lineContent.getSource()));
 			}
 			
 			// Each query (if any) and details of their rules and history
-			for (QueryReader thisQuery : line.getValue().getQueries()) {
-				String queryCoverage = getQueryCoverage(thisQuery.getModel(), line.getValue(), writer);
+			for (QueryReader thisQuery : lineContent.getQueries()) {
+				String queryCoverage = getQueryCoverage(thisQuery.getModel(), lineContent, writer);
 				HistoryReader queryHistory = history.getHistoryAtQuery(thisQuery.getKey());
 				csb.append(writer.getQueryContent(thisQuery, queryCoverage, queryHistory));
 

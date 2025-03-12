@@ -52,16 +52,16 @@ public class StatementAdapter extends QueryStatement {
 				if (namedParameters.size() >= parameterCount)
 					name = namedParameters.get(i);
 				// Check possible inconsistencies if different values are given to the same parameter
-				if (parameters.containsKey(name) && !parameters.get(name).equals(value.toString())) {
+				if (parameters.containsKey(name) && !parameters.getItem(name).equals(value.toString())) {
 					String message = "StatementAdapter: Parameter " + name + " had been assigned to "
-							+ parameters.get(name) + ". Can't be assigned to a new value " + value.toString();
+							+ parameters.getItem(name) + ". Can't be assigned to a new value " + value.toString();
 					log.error("*** StatementAdapter.new StatementAdapter(PreparedStatementInformation statementInformation) checking repeated parameters"
 							+ message);
 					throw new QaCoverException(message);
 				}
 				if (value == null)
 					value = new Value();
-				super.parameters.put(name, value.toString(), value.getValue());
+				super.parameters.putItem(name, value.toString(), value.getValue());
 			}
 		} catch (Exception e) {
 			log.error( "*** StatementAdapter.new StatementAdapter(PreparedStatementInformation statementInformation)", e);
@@ -73,7 +73,7 @@ public class StatementAdapter extends QueryStatement {
 		// The access of parameters in PreparedStatementInformation is readonly
 		// Uses reflection to invoke the method to get the parameters
 		// http://tutorials.jenkov.com/java-reflection/private-fields-and-methods.html  
-		Map<Integer, Value> parameterValues = new HashMap<>();
+		Map<Integer, Value> parameterValues = new HashMap<Integer, Value>();
 		Method protectedMethod;
 		try {
 			log.debug("#### Getting p6spy parameters ");

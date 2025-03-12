@@ -43,6 +43,7 @@ public class Test1WithoutCoverageFaultyButPass extends BaseTest {
 	}
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		setUpTestData();

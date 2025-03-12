@@ -5,6 +5,7 @@ import test4giis.qacover.TestStore;
 
 public class TestPostgresStore extends TestStore {
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("postgres");
 	}

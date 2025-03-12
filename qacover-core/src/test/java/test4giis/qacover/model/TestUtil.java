@@ -4,8 +4,8 @@ import test4giis.qacover.Base;
 import test4giis.qacoverapp.AppSimpleJdbc;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.sql.SQLException;
 import java.util.Properties;
@@ -17,6 +17,7 @@ import org.junit.Test;
 import giis.qacover.core.services.Configuration;
 import giis.qacover.core.services.StackLocator;
 import giis.qacover.model.Variability;
+import giis.qacover.reader.CoverageReader;
 
 public class TestUtil {
 	// This does not inherits because there is no bd, but variability must be defned
@@ -73,12 +74,9 @@ public class TestUtil {
 			assertEquals("X Y Z", prop.getProperty("property.one"));
 		}
 		// Not existing
-		try {
-			prop = opt.getProperties("noexiste.properties");
-			fail("se esperaba excepction");
-		} catch (Exception e) {
-			// pass
-		}
+		assertThrows(RuntimeException.class, () -> {
+			opt.getProperties("noexiste.properties");
+		});
 	}
 
 }

@@ -25,6 +25,7 @@ public class AppSimpleJdbc extends AppBase {
 	public ResultSet queryNoParameters2Condition(int param1, String param2) throws SQLException {
 		return executeQuery("select id,num,text from test where num>" + param1 + " and text='" + param2 + "'");
 	}
+	@Override
 	public ResultSet queryParameters(int param1, String param2) throws SQLException {
 		return executeQuery("select id,num,text from test where num>? and text=?",param1, param2);
 	}

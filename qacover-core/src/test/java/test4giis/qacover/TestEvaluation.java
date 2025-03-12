@@ -32,6 +32,7 @@ public class TestEvaluation extends Base {
 	private AppSimpleJdbc app;
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		app=new AppSimpleJdbc(variant);
@@ -39,6 +40,7 @@ public class TestEvaluation extends Base {
 	}
 
 	@After
+	@Override
 	public void tearDown() throws SQLException{
 		super.tearDown();
 		app.close();

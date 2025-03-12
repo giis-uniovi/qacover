@@ -40,7 +40,7 @@ namespace Giis.Qacover.Driver
                     {
                         value = IsStringLike(param.DbType) ? "'" + param.Value.ToString() + "'" : param.Value.ToString();
                     }
-                    base.parameters.Put(param.ParameterName.ToString(), value);
+                    base.parameters.PutItem(param.ParameterName.ToString(), value);
                 }
             }
             catch (Exception e)
@@ -55,7 +55,7 @@ namespace Giis.Qacover.Driver
                 || tp == DbType.Guid || tp == DbType.String || tp == DbType.StringFixedLength
                 || tp == DbType.Time || tp == DbType.Xml;
         }
-        protected internal override string GetDatabaseDialectFormat()
+        protected override string GetDatabaseDialectFormat()
         {
             throw new NotSupportedException("SpyStatementAdapter.getDatabaseDialectFormat not implemented in netcore platform");
         }
@@ -79,7 +79,7 @@ namespace Giis.Qacover.Driver
                 cmd.CommandText = sql;
                 if (cmd is SqlCommand && this.nativeParams != null)
                     AddParameters(cmd, this.nativeParams);
-                else if (this.parameters != null && this.parameters.Size() > 0)
+                else if (this.parameters != null && this.parameters.GetSize() > 0)
                     cmd.CommandText = GetSqlWithValues(sql);
 
                 return new QueryStatementReader(cmd);

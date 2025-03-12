@@ -13,10 +13,10 @@ import java.util.TreeMap;
  * (2) object to manage specific features that depend on the datatype
  */
 public class QueryParameters {
-	protected Map<String, String> parameters = new TreeMap<>(); 
-	protected Map<String, Object> parameterObjects = new TreeMap<>();
+	protected Map<String, String> parameters = new TreeMap<String, String>(); 
+	protected Map<String, Object> parameterObjects = new TreeMap<String, Object>();
 
-	public int size() {
+	public int getSize() {
 		return parameters.size();
 	}
 
@@ -34,29 +34,29 @@ public class QueryParameters {
 	}
 
 	public List<ParameterDao> toDao() {
-		List<ParameterDao> dao = new ArrayList<>();
+		List<ParameterDao> dao = new ArrayList<ParameterDao>();
 		List<String> keys = this.keySet();
 		for (String key : keys)
 			dao.add(new ParameterDao(key, parameters.get(key)));
 		return dao;
 	}
 
-	public void put(String name, String valueString, Object valueObject) {
+	public void putItem(String name, String valueString, Object valueObject) {
 		parameters.put(name, valueString);
 		parameterObjects.put(name, valueObject);
 	}
 
-	public void put(String name, String valueString) {
+	public void putItem(String name, String valueString) {
 		parameters.put(name, valueString);
 		parameterObjects.put(name, valueString);
 	}
 
-	public String get(String name) {
+	public String getItem(String name) {
 		return parameters.get(name);
 	}
 
 	public List<String> keySet() {
-		List<String> keys = new ArrayList<>();
+		List<String> keys = new ArrayList<String>();
 		for (String name : parameters.keySet())
 			keys.add(name);
 		return keys;

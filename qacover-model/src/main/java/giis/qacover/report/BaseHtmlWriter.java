@@ -1,11 +1,12 @@
 package giis.qacover.report;
 
+import giis.portable.util.JavaCs;
 import giis.portable.xml.tiny.XNodeAbstract;
 import giis.qacover.model.Variability;
 
 public abstract class BaseHtmlWriter {
 
-	protected String getHeader(String title) {
+	public String getHeader(String title) {
 		return "<!doctype html>\n"
 				+ "<html lang='en'>\n"
 				+ "<head>\n"
@@ -16,7 +17,7 @@ public abstract class BaseHtmlWriter {
 				+ "</head>\n\n";
 	}
 	
-	protected String getCommonHeaders() {
+	public String getCommonHeaders() {
 		return "<meta charset='utf-8'>\n"
 				+ "<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>\n"
 				+ "<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css' integrity='sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk' crossorigin='anonymous'>\n"
@@ -25,11 +26,11 @@ public abstract class BaseHtmlWriter {
 				+ "<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js' integrity='sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI' crossorigin='anonymous'></script>\n";
 	}
 	
-	protected abstract String getScripts();
+	public abstract String getScripts();
 	
-	protected abstract String getStyles();
+	public abstract String getStyles();
 
-	protected String getFooter() {
+	public String getFooter() {
 		Variability variab=new Variability();
 		return "\n<div><span style=\"float:right;\">"
 				+ "<small>\n"
@@ -48,7 +49,7 @@ public abstract class BaseHtmlWriter {
 	}
 	
 	public static String percent(int count, int dead) {
-		return count == 0 ? "" : String.valueOf((dead * 100) / count) + "%";
+		return count == 0 ? "" : JavaCs.numToString((dead * 100) / count) + "%";
 	}
 
 }

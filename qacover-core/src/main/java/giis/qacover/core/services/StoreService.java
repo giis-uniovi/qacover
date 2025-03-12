@@ -64,10 +64,10 @@ public class StoreService {
 		String methodName = stack.getMethodName();
 		int lineNumber = stack.getLineNumber();
 		// timestamp indicates the time of rule saving (a little bit more than its execution begin
-		Date lastTimestamp = JavaCs.getCurrentDate(); 
+		Date timestampLast = JavaCs.getCurrentDate(); 
 		String queryKey = new QueryKey(className, methodName, lineNumber, sql).toString();
 		log.debug("Save file to store: " + queryKey);
-		storage.putQueryModel(queryKey, queryModel, params, schemaModel, lastTimestamp, resultVector);
+		storage.putQueryModel(queryKey, queryModel, params, schemaModel, timestampLast, resultVector);
 		
 		// Additional info for testing and debugging purposes
 		setLastSavedQueryKey(queryKey);
@@ -80,7 +80,7 @@ public class StoreService {
 
 		// To decide if add some parameter to exclude this log (it includes parameters, maybe
 		// some confidential data could be stored, e.g. passwords)
-		String logRuns = "---- " + lastTimestamp.toString() + "\nGENERATION: " + this.lastGenStatus + "\nSQL: "
+		String logRuns = "---- " + timestampLast.toString() + "\nGENERATION: " + this.lastGenStatus + "\nSQL: "
 				+ this.lastSqlRun + "\nPARAMS: " + params.toString() + "\n" + this.lastRulesLog + "\n";
 		storage.appendLogRun(queryKey, logRuns);
 	}

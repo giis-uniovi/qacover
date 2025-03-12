@@ -3,7 +3,7 @@ package test4giis.qacover.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -39,14 +39,16 @@ public class TestReader extends Base {
 	private String qline1;
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		app = new AppSimpleJdbc(variant);
 		setUpTestData();
-		qline1 = new Variability().isNetCore() ? "29" : "23";
+		qline1 = new Variability().isNetCore() ? "30" : "23";
 	}
 
 	@After
+	@Override
 	public void tearDown() throws SQLException {
 		super.tearDown();
 		app.close();
@@ -76,15 +78,15 @@ public class TestReader extends Base {
 		CoverageReader reader = getCoverageReader();
 		// List of classes CoverageCollection
 		CoverageCollection classes = reader.getByClass();
-		assertEquals(1, classes.size());
+		assertEquals(1, classes.getSize());
 
 		// Content of a class: QueryCollection
-		QueryCollection query = classes.get(0);
+		QueryCollection query = classes.getItem(0);
 		assertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", query.getName());
-		assertEquals(2, query.size());
+		assertEquals(2, query.getSize());
 
 		// Each query: QueryReader
-		QueryReader item = query.get(0);
+		QueryReader item = query.getItem(0);
 		assertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.getKey().getClassName());
 		assertEqualsCs("queryNoParameters1Condition", item.getKey().getMethodName());
 		assertEquals(qline1, item.getKey().getClassLine());
@@ -110,7 +112,7 @@ public class TestReader extends Base {
 		assertEquals("SELECT id , num , text FROM test WHERE (num = -2)", allRules.get(2).getSql());
 
 		// basic comprobation of a second item
-		item = query.get(1);
+		item = query.getItem(1);
 		assertEqualsCs("test4giis.qacoverapp.AppSimpleJdbc", item.getKey().getClassName());
 		assertEqualsCs("queryParameters", item.getKey().getMethodName());
 
@@ -127,12 +129,12 @@ public class TestReader extends Base {
 		String classesStrAll = "CoverageCollection: qcount=2,qerror=0,count=9,dead=1,error=0\n"
 				+ "QueryCollection: test4giis.qacoverapp.AppSimpleJdbc qcount=2,qerror=0,count=9,dead=1,error=0\n"
 				+ "  queryNoParameters1Condition:23 test4giis.qacoverapp.AppSimpleJdbc.queryNoParameters1Condition.23.63629c65b13acf17c46df6199346b2fa414b78edfddccf3ba7f875eca30393b3\n"
-				+ "  queryParameters:29 test4giis.qacoverapp.AppSimpleJdbc.queryParameters.29.d4a43c80328b80e4552866634547537e7254a10aba076820f905c4617b60aff9";
+				+ "  queryParameters:30 test4giis.qacoverapp.AppSimpleJdbc.queryParameters.30.d4a43c80328b80e4552866634547537e7254a10aba076820f905c4617b60aff9";
 		if (new Variability().isJava()) // ignores in .net (too many differences to compare)
 			assertEqualsCs(classesStrAll, classes.toString(true, true, true));
 		assertEquals("qcount=2,qerror=0,count=9,dead=1,error=0", classes.getSummary().toString());
 
-		QueryCollection query = classes.get(0);
+		QueryCollection query = classes.getItem(0);
 		assertEqualsCs("QueryCollection: test4giis.qacoverapp.AppSimpleJdbc\n" + "  queryNoParameters1Condition\n"
 				+ "  queryParameters", query.toString());
 		assertEquals("qcount=2,qerror=0,count=9,dead=1,error=0", query.getSummary().toString());
@@ -142,13 +144,11 @@ public class TestReader extends Base {
 
 	@Test
 	public void testReaderInvalidFolderNotExist() {
-		try {
+		RuntimeException e = assertThrows(RuntimeException.class, () -> {
 			CoverageReader reader = new CoverageReader("pathnotexist");
 			reader.getByClass();
-			fail("Deberia producirse una excepcion");
-		} catch (RuntimeException e) {
-			assertEquals("Can't browse directory at path pathnotexist", e.getMessage());
-		}
+		});
+		assertEquals("Can't browse directory at path pathnotexist", e.getMessage());
 	}
 
 	// Collect the history items to access to the list of parameters used to run
@@ -163,21 +163,21 @@ public class TestReader extends Base {
 
 		// Reads all classes to get the query keys used to select queries in the history
 		CoverageCollection classes = reader.getByClass();
-		assertEquals(1, classes.size());
-		QueryCollection query = classes.get(0);
+		assertEquals(1, classes.getSize());
+		QueryCollection query = classes.getItem(0);
 		assertEqualsCs("test4giis.qacoverapp.appsimplejdbc", query.getName().toLowerCase());
-		assertEquals(2, query.size()); // two methods
+		assertEquals(2, query.getSize()); // two methods
 
 		// First query has only one execution
-		assertEquals("querynoparameters1condition", query.get(0).getKey().getMethodName().toLowerCase());
-		HistoryReader history = all.getHistoryAtQuery(query.get(0).getKey());
+		assertEquals("querynoparameters1condition", query.getItem(0).getKey().getMethodName().toLowerCase());
+		HistoryReader history = all.getHistoryAtQuery(query.getItem(0).getKey());
 		List<HistoryModel> model = history.getItems();
 		assertEquals(1, model.size());
 		assertEquals("<parameters></parameters>", model.get(0).getParamsXml());
 
 		// Second query has two executions
-		assertEquals("queryparameters", query.get(1).getKey().getMethodName().toLowerCase());
-		history = all.getHistoryAtQuery(query.get(1).getKey());
+		assertEquals("queryparameters", query.getItem(1).getKey().getMethodName().toLowerCase());
+		history = all.getHistoryAtQuery(query.getItem(1).getKey());
 		model = history.getItems();
 		assertEquals(2, model.size());
 		assertEquals("<parameters><parameter name=\"?1?\" value=\"98\" /><parameter name=\"?2?\" value=\"'abc'\" /></parameters>",
@@ -186,7 +186,7 @@ public class TestReader extends Base {
 				model.get(1).getParamsXml());
 
 		// Invalid query, creates a query key by changing the class name of an existing key
-		QueryKey invalid = new QueryKey(query.get(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));
+		QueryKey invalid = new QueryKey(query.getItem(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));
 		history = all.getHistoryAtQuery(invalid);
 		model = history.getItems();
 		assertEquals(0, model.size());
@@ -201,22 +201,22 @@ public class TestReader extends Base {
 
 		// Reads all classes to get the query keys used to select queries in the history
 		CoverageCollection classes = reader.getByClass();
-		assertEquals(1, classes.size());
-		QueryCollection query = classes.get(0);
+		assertEquals(1, classes.getSize());
+		QueryCollection query = classes.getItem(0);
 		assertEqualsCs("test4giis.qacoverapp.appsimplejdbc", query.getName().toLowerCase());
-		assertEquals(2, query.size()); // two methods
+		assertEquals(2, query.getSize()); // two methods
 
 		// First query has only one execution
-		assertEquals("querynoparameters1condition", query.get(0).getKey().getMethodName().toLowerCase());
-		HistoryReader history = all.getHistoryAtQuery(query.get(0).getKey());
+		assertEquals("querynoparameters1condition", query.getItem(0).getKey().getMethodName().toLowerCase());
+		HistoryReader history = all.getHistoryAtQuery(query.getItem(0).getKey());
 		List<HistoryModel> model = history.getItems();
 		assertEquals(1, model.size());
 		assertEquals("[]", model.get(0).getParamsJson());
 		assertEquals("#oo", model.get(0).getResult());
 
 		// Second query has two executions
-		assertEquals("queryparameters", query.get(1).getKey().getMethodName().toLowerCase());
-		history = all.getHistoryAtQuery(query.get(1).getKey());
+		assertEquals("queryparameters", query.getItem(1).getKey().getMethodName().toLowerCase());
+		history = all.getHistoryAtQuery(query.getItem(1).getKey());
 		model = history.getItems();
 		assertEquals(2, model.size());
 		assertEquals(javacsparm("[{\"name\":\"?1?\",\"value\":\"98\"},{\"name\":\"?2?\",\"value\":\"'abc'\"}]"),
@@ -227,7 +227,7 @@ public class TestReader extends Base {
 		assertEquals("oooooo", model.get(1).getResult());
 
 		// Invalid query, creates a query key by changing the class name of an existing key
-		QueryKey invalid = new QueryKey(query.get(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));
+		QueryKey invalid = new QueryKey(query.getItem(0).getKey().getKey().replace("AppSimpleJdbc", "InvalidClass"));
 		history = all.getHistoryAtQuery(invalid);
 		model = history.getItems();
 		assertEquals(0, model.size());
@@ -253,7 +253,7 @@ public class TestReader extends Base {
 	@Test
 	public void testSourceCodeCollection() throws SQLException {
 		boolean isJava = new Variability().isJava();
-		QueryCollection queries = getCoverageReader().getByClass().get(0);
+		QueryCollection queries = getCoverageReader().getByClass().getItem(0);
 		
 		// (1) Only queries, no source code
 		SourceCodeCollection sources = new SourceCodeCollection();
@@ -294,7 +294,7 @@ public class TestReader extends Base {
 				: "../../../../../otherproject/QACoverTest";
 		
 		// (2) Add source code (found in second path, that requires trim), now there is source content and coverage
-		sources.addSources(queries.get(0), noSourceFolder + ", " + sourceFolder + " ", projectFolder);
+		sources.addSources(queries.getItem(0), noSourceFolder + ", " + sourceFolder + " ", projectFolder);
 		assertEquals(1, sources.getLines().get(key0).getQueries().size());
 		assertEquals(1, sources.getLines().get(key1).getQueries().size());
 		assertNotNull(sources.getLines().get(key0).getSource());
@@ -310,7 +310,7 @@ public class TestReader extends Base {
 		// Queries are already generated, reset the sources
 		sources = new SourceCodeCollection();
 		sources.addQueries(queries);
-		sources.addSources(queries.get(0), noSourceFolder, projectFolder);
+		sources.addSources(queries.getItem(0), noSourceFolder, projectFolder);
 		// Same checks than at the beginning of this test
 		assertEquals(2, sources.getLines().size());
 		assertEquals(1, sources.getLines().get(key0).getQueries().size());

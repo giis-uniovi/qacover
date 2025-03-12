@@ -71,7 +71,7 @@ public class Controller {
 		}
 
 		// Optional parameter inference may lead to a change in the sql and parameters
-		if (options.getInferQueryParameters() && stmt.getParameters().size() == 0)
+		if (options.getInferQueryParameters() && stmt.getParameters().getSize() == 0)
 			stmt.inferParameters(svc, options.getDbStoretype());
 		log.info("  SQL: " + stmt.getSql());
 		log.info("  PARAMS: " + stmt.getParameters().toString());

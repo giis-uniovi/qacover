@@ -16,6 +16,7 @@ public class Jdk14StringBuilder {
 		s.append(str);
 	}
 
+	@Override
 	public String toString() {
 		return s.toString();
 	}

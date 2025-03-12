@@ -75,7 +75,7 @@ public class Configuration { // NOSONAR singleton allowed
 		inferQueryParameters = JavaCs.equalsIgnoreCase("true", getProperty("qacover.query.infer.parameters", "false"));
 
 		// Includes some predefined stack exclusions
-		stackExclusions = new ArrayList<>();
+		stackExclusions = new ArrayList<String>();
 		stackExclusions.add("giis.portable.");
 		stackExclusions.add("giis.qacover.");
 		stackExclusions.add("com.p6spy.");
@@ -170,7 +170,7 @@ public class Configuration { // NOSONAR singleton allowed
 	 * Reads a property that represents a list of comma separated values
 	 */
 	private List<String> getMultiValueProperty(String name) {
-		List<String> values = new ArrayList<>();
+		List<String> values = new ArrayList<String>();
 		String str = getProperty(name, "");
 		if (!"".equals(str)) {
 			String[] arr = JavaCs.splitByChar(str, ',');

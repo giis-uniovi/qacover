@@ -12,7 +12,7 @@ public class QueryWithParameters {
 	}
 
 	public void putParam(String name, String value) {
-		parameters.put(name, value);
+		parameters.putItem(name, value);
 	}
 
 	public String getSql() {

@@ -39,13 +39,13 @@ public class TestApi extends TestCase
 		//Esta informacion es la que se obtiene en formato html en los reports
 		CoverageReader cr=new CoverageReader(rulesFolder);
 		CoverageCollection cc=cr.getByClass();
-		for (int i=0; i<cc.size(); i++) {
-			allData.append("***** Class: " + cc.get(i).getName() + "\n");
-			QueryCollection qc=cc.get(i);
-			for (int j=0; j<qc.size(); j++) {
+		for (int i=0; i<cc.getSize(); i++) {
+			allData.append("***** Class: " + cc.getItem(i).getName() + "\n");
+			QueryCollection qc=cc.getItem(i);
+			for (int j=0; j<qc.getSize(); j++) {
 				//Se obtienen query items como en el ejemplo anterior, pero en este caso
 				//no tienen datos de una ejecucion concreta (parametros o timestamp)
-				QueryReader qi=qc.get(j);
+				QueryReader qi=qc.getItem(j);
 				allData.append("* method: " + qi.getKey().getMethodName(true) + " - " + qi.getSql() + "\n");
 			}
 		}

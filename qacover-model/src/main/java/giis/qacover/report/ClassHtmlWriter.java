@@ -1,5 +1,6 @@
 package giis.qacover.report;
 
+import giis.portable.util.JavaCs;
 import giis.qacover.model.HistoryModel;
 import giis.qacover.model.ParameterDao;
 import giis.qacover.model.RuleModel;
@@ -9,7 +10,7 @@ import giis.qacover.reader.QueryReader;
 public class ClassHtmlWriter extends BaseHtmlWriter {
 	
 	@Override
-	protected String getScripts() {
+	public String getScripts() {
 		return "<script>\n"
 				+ "    $(document).ready(function() {\n"
 				+ "        $('.rules').show();\n"
@@ -37,7 +38,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 	}
 	
 	@Override
-	protected String getStyles() {
+	public String getStyles() {
 		return "<style>\n"
 				+ "    .fill { min-width: 100%; width: 100%; } \n"
 				+ "    tr.line, tr.line td { line-height:18px; padding-top:0; padding-bottom:0 }\n"
@@ -90,7 +91,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "<td colspan='2'><code>$sourceCode$</code></td>"
 				+ "</tr>\n";
 		return template
-				.replace("$lineNumber$", String.valueOf(lineNumber))
+				.replace("$lineNumber$", JavaCs.numToString(lineNumber))
 				.replace("$sourceCode$", getSourceHtml(sourceCode));
 	}
 	
@@ -104,7 +105,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "        </td>\n"
 				+ "    </tr>\n";
 		return template
-				.replace("$lineNumber$", String.valueOf(lineNumber))
+				.replace("$lineNumber$", JavaCs.numToString(lineNumber))
 				.replace("$coverage$", coverage)
 				.replace("$methodName$", methodName)
 				// if source code not available, the css class for method is empty (it will be shown even if hidden by the ui)
@@ -128,7 +129,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "        </td>\n"
 				+ "    </tr>\n"
 				+ "    </tbody>\n";
-		return template.replace("$runCount$", String.valueOf(query.getModel().getQrun()))
+		return template.replace("$runCount$", JavaCs.numToString(query.getModel().getQrun()))
 				.replace("$coverage$", coverage)
 				.replace("$sqlQuery$", getSqlHtml(encode(query.getSql())))
 				.replace("$parameters$", getHistoryItems(history))
@@ -179,8 +180,8 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				// needs a complete row to allow error message span across description and sql columns
 				+ "    $ruleErrors$";
 		return template.replace("$ruleId$", rule.getId())
-				.replace("$ruleDead$", String.valueOf(rule.getDead()))
-				.replace("$ruleCount$", String.valueOf(rule.getCount()))
+				.replace("$ruleDead$", JavaCs.numToString(rule.getDead()))
+				.replace("$ruleCount$", JavaCs.numToString(rule.getCount()))
 				.replace("$ruleCategory$", rule.getCategory())
 				.replace("$ruleType$", rule.getMainType())
 				.replace("$ruleSubtype$", rule.getSubtype())

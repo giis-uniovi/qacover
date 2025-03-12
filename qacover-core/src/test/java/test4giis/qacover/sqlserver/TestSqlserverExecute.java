@@ -5,6 +5,7 @@ import test4giis.qacover.TestExecute;
 
 public class TestSqlserverExecute extends TestExecute {
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("sqlserver");
 	}

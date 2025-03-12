@@ -8,7 +8,7 @@ public class SourceCodeLine {
 	private String source = null;
 	// If a query was run at this line, this contains the QueryReader (allows more
 	// than one)
-	private List<QueryReader> queries = new ArrayList<>();
+	private List<QueryReader> queries = new ArrayList<QueryReader>();
 	
 	public String getSource() {
 		return source;

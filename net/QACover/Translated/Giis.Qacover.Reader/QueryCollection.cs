@@ -1,95 +1,93 @@
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
-/////////////////////////////////////////////////////////////////////////////////////////////
-using System.Collections.Generic;
-using System.Text;
 using Giis.Qacover.Model;
 using Giis.Qacover.Storage;
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+/////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 
 namespace Giis.Qacover.Reader
 {
-	/// <summary>
-	/// Allows accesing to a collection of QueryModels via the stored list of
-	/// QueryReaders, with an on-demand generated summary of all items.
-	/// </summary>
-	/// <remarks>
-	/// Allows accesing to a collection of QueryModels via the stored list of
-	/// QueryReaders, with an on-demand generated summary of all items.
-	/// Lazy access to the QueryModel data from the stored QueryReader
-	/// </remarks>
-	public class QueryCollection
-	{
-		private IList<QueryReader> items = new List<QueryReader>();
+    /// <summary>
+    /// Allows accesing to a collection of QueryModels via the stored list of
+    /// QueryReaders, with an on-demand generated summary of all items.
+    /// Lazy access to the QueryModel data from the stored QueryReader
+    /// </summary>
+    public class QueryCollection
+    {
+        private IList<QueryReader> items = new List<QueryReader>();
+        private string folder; // store folder
+        private string name; // a name given to differentiate from other collections
+        private CoverageSummary summary = null; // optional, created on demand
+        public QueryCollection(string rulesFolder, string collectionName)
+        {
+            this.folder = rulesFolder;
+            this.name = collectionName;
+        }
 
-		private string folder;
+        public virtual void Add(QueryReader item)
+        {
+            items.Add(item);
+        }
 
-		private string name;
+        public virtual string GetName()
+        {
+            return name;
+        }
 
-		private CoverageSummary summary = null;
+        /// <summary>
+        /// Number of QueryReaders stored in this instance
+        /// </summary>
+        public virtual int GetSize()
+        {
+            return items.Count;
+        }
 
-		public QueryCollection(string rulesFolder, string collectionName)
-		{
-			// store folder
-			// a name given to differentiate from other collections
-			// optional, created on demand
-			this.folder = rulesFolder;
-			this.name = collectionName;
-		}
+        /// <summary>
+        /// Gets the QueryReader at the indicated position
+        /// </summary>
+        public virtual QueryReader GetItem(int position)
+        {
+            return items[position];
+        }
 
-		public virtual void Add(QueryReader item)
-		{
-			items.Add(item);
-		}
+        /// <summary>
+        /// Gets a coverage summary of all rules in all queries in this collection
+        /// </summary>
+        public virtual CoverageSummary GetSummary()
+        {
+            if (summary == null)
+            {
 
-		public virtual string GetName()
-		{
-			return name;
-		}
+                // lazy access
+                summary = new CoverageSummary();
+                foreach (QueryReader key in items)
+                {
+                    QueryModel rules = new LocalStore(folder).GetQueryModel(key.GetKey().ToString());
+                    summary.AddQueryCounters(1, rules.GetQrun(), rules.GetQerror());
+                    summary.AddRuleCounters(rules.GetCount(), rules.GetDead(), rules.GetError());
+                }
+            }
 
-		/// <summary>Number of QueryReaders stored in this instance</summary>
-		public virtual int Size()
-		{
-			return items.Count;
-		}
+            return summary;
+        }
 
-		/// <summary>Gets the QueryReader at the indicated position</summary>
-		public virtual QueryReader Get(int position)
-		{
-			return items[position];
-		}
+        public override string ToString()
+        {
+            return ToString(false, false, false);
+        }
 
-		/// <summary>Gets a coverage summary of all rules in all queries in this collection</summary>
-		public virtual CoverageSummary GetSummary()
-		{
-			if (summary == null)
-			{
-				// lazy access
-				summary = new CoverageSummary();
-				foreach (QueryReader key in items)
-				{
-					QueryModel rules = new LocalStore(folder).GetQueryModel(key.GetKey().ToString());
-					summary.AddQueryCounters(1, rules.GetQrun(), rules.GetQerror());
-					summary.AddRuleCounters(rules.GetCount(), rules.GetDead(), rules.GetError());
-				}
-			}
-			return summary;
-		}
+        public virtual string ToString(bool includeSummary, bool includeLineNumbers, bool includeFiles)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("QueryCollection: ").Append(this.GetName()).Append(includeSummary ? " " + this.GetSummary() : "");
+            for (int i = 0; i < this.GetSize(); i++)
+            {
+                sb.Append("\n  ").Append(this.GetItem(i).GetKey().GetMethodName(includeLineNumbers)).Append(includeFiles ? " " + this.items[i].GetKey() : "");
+            }
 
-		public override string ToString()
-		{
-			return ToString(false, false, false);
-		}
-
-		public virtual string ToString(bool includeSummary, bool includeLineNumbers, bool includeFiles)
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append("QueryCollection: ").Append(this.GetName()).Append(includeSummary ? " " + this.GetSummary() : string.Empty);
-			for (int i = 0; i < this.Size(); i++)
-			{
-				sb.Append("\n  ").Append(this.Get(i).GetKey().GetMethodName(includeLineNumbers)).Append(includeFiles ? " " + this.items[i].GetKey() : string.Empty);
-			}
-			return sb.ToString();
-		}
-	}
+            return sb.ToString();
+        }
+    }
 }

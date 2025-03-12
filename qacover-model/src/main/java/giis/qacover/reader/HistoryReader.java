@@ -26,7 +26,7 @@ public class HistoryReader {
 	 * to the executions of a query (given by his key)
 	 */
 	public HistoryReader getHistoryAtQuery(QueryKey target) {
-		List<HistoryModel> selection = new ArrayList<>();
+		List<HistoryModel> selection = new ArrayList<HistoryModel>();
 		for (HistoryModel item : history) {
 			QueryKey key = new QueryKey(item.getKey());
 			if (target.getKey().equals(key.getKey()))

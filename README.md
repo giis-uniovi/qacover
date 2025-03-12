@@ -111,7 +111,9 @@ Each of them has another downloadable jar that includes additional qualifier:
 
 ### .NET Packages in NuGet
 
-Releases for .NET platform are published in NuGet. The same as for Java, there are two different packages:
+Releases for .NET platform are published in NuGet. 
+Most of the code is converted automatically from Java to .NET using [JavaToCsharp](https://github.com/paulirwin/JavaToCSharp).
+The same as for Java, there are two different packages:
 
 - [`QACover`](https://www.nuget.org/packages/QACover/):
   The main package (netstandard2.9) to include as a package reference in your project configuration (e.g. the .csproj file if you are using C#).
@@ -169,7 +171,7 @@ There are other parameters to configure inclusion criteria for packages,
 and exclusion criteria for class names or table names.
 See [`qacover.properties`](qacover-core/qacover.properties) for more details.
 
-### P6Spy configuration file
+### Configuration for Java: P6Spy configuration file
 
 The [`spy.properties`](qacover-core/spy.properties) available in the `qacover-core` folder of this
 repo contains the minimal configuration required by P6Spy:
@@ -185,9 +187,21 @@ or the [`P6Spy documentation`](https://p6spy.readthedocs.io/en/latest/configandu
 Configuration for .NET project use the same 
 [`qacover.properties`](qacover-core/qacover.properties) than Java,
 but does not use `spy.properties`. Instead, it requires some coding:
-- On ADO.NET: a connection wrapper, see e.g.
+
+**On ADO.NET**: Use a connection wrapper. There is a default implmentation at
   [SampleDbConnectionWrapper.cs](net/QACover/Giis.Qacover.Driver/SampleDbConnectionWrapper.N.cs)
-- On Entity Framework: a custom context that inherits from `DbContext`, see e.g.
+
+Because there is no `spy.properties` to activate the query interception, you have to either define the environment variable
+```csharp
+QACOVER_LISTENER_CLASS=Giis.Qacover.Driver.EventListener
+``` 
+
+or make a direct call to:
+```csharp
+Giis.Qacover.Driver.EventTrigger.SetListenerClassName("Giis.Qacover.Driver.EventListener");
+```
+
+**On Entity Framework**: Use a custom context that inherits from `DbContext`, see e.g.
   [Ef2InterceptorContext.cs](net/QaCoverEf2spy/Giis.QACover.Ef2driver/Ef2InterceptorContext.N.cs)
 
 ## Logging

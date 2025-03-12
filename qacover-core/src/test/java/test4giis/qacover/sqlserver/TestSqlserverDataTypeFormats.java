@@ -5,6 +5,7 @@ import test4giis.qacover.TestDataTypeFormats;
 
 public class TestSqlserverDataTypeFormats extends TestDataTypeFormats {
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("sqlserver");
 	}

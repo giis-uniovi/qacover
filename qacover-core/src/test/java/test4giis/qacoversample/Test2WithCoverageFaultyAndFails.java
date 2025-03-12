@@ -32,6 +32,7 @@ public class Test2WithCoverageFaultyAndFails extends Test1WithoutCoverageFaultyB
 	 * The test process is the same, inherits the query to test.
 	 * (test code is duplicated to allow QACover locate the interaction point in this class)
 	 */
+	@Override
 	protected double getSalaryWithBonus(Connection conn, int idEmp) throws SQLException {
 		List<Map<String, Object>> ret = new QueryRunner().query(conn, query, new MapListHandler(), idEmp);
 		double basesalary = (Double) ret.get(0).get("basesalary");

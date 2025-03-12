@@ -1,5 +1,7 @@
 package test4giis.qacoverapp;
-import java.sql.*;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import giis.qacover.model.Variability;
 

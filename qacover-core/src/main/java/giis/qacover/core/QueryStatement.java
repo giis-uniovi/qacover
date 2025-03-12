@@ -36,7 +36,7 @@ public abstract class QueryStatement {
 	 * of the parameters inference on the query
 	 */
 	public void inferParameters(RuleServices svc, String storetype) {
-		if (getParameters().size() > 0)
+		if (getParameters().getSize() > 0)
 			return;
 		QueryWithParameters queryAndParam = svc.inferQueryWithParameters(sql, storetype);
 		sql = queryAndParam.getSql(); // este sql sera el que tenga parametros y se usara a partir de ahora
@@ -49,7 +49,7 @@ public abstract class QueryStatement {
 	 */
 	protected List<String> parseNamedParameters(String sql) {
 		String comment = sql;
-		List<String> spec = new ArrayList<>();
+		List<String> spec = new ArrayList<String>();
 		// comment before starting teh query
 		if (comment.startsWith("/*"))
 			comment = JavaCs.substring(comment, 2, comment.length());
@@ -75,10 +75,10 @@ public abstract class QueryStatement {
 	 * Replaces query parameter placeholders by their values
 	 */
 	public String getSqlWithValues(String sourceSql) {
-		if (parameters.size() == 0)
+		if (parameters.getSize() == 0)
 			return sourceSql;
 		for (String name : parameters.keySet())
-			sourceSql = replaceSingleParameter(sourceSql, name, getParameters().get(name));
+			sourceSql = replaceSingleParameter(sourceSql, name, getParameters().getItem(name));
 		return sourceSql;
 	}
 	private String replaceSingleParameter(String sourceSql, String name, String value) {

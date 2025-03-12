@@ -11,15 +11,18 @@ import test4giis.qacover.TestDataTypeFormats;
 public class TestH2DataTypeFormats extends TestDataTypeFormats {
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		com.p6spy.engine.spy.P6SpyOptions.getActiveInstance().setDatabaseDialectBooleanFormat("boolean");
 	}
 
+	@Override
 	protected Variability getVariant() {
 		return new Variability("h2");
 	}
 
+	@Override
 	protected String boolValue(boolean value) {
 		return value ? "true" : "false";
 	}

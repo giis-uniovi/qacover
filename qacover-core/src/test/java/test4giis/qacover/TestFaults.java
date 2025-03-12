@@ -12,7 +12,7 @@ import giis.qacover.portable.QaCoverException;
 import test4giis.qacoverapp.AppSimpleJdbc3Errors;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -40,6 +40,7 @@ public class TestFaults extends Base {
 	private AppSimpleJdbc3Errors app;
 
 	@Before
+	@Override
 	public void setUp() throws SQLException {
 		super.setUp();
 		options.setRuleOptions("noboundaries");
@@ -48,6 +49,7 @@ public class TestFaults extends Base {
 	}
 
 	@After
+	@Override
 	public void tearDown() throws SQLException {
 		super.tearDown();
 		app.close();
@@ -95,32 +97,28 @@ public class TestFaults extends Base {
 				
 	@Test
 	public void testFaultJdbcSqlSyntax() throws SQLException {
-		try {
+		Exception e = assertThrows(Exception.class, () -> {
 			rs = app.executeQuery("select id,num,text from test where num lt 9");
-			fail("se esperaba excepcion");
-		} catch (Exception e) {
-			assertExceptionMessage(variant.isJava()
-					? (variant.isJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"lt\": syntax error)"
-									   : "org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
-					: "System.Data.SQLite.SQLiteException: SQL logic error\nnear \"lt\": syntax error"
-					//: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"lt\": syntax error'."
-					, QaCoverException.getString(e));
-		}
+		});
+		assertExceptionMessage(variant.isJava()
+				? (variant.isJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (near \"lt\": syntax error)"
+								   : "org.h2.jdbc.JdbcSQLException: Syntax error in SQL statement")
+				: "System.Data.SQLite.SQLiteException: SQL logic error\nnear \"lt\": syntax error"
+				//: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'near \"lt\": syntax error'."
+				, QaCoverException.getString(e));
 	}
 
 	@Test
 	public void testFaultJdbcTableNotExists() throws SQLException {
-		try {
+		Exception e = assertThrows(Exception.class, () -> {
 			rs = app.executeQuery("select id,num,text from noexiste where num<9");
-			fail("se esperaba excepcion");
-		} catch (Exception e) {
-			assertExceptionMessage(variant.isJava()
-					? (variant.isJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: noexiste)"
-							   			: "org.h2.jdbc.JdbcSQLException: Table NOEXISTE not found")
-					: "System.Data.SQLite.SQLiteException: SQL logic error\nno such table: noexiste"
-					//: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: noexiste'."
-					, QaCoverException.getString(e));
-		}
+		});
+		assertExceptionMessage(variant.isJava()
+				? (variant.isJava8() ? "org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: noexiste)"
+						   			: "org.h2.jdbc.JdbcSQLException: Table NOEXISTE not found")
+				: "System.Data.SQLite.SQLiteException: SQL logic error\nno such table: noexiste"
+				//: "Microsoft.Data.Sqlite.SqliteException: SQLite Error 1: 'no such table: noexiste'."
+				, QaCoverException.getString(e));
 	}
 
 	@Test

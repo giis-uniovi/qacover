@@ -12,7 +12,7 @@ import giis.qacover.storage.LocalStore;
  * Lazy access to the QueryModel data from the stored QueryReader
  */
 public class QueryCollection {
-	private List<QueryReader> items = new ArrayList<>();
+	private List<QueryReader> items = new ArrayList<QueryReader>();
 	private String folder; // store folder
 	private String name; // a name given to differentiate from other collections
 	private CoverageSummary summary = null; // optional, created on demand
@@ -32,13 +32,13 @@ public class QueryCollection {
 	/**
 	 * Number of QueryReaders stored in this instance
 	 */
-	public int size() {
+	public int getSize() {
 		return items.size();
 	}
 	/**
 	 * Gets the QueryReader at the indicated position
 	 */
-	public QueryReader get(int position) {
+	public QueryReader getItem(int position) {
 		return items.get(position);
 	}
 	
@@ -66,8 +66,8 @@ public class QueryCollection {
 		StringBuilder sb = new StringBuilder();
 		sb.append("QueryCollection: ").append(this.getName())
 			.append(includeSummary ? " " + this.getSummary() : "");
-		for (int i = 0; i < this.size(); i++) {
-			sb.append("\n  ").append(this.get(i).getKey().getMethodName(includeLineNumbers))
+		for (int i = 0; i < this.getSize(); i++) {
+			sb.append("\n  ").append(this.getItem(i).getKey().getMethodName(includeLineNumbers))
 				.append(includeFiles ? " " + this.items.get(i).getKey() : "");
 		}
 		return sb.toString();

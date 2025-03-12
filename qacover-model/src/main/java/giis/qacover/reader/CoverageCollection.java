@@ -9,17 +9,17 @@ import java.util.List;
  * structure than QueryCollection and and lazy access to the details.
  */
 public class CoverageCollection {
-	private List<QueryCollection> queries = new ArrayList<>();
+	private List<QueryCollection> queries = new ArrayList<QueryCollection>();
 	private CoverageSummary summary;
 
 	public void add(QueryCollection queryCol) {
 		queries.add(queryCol);
 	}
 
-	public int size() {
+	public int getSize() {
 		return queries.size();
 	}
-	public QueryCollection get(int position) {
+	public QueryCollection getItem(int position) {
 		return queries.get(position);
 	}
 	public CoverageSummary getSummary() {
@@ -42,8 +42,8 @@ public class CoverageCollection {
 	public String toString(boolean includeSummary, boolean includeLineNumbers, boolean includeFiles) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("CoverageCollection:").append(includeSummary ? " " + this.getSummary() : "");
-		for (int i = 0; i < this.size(); i++) {
-			sb.append("\n").append(this.get(i).toString(includeSummary, includeLineNumbers, includeFiles));
+		for (int i = 0; i < this.getSize(); i++) {
+			sb.append("\n").append(this.getItem(i).toString(includeSummary, includeLineNumbers, includeFiles));
 		}
 		return sb.toString();
 	}

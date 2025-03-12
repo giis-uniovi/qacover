@@ -1,122 +1,115 @@
-/////////////////////////////////////////////////////////////////////////////////////////////
-/////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
-/////////////////////////////////////////////////////////////////////////////////////////////
 using Giis.Tdrules.Model.Shared;
 using Giis.Tdrules.Openapi.Model;
-
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text;
+/////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 
 namespace Giis.Qacover.Model
 {
-	/// <summary>
-	/// Representation of single rule and the results/indicators about the
-	/// evaluation.
-	/// </summary>
-	/// <remarks>
-	/// Representation of single rule and the results/indicators about the
-	/// evaluation. It is a wrapper of the TdRules rule model with additional
-	/// information about the evaluation
-	/// </remarks>
-	public class RuleModel : RuleBase
-	{
-		protected internal string runtimeError = string.Empty;
+    /// <summary>
+    /// Representation of single rule and the results/indicators about the
+    /// evaluation. It is a wrapper of the TdRules rule model with additional
+    /// information about the evaluation
+    /// </summary>
+    public class RuleModel : RuleBase
+    {
+        protected string runtimeError = "";
+        // The model of the rules that is wrapped here
+        protected TdRule model = null;
+        public RuleModel(TdRule ruleModel)
+        {
+            model = ruleModel;
+        }
 
-		protected internal TdRule model = null;
+        public virtual TdRule GetModel()
+        {
+            return model;
+        }
 
-		public RuleModel(TdRule ruleModel)
-		{
-			// The model of the rules that is wrapped here
-			model = ruleModel;
-		}
+        protected override string GetAttribute(string name)
+        {
+            return ModelUtil.Safe(model.GetSummary(), name);
+        }
 
-		public virtual TdRule GetModel()
-		{
-			return model;
-		}
+        protected override void SetAttribute(string name, string value)
+        {
+            model.PutSummaryItem(name, value);
+        }
 
-		protected internal override string GetAttribute(string name)
-		{
-			return ModelUtil.Safe(model.GetSummary(), name);
-		}
+        public virtual string GetSql()
+        {
+            return model.GetQuery();
+        }
 
-		protected internal override void SetAttribute(string name, string value)
-		{
-			model.PutSummaryItem(name, value);
-		}
+        public virtual void SetSql(string sql)
+        {
+            model.SetQuery(sql);
+        }
 
-		public virtual string GetSql()
-		{
-			return model.GetQuery();
-		}
+        public virtual string GetTextSummary()
+        {
+            return base.ToString();
+        }
 
-		public virtual void SetSql(string sql)
-		{
-			model.SetQuery(sql);
-		}
+        public virtual string GetRuntimeError()
+        {
+            return this.runtimeError;
+        }
 
-		public virtual string GetTextSummary()
-		{
-			return base.ToString();
-		}
+        public virtual void SetRuntimeError(string error)
+        {
+            this.runtimeError = error;
+        }
 
-		public virtual string GetRuntimeError()
-		{
-			return this.runtimeError;
-		}
+        // Other specific attributes of the wrapped model
+        public virtual string GetId()
+        {
+            return model.GetId();
+        }
 
-		public virtual void SetRuntimeError(string error)
-		{
-			this.runtimeError = error;
-		}
+        public virtual string GetCategory()
+        {
+            return model.GetCategory();
+        }
 
-		// Other specific attributes of the wrapped model
-		public virtual string GetId()
-		{
-			return model.GetId();
-		}
+        public virtual string GetMainType()
+        {
+            return model.GetMaintype();
+        }
 
-		public virtual string GetCategory()
-		{
-			return model.GetCategory();
-		}
+        public virtual string GetSubtype()
+        {
+            return model.GetSubtype();
+        }
 
-		public virtual string GetMainType()
-		{
-			return model.GetMaintype();
-		}
+        public virtual string GetLocation()
+        {
+            return model.GetLocation();
+        }
 
-		public virtual string GetSubtype()
-		{
-			return model.GetSubtype();
-		}
+        public virtual string GetDescription()
+        {
+            return model.GetDescription();
+        }
 
-		public virtual string GetLocation()
-		{
-			return model.GetLocation();
-		}
+        public virtual void AddErrorString(string msg)
+        {
+            if (model.GetError().Contains(msg))
+                return;
+            model.SetError("".Equals(model.GetError()) ? msg : model.GetError() + "\n" + msg);
+        }
 
-		public virtual string GetDescription()
-		{
-			return model.GetDescription();
-		}
+        public virtual string GetErrorString()
+        {
+            return model.GetError();
+        }
 
-		public virtual void AddErrorString(string msg)
-		{
-			if (model.GetError().Contains(msg))
-			{
-				// Avoid repeating existing messages
-				return;
-			}
-			model.SetError(string.Empty.Equals(model.GetError()) ? msg : model.GetError() + "\n" + msg);
-		}
-
-		public virtual string GetErrorString()
-		{
-			return model.GetError();
-		}
-
-		public override string ToString()
-		{
-			return model.ToString();
-		}
-	}
+        public override string ToString()
+        {
+            return model.ToString();
+        }
+    }
 }
