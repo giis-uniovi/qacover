@@ -17,7 +17,6 @@ import org.junit.Test;
 import giis.qacover.core.services.Configuration;
 import giis.qacover.core.services.StackLocator;
 import giis.qacover.model.Variability;
-import giis.qacover.reader.CoverageReader;
 
 public class TestUtil {
 	// This does not inherits because there is no bd, but variability must be defned
