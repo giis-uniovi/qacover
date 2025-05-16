@@ -16,6 +16,10 @@
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
 
     <PackageReference Include="VisualAssert" Version="2.6.0" />
+
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <InformationalVersion>2.0.1-SNAPSHOT</InformationalVersion>
@@ -43,18 +43,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-
     <!-- already in TdRules, avoids detected downgrade errors
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLog" Version="5.2.4" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
-    -->
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="PortableCs" Version="2.4.0" />
+    -->
 
-    <PackageReference Include="TdRules" Version="4.4.0" />
+    <PackageReference Include="TdRules" Version="4.6.0" />
   </ItemGroup>
-  
+
 </Project>

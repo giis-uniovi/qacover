@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Common;
 using Giis.Qacover.Portable;
 using System.Linq;
-using System.Data.SqlClient;
 using Java.Sql;
 
 namespace Giis.Qacover.Driver
@@ -77,7 +76,7 @@ namespace Giis.Qacover.Driver
                 // que tienen como tipo interno un string). Esto causa que otros metodos que 
                 // utilicen GetSqlWithValues para hacer logs puedan no mostrar correctamente la sql.
                 cmd.CommandText = sql;
-                if (cmd is SqlCommand && this.nativeParams != null)
+                if (IsSqlCommand(cmd) && this.nativeParams != null)
                     AddParameters(cmd, this.nativeParams);
                 else if (this.parameters != null && this.parameters.GetSize() > 0)
                     cmd.CommandText = GetSqlWithValues(sql);
@@ -91,9 +90,9 @@ namespace Giis.Qacover.Driver
             //Es por que los parametros recuerdan que han sido utilizados en otro command (el de la ejecucion de la query principal)
             //En este caso utiliza un metodo para clonarlos y anyadirlos al comand
             //https://stackoverflow.com/questions/4778775/copy-parameters-from-dbcommand-to-another-dbcommand
-            if (cmd is SqlCommand)
+            if (IsSqlCommand(cmd))
             {
-                var nsp = parameters.Cast<ICloneable>().Select(x => x.Clone() as SqlParameter).Where(x => x != null).ToArray();
+                var nsp = parameters.Cast<ICloneable>().Select(x => x.Clone()).Where(x => x != null).ToArray();
                 cmd.Parameters.AddRange(nsp);
             } 
             else
@@ -101,6 +100,11 @@ namespace Giis.Qacover.Driver
                 foreach (DbParameter param in this.nativeParams)
                     cmd.Parameters.Add(param);
             }
+        }
+
+        private bool IsSqlCommand(DbCommand cmd)
+        {
+            return cmd.GetType().Name == "SqlCommand";
         }
 
     }
