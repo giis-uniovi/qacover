@@ -2,8 +2,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
-    <InformationalVersion>2.0.1-SNAPSHOT</InformationalVersion>
-    <Version>2.0.1-SNAPSHOT</Version>
+    <InformationalVersion>2.1.0</InformationalVersion>
+    <Version>2.1.0</Version>
     <PackageId>QACover</PackageId>
     
     <PackAsTool>true</PackAsTool>
