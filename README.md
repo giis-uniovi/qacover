@@ -46,21 +46,17 @@ This is an example of the summary report of a test session:
 
 Example for Java:
 
-- Add the dependency 
-  [`qacover-core`](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-core) to your pom.xml
-- Copy the files  
-  [`qacover.properties`](qacover-core/qacover.properties) and 
-  [`spy.properties`](qacover-core/spy.properties) from the `qacover-core` folder to the root of your project.
-- Edit the connection string of your application and insert `:p6spy` afer `jdbc`
-  (eg. if your connection string is `jdbc:sqlite:./target/TestDB.db` it must become `jdbc:p6spy:sqlite:./target/TestDB.db`).
+- Add the dependency [`qacover-core`](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-core) to your pom.xml
+- Copy the files [`qacover.properties`](qacover-core/qacover.properties) and [`spy.properties`](qacover-core/spy.properties) from the `qacover-core` folder to the root of your project.
+- Edit the connection string of your application and insert `:p6spy` afer `jdbc` (eg. if your connection string is `jdbc:sqlite:./target/TestDB.db` it must become `jdbc:p6spy:sqlite:./target/TestDB.db`).
 - Run your tests and wait to finish.
 
 This creates the folder `target/qacover/rules` that contains the internal data about the coverage evaluation.
 To generate an html report:
 
-- Download the *the standalone reporter jar file*
-  [`qacover-model-<VERSION>-report.jar`](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-model)
-  from Maven Central (go to Versions and then Browse the selected version to download).
+- Download the the *standalone reporter* jar file `qacover-model-<VERSION>-report.jar` from Maven Central: Go to the 
+  [version list](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-model/versions) 
+  and then click Browse in the selected version to download.
 - Run this command from the root of your workspace:
   ```bash
   java -jar qacover-model-<VERSION>-report.jar  target/qacover/rules  target/qacover/reports
@@ -96,18 +92,18 @@ There are two different artifacts:
   It only includes the model and classes to do reporting and to inspect the coverage rules.
   Use it if you only need access to previously generated coverage rules (e.g. to generate reports from a program).
 
-Each of them has another downloadable jar that includes additional qualifier:
+Each of them has another downloadable jar that includes additional classifier:
 
-- [`qacover-core` uber jar](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-core).
+- [qacover-core uber jar](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-core).
   It includes all needed dependencies (excluding `slf4j`) and they are *shaded*
   (i.e. renamed in a different namespace to avoid dependency conflicts):
-  - Download the artifact with the `-uber` qualifier if for any reason you cannot use it as a dependency in your application 
+  - Download the artifact with the `-uber` classifier if for any reason you cannot use it as a dependency in your application 
     (e.g. to deploy in an application server).
     You simply need to put the jar in your server library and set the configuration to use QACover.
   - Use the uber jar as a dependency declared in your pom.xml if you experiment conflicts with versions:
-    Add `<qualifier>uber</qualifier>` to the dependency declaration.
-- [`qacover-model` standalone reporter](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-model):
-  Download the artifact with the `-report` qualifier to generate the reports from the command line as shown in the [quick start](#quick-start).
+    Add `<classifier>uber</classifier>` to the dependency declaration.
+- [qacover-model standalone reporter](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-model):
+  Download the artifact with the `-report` clasifier to generate the reports from the command line as shown in the [quick start](#quick-start).
 
 ### .NET Packages in NuGet
 
@@ -116,9 +112,9 @@ Most of the code is converted automatically from Java to .NET using [JavaToCshar
 The same as for Java, there are two different packages:
 
 - [`QACover`](https://www.nuget.org/packages/QACover/):
-  The main package (netstandard2.9) to include as a package reference in your project configuration (e.g. the .csproj file if you are using C#).
+  The main package (netstandard2.0) to be included as a package reference in your project configuration (e.g. the .csproj file if you are using C#).
 - [`QACoverReport`](https://www.nuget.org/packages/QACoverReport/):
-  A dotnet tool (netcore2.0) to generate the reports from the command line:
+  A dotnet tool (net8.0) to generate the reports from the command line:
   Install the tool with `dotnet tool install QACoverReport`
   and execute it as a command `QACoverReport <rules folder> <reports folder>`.
 
@@ -225,7 +221,7 @@ to easily inspect summary and details of the coverage data.
 To generate reports you have three options:
 
 - From the command line: Download the
-  [`qacover-model` standalone reporter](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-model)
+  [qacover-model standalone reporter](https://central.sonatype.com/artifact/io.github.giis-uniovi/qacover-model)
   as shown in the quick start and execute:
 ```bash
         java -jar qacover-model-<VERSION>-report.jar  target/qacover/rules  target/qacover/reports
