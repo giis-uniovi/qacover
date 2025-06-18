@@ -16,32 +16,17 @@
 	<target name="install" ><install/></target>
 	<target name="spring-petclinic" ><spring-petclinic/></target>
 	<target name="qacover-api" ><qacover-api/></target>
-	<target name="install-uber" ><install-uber/></target>
 	<target name="qacover-uber" ><qacover-uber/></target>
 	
-	<!-- Entry point for everything, the first install may be not needed, but ensures this script is standalone -->
+	<!-- Entry point for everything, the first install ensures this script is standalone -->
 	<target name="test-sequential" depends="install,spring-petclinic,qacover-api,qacover-uber" >
-	</target>
-
-	<!-- Entry point for everything with parallel execution -->
-	<target name="test-parallel" >
-		<install/>
-		<parallel>
-			<spring-petclinic/>
-			<sequential>
-				<qacover-api/>
-				<install-uber/>
-				<qacover-uber/>
-			</sequential>
-		</parallel>
 	</target>
 
 	<macrodef name="install">
 	  <sequential>
-		<echo>*******************************</echo>
-		<echo>*** INSTALLING DEPENDENCIES ***</echo>
-		<echo>*******************************</echo>
-		<!--<mvn folder=".." arg1="install" arg2="-DskipTests=true" />-->
+		<echo>********************************************</echo>
+		<echo>*** INSTALLING DEPENDENCIES AND UBER JAR ***</echo>
+		<echo>********************************************</echo>
 		<mvn folder=".." arg2="install" arg3="-DskipTests=true" arg4="-P" arg5="uber" />
 	  </sequential>
 	</macrodef>
@@ -49,10 +34,11 @@
 	<macrodef name="spring-petclinic">
 	  <sequential>
 		<!--
-		Full execution of a spring project that includes qacover-core as dependency.
-		Ensures that artifacts are the right version, executes tests and generate reports from commandline
-		NOTE: Maven install must be executed with uber generation profile deactivated,
-		if not, the test fail, why?
+		Full execution of a test spring project that includes qacover-core as dependency.
+		First sets the test project version to the current project version to ensure that
+		the qacover dependencies that uses are the defined by the current project.
+		Uses the uber qacover-core dependency because after updating to tdrules v4.6.1 
+		that updated Openapi Generator to v7.13.0, the non-ube dependency fails (#364)
 		-->
 		<echo>*************************************</echo>
 		<echo>*** RUNNING SPRING-PETCLINIC-MAIN ***</echo>
@@ -83,17 +69,6 @@
 	  </sequential>
 	</macrodef>	
 
-	<macrodef name="install-uber">
-	  <sequential>
-		<echo>***************************</echo>
-		<echo>*** INSTALLING UBER JAR ***</echo>
-		<echo>***************************</echo>
-		<!-- Only packages the uber jar to target folder -->
-		<mvn folder=".." arg2="package" arg3="-DskipTests=true" arg4="-P" arg5="uber" arg6="-pl" arg7="qacover-core" />
-		<echo>*** END INSTALLING UBER JAR ***</echo>
-	  </sequential>
-	</macrodef>
-	
 	<macrodef name="qacover-uber">
 	  <sequential>
 		<!--

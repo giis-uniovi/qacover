@@ -169,8 +169,8 @@ jobs:
           key: setup-java-IT-maven-v1-${{ github.run_id }}
           restore-keys: setup-java-IT-maven-v1-
 
-      # IT requires first running the tests outside of maven, then a test case compares results
-      # runs with surefire also
+      # IT run in their own folder (it). 
+      # After running the tests, an additonal test case in the qacover module handles the reporting
       - name: Integration test execution - IT
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
