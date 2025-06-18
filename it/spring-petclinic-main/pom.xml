@@ -37,6 +37,7 @@
 			<groupId>io.github.giis-uniovi</groupId>
 			<artifactId>qacover-core</artifactId>
 			<version>${project.version}</version>
+			<classifier>uber</classifier>
 			<scope>test</scope>
 		</dependency>
 	<!--

@@ -20,7 +20,7 @@
 	<target name="qacover-uber" ><qacover-uber/></target>
 	
 	<!-- Entry point for everything, the first install may be not needed, but ensures this script is standalone -->
-	<target name="test-sequential" depends="install,spring-petclinic,qacover-api,install-uber,qacover-uber" >
+	<target name="test-sequential" depends="install,spring-petclinic,qacover-api,qacover-uber" >
 	</target>
 
 	<!-- Entry point for everything with parallel execution -->
@@ -41,7 +41,8 @@
 		<echo>*******************************</echo>
 		<echo>*** INSTALLING DEPENDENCIES ***</echo>
 		<echo>*******************************</echo>
-		<mvn folder=".." arg1="install" arg2="-DskipTests=true" />
+		<!--<mvn folder=".." arg1="install" arg2="-DskipTests=true" />-->
+		<mvn folder=".." arg2="install" arg3="-DskipTests=true" arg4="-P" arg5="uber" />
 	  </sequential>
 	</macrodef>
 	

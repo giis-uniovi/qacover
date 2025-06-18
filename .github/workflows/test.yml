@@ -176,7 +176,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd it
-          ant test-parallel
+          ant test-sequential
       - run: ls -la $HOME/.m2/repository
       - name: Integration test results comparison - ${{ matrix.scope }}
         env:
