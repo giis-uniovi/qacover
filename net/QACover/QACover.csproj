@@ -49,7 +49,7 @@
     <PackageReference Include="PortableCs" Version="2.4.0" />
     -->
 
-    <PackageReference Include="TdRules" Version="4.6.0" />
+    <PackageReference Include="TdRules" Version="4.6.1" />
   </ItemGroup>
 
 </Project>
