@@ -147,7 +147,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 			HistoryModel item = history.getItems().get(i);
 			sb.append(i!=0 ? "<br/>":"").append("<strong>").append(i+1).append("</strong>.");
 			String result = item.getResult() == null ? "" : item.getResult(); // can be null if query failed
-			sb.append(" Eval result: [<span class='result-vector'>" + result + "</span>]");
+			sb.append(" Eval result: [<span class='result-vector'>").append(result).append("</span>]");
 			sb.append(" Params:");
 			for (ParameterDao param : item.getParams())
 				sb.append(" ").append(encode(param.toString()));
