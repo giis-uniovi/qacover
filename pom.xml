@@ -105,7 +105,7 @@
 			<dependency>
 				<groupId>com.oracle.database.jdbc</groupId>
 				<artifactId>ojdbc8</artifactId>
-				<version>23.8.0.25.04</version>
+				<version>23.9.0.25.07</version>
 				<!-- v23 does not work in windows (should use v21), returns
 				java.sql.SQLException: ORA-01005: null password given; logon denied
 				<version>21.15.0.0</version>
