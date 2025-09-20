@@ -20,7 +20,7 @@
 
 		<tdrules.version>4.6.1</tdrules.version>
 
-		<surefire.version>3.5.3</surefire.version>
+		<surefire.version>3.5.4</surefire.version>
 	</properties>
 
 	<modules>
@@ -99,7 +99,7 @@
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
-				<version>42.7.7</version>
+				<version>42.7.8</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
