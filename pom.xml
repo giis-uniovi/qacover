@@ -93,7 +93,7 @@
 			<dependency>
 				<groupId>com.microsoft.sqlserver</groupId>
 				<artifactId>mssql-jdbc</artifactId>
-				<version>13.2.0.jre8</version>
+				<version>13.2.1.jre8</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -190,7 +190,7 @@
 				<plugin>
 					<groupId>org.jacoco</groupId>
 					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>0.8.13</version>
+					<version>0.8.14</version>
 					<executions>
 						<execution>
 							<id>pre-unit-test</id>
