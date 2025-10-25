@@ -40,7 +40,7 @@
 			<dependency>
 				<groupId>io.github.javiertuya</groupId>
 				<artifactId>portable-java</artifactId>
-				<version>2.4.0</version>
+				<version>2.4.3</version>
 			</dependency>
 			<dependency>
 				<groupId>p6spy</groupId>
@@ -56,7 +56,7 @@
 			<dependency>
 				<groupId>io.github.javiertuya</groupId>
 				<artifactId>visual-assert</artifactId>
-				<version>2.6.0</version>
+				<version>2.6.1</version>
 				<scope>test</scope>
 			</dependency>
 			<!--this dependency is in portable-java, but if not set here
@@ -219,7 +219,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.2.0</version>
 					<executions>
 						<!-- Aggregate junit style reports -->
 						<execution>
