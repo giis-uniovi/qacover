@@ -119,7 +119,7 @@ jobs:
 
       - name: Generate report checks
         if: always()
-        uses: mikepenz/action-junit-report@v5
+        uses: mikepenz/action-junit-report@v6
         with:
           check_name: "test-result-${{ matrix.scope }}"
           report_paths: "*/target/surefire-reports/TEST-*.xml"
@@ -198,7 +198,7 @@ jobs:
 
       - name: Generate report checks
         if: always()
-        uses: mikepenz/action-junit-report@v5
+        uses: mikepenz/action-junit-report@v6
         with:
           check_name: "test-result-IT"
           report_paths: "*/target/surefire-reports/TEST-*.xml"
@@ -284,7 +284,7 @@ jobs:
 
       - name: Generate report checks
         if: always()
-        uses: mikepenz/action-junit-report@v5
+        uses: mikepenz/action-junit-report@v6
         with:
           check_name: "test-result-Net"
           report_paths: "net/surefire-reports/TEST-*.xml"
