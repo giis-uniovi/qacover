@@ -6,8 +6,9 @@ updates:
       interval: daily
     open-pull-requests-limit: 20
 
+  # Dec 2025, move this before and set same strucure of main solution to try avoiding PR open/delete loops
   - package-ecosystem: nuget
-    directory: "/net"
+    directory: "/net/QACover" #reports
     ignore:
       - dependency-name: "Microsoft.EntityFramework*"
         update-types: ["version-update:semver-major"]
@@ -20,7 +21,14 @@ updates:
     open-pull-requests-limit: 20
 
   - package-ecosystem: nuget
-    directory: "/net/QACover" #reports
+    directory: "/net"
+    ignore:
+      - dependency-name: "Microsoft.EntityFramework*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      MicrosoftEntityFramework:
+        patterns:
+          - "Microsoft.EntityFramework*"
     schedule:
       interval: daily
     open-pull-requests-limit: 20
