@@ -21,7 +21,7 @@ if [[ "$OSTYPE" == "msys" ]]; then # preserve CRLF when running from vs studio t
   unix2dos $NET_PROJECT
 fi
 
-NET_PROJECT="net/QACover/QACoverReport.csproj"
+NET_PROJECT="net/QACoverReport/QACoverReport.csproj"
 echo "set-version $NEW_VERSION for $NET_PROJECT"
 sed -i "s/<Version>.*<\/Version>/<Version>$NEW_VERSION<\/Version>/" $NET_PROJECT
 sed -i "s/<InformationalVersion>.*<\/InformationalVersion>/<InformationalVersion>$NEW_VERSION<\/InformationalVersion>/" $NET_PROJECT

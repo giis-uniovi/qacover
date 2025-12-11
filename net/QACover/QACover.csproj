@@ -8,7 +8,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <SonarQubeTestProject>false</SonarQubeTestProject>
     
-    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageOutputPath>../nupkg</PackageOutputPath>
     <RepositoryUrl>https://github.com/$(GITHUB_REPOSITORY)</RepositoryUrl>
     <PackageTags>test, database, coverage, sql, fpc, mcdc, java, net</PackageTags>
     <Authors>Javier Tuya</Authors>

@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QACoverTestEf", "QACoverTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QACoverEf2spy", "QACoverEf2spy\QACoverEf2spy.csproj", "{BC1CF1F1-3477-4966-9A03-3A7118790DCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QACoverReport", "QACoverReport\QACoverReport.csproj", "{93F4030E-36EC-F7C4-FE7F-FA4E877D4898}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{BC1CF1F1-3477-4966-9A03-3A7118790DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC1CF1F1-3477-4966-9A03-3A7118790DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC1CF1F1-3477-4966-9A03-3A7118790DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93F4030E-36EC-F7C4-FE7F-FA4E877D4898}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93F4030E-36EC-F7C4-FE7F-FA4E877D4898}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93F4030E-36EC-F7C4-FE7F-FA4E877D4898}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93F4030E-36EC-F7C4-FE7F-FA4E877D4898}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

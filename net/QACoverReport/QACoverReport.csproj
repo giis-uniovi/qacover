@@ -9,7 +9,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>QACoverReport</ToolCommandName>
     
-    <PackageOutputPath>./nupkg</PackageOutputPath>
+    <PackageOutputPath>../nupkg</PackageOutputPath>
     <RepositoryUrl>https://github.com/$(GITHUB_REPOSITORY)</RepositoryUrl>
     <PackageTags>test, database, coverage, sql, fpc, mcdc, java, net</PackageTags>
     <Authors>Javier Tuya</Authors>
@@ -43,12 +43,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="In2test.Qacover.Core\**" />
-    <Compile Remove="In2test.Qacover.Dbspy\**" />
-    <EmbeddedResource Remove="In2test.Qacover.Core\**" />
-    <EmbeddedResource Remove="In2test.Qacover.Dbspy\**" />
-    <None Remove="In2test.Qacover.Core\**" />
-    <None Remove="In2test.Qacover.Dbspy\**" />
+    <Compile Include="..\QACover\Translated\Giis.Qacover.Model\*.cs" />
+    <Compile Include="..\QACover\Translated\Giis.Qacover.Reader\*.cs" />
+    <Compile Include="..\QACover\Translated\Giis.Qacover.Report\*.cs" />
+    <Compile Include="..\QACover\Translated\Giis.Qacover.Storage\*.cs" />
+    <Compile Include="..\QACover\Giis.Qacover.Portable\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
