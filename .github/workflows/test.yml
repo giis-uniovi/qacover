@@ -79,7 +79,7 @@ jobs:
       # to simulate an updatable cache. If eventually we need to clear the cache, increase the V* number
       - name: Rules cache
         id: rules-cache
-        uses: actions/cache@v4.3.0
+        uses: actions/cache@v5.0.0
         with:
           path: qacover-core/.tdrules-cache
           key: tdrules-cache-${{ matrix.scope }}-v1-${{ github.run_id }}
@@ -165,7 +165,7 @@ jobs:
       # Uses the same trick that in other jobs top simulate a writable cache
       - name: Custom cache for IT
         id: rules-cache
-        uses: actions/cache@v4.3.0
+        uses: actions/cache@v5.0.0
         with:
           path: /home/runner/.m2/repository #can't pass $HOME
           key: setup-java-IT-maven-v1-${{ github.run_id }}
@@ -250,7 +250,7 @@ jobs:
       
       - name: Rules cache
         id: rules-cache
-        uses: actions/cache@v4.3.0
+        uses: actions/cache@v5.0.0
         with:
           path: net/.tdrules-cache
           key: tdrules-cache-Net-v1-${{ github.run_id }}
@@ -260,7 +260,7 @@ jobs:
 
       - name: Cache NuGet Packages
         id: nuget-packages
-        uses: actions/cache@v4.3.0
+        uses: actions/cache@v5.0.0
         env:
           cache-name: nuget-package-cache
         with:
