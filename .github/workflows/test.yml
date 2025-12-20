@@ -79,7 +79,7 @@ jobs:
       # to simulate an updatable cache. If eventually we need to clear the cache, increase the V* number
       - name: Rules cache
         id: rules-cache
-        uses: actions/cache@v5.0.0
+        uses: actions/cache@v5.0.1
         with:
           path: qacover-core/.tdrules-cache
           key: tdrules-cache-${{ matrix.scope }}-v1-${{ github.run_id }}
@@ -134,7 +134,7 @@ jobs:
 
       - name: Publish test report files
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: "test-report-files-${{ matrix.scope }}"
           path: |
@@ -165,7 +165,7 @@ jobs:
       # Uses the same trick that in other jobs top simulate a writable cache
       - name: Custom cache for IT
         id: rules-cache
-        uses: actions/cache@v5.0.0
+        uses: actions/cache@v5.0.1
         with:
           path: /home/runner/.m2/repository #can't pass $HOME
           key: setup-java-IT-maven-v1-${{ github.run_id }}
@@ -206,7 +206,7 @@ jobs:
 
       - name: Publish test report files
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: "test-report-files-IT"
           path: |
@@ -250,7 +250,7 @@ jobs:
       
       - name: Rules cache
         id: rules-cache
-        uses: actions/cache@v5.0.0
+        uses: actions/cache@v5.0.1
         with:
           path: net/.tdrules-cache
           key: tdrules-cache-Net-v1-${{ github.run_id }}
@@ -260,7 +260,7 @@ jobs:
 
       - name: Cache NuGet Packages
         id: nuget-packages
-        uses: actions/cache@v5.0.0
+        uses: actions/cache@v5.0.1
         env:
           cache-name: nuget-package-cache
         with:
@@ -292,7 +292,7 @@ jobs:
 
       - name: Publish test report files
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: "test-report-files-Net"
           path: |
@@ -335,30 +335,30 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       # Downloads java test report files
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         if: always()
         with:
           name: "test-report-files-UT"
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         if: always()
         with:
           name: "test-report-files-Postgres"
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         if: always()
         with:
           name: "test-report-files-Sqlserver"
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         if: always()
         with:
           name: "test-report-files-Oracle"
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         if: always()
         with:
           name: "test-report-files-IT"
           
       # Net reports were zipped under a different root, specifies the path.
       # Modifies the namespaces to allow differentiate from the java test results
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         if: always()
         with:
           name: "test-report-files-Net"
@@ -383,7 +383,7 @@ jobs:
           echo "</body></html>"                                              >> target-ALL/site/index.html
       - if: always()
         name: Publish test report files
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: "test-report-ALL"
           path: |
