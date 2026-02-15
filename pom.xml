@@ -99,13 +99,13 @@
 			<dependency>
 				<groupId>org.postgresql</groupId>
 				<artifactId>postgresql</artifactId>
-				<version>42.7.9</version>
+				<version>42.7.10</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.oracle.database.jdbc</groupId>
 				<artifactId>ojdbc8</artifactId>
-				<version>23.26.0.0.0</version>
+				<version>23.26.1.0.0</version>
 				<!-- v23 does not work in windows (should use v21), returns
 				java.sql.SQLException: ORA-01005: null password given; logon denied
 				<version>21.15.0.0</version>
@@ -115,7 +115,7 @@
 			<dependency>
 				<groupId>org.xerial</groupId>
 				<artifactId>sqlite-jdbc</artifactId>
-				<version>3.51.1.0</version>
+				<version>3.51.2.0</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
