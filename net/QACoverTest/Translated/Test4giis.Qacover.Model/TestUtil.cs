@@ -4,7 +4,6 @@ using Java.Util;
 using NUnit.Framework;
 using Giis.Qacover.Core.Services;
 using Giis.Qacover.Model;
-using Giis.Qacover.Reader;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
