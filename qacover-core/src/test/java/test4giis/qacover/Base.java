@@ -16,8 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import giis.portable.util.FileUtil;
 import giis.portable.util.Parameters;
-import giis.qacover.core.QueryStatement;
 import giis.qacover.core.services.FaultInjector;
+import giis.qacover.core.QueryStatement;
 import giis.qacover.core.services.Configuration;
 import giis.qacover.core.services.StoreService;
 import giis.qacover.model.Variability;

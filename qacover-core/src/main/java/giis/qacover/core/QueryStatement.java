@@ -1,35 +1,25 @@
 package giis.qacover.core;
 
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-
 import giis.portable.util.JavaCs;
+import giis.qacover.core.query.AbstractQueryStatement;
 import giis.qacover.core.services.FaultInjector;
 import giis.qacover.core.services.RuleServices;
-import giis.qacover.model.QueryParameters;
 import giis.qacover.model.QueryWithParameters;
-import giis.qacover.model.Variability;
 
 /**
- * Representation of a jdbc Statement that has been intercepted by p6spy.
- * On Java is created from a p6spy adapter when executed in response to the
- * onBeforeExecuteQuery event. 
- * The main attributes are the query and parameters (in the case of Prepared Statements). 
- * Also keeps track of the variability and fault injection for testing.
+ * Specialization of the abstract query statement to manage queries that are obtained from the interception of
+ * the execution in a given program.
+ * 
+ * On Java is created from a p6spy adapter when executed in response to the onBeforeExecuteQuery event.
+ * 
+ * Provides additional functionality to manage parameters and keep track of the variability and fault
+ * injection for testing.
  */
-public abstract class QueryStatement {
-	protected QueryParameters parameters = new QueryParameters();
-	protected String sql;
-	protected Variability variant;
-	protected Exception exception = null; // si ha habido algun error en la creacion
+public abstract class QueryStatement extends AbstractQueryStatement {
 	private static FaultInjector faultInjector = null;
-
-	public void setVariant(Variability currentVariant) {
-		variant = currentVariant;
-	}
 
 	/**
 	 * If the query does not have parameters, transforms this object as a result 
@@ -44,8 +34,8 @@ public abstract class QueryStatement {
 	}
 
 	/**
-	 * Parses a comment anotation to allow named jdbc parameters
-	 * (by encolsing a starting comment in the query)
+	 * Parses a comment anotation to allow named jdbc parameters (by encolsing a starting comment in the query).
+	 * This allows to unify parameters at different locations in a query into a single parameter
 	 */
 	protected List<String> parseNamedParameters(String sql) {
 		String comment = sql;
@@ -72,16 +62,10 @@ public abstract class QueryStatement {
 	}
 
 	/**
-	 * Replaces query parameter placeholders by their values
+	 * Redefines parameter replacement to patch the behaviour in special cases
 	 */
-	public String getSqlWithValues(String sourceSql) {
-		if (parameters.getSize() == 0)
-			return sourceSql;
-		for (String name : parameters.keySet())
-			sourceSql = replaceSingleParameter(sourceSql, name, getParameters().getItem(name));
-		return sourceSql;
-	}
-	private String replaceSingleParameter(String sourceSql, String name, String value) {
+	@Override
+	protected String replaceSingleParameter(String sourceSql, String name, String value) {
 		if (variant.isOracle() && parameters.isDate(name)) {
 			// Patch: GitLab #11 Excepcion ejecutando regla cuando un parametro de tipo fecha está
 			// dentro de una funcion to_char (Oracle ORA-01722)
@@ -101,39 +85,8 @@ public abstract class QueryStatement {
 		return sourceSql.replace(name, value);
 	}
 
-	// necesario para el parche anterior, implementacion en subclase pues depende de la plataforma (solo para uso de p6spy)
+	// Needed by the above patch, only for p6spy
 	protected abstract String getDatabaseDialectFormat();
-
-	public abstract Connection getConnection();
-
-	/**
-	 * Returns an object to browse the data accessed from the current connection
-	 */
-	public abstract IQueryStatementReader getReader(String sql);
-	
-	/**
-	 * Determines if the query is a select, needed to filter other statements
-	 * when a generic jdbc execute() method is used (does not differentiates
-	 * between query and update)
-	 */
-	public static boolean isSelectQuery(String sql, Logger log) {
-		String sqlStart = JavaCs.substring(sql.trim(), 0, 6);
-		if (JavaCs.equalsIgnoreCase("select", sqlStart.toLowerCase()))
-			return true;
-		log.debug("---- Ignored by qacover. clause is " + sqlStart);
-		return false;
-	}
-
-	public Exception getException() {
-		return exception;
-	}
-
-	public String getSql() {
-		return sql == null ? "" : sql;
-	}
-	public QueryParameters getParameters() {
-		return parameters;
-	}
 
 	public static void setFaultInjector(FaultInjector injector) {
 		faultInjector = injector;

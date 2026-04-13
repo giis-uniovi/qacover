@@ -1,10 +1,12 @@
 ﻿using Giis.Qacover.Core;
+using Giis.Qacover.Core.Query;
+using Giis.Qacover.Dbdriver;
+using Giis.Qacover.Portable;
+using Java.Sql;
 using System;
 using System.Data;
 using System.Data.Common;
-using Giis.Qacover.Portable;
 using System.Linq;
-using Java.Sql;
 
 namespace Giis.Qacover.Driver
 {
@@ -81,7 +83,7 @@ namespace Giis.Qacover.Driver
                 else if (this.parameters != null && this.parameters.GetSize() > 0)
                     cmd.CommandText = GetSqlWithValues(sql);
 
-                return new QueryStatementReader(cmd);
+                return new NetQueryStatementReader(cmd);
         }
         private void AddParameters(DbCommand cmd, DbParameterCollection parameters)
         {

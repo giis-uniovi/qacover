@@ -77,13 +77,13 @@ public class ITTests {
 		String actFolder=FileUtil.getPath("..", "it", "qacover-uber-main", "target", "qacover", "reports");
 		String actual=FileUtil.fileRead(FileUtil.getPath(actFolder, "report.log"));
 		String expected="Report for class: TestUber qcount=1,qerror=0,count=3,dead=1,error=0";
-		assertTrue("Expected not contained in actual: " + actual, actual.contains(expected));
+		assertTrue("Expected '" + expected + "' not contained in actual: " + actual, actual.contains(expected));
 		
 		// Check the summary of the own application log
 		actFolder=FileUtil.getPath("..", "it", "qacover-uber-main", "target");
 		actual=FileUtil.fileRead(FileUtil.getPath(actFolder, "qacover-uber-log.log"));
-		expected="INFO  giis.qacover.core.CoverageManager -  SUMMARY: Covered 1 out of 3";
-		assertTrue("Expected not contained in actual: " + actual, actual.contains(expected));
+		expected="INFO  giis.qacover.core.coverage.CoverageService -  SUMMARY: Covered 1 out of 3";
+		assertTrue("Expected '" + expected + "' not contained in actual: " + actual, actual.contains(expected));
 	}
 
 	private void assertFiles(String expectedFolder, String actualFolder, String fileName) {

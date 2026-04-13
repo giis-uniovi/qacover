@@ -17,17 +17,20 @@ namespace Giis.Qacover.Model
         public static readonly string UNCOVERED = "UNCOVERED";
         public static readonly string ALREADY_COVERED = "ALREADY_COVERED";
         public static readonly string RUNTIME_ERROR = "RUNTIME_ERROR";
-        private string[] vector;
+        private string[] vector; // sincle char encoded result of each rule evaluation
+        private StringBuilder logsb; // addional log for debugging
         public ResultVector(int ruleCount)
         {
             vector = new string[ruleCount];
             for (int i = 0; i < vector.Length; i++)
                 vector[i] = NOT_EVALUATED;
+            logsb = new StringBuilder();
         }
 
-        public virtual void SetResult(int ruleNumber, string status)
+        public virtual void SetResult(int ruleNumber, string status, string logString)
         {
             vector[ruleNumber] = status;
+            logsb.Append((ruleNumber == 0 ? "" : "\n") + logString);
         }
 
         public override string ToString()
@@ -45,6 +48,11 @@ namespace Giis.Qacover.Model
                 else if (RUNTIME_ERROR.Equals(item))
                     sb.Append("!");
             return sb.ToString();
+        }
+
+        public virtual string GetLog()
+        {
+            return logsb.ToString();
         }
     }
 }

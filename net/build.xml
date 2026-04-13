@@ -37,6 +37,8 @@
     <runConvert input="../qacover-model/src/main/java/giis/qacover/report" output="QACover/Translated/Giis.Qacover.Report"  mapping="java-mapping.yml" />
     <runConvert input="../qacover-model/src/main/java/giis/qacover/storage" output="QACover/Translated/Giis.Qacover.Storage"  mapping="java-mapping.yml" />
     <runConvert input="../qacover-core/src/main/java/giis/qacover/core" output="QACover/Translated/Giis.Qacover.Core"  mapping="java-mapping.yml" />
+    <runConvert input="../qacover-core/src/main/java/giis/qacover/core/query" output="QACover/Translated/Giis.Qacover.Core.Query"  mapping="java-mapping.yml" />
+    <runConvert input="../qacover-core/src/main/java/giis/qacover/core/coverage" output="QACover/Translated/Giis.Qacover.Core.Coverage"  mapping="java-mapping.yml" />
     <runConvert input="../qacover-core/src/main/java/giis/qacover/core/services" output="QACover/Translated/Giis.Qacover.Core.Services"  mapping="java-mapping.yml" />
 
     <runConvert input="../qacover-core/src/test/java/test4giis/qacoverapp" output="QACoverTest/Translated/Test4giis.Qacoverapp"  mapping="java-mapping.yml" />
@@ -100,8 +102,8 @@
     <replace file="QACover/Translated/Giis.Qacover.Storage/LocalStore.cs" token="files.Remove(" value="files.RemoveAt(" failOnNoReplacements="true" />
     <replace file="QACover/Translated/Giis.Qacover.Storage/LocalStore.cs" token="Collections.Sort(files)" value="((List&lt;string&gt;)files).Sort()" failOnNoReplacements="true" />
     <replace file="QACover/Translated/Giis.Qacover.Core.Services/StackLocator.cs" token=" stack.Count" value=" stack.Size()" failOnNoReplacements="true" />
-    <replace file="QACover/Translated/Giis.Qacover.Core/IQueryStatementReader.cs" token="List&lt;" value="IList&lt;" failOnNoReplacements="true" />
-    <replace file="QACover/Translated/Giis.Qacover.Core/RuleDriverMutation.cs" token="private List&lt;" value="private IList&lt;" failOnNoReplacements="true" />
+    <replace file="QACover/Translated/Giis.Qacover.Core.Query/IQueryStatementReader.cs" token="List&lt;" value="IList&lt;" failOnNoReplacements="true" />
+    <replace file="QACover/Translated/Giis.Qacover.Core.Coverage/CoverageMutation.cs" token="private List&lt;" value="private IList&lt;" failOnNoReplacements="true" />
 
     <replace file="QACoverTest/Translated/Test4giis.Qacover/Base.cs" token="Locale.SetDefault(" value="//Locale.SetDefault(" failOnNoReplacements="true" />
     <replace file="QACoverTest/Translated/Test4giis.Qacover/TestDataTypeFormats.cs" token="com.p6spy." value="//com.p6spy." failOnNoReplacements="true" />

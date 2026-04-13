@@ -3,8 +3,8 @@ using Java.Util;
 
 using NLog;
 using Giis.Portable.Util;
-using Giis.Qacover.Core;
 using Giis.Qacover.Core.Services;
+using Giis.Qacover.Core;
 using Giis.Qacover.Model;
 using Test4giis.Qacoverapp;
 using System;

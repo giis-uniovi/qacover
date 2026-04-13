@@ -1,6 +1,5 @@
-using Java.Sql;
-using NLog;
 using Giis.Portable.Util;
+using Giis.Qacover.Core.Query;
 using Giis.Qacover.Core.Services;
 using Giis.Qacover.Model;
 using System;
@@ -13,24 +12,17 @@ using System.Text;
 namespace Giis.Qacover.Core
 {
     /// <summary>
-    /// Representation of a jdbc Statement that has been intercepted by p6spy.
-    /// On Java is created from a p6spy adapter when executed in response to the
-    /// onBeforeExecuteQuery event.
-    /// The main attributes are the query and parameters (in the case of Prepared Statements).
-    /// Also keeps track of the variability and fault injection for testing.
+    /// Specialization of the abstract query statement to manage queries that are obtained from the interception of
+    /// the execution in a given program.
+    /// 
+    /// On Java is created from a p6spy adapter when executed in response to the onBeforeExecuteQuery event.
+    /// 
+    /// Provides additional functionality to manage parameters and keep track of the variability and fault
+    /// injection for testing.
     /// </summary>
-    public abstract class QueryStatement
+    public abstract class QueryStatement : AbstractQueryStatement
     {
-        protected QueryParameters parameters = new QueryParameters();
-        protected string sql;
-        protected Variability variant;
-        protected Exception exception = null; // si ha habido algun error en la creacion
         private static FaultInjector faultInjector = null;
-        public virtual void SetVariant(Variability currentVariant)
-        {
-            variant = currentVariant;
-        }
-
         /// <summary>
         /// If the query does not have parameters, transforms this object as a result
         /// of the parameters inference on the query
@@ -45,8 +37,8 @@ namespace Giis.Qacover.Core
         }
 
         /// <summary>
-        /// Parses a comment anotation to allow named jdbc parameters
-        /// (by encolsing a starting comment in the query)
+        /// Parses a comment anotation to allow named jdbc parameters (by encolsing a starting comment in the query).
+        /// This allows to unify parameters at different locations in a query into a single parameter
         /// </summary>
         protected virtual IList<string> ParseNamedParameters(string sql)
         {
@@ -76,18 +68,9 @@ namespace Giis.Qacover.Core
         }
 
         /// <summary>
-        /// Replaces query parameter placeholders by their values
+        /// Redefines parameter replacement to patch the behaviour in special cases
         /// </summary>
-        public virtual string GetSqlWithValues(string sourceSql)
-        {
-            if (parameters.GetSize() == 0)
-                return sourceSql;
-            foreach (string name in parameters.KeySet())
-                sourceSql = ReplaceSingleParameter(sourceSql, name, GetParameters().GetItem(name));
-            return sourceSql;
-        }
-
-        private string ReplaceSingleParameter(string sourceSql, string name, string value)
+        protected override string ReplaceSingleParameter(string sourceSql, string name, string value)
         {
             if (variant.IsOracle() && parameters.IsDate(name))
             {
@@ -112,42 +95,8 @@ namespace Giis.Qacover.Core
             return sourceSql.Replace(name, value);
         }
 
-        // necesario para el parche anterior, implementacion en subclase pues depende de la plataforma (solo para uso de p6spy)
+        // Needed by the above patch, only for p6spy
         protected abstract string GetDatabaseDialectFormat();
-        public abstract Connection GetConnection();
-        /// <summary>
-        /// Returns an object to browse the data accessed from the current connection
-        /// </summary>
-        public abstract IQueryStatementReader GetReader(string sql);
-        /// <summary>
-        /// Determines if the query is a select, needed to filter other statements
-        /// when a generic jdbc execute() method is used (does not differentiates
-        /// between query and update)
-        /// </summary>
-        public static bool IsSelectQuery(string sql, Logger log)
-        {
-            string sqlStart = JavaCs.Substring(sql.Trim(), 0, 6);
-            if (JavaCs.EqualsIgnoreCase("select", sqlStart.ToLower()))
-                return true;
-            log.Debug("---- Ignored by qacover. clause is " + sqlStart);
-            return false;
-        }
-
-        public virtual Exception GetException()
-        {
-            return exception;
-        }
-
-        public virtual string GetSql()
-        {
-            return sql == null ? "" : sql;
-        }
-
-        public virtual QueryParameters GetParameters()
-        {
-            return parameters;
-        }
-
         public static void SetFaultInjector(FaultInjector injector)
         {
             faultInjector = injector;

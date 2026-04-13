@@ -1,4 +1,4 @@
-package giis.qacover.driver;
+package giis.qacover.dbdriver;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,17 +7,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import giis.qacover.core.IQueryStatementReader;
+import giis.qacover.core.query.IQueryStatementReader;
 import giis.qacover.portable.QaCoverException;
 
 /**
- * Provides access to the data stored in the database to evaluate the rules
+ * Implements the jdbc access to the data stored in the database to evaluate the rules
  */
-public class QueryStatementReader implements IQueryStatementReader {
+public class JdbcQueryStatementReader implements IQueryStatementReader {
 	private Connection conn;
 	private String sql;
 
-	public QueryStatementReader(Connection conn, String sql) {
+	public JdbcQueryStatementReader(Connection conn, String sql) {
 		this.conn = conn;
 		this.sql = sql;
 	}

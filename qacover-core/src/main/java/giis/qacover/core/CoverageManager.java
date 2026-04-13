@@ -1,18 +1,16 @@
 package giis.qacover.core;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import giis.portable.util.JavaCs;
-import giis.qacover.core.services.FaultInjector;
+import giis.qacover.core.coverage.CoverageService;
 import giis.qacover.core.services.Configuration;
+import giis.qacover.core.services.FaultInjector;
 import giis.qacover.core.services.RuleServices;
 import giis.qacover.core.services.StoreService;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.ResultVector;
-import giis.qacover.model.RuleModel;
 import giis.qacover.model.SchemaModel;
 import giis.qacover.model.Variability;
 
@@ -25,20 +23,16 @@ public class CoverageManager {
 	private static final Logger log = LoggerFactory.getLogger(CoverageManager.class);
 	private QueryModel model;
 	private SchemaModel schema;
-	private RuleDriver ruleDriver; // a delegate to get and evaluate the rules
 	private ResultVector result = new ResultVector(0); // to avoid null if fails before generating rules
 
 	// Different constructors for new rules, existing and errors
-	public CoverageManager(RuleDriver ruleDriver) {
-		this.ruleDriver = ruleDriver;
+	public CoverageManager() {
 	}
-	public CoverageManager(RuleDriver ruleDriver, QueryModel model) {
+	public CoverageManager(QueryModel model) {
 		this.model = model;
-		this.ruleDriver = ruleDriver;
 	}
-	public CoverageManager(RuleDriver ruleDriver, String sql, String error) {
+	public CoverageManager(String sql, String error) {
 		this.model = new QueryModel(sql, error);
-		this.ruleDriver = ruleDriver;
 	}
 
 	public QueryModel getModel() {
@@ -94,7 +88,7 @@ public class CoverageManager {
 				+ ("mutation".equals(config.getRuleCriterion()) ? " getordercols getparsedquery" : "")
 				+ " " + config.getRuleOptions();
 		store.setLastGeneratedInRules(svc.getRulesInput(sql, this.schema, fpcOptions));
-		model = ruleDriver.getRules(svc, sql, this.schema, fpcOptions);
+		model = new RuleGenerator().getRules(svc, sql, this.schema, fpcOptions);
 		// The DBMS is stored too to manage its variability in further actions
 		model.setDbms(this.schema.getDbms());
 	}
@@ -105,47 +99,14 @@ public class CoverageManager {
 	public void run(RuleServices svc, StoreService store, QueryStatement stmt, Configuration options) {
 		svc.setErrorContext("Run SQLFpc coverage rules");
 		store.setLastSqlRun(stmt.getSql());
-		StringBuilder logsb = new StringBuilder();
 		
-		List<RuleModel> rules = model.getRules();
 		FaultInjector injector = stmt.getFaultInjector();
 		if (injector != null && injector.isSingleRuleFaulty())
-			rules.get(0).setSql(injector.getSingleRuleFault());
-		model.reset();
-		result = new ResultVector(rules.size());
-		stmt.setVariant(new Variability(model.getDbms()));
+			model.getRules().get(0).setSql(injector.getSingleRuleFault());
 		
-		// Mutation requires a previous step to read query results
-		// note that it requires generate the rules to get the parsed query
-		// that includes numbers in the parameters
-		String orderCols = ruleDriver.getOrderCols(model);
-		ruleDriver.prepareEvaluation(stmt, model, orderCols);
-
-		// Executes and annotates the coverage/status of each rule
-		for (int i = 0; i < rules.size(); i++) {
-			RuleModel ruleModel = rules.get(i);
-			String res;
-			if (options.getOptimizeRuleEvaluation() && ruleModel.getDead() > 0)
-				res = ResultVector.ALREADY_COVERED;
-			else
-				res = ruleDriver.evaluateRule(ruleModel, stmt, orderCols);
-			
-			// Results for logging
-			String logString = ruleDriver.getLogString(ruleModel, stmt, res);
-			logsb.append((i == 0 ? "" : "\n") + logString);
-			log.debug(logString);
-			
-			// store results
-			result.setResult(i, res);
-			if (ruleModel.getDead() > 0)
-				model.addDead(1);
-			if (ruleModel.getError() > 0)
-				model.addError(1);
-		}
-		model.setCount(rules.size());
-		model.addQrun(1);
-		log.info(" SUMMARY: Covered " + model.getDead() + " out of " + model.getCount());
-		store.setLastRulesLog(logsb.toString());
+		CoverageService evaluator = new CoverageService(model);
+		result = evaluator.evaluateQuery(stmt, options.getOptimizeRuleEvaluation());
+		store.setLastRulesLog(result.getLog());
 	}
 
 }

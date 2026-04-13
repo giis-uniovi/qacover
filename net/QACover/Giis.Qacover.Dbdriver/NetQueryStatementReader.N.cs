@@ -1,19 +1,19 @@
-﻿using Giis.Qacover.Core;
+﻿using Giis.Qacover.Core.Query;
 using Giis.Qacover.Portable;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 
-namespace Giis.Qacover.Driver
+namespace Giis.Qacover.Dbdriver
 {
-    public class QueryStatementReader : IQueryStatementReader
+    public class NetQueryStatementReader : IQueryStatementReader
     {
         DbCommand cmd;
 
         // This implementation does not takes a connection and sql,
         // included both and was created by the StatementAdapter
         // because the way in which parameters were replaced
-        public QueryStatementReader(DbCommand cmd)
+        public NetQueryStatementReader(DbCommand cmd)
         {
             this.cmd = cmd;
         }
@@ -36,12 +36,12 @@ namespace Giis.Qacover.Driver
 
         public IList<string[]> GetRows()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public bool EqualRows(IList<string[]> expected)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
     }

@@ -1,7 +1,6 @@
 package test4giis.qacover;
 
 import giis.portable.util.JavaCs;
-
 import giis.qacover.core.QueryStatement;
 import giis.qacover.core.services.FaultInjector;
 import giis.qacover.core.services.StoreService;

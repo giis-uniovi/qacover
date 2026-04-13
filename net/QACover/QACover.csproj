@@ -52,4 +52,9 @@
     <PackageReference Include="TdRules" Version="4.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Translated\Giis.Qacover.Core.Coverage\" />
+    <Folder Include="Translated\Giis.Qacover.Core.Query\" />
+  </ItemGroup>
+
 </Project>
