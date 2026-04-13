@@ -97,9 +97,9 @@ public class Base {
 			assertEquals(expected, actual);
 	}
 
-	protected void assertContains(String expected, String actual) {
+	public static void assertContains(String expected, String actual) {
 		if (!actual.contains(expected))
-			fail("Expected not contained in actual: " + actual);
+			fail("Expected '" + expected + "' not contained in actual: " + actual);
 	}
 
 	/**

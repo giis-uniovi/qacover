@@ -68,9 +68,14 @@ public class QueryModel extends RuleBase {
 	}
 
 	public String getTextSummary() {
+		return getTextSummary(false);
+	}
+	// By default do not include qrun, only for test, at least at this moment
+	public String getTextSummary(boolean includeQRun) {
 		StringBuilder sb = new StringBuilder();
 		// The summary may have an additional error message
-		String strSummary = (this.getQerror() > 0 ? "qerror=" + this.getQerror() + "," : "") + super.toString();
+		String strSummary = (this.getQerror() > 0 ? "qerror=" + this.getQerror() + "," : "") + super.toString() 
+				+ (includeQRun ? ",qrun=" + this.getQrun() : "");
 		sb.append(strSummary);
 		for (RuleModel rule : this.getRules())
 			sb.append("\n").append(rule.getTextSummary());

@@ -15,13 +15,16 @@ class CoverageMutation implements ICoverageDecisor {
 	private String orderCols = "";
 
 	@Override
-	public void prepareEvaluation(AbstractQueryStatement stmt, QueryModel model) {
+	public String prepareEvaluation(AbstractQueryStatement stmt, QueryModel model) {
 		// Mutation needs store the query result and order by the columns in the query to get repeatable comparations
 		// Requires the model have a parsed query ???
-		orderCols = getOrderCols(model);
-		String sql = model.getModel().getParsedquery();
+		String sql = model.getModel().getQuery();
+		if (!"".equals(model.getModel().getParsedquery()))
+			sql = model.getModel().getParsedquery();
+		orderCols = getOrderCols(model); // also necessary to add order by to query and rules (if configured)
 		sql = addOrderBy(sql, orderCols);
 		this.rows = stmt.getReader(sql).getRows();
+		return sql;
 	}
 
 	@Override

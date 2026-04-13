@@ -77,10 +77,16 @@ namespace Giis.Qacover.Model
 
         public virtual string GetTextSummary()
         {
+            return GetTextSummary(false);
+        }
+
+        // By default do not include qrun, only for test, at least at this moment
+        public virtual string GetTextSummary(bool includeQRun)
+        {
             StringBuilder sb = new StringBuilder();
 
             // The summary may have an additional error message
-            string strSummary = (this.GetQerror() > 0 ? "qerror=" + this.GetQerror() + "," : "") + base.ToString();
+            string strSummary = (this.GetQerror() > 0 ? "qerror=" + this.GetQerror() + "," : "") + base.ToString() + (includeQRun ? ",qrun=" + this.GetQrun() : "");
             sb.Append(strSummary);
             foreach (RuleModel rule in this.GetRules())
                 sb.Append("\n").Append(rule.GetTextSummary());

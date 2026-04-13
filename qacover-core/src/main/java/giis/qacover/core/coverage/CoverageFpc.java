@@ -10,8 +10,9 @@ import giis.qacover.model.RuleModel;
 class CoverageFpc implements ICoverageDecisor {
 
 	@Override
-	public void prepareEvaluation(AbstractQueryStatement stmt, QueryModel model) {
+	public String prepareEvaluation(AbstractQueryStatement stmt, QueryModel model) {
 		// no preparation actions, evaluation is made by checking number of rows for each rule
+		return "";
 	}
 
 	@Override

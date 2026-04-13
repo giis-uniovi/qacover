@@ -21,6 +21,7 @@ public class CoverageService {
 
 	private QueryModel model;
 	private ICoverageDecisor decisor;
+	private boolean debugSql = false;
 
 	public CoverageService(QueryModel model) {
 		this.model = model;
@@ -29,18 +30,25 @@ public class CoverageService {
 		else
 			this.decisor = new CoverageFpc(); // fpc by default
 	}
+	
+	public CoverageService setDebugSql(boolean value) {
+		this.debugSql = value;
+		return this;
+	}
 
 	/**
 	 * Executes ead rule that have been generated in the model
 	 */
 	public ResultVector evaluateQuery(AbstractQueryStatement stmt, boolean skipIfCovered) {
 		List<RuleModel> rules = model.getRules();
-		model.reset();
+		model.reset(); // query counters will be recalculated at the end
 		ResultVector result = new ResultVector(rules.size());
 		stmt.setVariant(new Variability(model.getDbms()));
 
 		// Mutation will require a previous step to read query results to compare to the output of each mutant
-		decisor.prepareEvaluation(stmt, model);
+		String prepareSql = decisor.prepareEvaluation(stmt, model);
+		if (!"".equals(prepareSql) && this.debugSql)
+			log.debug("Query: " + prepareSql);
 
 		// Executes and annotates the coverage/status of each rule
 		for (int i = 0; i < rules.size(); i++) {
@@ -76,6 +84,8 @@ public class CoverageService {
 		model.addCount(1);
 		try { // save results
 			boolean isCovered = decisor.isCovered(stmt, sql);
+			if (this.debugSql)
+				log.debug("Rule: " + sql);
 			model.addDead(isCovered ? 1 : 0);
 			return isCovered ? ResultVector.COVERED : ResultVector.UNCOVERED;
 		} catch (Exception e) {

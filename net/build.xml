@@ -50,8 +50,10 @@
     <delete file="QACoverTest/Translated/Test4giis.Qacoverapp/ConnectionFactory.cs" />
     <delete file="QACoverTest/Translated/Test4giis.Qacover/TestExecute.cs" />
     <delete file="QACoverTest/Translated/Test4giis.Qacover/TestMutation.cs" />
+    <delete file="QACoverTest/Translated/Test4giis.Qacover/TestEvaluationStandalone.cs" />
     <delete file="QACoverTest/Translated/Test4giis.Qacover.Sqlserver/TestSqlserverExecute.cs" />
     <delete file="QACoverTest/Translated/Test4giis.Qacover.Sqlserver/TestSqlserverMutation.cs" />
+    <delete file="QACoverTest/Translated/Test4giis.Qacover.Sqlserver/TestSqlserverEvaluationStandalone.cs" />
 
     <replace dir="." >
       <include name="*/Translated/**/*.cs" />

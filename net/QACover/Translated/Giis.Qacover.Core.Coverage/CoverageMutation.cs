@@ -16,15 +16,18 @@ namespace Giis.Qacover.Core.Coverage
     {
         private IList<String[]> rows;
         private string orderCols = "";
-        public virtual void PrepareEvaluation(AbstractQueryStatement stmt, QueryModel model)
+        public virtual string PrepareEvaluation(AbstractQueryStatement stmt, QueryModel model)
         {
 
             // Mutation needs store the query result and order by the columns in the query to get repeatable comparations
             // Requires the model have a parsed query ???
-            orderCols = GetOrderCols(model);
-            string sql = model.GetModel().GetParsedquery();
+            string sql = model.GetModel().GetQuery();
+            if (!"".Equals(model.GetModel().GetParsedquery()))
+                sql = model.GetModel().GetParsedquery();
+            orderCols = GetOrderCols(model); // also necessary to add order by to query and rules (if configured)
             sql = AddOrderBy(sql, orderCols);
             this.rows = stmt.GetReader(sql).GetRows();
+            return sql;
         }
 
         public virtual string GetRuleQuery(RuleModel model)

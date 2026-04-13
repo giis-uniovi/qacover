@@ -20,6 +20,7 @@ namespace Giis.Qacover.Core.Coverage
         private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(CoverageService));
         private QueryModel model;
         private ICoverageDecisor decisor;
+        private bool debugSql = false;
         public CoverageService(QueryModel model)
         {
             this.model = model;
@@ -29,18 +30,26 @@ namespace Giis.Qacover.Core.Coverage
                 this.decisor = new CoverageFpc(); // fpc by default
         }
 
+        public virtual CoverageService SetDebugSql(bool value)
+        {
+            this.debugSql = value;
+            return this;
+        }
+
         /// <summary>
         /// Executes ead rule that have been generated in the model
         /// </summary>
         public virtual ResultVector EvaluateQuery(AbstractQueryStatement stmt, bool skipIfCovered)
         {
             IList<RuleModel> rules = model.GetRules();
-            model.Reset();
+            model.Reset(); // query counters will be recalculated at the end
             ResultVector result = new ResultVector(rules.Count);
             stmt.SetVariant(new Variability(model.GetDbms()));
 
             // Mutation will require a previous step to read query results to compare to the output of each mutant
-            decisor.PrepareEvaluation(stmt, model);
+            string prepareSql = decisor.PrepareEvaluation(stmt, model);
+            if (!"".Equals(prepareSql) && this.debugSql)
+                log.Debug("Query: " + prepareSql);
 
             // Executes and annotates the coverage/status of each rule
             for (int i = 0; i < rules.Count; i++)
@@ -82,6 +91,8 @@ namespace Giis.Qacover.Core.Coverage
 
                 // save results
                 bool isCovered = decisor.IsCovered(stmt, sql);
+                if (this.debugSql)
+                    log.Debug("Rule: " + sql);
                 model.AddDead(isCovered ? 1 : 0);
                 return isCovered ? ResultVector.COVERED : ResultVector.UNCOVERED;
             }

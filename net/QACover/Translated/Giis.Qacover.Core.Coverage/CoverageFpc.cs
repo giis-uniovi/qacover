@@ -14,8 +14,11 @@ namespace Giis.Qacover.Core.Coverage
     /// </summary>
     class CoverageFpc : ICoverageDecisor
     {
-        public virtual void PrepareEvaluation(AbstractQueryStatement stmt, QueryModel model)
+        public virtual string PrepareEvaluation(AbstractQueryStatement stmt, QueryModel model)
         {
+
+            // no preparation actions, evaluation is made by checking number of rows for each rule
+            return "";
         }
 
         public virtual string GetRuleQuery(RuleModel model)

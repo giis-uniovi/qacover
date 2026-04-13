@@ -28,7 +28,7 @@ namespace Giis.Qacover.Dbdriver
             }
             catch (Exception e) // just to produce same exception than java version
             {
-                throw new QaCoverException("QueryReader.hasRows", e);
+                throw new QaCoverException("IQueryStatementReader.hasRows", e);
             }
         }
 

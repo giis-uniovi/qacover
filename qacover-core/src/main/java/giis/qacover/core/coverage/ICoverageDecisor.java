@@ -10,9 +10,10 @@ import giis.qacover.model.RuleModel;
 interface ICoverageDecisor {
 
 	/**
-	 * Executes the preliminary actions on the query before evaluating all rules (only needed for mutation)
+	 * Executes the preliminary actions on the query before evaluating all rules (only needed for mutation).
+	 * Returns the sql executed to prepare the mutation evaluation (empty for fpc)
 	 */
-	void prepareEvaluation(AbstractQueryStatement stmt, QueryModel model);
+	String prepareEvaluation(AbstractQueryStatement stmt, QueryModel model);
 
 	/**
 	 * Gets the sql of a rule, with some preprocessing if required
