@@ -82,7 +82,7 @@ public class ITTests {
 		// Check the summary of the own application log
 		actFolder=FileUtil.getPath("..", "it", "qacover-uber-main", "target");
 		actual=FileUtil.fileRead(FileUtil.getPath(actFolder, "qacover-uber-log.log"));
-		expected="INFO  giis.qacover.core.coverage.CoverageService -  SUMMARY: Covered 1 out of 3";
+		expected="INFO  giis.qacover.eval.coverage.CoverageService -  SUMMARY: Covered 1 out of 3";
 		assertTrue("Expected '" + expected + "' not contained in actual: " + actual, actual.contains(expected));
 	}
 

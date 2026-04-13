@@ -4,12 +4,16 @@ import giis.tdrules.model.shared.ModelUtil;
 import giis.tdrules.openapi.model.TdRule;
 
 /**
- * Representation of single rule and the results/indicators about the
- * evaluation. It is a wrapper of the TdRules rule model with additional
- * information about the evaluation
+ * Representation of a coverage rule and the measures obtained after the evaluation:
+ * - dead: number of times the has been covered
+ * - count: number of times the rule has been evaluated
+ * - error: number of times the rule raised an error when evaluated
+ * - errorString: Contains all error messages (if any).
+ * 
+ * Wraps a TdRules model and stores the measures in its summary attribute. Provides getters and setters to
+ * manage these measures.
  */
 public class RuleModel extends RuleBase {
-	protected String runtimeError = "";
 	// The model of the rules that is wrapped here
 	protected TdRule model = null;
 
@@ -17,6 +21,9 @@ public class RuleModel extends RuleBase {
 		model = ruleModel;
 	}
 
+	/**
+	 * Returns the wrapped TdRule model
+	 */
 	public TdRule getModel() {
 		return model;
 	}
@@ -36,14 +43,12 @@ public class RuleModel extends RuleBase {
 	public void setSql(String sql) {
 		model.setQuery(sql);
 	}
+	
+	/**
+	 * Returns a string representation of the main coverage measures of this rule
+	 */
 	public String getTextSummary() {
 		return super.toString();
-	}
-	public String getRuntimeError() {
-		return this.runtimeError;
-	}
-	public void setRuntimeError(String error) {
-		this.runtimeError = error;
 	}
 
 	// Other specific attributes of the wrapped model
@@ -56,7 +61,6 @@ public class RuleModel extends RuleBase {
 	public String getMainType() {
 		return model.getMaintype();
 	}
-
 	public String getSubtype() {
 		return model.getSubtype();
 	}

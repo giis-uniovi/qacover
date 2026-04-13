@@ -1,4 +1,4 @@
-package giis.qacover.dbdriver;
+package giis.qacover.eval.reader;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import giis.qacover.core.query.IQueryStatementReader;
+import giis.qacover.eval.query.IQueryStatementReader;
 import giis.qacover.portable.QaCoverException;
 
 /**

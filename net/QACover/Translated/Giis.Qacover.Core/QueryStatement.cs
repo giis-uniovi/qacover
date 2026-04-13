@@ -1,6 +1,6 @@
 using Giis.Portable.Util;
-using Giis.Qacover.Core.Query;
 using Giis.Qacover.Core.Services;
+using Giis.Qacover.Eval.Coverage;
 using Giis.Qacover.Model;
 using System;
 using System.Collections.Generic;

@@ -9,7 +9,7 @@ using System.Text;
 namespace Giis.Qacover.Model
 {
     /// <summary>
-    /// Base class to store the standard results/indicators of the evaluation of
+    /// Base class to store common evaluation attributes related to
     /// (1) individual rules and (2) aggregated information of the evaluation of queries
     /// </summary>
     public abstract class RuleBase
@@ -17,21 +17,15 @@ namespace Giis.Qacover.Model
         protected static readonly string RDEAD = "dead"; // Covered
         protected static readonly string RCOUNT = "count";
         protected static readonly string RERROR = "error";
-        public static readonly string TAG_ERROR = "error";
-        // The indicator are stored as attributes, the implementatin
+        // The measures are stored in the summary attribute of the models, the implementation
         // is specific to the subclass (query or rule)
         protected abstract string GetAttribute(string name);
         protected abstract void SetAttribute(string name, string value);
         public override string ToString()
         {
-            return "count=" + GetCount() + ",dead=" + GetDead() + (this.GetError() > 0 ? ",error=" + GetError() : "");
-        }
 
-        public virtual void Reset()
-        {
-            SetCount(0);
-            SetDead(0);
-            SetError(0);
+            // As in most of cases there is no error, it is not shown unless it has a positive value
+            return "count=" + GetCount() + ",dead=" + GetDead() + (this.GetError() > 0 ? ",error=" + GetError() : "");
         }
 
         protected virtual int GetIntAttribute(string name)
@@ -91,8 +85,7 @@ namespace Giis.Qacover.Model
 
         public virtual void SetError(int error)
         {
-            if (GetError() > 0)
-                SetAttribute(RERROR, JavaCs.NumToString(error));
+            SetAttribute(RERROR, JavaCs.NumToString(error));
         }
 
         public virtual void AddError(int value)

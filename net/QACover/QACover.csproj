@@ -53,8 +53,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Translated\Giis.Qacover.Core.Coverage\" />
-    <Folder Include="Translated\Giis.Qacover.Core.Query\" />
+    <Folder Include="Translated\Giis.Qacover.Eval.Coverage\" />
+    <Folder Include="Translated\Giis.Qacover.Eval.Query\" />
   </ItemGroup>
 
 </Project>

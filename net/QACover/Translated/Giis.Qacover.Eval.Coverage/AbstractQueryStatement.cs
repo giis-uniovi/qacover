@@ -1,6 +1,7 @@
 using Java.Sql;
 using NLog;
 using Giis.Portable.Util;
+using Giis.Qacover.Eval.Query;
 using Giis.Qacover.Model;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 /////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 
-namespace Giis.Qacover.Core.Query
+namespace Giis.Qacover.Eval.Coverage
 {
     /// <summary>
     /// General representation of a database query statement that is going to be evaluated.

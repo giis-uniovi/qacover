@@ -1,6 +1,6 @@
 ﻿using Giis.Qacover.Core;
-using Giis.Qacover.Core.Query;
-using Giis.Qacover.Dbdriver;
+using Giis.Qacover.Eval.Query;
+using Giis.Qacover.Eval.Reader;
 using Giis.Qacover.Portable;
 using Java.Sql;
 using System;

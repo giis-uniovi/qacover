@@ -1,4 +1,3 @@
-using Giis.Qacover.Core.Query;
 using Giis.Qacover.Model;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 /////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 
-namespace Giis.Qacover.Core.Coverage
+namespace Giis.Qacover.Eval.Coverage
 {
     /// <summary>
     /// Performs the required actions on the SQLfpc coverage rules (get and evaluate the rules)

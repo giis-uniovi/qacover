@@ -4,11 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import giis.portable.util.JavaCs;
-import giis.qacover.core.coverage.CoverageService;
 import giis.qacover.core.services.Configuration;
 import giis.qacover.core.services.FaultInjector;
 import giis.qacover.core.services.RuleServices;
 import giis.qacover.core.services.StoreService;
+import giis.qacover.eval.coverage.CoverageService;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.ResultVector;
 import giis.qacover.model.SchemaModel;

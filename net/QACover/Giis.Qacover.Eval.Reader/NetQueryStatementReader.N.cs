@@ -1,10 +1,10 @@
-﻿using Giis.Qacover.Core.Query;
+﻿using Giis.Qacover.Eval.Query;
 using Giis.Qacover.Portable;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 
-namespace Giis.Qacover.Dbdriver
+namespace Giis.Qacover.Eval.Reader
 {
     public class NetQueryStatementReader : IQueryStatementReader
     {

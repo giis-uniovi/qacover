@@ -14,8 +14,7 @@ import com.p6spy.engine.common.Value;
 import com.p6spy.engine.spy.P6SpyOptions;
 
 import giis.qacover.core.QueryStatement;
-import giis.qacover.core.query.IQueryStatementReader;
-import giis.qacover.dbdriver.JdbcQueryStatementReader;
+import giis.qacover.eval.reader.JdbcQueryStatementReader;
 import giis.qacover.portable.QaCoverException;
 
 /**
@@ -119,7 +118,7 @@ public class StatementAdapter extends QueryStatement {
 	}
 	
 	@Override
-	public IQueryStatementReader getReader(String sql) {
+	public JdbcQueryStatementReader getReader(String sql) {
 		return new JdbcQueryStatementReader(this.getConnection(), getSqlWithValues(sql));
 	}
 

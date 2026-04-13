@@ -1,4 +1,4 @@
-package giis.qacover.core.query;
+package giis.qacover.eval.query;
 
 import java.util.List;
 

@@ -18,9 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import giis.portable.util.JavaCs;
-import giis.qacover.dbdriver.JdbcQueryStatementReader;
 import giis.qacover.eval.StandaloneEvaluator;
+import giis.qacover.eval.reader.JdbcQueryStatementReader;
 import giis.qacover.model.QueryModel;
+import giis.qacover.model.RuleModel;
 import giis.qacover.model.Variability;
 import giis.qacover.portable.QaCoverException;
 import giis.tdrules.openapi.model.TdRule;
@@ -84,8 +85,10 @@ public class TestEvaluationStandalone {
 	// Scenario to check the rule coverage evolution by adding rows at each step
 	@Test
 	public void testFpcMain() throws SQLException {
-		TdRules rules = getRules("fpc", "select * from test where text='abc'", "select * from test where num<=0",
-				"select * from test where text='xyz'", "select * from test where text is null");
+		TdRules rules = getRules("fpc", "select * from test where text='abc'", 
+				"select * from test where num<=0",
+				"select * from test where text='xyz'", 
+				"select * from test where text is null");
 		QueryModel model = new QueryModel(rules);
 
 		// none covered, only count runs
@@ -107,7 +110,7 @@ public class TestEvaluationStandalone {
 		evaluator.evaluate(model);
 		assertSummary(model, "count=3,dead=2,qrun=4 count=4,dead=3 count=4,dead=0 count=4,dead=1");
 
-		// Final check to verify each indicator in query and a rule
+		// Final check to verify each measure in query and a rule
 		assertEquals(3, model.getCount());
 		assertEquals(2, model.getDead());
 		assertEquals(4, model.getQrun());
@@ -118,14 +121,22 @@ public class TestEvaluationStandalone {
 		assertEquals(3, model.getRules().get(0).getDead());
 		assertEquals(0, model.getRules().get(0).getError());
 		assertEquals("", model.getRules().get(0).getErrorString());
+		
+		// A simple log with all results (example in the readme)
+		log.info("Covered {} rule(s) out of {}. Query evaluated {} time(s)", model.getDead(), model.getCount(), model.getQrun());
+		for (RuleModel rule : model.getRules())
+			log.info("Rule {}: covered {} time(s), executed {}, with error {}. Error messages: {}", 
+					rule.getId(), rule.getDead(), rule.getCount(), rule.getError(), rule.getErrorString());
 	}
 
 	// Do not evaluate rules that are already covered
 	// Using the same rules than previous test, but shorter scenario
 	@Test
 	public void testFpcSkipIfCovered() throws SQLException {
-		TdRules rules = getRules("fpc", "select * from test where text='abc'", "select * from test where num<=0",
-				"select * from test where text='xyz'", "select * from test where text is null");
+		TdRules rules = getRules("fpc", "select * from test where text='abc'", 
+				"select * from test where num<=0",
+				"select * from test where text='xyz'", 
+				"select * from test where text is null");
 		QueryModel model = new QueryModel(rules);
 		evaluator.setSkipIfCovered(true);
 
@@ -150,7 +161,8 @@ public class TestEvaluationStandalone {
 	@Test
 	public void testFpcParameters() throws SQLException {
 		setupTestData();
-		TdRules rules = getRules("fpc", "select * from test where num=?1? and text=?2?", "select * from test where num=?1?",
+		TdRules rules = getRules("fpc", "select * from test where num=?1? and text=?2?", 
+				"select * from test where num=?1?",
 				"select * from test where text=?2?");
 		QueryModel model = new QueryModel(rules);
 
@@ -162,12 +174,31 @@ public class TestEvaluationStandalone {
 		evaluator.evaluate(model, "-1", "'xyz'");
 		assertSummary(model, "count=2,dead=2,qrun=2 count=2,dead=1 count=2,dead=1");
 	}
+	
+	@Test
+	public void testDemo() throws SQLException {
+		setupTestData();
+		TdRules rules = getRules("fpc", "select * from test where num=?1? and text=?2?", 
+				"select * from test where num=?1?",
+				"select * from test where text=?2?");
+		QueryModel model = new QueryModel(rules);
+		
+		evaluator.evaluate(model, "0", "'none'");
+		evaluator.evaluate(model, "-1", "'xyz'");
+		log.info("{} rule(s) covered out of {}", model.getDead(), model.getCount());
+		for (RuleModel rule : model.getRules()) {
+			log.info("Rule {}: covered {} times, executed {}, with error {}. Error messages: {}", 
+					rule.getId(), rule.getDead(), rule.getCount(), rule.getError(), rule.getErrorString());
+		}
+		
+	}
 
 	@Test
 	public void testFpcErrors() throws SQLException {
 		setupTestData();
 		// Manages different amounts of parameters to check error counts and messages
-		TdRules rules = getRules("fpc", "select * from test where num=?1? and text=?2?", "select * from test where num=?1?",
+		TdRules rules = getRules("fpc", "select * from test where num=?1? and text=?2?", 
+				"select * from test where num=?1?",
 				"select * from test where text=?2?");
 		QueryModel model = new QueryModel(rules);
 
@@ -198,7 +229,7 @@ public class TestEvaluationStandalone {
 		Base.assertContains("giis.qacover.portable.QaCoverException: IQueryStatementReader.hasRows", message2);
 	}
 
-	// Previous tests exercise the coverage indicators and exceptions using fpc.
+	// Previous tests exercise the coverage measures and exceptions using fpc.
 	// Here we concentrate into the evaluation of mutants, using fixed database and each query with a single rule
 	@Test
 	public void testMutMain() throws SQLException {

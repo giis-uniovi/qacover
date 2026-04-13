@@ -3,29 +3,23 @@ package giis.qacover.model;
 import giis.portable.util.JavaCs;
 
 /**
- * Base class to store the standard results/indicators of the evaluation of 
+ * Base class to store common evaluation attributes related to
  * (1) individual rules and (2) aggregated information of the evaluation of queries
  */
 public abstract class RuleBase {
 	protected static final String RDEAD = "dead"; // Covered
 	protected static final String RCOUNT = "count";
 	protected static final String RERROR = "error";
-	public static final String TAG_ERROR = "error";
 
-	// The indicator are stored as attributes, the implementatin
+	// The measures are stored in the summary attribute of the models, the implementation
 	// is specific to the subclass (query or rule)
 	protected abstract String getAttribute(String name);
 	protected abstract void setAttribute(String name, String value);
 
 	@Override
 	public String toString() {
+		// As in most of cases there is no error, it is not shown unless it has a positive value
 		return "count=" + getCount() + ",dead=" + getDead() + (this.getError() > 0 ? ",error=" + getError() : "");
-	}
-
-	public void reset() {
-		setCount(0);
-		setDead(0);
-		setError(0);
 	}
 
 	protected int getIntAttribute(String name) {
@@ -65,8 +59,7 @@ public abstract class RuleBase {
 		return getIntAttribute(RERROR);
 	}
 	public void setError(int error) {
-		if (getError() > 0) // evita este atributo si no hay error por ser excepcional (nunca decrementara hasta cero)
-			setAttribute(RERROR, JavaCs.numToString(error));
+		setAttribute(RERROR, JavaCs.numToString(error));
 	}
 	public void addError(int value) {
 		incrementIntAttribute(RERROR, value);

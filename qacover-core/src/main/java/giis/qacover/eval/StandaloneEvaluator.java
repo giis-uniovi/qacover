@@ -4,18 +4,18 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
-import giis.qacover.core.coverage.CoverageService;
+import giis.qacover.eval.coverage.CoverageService;
 import giis.qacover.model.QueryModel;
 
 /**
  * A standalone evaluator of fpc and mutation coverage rules that does not depends on the QACover
  * configurations and p6spy interceptors (Only available for Java)
  * 
- * Provides a main overloaded method (evaluate) that given a model of the rules performs the appropriate
- * evaluation according to the rule class of the model. The required model is a wrapper of a TdRules model
- * obtained from the TdRules service. The indicators about coverage are stored in the TdRules model in the
- * summary attribute (both in the query and in each rule). These attributes can be accessed by methods in the
- * wrapper.
+ * Provides a main overloaded method (`evaluate`) that given a model of the rules performs the appropriate
+ * evaluation according to the rule class of the model. The required model `QueryModel` is a wrapper of a
+ * `TdRules` model obtained from the TdRules service. The coverage measures are stored in the wrapped
+ * `TdRules` model in the summary attribute (both in the query and in each rule). These attributes can be
+ * accessed by methods in the the `QueryModel` wrapper.
  * 
  * Also provides additional fluent setters to configure the logging of the rules evaluated and to optimize the
  * evaluation by skipping execution of rules that are already covered.
@@ -27,7 +27,7 @@ public class StandaloneEvaluator {
 	private boolean skipIfCovered = false;
 
 	/**
-	 * Creates an evaluator with an open Jdbc connection,
+	 * Creates an evaluator against an open Jdbc connection,
 	 */
 	public StandaloneEvaluator(Connection conn) {
 		this.conn = conn;

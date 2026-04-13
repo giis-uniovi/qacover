@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import giis.portable.util.JavaCs;
-import giis.qacover.core.query.AbstractQueryStatement;
 import giis.qacover.core.services.FaultInjector;
 import giis.qacover.core.services.RuleServices;
+import giis.qacover.eval.coverage.AbstractQueryStatement;
 import giis.qacover.model.QueryWithParameters;
 
 /**

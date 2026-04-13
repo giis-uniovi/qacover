@@ -4,9 +4,8 @@ import java.sql.Connection;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import giis.qacover.core.query.AbstractQueryStatement;
-import giis.qacover.core.query.IQueryStatementReader;
-import giis.qacover.dbdriver.JdbcQueryStatementReader;
+import giis.qacover.eval.coverage.AbstractQueryStatement;
+import giis.qacover.eval.reader.JdbcQueryStatementReader;
 
 class StandaloneJdbcQueryStatement extends AbstractQueryStatement {
 
@@ -25,7 +24,7 @@ class StandaloneJdbcQueryStatement extends AbstractQueryStatement {
 	}
 
 	@Override
-	public IQueryStatementReader getReader(String sql) {
+	public JdbcQueryStatementReader getReader(String sql) {
 		return new JdbcQueryStatementReader(conn, getSqlWithValues(sql));
 	}
 

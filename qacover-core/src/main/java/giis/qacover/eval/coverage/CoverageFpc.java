@@ -1,6 +1,5 @@
-package giis.qacover.core.coverage;
+package giis.qacover.eval.coverage;
 
-import giis.qacover.core.query.AbstractQueryStatement;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.RuleModel;
 

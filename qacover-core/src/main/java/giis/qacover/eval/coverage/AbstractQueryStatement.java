@@ -1,10 +1,11 @@
-package giis.qacover.core.query;
+package giis.qacover.eval.coverage;
 
 import java.sql.Connection;
 
 import org.slf4j.Logger;
 
 import giis.portable.util.JavaCs;
+import giis.qacover.eval.query.IQueryStatementReader;
 import giis.qacover.model.QueryParameters;
 import giis.qacover.model.Variability;
 

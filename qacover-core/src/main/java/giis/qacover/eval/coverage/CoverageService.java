@@ -1,11 +1,10 @@
-package giis.qacover.core.coverage;
+package giis.qacover.eval.coverage;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import giis.qacover.core.query.AbstractQueryStatement;
 import giis.qacover.model.QueryModel;
 import giis.qacover.model.ResultVector;
 import giis.qacover.model.RuleModel;
@@ -22,6 +21,7 @@ public class CoverageService {
 	private QueryModel model;
 	private ICoverageDecisor decisor;
 	private boolean debugSql = false;
+	private String lastRuleError; // Error message after evaluation of a single rule (used in logs)
 
 	public CoverageService(QueryModel model) {
 		this.model = model;
@@ -41,7 +41,8 @@ public class CoverageService {
 	 */
 	public ResultVector evaluateQuery(AbstractQueryStatement stmt, boolean skipIfCovered) {
 		List<RuleModel> rules = model.getRules();
-		model.reset(); // query counters will be recalculated at the end
+		int totalDead = 0;
+		int totalError = 0;
 		ResultVector result = new ResultVector(rules.size());
 		stmt.setVariant(new Variability(model.getDbms()));
 
@@ -59,18 +60,20 @@ public class CoverageService {
 			else
 				res = this.evaluateRule(ruleModel, stmt);
 
-			// Results for logging
-			String logString = this.getLogString(ruleModel, stmt, res);
+			// Results for logging/debugging
+			String logString = this.getLogString(ruleModel, stmt, res, this.lastRuleError);
 			log.debug(logString);
-
-			// store results
 			result.setResult(i, res, logString);
+
+			//  Calculate totals
 			if (ruleModel.getDead() > 0)
-				model.addDead(1);
+				totalDead++;
 			if (ruleModel.getError() > 0)
-				model.addError(1);
+				totalError++;
 		}
 		model.setCount(rules.size());
+		model.setDead(totalDead);
+		model.setError(totalError);
 		model.addQrun(1);
 		log.info(" SUMMARY: Covered " + model.getDead() + " out of " + model.getCount());
 		return result;
@@ -82,6 +85,7 @@ public class CoverageService {
 	public String evaluateRule(RuleModel model, AbstractQueryStatement stmt) {
 		String sql = this.decisor.getRuleQuery(model);
 		model.addCount(1);
+		this.lastRuleError = "";
 		try { // save results
 			boolean isCovered = decisor.isCovered(stmt, sql);
 			if (this.debugSql)
@@ -90,17 +94,17 @@ public class CoverageService {
 			return isCovered ? ResultVector.COVERED : ResultVector.UNCOVERED;
 		} catch (Exception e) {
 			model.addError(1);
-			model.addErrorString(e.toString());
-			model.setRuntimeError(e.toString());
+			model.addErrorString(e.toString()); // cumulative error messages
+			this.lastRuleError = e.toString(); // current error message
 			return ResultVector.RUNTIME_ERROR;
 		}
 	}
 
-	public String getLogString(RuleModel ruleModel, AbstractQueryStatement stmt, String res) {
+	private String getLogString(RuleModel ruleModel, AbstractQueryStatement stmt, String res, String lastRuleError) {
 		String sql = stmt.getSqlWithValues(ruleModel.getSql());
 		String ruleWithSql = sql.replace("\r", "").replace("\n", " ").trim();
 		String logString = res + " " + (ResultVector.COVERED.equals(res) ? "  " : "") + ruleWithSql;
-		logString += ResultVector.RUNTIME_ERROR.equals(res) ? "\n" + ruleModel.getRuntimeError() : "";
+		logString += "".equals(lastRuleError) ? "" : "\n" + lastRuleError;
 		return logString;
 	}
 

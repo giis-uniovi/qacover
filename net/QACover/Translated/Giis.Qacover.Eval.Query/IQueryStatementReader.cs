@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 /////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 
-namespace Giis.Qacover.Core.Query
+namespace Giis.Qacover.Eval.Query
 {
     /// <summary>
     /// Provides read access to the data stored in the database to evaluate the rules
