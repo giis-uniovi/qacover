@@ -55,7 +55,7 @@ namespace Giis.Qacover.Report
                 HistoryModel item = history.GetItems()[i];
                 sb.Append(i != 0 ? "<br/>" : "").Append("<strong>").Append(i + 1).Append("</strong>.");
                 string result = item.GetResult() == null ? "" : item.GetResult(); // can be null if query failed
-                sb.Append(" Eval result: [<span class='result-vector'>" + result + "</span>]");
+                sb.Append(" Eval result: [<span class='result-vector'>").Append(result).Append("</span>]");
                 sb.Append(" Params:");
                 foreach (ParameterDao param in item.GetParams())
                     sb.Append(" ").Append(Encode(param.ToString()));

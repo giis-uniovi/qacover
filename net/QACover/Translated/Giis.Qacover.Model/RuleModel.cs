@@ -10,13 +10,17 @@ using System.Text;
 namespace Giis.Qacover.Model
 {
     /// <summary>
-    /// Representation of single rule and the results/indicators about the
-    /// evaluation. It is a wrapper of the TdRules rule model with additional
-    /// information about the evaluation
+    /// Representation of a coverage rule and the measures obtained after the evaluation:
+    /// - dead: number of times the has been covered
+    /// - count: number of times the rule has been evaluated
+    /// - error: number of times the rule raised an error when evaluated
+    /// - errorString: Contains all error messages (if any).
+    /// 
+    /// Wraps a TdRules model and stores the measures in its summary attribute. Provides getters and setters to
+    /// manage these measures.
     /// </summary>
     public class RuleModel : RuleBase
     {
-        protected string runtimeError = "";
         // The model of the rules that is wrapped here
         protected TdRule model = null;
         public RuleModel(TdRule ruleModel)
@@ -24,6 +28,9 @@ namespace Giis.Qacover.Model
             model = ruleModel;
         }
 
+        /// <summary>
+        /// Returns the wrapped TdRule model
+        /// </summary>
         public virtual TdRule GetModel()
         {
             return model;
@@ -49,19 +56,12 @@ namespace Giis.Qacover.Model
             model.SetQuery(sql);
         }
 
+        /// <summary>
+        /// Returns a string representation of the main coverage measures of this rule
+        /// </summary>
         public virtual string GetTextSummary()
         {
             return base.ToString();
-        }
-
-        public virtual string GetRuntimeError()
-        {
-            return this.runtimeError;
-        }
-
-        public virtual void SetRuntimeError(string error)
-        {
-            this.runtimeError = error;
         }
 
         // Other specific attributes of the wrapped model

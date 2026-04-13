@@ -40,6 +40,7 @@ This is an example of the summary report of a test session:
     - [Report generation](#report-generation)
     - [Content of the reports](#content-of-the-reports)
     - [Include the source code](#include-the-source-code)
+  - [Standalone evaluation](#standalone-evaluation)
   - [Contributing and Architecture](#contributing-and-architecture)
 
 ## Quick Start
@@ -266,7 +267,7 @@ The `index.html` file contains the summary of test data coverage for each class:
 where:
 - %: Total percent of coverage (number of coverage rules covered divided by total number of coverage rules generated).
 - qrun: total number of query evaluations.
-- qcount: number of different queries that have been evaluated.
+- qcount: number of queries that have been evaluated.
 - qerror: number of queries that have not been evaluated because some error.
 - dead: number of coverage rules covered.
 - count: number of coverage rules generated.
@@ -284,7 +285,7 @@ expands the details of each coverage rule (covered in green, uncovered in yellow
 - A textual message that explains the test situation that the coverage rule represents.
   If a coverage rule is not covered, a test and/or the appropriate test data may be added in order to cover it.
 - The SQL representation of the coverage rule.
-- Additional indicators
+- Additional values:
   - Sequential ID.
   - dead: number of times that the coverage rule has been covered.
   - count: number of times that the coverage rule has been executed.
@@ -319,6 +320,33 @@ resolved to a relative path before report generation. For example:
   set the parameters as `.` `/app` (The `/app` value allows to resolve the relative path of each source file 
   from the project folder). 
 
+## Standalone evaluation
+
+Package `qacover.eval` contains a standalone evaluator ()`StandaloneEvaluator`) of fpc and mutation coverage rules that does not depends on the QACover configurations and p6spy interceptors (only Java).
+
+Provides a main overloaded method (`evaluate`) that given a model of the rules performs the appropriate
+evaluation according to the rule class of the model. The required model `QueryModel` is a wrapper of a
+`TdRules` model obtained from the TdRules service. The coverage measures are stored in the wrapped `TdRules` model
+in the summary attribute (both in the query and in each rule). These attributes can be accessed by methods
+in the the `QueryModel` wrapper.
+
+**Example**: Consider a model `rules` generated as indicated in the [TdRules documentation](https://github.com/giis-uniovi/tdrules/blob/main/README.md).
+We assume that the query requires two parameters.
+The below code performs two evaluations against an open jdbc connection `conn` and logs the coverage measures related of the query and each rule:
+
+```java
+  StandaloneEvaluator evaluator = new StandaloneEvaluator(conn).setDebugSql(true);
+  QueryModel model = new QueryModel(rules);
+  evaluator.evaluate(model, "0", "'none'");
+  evaluator.evaluate(model, "-1", "'xyz'");
+
+  log.info("Covered {} rule(s) out of {}. Query evaluated {} time(s)", model.getDead(), model.getCount(), model.getQrun());
+  for (RuleModel rule : model.getRules())
+    log.info("Rule {}: covered {} time(s), executed {}, with error {}. Error messages: {}", 
+        rule.getId(), rule.getDead(), rule.getCount(), rule.getError(), rule.getErrorString());
+```
+
+See the source code of `StandaloneEvaluator`, `QueryModel` and `RuleModel` for more details and features.
 
 ## Contributing and Architecture
 
@@ -334,22 +362,50 @@ QACover makes use of
 The execution of everything is made in local against the database configured in the connection string.
 
 The internal structure of the main QACover packages (prefix `giis.qacover.`) is shown below (the prefixes are omitted for simplicity):
-- **`core` module**: Contains the `driver`, `core` and `core.sevices` packages.
-- **`model` module**: Contains the `model`, `storage`, `reader` and `report` packages.
+- **core module**: Contains packages related to:
+  - Coverage evaluation: `eval`, `eval.coverage`, `eval.query`, `eval.reader`.
+  - Integration of evaluation and query interception:  `core`, `core.sevices`, `driver`, `p6spy`.
+- **model module**: Contains packages related to:
+  - Utilities: `storage`, `reader`, `report`.
+  - Shared models: `model`.
+- Packages `p6spy`, `driver` and `eval.reader` have their own implementations in .NET. The rest of the packages are automatically converted from Java to C# using [JavaToCsharp](https://github.com/paulirwin/JavaToCSharp).
 
 These are the dependencies between packages:
 
 ```mermaid
 flowchart TD
+  subgraph qacover-core: evaluation
+  eval --> eval.coverage
+  eval --> eval.reader
+  eval.coverage --> eval.query
+  eval.reader --> eval.query
+  end
+  eval --> model
+  eval.coverage --> model
+  eval.query --> model
+
+  subgraph qacover-core: integration
+  p6spy --> driver
   driver --> core
-  core --> services(core.services)
-  services --> storage
-  storage --> model
+  core --> core.services
+  end
   core --> model
-  services --> model
+  core --> eval.coverage
+  core.services --> storage
+  core.services --> model
+  driver --> eval.reader
+  
+  subgraph qacover-model: utilities
   report --> reader
+  reader --> storage
+  end
   report --> model
   reader --> model
-  reader --> storage
+  storage --> model
+
+  subgraph qacover-model: model
+  model
+  end
 ```
+
 

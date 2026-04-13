@@ -1,6 +1,7 @@
 using NLog;
 using Giis.Portable.Util;
 using Giis.Qacover.Core.Services;
+using Giis.Qacover.Eval.Coverage;
 using Giis.Qacover.Model;
 using System;
 using System.Collections.Generic;
@@ -21,24 +22,20 @@ namespace Giis.Qacover.Core
         private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(CoverageManager));
         private QueryModel model;
         private SchemaModel schema;
-        private RuleDriver ruleDriver; // a delegate to get and evaluate the rules
         private ResultVector result = new ResultVector(0); // to avoid null if fails before generating rules
         // Different constructors for new rules, existing and errors
-        public CoverageManager(RuleDriver ruleDriver)
+        public CoverageManager()
         {
-            this.ruleDriver = ruleDriver;
         }
 
-        public CoverageManager(RuleDriver ruleDriver, QueryModel model)
+        public CoverageManager(QueryModel model)
         {
             this.model = model;
-            this.ruleDriver = ruleDriver;
         }
 
-        public CoverageManager(RuleDriver ruleDriver, string sql, string error)
+        public CoverageManager(string sql, string error)
         {
             this.model = new QueryModel(sql, error);
-            this.ruleDriver = ruleDriver;
         }
 
         public virtual QueryModel GetModel()
@@ -100,7 +97,7 @@ namespace Giis.Qacover.Core
             string clientVersion = new Variability().GetVersion();
             string fpcOptions = "clientname=" + config.GetName() + new Variability().GetVariantId() + " clientversion=" + clientVersion + " numberjdbcparam" + ("mutation".Equals(config.GetRuleCriterion()) ? " getordercols getparsedquery" : "") + " " + config.GetRuleOptions();
             store.SetLastGeneratedInRules(svc.GetRulesInput(sql, this.schema, fpcOptions));
-            model = ruleDriver.GetRules(svc, sql, this.schema, fpcOptions);
+            model = new RuleGenerator().GetRules(svc, sql, this.schema, fpcOptions);
 
             // The DBMS is stored too to manage its variability in further actions
             model.SetDbms(this.schema.GetDbms());
@@ -113,48 +110,12 @@ namespace Giis.Qacover.Core
         {
             svc.SetErrorContext("Run SQLFpc coverage rules");
             store.SetLastSqlRun(stmt.GetSql());
-            StringBuilder logsb = new StringBuilder();
-            IList<RuleModel> rules = model.GetRules();
             FaultInjector injector = stmt.GetFaultInjector();
             if (injector != null && injector.IsSingleRuleFaulty())
-                rules[0].SetSql(injector.GetSingleRuleFault());
-            model.Reset();
-            result = new ResultVector(rules.Count);
-            stmt.SetVariant(new Variability(model.GetDbms()));
-
-            // Mutation requires a previous step to read query results
-            // note that it requires generate the rules to get the parsed query
-            // that includes numbers in the parameters
-            string orderCols = ruleDriver.GetOrderCols(model);
-            ruleDriver.PrepareEvaluation(stmt, model, orderCols);
-
-            // Executes and annotates the coverage/status of each rule
-            for (int i = 0; i < rules.Count; i++)
-            {
-                RuleModel ruleModel = rules[i];
-                string res;
-                if (options.GetOptimizeRuleEvaluation() && ruleModel.GetDead() > 0)
-                    res = ResultVector.ALREADY_COVERED;
-                else
-                    res = ruleDriver.EvaluateRule(ruleModel, stmt, orderCols);
-
-                // Results for logging
-                string logString = ruleDriver.GetLogString(ruleModel, stmt, res);
-                logsb.Append((i == 0 ? "" : "\n") + logString);
-                log.Debug(logString);
-
-                // store results
-                result.SetResult(i, res);
-                if (ruleModel.GetDead() > 0)
-                    model.AddDead(1);
-                if (ruleModel.GetError() > 0)
-                    model.AddError(1);
-            }
-
-            model.SetCount(rules.Count);
-            model.AddQrun(1);
-            log.Info(" SUMMARY: Covered " + model.GetDead() + " out of " + model.GetCount());
-            store.SetLastRulesLog(logsb.ToString());
+                model.GetRules()[0].SetSql(injector.GetSingleRuleFault());
+            CoverageService evaluator = new CoverageService(model);
+            result = evaluator.EvaluateQuery(stmt, options.GetOptimizeRuleEvaluation());
+            store.SetLastRulesLog(result.GetLog());
         }
     }
 }

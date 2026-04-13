@@ -3,8 +3,8 @@ using Java.Util;
 
 using NLog;
 using Giis.Portable.Util;
-using Giis.Qacover.Core;
 using Giis.Qacover.Core.Services;
+using Giis.Qacover.Core;
 using Giis.Qacover.Model;
 using Test4giis.Qacoverapp;
 using System;
@@ -91,10 +91,10 @@ namespace Test4giis.Qacover
                 NUnit.Framework.Legacy.ClassicAssert.AreEqual(expected, actual);
         }
 
-        protected virtual void AssertContains(string expected, string actual)
+        public static void AssertContains(string expected, string actual)
         {
             if (!actual.Contains(expected))
-                NUnit.Framework.Legacy.ClassicAssert.Fail("Expected not contained in actual: " + actual);
+                NUnit.Framework.Legacy.ClassicAssert.Fail("Expected '" + expected + "' not contained in actual: " + actual);
         }
 
         /// <summary>

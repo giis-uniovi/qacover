@@ -12,10 +12,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import giis.qacover.core.services.Configuration;
-import giis.qacover.driver.QueryStatementReader;
+import giis.qacover.eval.reader.JdbcQueryStatementReader;
 import giis.qacover.model.Variability;
 import test4giis.qacoverapp.AppSimpleJdbc;
 
+/**
+ * Test the evaluation of mutants from queries intercepted by the database driver.
+ * Also checks the configuration switching for succesive evaluations of fpc and mutants, and viceversa
+ */
 public class TestMutation extends Base {
 	private AppSimpleJdbc app;
 
@@ -88,7 +92,7 @@ public class TestMutation extends Base {
 	// Detailed evaluation of differences
 	@Test
 	public void testDataCompare() throws SQLException {
-		QueryStatementReader reader = new QueryStatementReader(app.getConnectionNative(), "select id,txt from test order by id");
+		JdbcQueryStatementReader reader = new JdbcQueryStatementReader(app.getConnectionNative(), "select id,txt from test order by id");
 
 		// equality
 		List<String[]> rows = reader.getRows();

@@ -63,8 +63,7 @@ namespace Giis.Qacover.Core
         {
             string errorMsg = "Error at " + svc.GetErrorContext() + ": " + QaCoverException.GetString(e);
             string sql = stmt != null ? stmt.GetSql() : "";
-            RuleDriver rd = new RuleDriverFactory().GetDriver();
-            CoverageManager rm = new CoverageManager(rd, sql, errorMsg); // construye error en el formato xml de las reglas
+            CoverageManager rm = new CoverageManager(sql, errorMsg); // construye error en el formato xml de las reglas
             store.SetLastGenStatus(errorMsg);
             log.Error("  ERROR: " + errorMsg, e);
             return rm;
@@ -90,12 +89,11 @@ namespace Giis.Qacover.Core
 
             // CoverageManager is constructed from rules generated in a previous query
             // or by generating a fresh set of rules
-            RuleDriver rd = new RuleDriverFactory().GetDriver(); // delegate to get and evaluate the rules
-            CoverageManager rm = GetCoverageManager(rd, store, stack, stmt, options.GetRuleCriterion());
+            CoverageManager rm = GetCoverageManager(store, stack, stmt, options.GetRuleCriterion());
             if (rm == null)
             {
                 log.Debug("Generating new coverage rules for this query");
-                rm = new CoverageManager(rd);
+                rm = new CoverageManager();
                 rm.Generate(svc, store, stmt, stmt.GetSql(), options);
             }
             else
@@ -122,7 +120,7 @@ namespace Giis.Qacover.Core
             return rm;
         }
 
-        private CoverageManager GetCoverageManager(RuleDriver ruleDriver, StoreService store, StackLocator stack, QueryStatement stmt, string currentCriterion)
+        private CoverageManager GetCoverageManager(StoreService store, StackLocator stack, QueryStatement stmt, string currentCriterion)
         {
             QueryModel model = store.Get(stack.GetClassName(), stack.GetMethodName(), stack.GetLineNumber(), stmt.GetSql());
             if (model == null)
@@ -139,7 +137,7 @@ namespace Giis.Qacover.Core
 
 
             // new empty rule
-            return new CoverageManager(ruleDriver, model);
+            return new CoverageManager(model);
         }
     }
 }

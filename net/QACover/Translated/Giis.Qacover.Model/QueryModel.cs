@@ -11,17 +11,23 @@ using System.Text;
 namespace Giis.Qacover.Model
 {
     /// <summary>
-    /// Representation of a query, its rules and the results/indicators about the evaluation.
-    /// It is a wrapper of the TdRules model with additional information about the evaluation
+    /// Representation of a query, its rules and the measures obtained after the evaluation:
+    /// - dead: number of coverage rules that have been covered
+    /// - count: number of coverage rules generated in the query
+    /// - qrun: number of times the query has been evaluated.
+    /// 
+    /// Wraps a TdRules model and stores the measures in its summary attribute. Provides getters and setters to
+    /// manage these measures.
     /// </summary>
     public class QueryModel : RuleBase
     {
-        // In addition to the standard attributes, indicates if the query itself 
-        // has errors (it can't be evaluated)
-        private static readonly string QERROR = "qerror";
         // How many times has been evaluated
         private static readonly string QRUN = "qrun";
-        // It stores additional information about the query location
+        // Below additional attributes are used only when executor runs integrated with query interception,
+        // they are not used when using the StandaloneEvaluator
+        // Error message if the query itself has errors (it can't be evaluated)
+        private static readonly string QERROR = "qerror";
+        // Additional information about the query location in the source code
         private static readonly string CLASS_NAME = "class";
         private static readonly string METHOD_NAME = "method";
         private static readonly string LINE_NUMBER = "line";
@@ -47,6 +53,9 @@ namespace Giis.Qacover.Model
             model = rulesModel;
         }
 
+        /// <summary>
+        /// Returns the wrapped TdRules model
+        /// </summary>
         public virtual TdRules GetModel()
         {
             return model;
@@ -75,12 +84,21 @@ namespace Giis.Qacover.Model
             this.SetAttribute("dbms", value);
         }
 
+        /// <summary>
+        /// Returns a string representation of the main coverage measures of this query and each of its rules (one per row)
+        /// </summary>
         public virtual string GetTextSummary()
+        {
+            return GetTextSummary(false);
+        }
+
+        // By default do not include qrun, only for test, at least at this moment
+        public virtual string GetTextSummary(bool includeQRun)
         {
             StringBuilder sb = new StringBuilder();
 
             // The summary may have an additional error message
-            string strSummary = (this.GetQerror() > 0 ? "qerror=" + this.GetQerror() + "," : "") + base.ToString();
+            string strSummary = (this.GetQerror() > 0 ? "qerror=" + this.GetQerror() + "," : "") + base.ToString() + (includeQRun ? ",qrun=" + this.GetQrun() : "");
             sb.Append(strSummary);
             foreach (RuleModel rule in this.GetRules())
                 sb.Append("\n").Append(rule.GetTextSummary());
@@ -126,6 +144,9 @@ namespace Giis.Qacover.Model
             return GetAttribute(SOURCE_FILE_NAME);
         }
 
+        /// <summary>
+        /// Returns all rules stored, wrapped as RuleModel objects
+        /// </summary>
         public virtual IList<RuleModel> GetRules()
         {
             IList<RuleModel> rules = new List<RuleModel>();

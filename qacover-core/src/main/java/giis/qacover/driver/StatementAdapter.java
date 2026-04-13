@@ -13,12 +13,12 @@ import com.p6spy.engine.common.StatementInformation;
 import com.p6spy.engine.common.Value;
 import com.p6spy.engine.spy.P6SpyOptions;
 
-import giis.qacover.core.*;
+import giis.qacover.core.QueryStatement;
+import giis.qacover.eval.reader.JdbcQueryStatementReader;
 import giis.qacover.portable.QaCoverException;
 
 /**
- * Adapter of StatementInformation to the QueryStatement that must be sent to
- * the controller
+ * Adapter of the p6spy StatementInformation to the QueryStatement that must be sent to the controller
  */
 public class StatementAdapter extends QueryStatement {
 	private static final Logger log = LoggerFactory.getLogger(StatementAdapter.class);
@@ -118,8 +118,8 @@ public class StatementAdapter extends QueryStatement {
 	}
 	
 	@Override
-	public IQueryStatementReader getReader(String sql) {
-		return new QueryStatementReader(this.getConnection(), getSqlWithValues(sql));
+	public JdbcQueryStatementReader getReader(String sql) {
+		return new JdbcQueryStatementReader(this.getConnection(), getSqlWithValues(sql));
 	}
 
 }

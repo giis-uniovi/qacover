@@ -9,16 +9,24 @@ import giis.tdrules.openapi.model.TdRule;
 import giis.tdrules.openapi.model.TdRules;
 
 /**
- * Representation of a query, its rules and the results/indicators about the evaluation.
- * It is a wrapper of the TdRules model with additional information about the evaluation
+ * Representation of a query, its rules and the measures obtained after the evaluation: 
+ * - dead: number of coverage rules that have been covered 
+ * - count: number of coverage rules generated in the query
+ * - qrun: number of times the query has been evaluated.
+ * 
+ * Wraps a TdRules model and stores the measures in its summary attribute. Provides getters and setters to
+ * manage these measures.
  */
 public class QueryModel extends RuleBase {
-	// In addition to the standard attributes, indicates if the query itself 
-	// has errors (it can't be evaluated)
-	private static final String QERROR = "qerror";
 	// How many times has been evaluated
 	private static final String QRUN = "qrun";
-	// It stores additional information about the query location
+	
+	// Below additional attributes are used only when executor runs integrated with query interception,
+	// they are not used when using the StandaloneEvaluator
+	
+	// Error message if the query itself has errors (it can't be evaluated)
+	private static final String QERROR = "qerror";
+	// Additional information about the query location in the source code
 	private static final String CLASS_NAME = "class";
 	private static final String METHOD_NAME = "method";
 	private static final String LINE_NUMBER = "line";
@@ -44,6 +52,9 @@ public class QueryModel extends RuleBase {
 		model = rulesModel;
 	}
 
+	/**
+	 * Returns the wrapped TdRules model
+	 */
 	public TdRules getModel() {
 		return model;
 	}
@@ -59,7 +70,7 @@ public class QueryModel extends RuleBase {
 		model.setError(error);
 		this.setQerror(1); // para contabilizar en totales al igual que la cobertura
 	}
-
+	
 	public String getDbms() {
 		return getAttribute("dbms");
 	}
@@ -67,10 +78,19 @@ public class QueryModel extends RuleBase {
 		this.setAttribute("dbms", value);
 	}
 
+	/**
+	 * Returns a string representation of the main coverage measures of this query and each of its rules (one per row)
+	 */
 	public String getTextSummary() {
+		return getTextSummary(false);
+	}
+	// By default do not include qrun, only for test, at least at this moment
+	public String getTextSummary(boolean includeQRun) {
 		StringBuilder sb = new StringBuilder();
 		// The summary may have an additional error message
-		String strSummary = (this.getQerror() > 0 ? "qerror=" + this.getQerror() + "," : "") + super.toString();
+		String strSummary = (this.getQerror() > 0 ? "qerror=" + this.getQerror() + "," : "") 
+				+ super.toString() 
+				+ (includeQRun ? ",qrun=" + this.getQrun() : "");
 		sb.append(strSummary);
 		for (RuleModel rule : this.getRules())
 			sb.append("\n").append(rule.getTextSummary());
@@ -104,6 +124,9 @@ public class QueryModel extends RuleBase {
 		return getAttribute(SOURCE_FILE_NAME);
 	}
 
+	/**
+	 * Returns all rules stored, wrapped as RuleModel objects
+	 */
 	public List<RuleModel> getRules() {
 		List<RuleModel> rules = new ArrayList<RuleModel>();
 		for (TdRule rule : ModelUtil.safe(model.getRules()))

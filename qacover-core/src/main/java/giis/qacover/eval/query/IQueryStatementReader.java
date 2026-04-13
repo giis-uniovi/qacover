@@ -1,15 +1,15 @@
-package giis.qacover.core;
+package giis.qacover.eval.query;
 
 import java.util.List;
 
 /**
  * Provides read access to the data stored in the database to evaluate the rules
+ * (implementations are platform dependent)
  */
 public interface IQueryStatementReader {
-	
+
 	/**
-	 * Determines if the execution of a query returns at least one row
-	 * (to evaluate the fpc coverage)
+	 * Determines if the execution of a query returns at least one row (to evaluate the fpc coverage)
 	 */
 	public boolean hasRows();
 
@@ -17,7 +17,7 @@ public interface IQueryStatementReader {
 	 * Gets all rows returned by a sql statement
 	 */
 	public List<String[]> getRows();
-	
+
 	/**
 	 * Determines if the list of rows is the same than the returned by a sql statement
 	 */

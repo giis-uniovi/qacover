@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 /////// THIS FILE HAS BEEN AUTOMATICALLY CONVERTED FROM THE JAVA SOURCES. DO NOT EDIT ///////
 
-namespace Giis.Qacover.Core
+namespace Giis.Qacover.Eval.Query
 {
     /// <summary>
     /// Provides read access to the data stored in the database to evaluate the rules
+    /// (implementations are platform dependent)
     /// </summary>
     public interface IQueryStatementReader
     {
         /// <summary>
-        /// Determines if the execution of a query returns at least one row
-        /// (to evaluate the fpc coverage)
+        /// Determines if the execution of a query returns at least one row (to evaluate the fpc coverage)
         /// </summary>
         bool HasRows();
         /// <summary>

@@ -55,8 +55,7 @@ public class Controller {
 	private CoverageManager mainProcessError(RuleServices svc, StoreService store, QueryStatement stmt, Throwable e) {
 		String errorMsg = "Error at " + svc.getErrorContext() + ": " + QaCoverException.getString(e);
 		String sql = stmt != null ? stmt.getSql() : "";
-		RuleDriver rd = new RuleDriverFactory().getDriver();
-		CoverageManager rm = new CoverageManager(rd, sql, errorMsg); // construye error en el formato xml de las reglas
+		CoverageManager rm = new CoverageManager(sql, errorMsg); // construye error en el formato xml de las reglas
 		store.setLastGenStatus(errorMsg);
 		log.error("  ERROR: " + errorMsg, e);
 		return rm;
@@ -79,11 +78,10 @@ public class Controller {
 
 		// CoverageManager is constructed from rules generated in a previous query
 		// or by generating a fresh set of rules
-		RuleDriver rd = new RuleDriverFactory().getDriver(); // delegate to get and evaluate the rules
-		CoverageManager rm = getCoverageManager(rd, store, stack, stmt, options.getRuleCriterion());
+		CoverageManager rm = getCoverageManager(store, stack, stmt, options.getRuleCriterion());
 		if (rm == null) {
 			log.debug("Generating new coverage rules for this query");
-			rm = new CoverageManager(rd);
+			rm = new CoverageManager();
 			rm.generate(svc, store, stmt, stmt.getSql(), options);
 		} else {
 			log.debug("Using existing coverage rules for this query");
@@ -103,7 +101,7 @@ public class Controller {
 		return rm;
 	}
 
-	private CoverageManager getCoverageManager(RuleDriver ruleDriver, StoreService store, StackLocator stack, QueryStatement stmt, String currentCriterion) {
+	private CoverageManager getCoverageManager(StoreService store, StackLocator stack, QueryStatement stmt, String currentCriterion) {
 		QueryModel model = store.get(stack.getClassName(), stack.getMethodName(), stack.getLineNumber(), stmt.getSql());
 		if (model == null)
 			return null; // to signal the need to create a new model
@@ -116,7 +114,7 @@ public class Controller {
 			return null; // to signal the need to create a new model that will overwrite the stored rule
 		}
 		// new empty rule
-		return new CoverageManager(ruleDriver, model);
+		return new CoverageManager(model);
 	}
 
 }

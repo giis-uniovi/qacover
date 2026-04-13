@@ -1,4 +1,4 @@
-package giis.qacover.driver;
+package giis.qacover.eval.reader;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -7,17 +7,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import giis.qacover.core.IQueryStatementReader;
+import giis.qacover.eval.query.IQueryStatementReader;
 import giis.qacover.portable.QaCoverException;
 
 /**
- * Provides access to the data stored in the database to evaluate the rules
+ * Implements the jdbc access to the data stored in the database to evaluate the rules
  */
-public class QueryStatementReader implements IQueryStatementReader {
+public class JdbcQueryStatementReader implements IQueryStatementReader {
 	private Connection conn;
 	private String sql;
 
-	public QueryStatementReader(Connection conn, String sql) {
+	public JdbcQueryStatementReader(Connection conn, String sql) {
 		this.conn = conn;
 		this.sql = sql;
 	}
@@ -31,7 +31,7 @@ public class QueryStatementReader implements IQueryStatementReader {
 				return rs.next();
 			}
 		} catch (SQLException e) {
-			throw new QaCoverException("QueryReader.hasRows", e);
+			throw new QaCoverException("IQueryStatementReader.hasRows", e);
 		}
 	}
 
@@ -39,16 +39,16 @@ public class QueryStatementReader implements IQueryStatementReader {
 	public List<String[]> getRows() {
 		List<String[]> rows = new ArrayList<String[]>();
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-			int numCols = rs.getMetaData().getColumnCount();
 			while (rs.next())
-				rows.add(getRow(rs, numCols));
+				rows.add(getRow(rs));
 			return rows;
 		} catch (SQLException e) {
-			throw new QaCoverException("QueryReader.getRows", e);
+			throw new QaCoverException(e);
 		}
 	}
 
-	private String[] getRow(ResultSet rs, int numCols) throws SQLException {
+	private String[] getRow(ResultSet rs) throws SQLException {
+		int numCols = rs.getMetaData().getColumnCount();
 		String[] row = new String[numCols];
 		for (int i = 0; i < numCols; i++) {
 			String value = rs.getString(i + 1);
@@ -61,26 +61,27 @@ public class QueryStatementReader implements IQueryStatementReader {
 	public boolean equalRows(List<String[]> expected) {
 		int currentRow = -1;
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-			int numCols = rs.getMetaData().getColumnCount();
 			while (rs.next()) {
 				currentRow++;
 				if (currentRow > expected.size() - 1) // more rows in db than in the list
 					return false;
-				if (!equalRow(rs, expected.get(currentRow), numCols))
+				String[] actual = getRow(rs);
+				if (!equalRow(expected.get(currentRow), actual))
 					return false;
 			}
+			// expected still has more rows
 			if (expected.size() > currentRow + 1) // NOSONAR more clear logic
 				return false;
 			return true;
 		} catch (SQLException e) {
-			throw new QaCoverException("QueryReader.equalRows", e);
+			throw new QaCoverException("IQueryStatementReader.equalRows", e);
 		}
 	}
 
-	private boolean equalRow(ResultSet rs, String[] expected, int numCols) throws SQLException {
-		if (expected.length != numCols)
+	// This should use native array comparison when migrating the java version
+	public static boolean equalRow(String[] expected, String[] actual) {
+		if (expected.length != actual.length)
 			return false;
-		String[] actual = getRow(rs, numCols);
 		for (int i = 0; i < expected.length; i++)
 			if (expected[i] == null && actual[i] != null || expected[i] != null && actual[i] == null // NOSONAR already indented
 					|| (expected[i] != null && actual[i] != null && !expected[i].equals(actual[i])))

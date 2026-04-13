@@ -10,16 +10,19 @@ public class ResultVector {
 	public static final String ALREADY_COVERED = "ALREADY_COVERED";
 	public static final String RUNTIME_ERROR = "RUNTIME_ERROR";
 
-	private String[] vector;
+	private String[] vector; // sincle char encoded result of each rule evaluation
+	private StringBuilder logsb; // addional log for debugging
 
 	public ResultVector(int ruleCount) {
 		vector = new String[ruleCount];
 		for (int i = 0; i < vector.length; i++)
 			vector[i] = NOT_EVALUATED;
+		logsb = new StringBuilder();
 	}
 
-	public void setResult(int ruleNumber, String status) {
+	public void setResult(int ruleNumber, String status, String logString) {
 		vector[ruleNumber] = status;
+		logsb.append((ruleNumber == 0 ? "" : "\n") + logString);
 	}
 
 	@Override
@@ -37,6 +40,10 @@ public class ResultVector {
 			else if (RUNTIME_ERROR.equals(item))
 				sb.append("!");
 		return sb.toString();
+	}
+	
+	public String getLog() {
+		return logsb.toString();
 	}
 
 }
