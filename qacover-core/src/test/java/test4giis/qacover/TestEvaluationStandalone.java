@@ -255,6 +255,51 @@ public class TestEvaluationStandalone {
 		assertSummary(model, "count=1,dead=1,qrun=3 count=3,dead=2");
 	}
 
+	// Scenario to check the rule coverage evolution and reset values
+	@Test
+	public void testResetMut() throws SQLException {
+		setupTestData();
+		TdRules rules = getRules("mutation", "select id,num,text from test where num=0 or text is null order by id",
+				"select id,num,text from test where num<>50 order by id");
+		QueryModel model = new QueryModel(rules);
+
+		// none covered, only count runs
+		evaluator.evaluate(model);
+		assertSummary(model, "count=1,dead=0,qrun=1 count=1,dead=0");
+			
+		// reset, all counts to 0 again
+		model.reset();
+		evaluator.evaluate(model);
+		assertSummary(model, "count=0,dead=0,qrun=0 count=0,dead=0");
+		
+		// dead, query returns more rows than rule
+		rules.getRules().get(0).query("select id,num,text from test where num=0 order by id");
+		evaluator.evaluate(model);
+		assertSummary(model, "count=1,dead=1,qrun=1 count=1,dead=1");
+
+		// reset again
+		model.reset();
+		evaluator.evaluate(model);
+		assertSummary(model, "count=0,dead=0,qrun=0 count=0,dead=0");
+			
+		// dead, query returns less rows than rule
+		rules.getRules().get(0).query("select id,num,text from test where num>=0 order by id");
+		evaluator.evaluate(model);
+		assertSummary(model, "count=1,dead=1,qrun=1 count=1,dead=1");
+
+		// Final check to verify each measure in query and a rule
+		assertEquals(1, model.getCount());
+		assertEquals(1, model.getDead());
+		assertEquals(1, model.getQrun());
+		assertEquals(0, model.getError());
+		assertEquals("", model.getErrorString());
+
+		assertEquals(1, model.getRules().get(0).getCount());
+		assertEquals(1, model.getRules().get(0).getDead());
+		assertEquals(0, model.getRules().get(0).getError());
+		assertEquals("", model.getRules().get(0).getErrorString());
+	}
+
 	@Test
 	public void testMutEmptyRows() throws SQLException {
 		setupTestData();

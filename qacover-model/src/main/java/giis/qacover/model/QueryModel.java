@@ -123,7 +123,7 @@ public class QueryModel extends RuleBase {
 	public String getSourceLocation() {
 		return getAttribute(SOURCE_FILE_NAME);
 	}
-
+	
 	/**
 	 * Returns all rules stored, wrapped as RuleModel objects
 	 */
@@ -134,6 +134,14 @@ public class QueryModel extends RuleBase {
 		return rules;
 	}
 
+	/**
+	 * Reset values dead, count and error of all rules
+	 */
+	public void reset(){	
+		for (RuleModel rule : getRules())
+			rule.reset();
+	}
+	
 	public String getErrorString() {
 		return model.getError();
 	}
