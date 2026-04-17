@@ -108,6 +108,9 @@ public class QueryModel extends RuleBase {
 	public int getQrun() {
 		return getIntAttribute(QRUN);
 	}
+	public void setQrun(int value) {
+		setAttribute(QRUN, JavaCs.numToString(value));
+	}
 	public void addQrun(int value) {
 		incrementIntAttribute(QRUN, value);
 	}
@@ -141,6 +144,7 @@ public class QueryModel extends RuleBase {
 		super.setCount(0);
 		super.setDead(0);
 		super.setError(0);
+		setQrun(0);
 		
 		for (RuleModel rule : getRules())
 			rule.reset();
