@@ -138,6 +138,10 @@ public class QueryModel extends RuleBase {
 	 * Reset values dead, count and error of all rules
 	 */
 	public void reset(){	
+		super.setCount(0);
+		super.setDead(0);
+		super.setError(0);
+		
 		for (RuleModel rule : getRules())
 			rule.reset();
 	}
