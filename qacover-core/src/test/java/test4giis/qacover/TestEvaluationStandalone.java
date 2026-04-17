@@ -269,7 +269,6 @@ public class TestEvaluationStandalone {
 			
 		// reset, all counts to 0 again
 		model.reset();
-		evaluator.evaluate(model);
 		assertSummary(model, "count=0,dead=0,qrun=0 count=0,dead=0");
 		
 		// dead, query returns more rows than rule
@@ -279,7 +278,6 @@ public class TestEvaluationStandalone {
 
 		// reset again
 		model.reset();
-		evaluator.evaluate(model);
 		assertSummary(model, "count=0,dead=0,qrun=0 count=0,dead=0");
 			
 		// dead, query returns less rows than rule
