@@ -79,6 +79,15 @@ public class RuleModel extends RuleBase {
 	public String getErrorString() {
 		return model.getError();
 	}
+	
+	/**
+	 *  Reset values of this rule
+	 */
+	public void reset() {
+		super.setDead(0);
+		super.setCount(0);
+		super.setError(0);
+	}
 
 	@Override
 	public String toString() {

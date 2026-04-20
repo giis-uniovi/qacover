@@ -108,6 +108,9 @@ public class QueryModel extends RuleBase {
 	public int getQrun() {
 		return getIntAttribute(QRUN);
 	}
+	public void setQrun(int value) {
+		setAttribute(QRUN, JavaCs.numToString(value));
+	}
 	public void addQrun(int value) {
 		incrementIntAttribute(QRUN, value);
 	}
@@ -123,7 +126,7 @@ public class QueryModel extends RuleBase {
 	public String getSourceLocation() {
 		return getAttribute(SOURCE_FILE_NAME);
 	}
-
+	
 	/**
 	 * Returns all rules stored, wrapped as RuleModel objects
 	 */
@@ -134,6 +137,19 @@ public class QueryModel extends RuleBase {
 		return rules;
 	}
 
+	/**
+	 * Reset values dead, count and error of all rules
+	 */
+	public void reset(){	
+		super.setCount(0);
+		super.setDead(0);
+		super.setError(0);
+		setQrun(0);
+		
+		for (RuleModel rule : getRules())
+			rule.reset();
+	}
+	
 	public String getErrorString() {
 		return model.getError();
 	}
