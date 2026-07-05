@@ -333,7 +333,7 @@ jobs:
       cancel-in-progress: true
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.deployment-retry.outputs.page_url }}
     steps:
       # Downloads java test report files
       - uses: actions/download-artifact@v8
@@ -409,6 +409,11 @@ jobs:
       - name: Deploy to GitHub Pages
         if: always()
         id: deployment
+        continue-on-error: true
+        uses: actions/deploy-pages@v5.0.0
+      - name: Retry deploy to GitHub Pages
+        if: ${{ always() && steps.deployment.outcome == 'failure' }}
+        id: deployment-retry
         uses: actions/deploy-pages@v5.0.0
         
   sonarqube:
