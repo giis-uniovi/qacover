@@ -107,6 +107,16 @@ namespace Giis.Qacover.Model
             return model.GetError();
         }
 
+        /// <summary>
+        ///  Reset values of this rule
+        /// </summary>
+        public virtual void Reset()
+        {
+            base.SetDead(0);
+            base.SetCount(0);
+            base.SetError(0);
+        }
+
         public override string ToString()
         {
             return model.ToString();

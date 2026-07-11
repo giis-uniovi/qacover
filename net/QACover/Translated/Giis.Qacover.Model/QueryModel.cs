@@ -119,6 +119,11 @@ namespace Giis.Qacover.Model
             return GetIntAttribute(QRUN);
         }
 
+        public virtual void SetQrun(int value)
+        {
+            SetAttribute(QRUN, JavaCs.NumToString(value));
+        }
+
         public virtual void AddQrun(int value)
         {
             IncrementIntAttribute(QRUN, value);
@@ -153,6 +158,19 @@ namespace Giis.Qacover.Model
             foreach (TdRule rule in ModelUtil.Safe(model.GetRules()))
                 rules.Add(new RuleModel(rule));
             return rules;
+        }
+
+        /// <summary>
+        /// Reset values dead, count and error of all rules
+        /// </summary>
+        public virtual void Reset()
+        {
+            base.SetCount(0);
+            base.SetDead(0);
+            base.SetError(0);
+            SetQrun(0);
+            foreach (RuleModel rule in GetRules())
+                rule.Reset();
         }
 
         public virtual string GetErrorString()
