@@ -3,6 +3,6 @@
 echo "-- Begin setup"
 psql -v ON_ERROR_STOP=1   <<-EOSQL
   CREATE USER qacoverdb with encrypted password '$TEST_POSTGRES_PWD';
-  CREATE DATABASE qacoverdb;
+  CREATE DATABASE qacoverdb OWNER qacoverdb;
 EOSQL
 echo "-- END SETUP!"
