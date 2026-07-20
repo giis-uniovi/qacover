@@ -111,7 +111,7 @@ jobs:
       
       - name: Additional aggregated junit report
         if: always()
-        uses: javiertuya/junit-report-action@v1.3.0
+        uses: javiertuya/junit-report-action@v1.4.0
         with:
           surefire-files: "*/target/surefire-reports/TEST-*.xml"
           report-dir: target/site
@@ -190,7 +190,7 @@ jobs:
           
       - name: Additional aggregated junit report
         if: always()
-        uses: javiertuya/junit-report-action@v1.3.0
+        uses: javiertuya/junit-report-action@v1.4.0
         with:
           surefire-files: "*/target/surefire-reports/TEST-*.xml"
           report-dir: target/site
@@ -275,7 +275,7 @@ jobs:
         run: dotnet test --logger "trx;LogFileName=../../reports/qacover-report-ef.trx" QACoverTestEf/QACoverTestEf.csproj
       - name: Junit html report
         if: always()
-        uses: javiertuya/junit-report-action@v1.3.0
+        uses: javiertuya/junit-report-action@v1.4.0
         with:
           net-trx-report: "net/reports/qacover-report.trx,net/reports/qacover-report-ef.trx"
           net-surefire-folder: "net/target/surefire-reports"
@@ -370,7 +370,7 @@ jobs:
       # Generates and uploads the html reports and the individual surefire reports for further reference
       - name: Aggregated junit html report
         if: always()
-        uses: javiertuya/junit-report-action@v1.3.0
+        uses: javiertuya/junit-report-action@v1.4.0
         with:
           surefire-files: "**/target/surefire-reports/TEST-*.xml"
           report-dir: target-ALL/site
