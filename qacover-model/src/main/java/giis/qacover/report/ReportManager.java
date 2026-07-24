@@ -122,10 +122,13 @@ public class ReportManager {
 		// If only a query, returns its coverage, if more, returns the aggregate
 		// coverage of all queries
 		// If there is no queries returns empty
-		if (line.getQueries().size() == 1)
-			return writer.coverage(line.getQueries().get(0).getModel().getDead(), line.getQueries().get(0).getModel().getCount());
-		else if (line.getQueries().size() > 1)
+		if (line.getQueries().size() == 1) {
+			QueryModel model = line.getQueries().get(0).getModel();
+			if (model != null) // defensive: the query model file may not exist in the store
+				return writer.coverage(model.getDead(), model.getCount());
+		} else if (line.getQueries().size() > 1) {
 			return writer.coverage(line.getDead(), line.getCount());
+		}
 		return "";
 	}
 	private String getQueryCoverage(QueryModel query, SourceCodeLine line, ClassHtmlWriter writer) {

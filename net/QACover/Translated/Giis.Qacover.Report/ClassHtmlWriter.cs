@@ -42,7 +42,10 @@ namespace Giis.Qacover.Report
         public virtual string GetQueryContent(QueryReader query, string coverage, HistoryReader history)
         {
             string template = "    <tbody class='query'>\n" + "    <tr class='query-run'>\n" + "        <td></td>\n" + "        <td class='nowrap'>\n" + "            <span class='rules-show' title='Show rules'>&#9660;</span><span class='rules-hide' title='Hide rules'>&#9650;</span>\n" + "            $runCount$ run(s)\n" + "            <span class='params-show' title='Show eval result and params'>&#9655;</span><span class='params-hide' title='Hide eval result and params'>&#9665;</span> " + "            $coverage$\n" + "        </td>\n" + "        <td colspan='2'>\n" + "            <div class='params'>$parameters$</div>\n" + "            $sqlQuery$ $errorsQuery$" + "        </td>\n" + "    </tr>\n" + "    </tbody>\n";
-            return template.Replace("$runCount$", JavaCs.NumToString(query.GetModel().GetQrun())).Replace("$coverage$", coverage).Replace("$sqlQuery$", GetSqlHtml(Encode(query.GetSql()))).Replace("$parameters$", GetHistoryItems(history)).Replace("$errorsQuery$", GetErrorsHtml(Encode(query.GetModel().GetErrorString().Replace("\n", "").Replace("\r", "")), query.GetModel().GetError()));
+            QueryModel model = query.GetModel();
+            if (model == null)
+                return "";
+            return template.Replace("$runCount$", JavaCs.NumToString(model.GetQrun())).Replace("$coverage$", coverage).Replace("$sqlQuery$", GetSqlHtml(Encode(query.GetSql()))).Replace("$parameters$", GetHistoryItems(history)).Replace("$errorsQuery$", GetErrorsHtml(Encode(model.GetErrorString().Replace("\n", "").Replace("\r", "")), model.GetError()));
         }
 
         private string GetHistoryItems(HistoryReader history)

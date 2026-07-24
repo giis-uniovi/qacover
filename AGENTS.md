@@ -36,9 +36,10 @@ Tests are partitioned into **scopes** by class-name prefix (see `.github/workflo
 mvn test -Dtest='!TestPostgres*,!TestSqlserver*,!TestOracle*,!IT*' -Dsurefire.failIfNoSpecifiedTests=false
 # One DBMS (Postgres / Sqlserver / Oracle):
 mvn test -Dtest='TestPostgres*' -Dsurefire.failIfNoSpecifiedTests=false -Duser.timezone=Europe/Madrid
-# Single class in one module:
-mvn test -pl qacover-core -Dtest=TestConfig
+# Single class in one module (-am also builds the sibling modules it depends on):
+mvn test -pl qacover-core -am -Dtest=TestConfig
 ```
+`qacover-core` depends on the sibling `qacover-model` (same `-SNAPSHOT` version), so a `-pl qacover-core` build needs `-am` unless `qacover-model` was already installed (`mvn install`); otherwise Maven cannot resolve the snapshot.
 `-Duser.timezone=Europe/Madrid` is required for Oracle (avoids `ORA-01882`).
 
 ### Local test databases

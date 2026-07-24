@@ -3,6 +3,7 @@ package giis.qacover.report;
 import giis.portable.util.JavaCs;
 import giis.qacover.model.HistoryModel;
 import giis.qacover.model.ParameterDao;
+import giis.qacover.model.QueryModel;
 import giis.qacover.model.RuleModel;
 import giis.qacover.reader.HistoryReader;
 import giis.qacover.reader.QueryReader;
@@ -129,14 +130,17 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 				+ "        </td>\n"
 				+ "    </tr>\n"
 				+ "    </tbody>\n";
-		return template.replace("$runCount$", JavaCs.numToString(query.getModel().getQrun()))
+		QueryModel model = query.getModel();
+		if (model == null) // defensive: the query model file may not exist in the store
+			return "";
+		return template.replace("$runCount$", JavaCs.numToString(model.getQrun()))
 				.replace("$coverage$", coverage)
 				.replace("$sqlQuery$", getSqlHtml(encode(query.getSql())))
 				.replace("$parameters$", getHistoryItems(history))
 				// encode and remove line endings (to allow use a regex to replace platform dependent messages)
 				.replace("$errorsQuery$", getErrorsHtml(encode(
-						query.getModel().getErrorString().replace("\n", "").replace("\r", "")), 
-						query.getModel().getError()
+						model.getErrorString().replace("\n", "").replace("\r", "")),
+						model.getError()
 						));
 	}
 	private String getHistoryItems(HistoryReader history) {

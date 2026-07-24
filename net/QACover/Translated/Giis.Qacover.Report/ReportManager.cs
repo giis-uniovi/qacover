@@ -133,9 +133,16 @@ namespace Giis.Qacover.Report
             // coverage of all queries
             // If there is no queries returns empty
             if (line.GetQueries().Count == 1)
-                return writer.Coverage(line.GetQueries()[0].GetModel().GetDead(), line.GetQueries()[0].GetModel().GetCount());
+            {
+                QueryModel model = line.GetQueries()[0].GetModel();
+                if (model != null)
+                    return writer.Coverage(model.GetDead(), model.GetCount());
+            }
             else if (line.GetQueries().Count > 1)
+            {
                 return writer.Coverage(line.GetDead(), line.GetCount());
+            }
+
             return "";
         }
 
