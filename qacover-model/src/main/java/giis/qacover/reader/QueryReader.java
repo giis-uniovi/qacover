@@ -48,7 +48,8 @@ public class QueryReader {
 	 * Reads the QueryModel from the stored rules
 	 */
 	public String getSql() {
-		return this.getModel().getSql();
+		QueryModel model = this.getModel();
+		return model == null ? "" : model.getSql();
 	}
 	public String getTimestamp() {
 		return timestamp;
