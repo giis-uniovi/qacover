@@ -59,7 +59,8 @@ namespace Giis.Qacover.Reader
         /// </summary>
         public virtual string GetSql()
         {
-            return this.GetModel().GetSql();
+            QueryModel model = this.GetModel();
+            return model == null ? "" : model.GetSql();
         }
 
         public virtual string GetTimestamp()
