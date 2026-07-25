@@ -328,6 +328,7 @@ jobs:
       contents: read  
       pages: write
       id-token: write
+      actions: write
     concurrency:
       group: "pages"
       cancel-in-progress: true
@@ -401,6 +402,27 @@ jobs:
       # to 0755 (as indicated in warnings produced by v1.0.8)
       - name: Fix permissions to actions/upload-pages-artifact@v5.0.0
         run: sudo chmod -c -R 0755 target-ALL/site
+      - name: Cleanup stale github-pages artifacts in this run
+        if: always()
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const {owner, repo} = context.repo;
+            const run_id = context.runId;
+            const artifacts = await github.paginate(
+              github.rest.actions.listWorkflowRunArtifacts,
+              { owner, repo, run_id, per_page: 100 }
+            );
+            const stale = artifacts.filter(a => a.name === "github-pages");
+            core.info(`Found ${stale.length} github-pages artifacts to delete`);
+            for (const artifact of stale) {
+              await github.rest.actions.deleteArtifact({
+                owner,
+                repo,
+                artifact_id: artifact.id
+              });
+              core.info(`Deleted artifact id=${artifact.id}`);
+            }
       - name: Upload artifact
         if: always()
         uses: actions/upload-pages-artifact@v5.0.0
