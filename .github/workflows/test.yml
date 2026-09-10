@@ -37,7 +37,10 @@ jobs:
         uses: actions/setup-java@v6
         with:
           distribution: 'temurin'
-          java-version: '8'
+          # The unit tests use H2, that requires Java 11 or higher since v2.3.
+          # The artifacts are still built with source/target 1.8 (see the root pom.xml)
+          # and Java 8 runtime compatibility is covered by the test-IT job.
+          java-version: '11'
           cache: 'maven'
 
       # Starts the DBMS containers when applicable

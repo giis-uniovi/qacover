@@ -75,6 +75,8 @@ dotnet test QACoverTestEf/QACoverTestEf.csproj  # Entity Framework
 
 ## Conventions
 
-- Maven `source`/`target` is **Java 8**; keep sources 8-compatible.
+- Maven `source`/`target` is **Java 8**; keep sources 8-compatible. The `test-java` job runs on JDK 11
+  because the H2 test dependency dropped Java 8 support in v2.3; `test-IT`, the snapshot publication and
+  the release still run on JDK 8.
 - Public API names match across platforms except casing (Java `run()` ↔ C# `Run()`).
 - `.github/workflows/test.yml` uses an `if:` guard on the test jobs to avoid double runs for local-branch PRs while allowing forked-repo and dependabot PRs — preserve it when editing the workflow.
