@@ -132,7 +132,7 @@ public class QueryModel extends RuleBase {
 	 */
 	public List<RuleModel> getRules() {
 		List<RuleModel> rules = new ArrayList<RuleModel>();
-		for (TdRule rule : ModelUtil.safe(model.getRules()))
+		for (TdRule rule : ModelUtil.safe(model.getRules())) // NOSONAR streams are not translated to C#
 			rules.add(new RuleModel(rule));
 		return rules;
 	}
