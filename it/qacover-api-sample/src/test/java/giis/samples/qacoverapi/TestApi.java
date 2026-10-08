@@ -7,7 +7,7 @@ import giis.qacover.reader.CoverageCollection;
 import giis.qacover.reader.CoverageReader;
 import giis.qacover.reader.QueryCollection;
 import giis.qacover.reader.QueryReader;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
  * Utiliza los datos de las reglas generadas en ut desde TestReport
@@ -16,12 +16,13 @@ import junit.framework.TestCase;
  * fuera del contexto y classpath del maven principal.
  * Los resultados obtenidos seran comparados en TestIntegration
  */
-public class TestApi extends TestCase
+public class TestApi
 {
 	private String outPath="target/qacover/reports";
 	// Input is a copy of the rules that were generaged by TestReport (copied from qacover-core/target/qacover-report/rules)
 	private String inpPath="../../qacover-core/src/test/resources/qacover-api-sample-rules-from-test-report";
 
+    @Test
     public void testByClass() {
     	String allQueries = getReaderByClass(inpPath);
 		FileUtil.fileWrite(outPath, "by-class.txt", allQueries);
