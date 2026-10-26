@@ -20,7 +20,7 @@
 
 		<tdrules.version>4.7.0</tdrules.version>
 
-		<surefire.version>3.6.0</surefire.version>
+		<surefire.version>3.6.1</surefire.version>
 	</properties>
 
 	<modules>
