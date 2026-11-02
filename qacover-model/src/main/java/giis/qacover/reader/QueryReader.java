@@ -17,8 +17,8 @@ import giis.qacover.storage.LocalStore;
  */
 public class QueryReader {
 	private static final Logger log = LoggerFactory.getLogger(QueryReader.class);
-	private String folder; // store folder with the rules
-	private QueryKey queryKey;
+	private final String folder; // store folder with the rules
+	private final QueryKey queryKey;
 	// Next data is optional
 	private String timestamp = ""; // fecha formato iso
 	private String params = ""; // parametros en xml

@@ -17,7 +17,7 @@ namespace Giis.Qacover.Core.Services
     {
         private static readonly string UNDEFINED = "undefined";
         private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(StackLocator));
-        private CallStack stack;
+        private readonly CallStack stack;
         private string className = UNDEFINED;
         private string methodName = UNDEFINED;
         private string fileName = UNDEFINED;

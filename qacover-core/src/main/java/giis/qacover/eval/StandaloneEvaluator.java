@@ -22,7 +22,7 @@ import giis.qacover.model.QueryModel;
  */
 public class StandaloneEvaluator {
 
-	private Connection conn;
+	private final Connection conn;
 	private boolean debugSql = false;
 	private boolean skipIfCovered = false;
 

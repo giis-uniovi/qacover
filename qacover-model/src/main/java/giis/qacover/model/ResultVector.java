@@ -10,8 +10,8 @@ public class ResultVector {
 	public static final String ALREADY_COVERED = "ALREADY_COVERED";
 	public static final String RUNTIME_ERROR = "RUNTIME_ERROR";
 
-	private String[] vector; // sincle char encoded result of each rule evaluation
-	private StringBuilder logsb; // addional log for debugging
+	private final String[] vector; // sincle char encoded result of each rule evaluation
+	private final StringBuilder logsb; // addional log for debugging
 
 	public ResultVector(int ruleCount) {
 		vector = new String[ruleCount];

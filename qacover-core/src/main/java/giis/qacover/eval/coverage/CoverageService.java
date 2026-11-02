@@ -18,7 +18,7 @@ import giis.qacover.model.Variability;
 public class CoverageService {
 	private static final Logger log = LoggerFactory.getLogger(CoverageService.class);
 
-	private QueryModel model;
+	private final QueryModel model;
 	private ICoverageDecisor decisor;
 	private boolean debugSql = false;
 	private String lastRuleError; // Error message after evaluation of a single rule (used in logs)

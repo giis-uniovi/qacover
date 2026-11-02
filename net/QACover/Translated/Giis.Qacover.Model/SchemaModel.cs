@@ -13,7 +13,7 @@ namespace Giis.Qacover.Model
     /// </summary>
     public class SchemaModel
     {
-        private TdSchema model;
+        private readonly TdSchema model;
         public SchemaModel()
         {
             model = new TdSchema();

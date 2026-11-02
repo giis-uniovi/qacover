@@ -14,7 +14,7 @@ namespace Giis.Qacover.Reader
     /// </summary>
     public class CoverageCollection
     {
-        private IList<QueryCollection> queries = new List<QueryCollection>();
+        private readonly IList<QueryCollection> queries = new List<QueryCollection>();
         private CoverageSummary summary;
         public virtual void Add(QueryCollection queryCol)
         {

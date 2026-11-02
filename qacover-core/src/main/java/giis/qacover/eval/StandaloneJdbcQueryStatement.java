@@ -9,7 +9,7 @@ import giis.qacover.eval.reader.JdbcQueryStatementReader;
 
 class StandaloneJdbcQueryStatement extends AbstractQueryStatement {
 
-	private Connection conn;
+	private final Connection conn;
 
 	public StandaloneJdbcQueryStatement(Connection conn, String sql, Map<String, String> params) {
 		this.conn = conn;

@@ -149,7 +149,7 @@ public class ClassHtmlWriter extends BaseHtmlWriter {
 			return "(Eval result and params are not available)";
 		for (int i=0; i<history.getItems().size(); i++) {
 			HistoryModel item = history.getItems().get(i);
-			sb.append(i!=0 ? "<br/>":"").append("<strong>").append(i+1).append("</strong>.");
+			sb.append(i==0 ? "":"<br/>").append("<strong>").append(i+1).append("</strong>.");
 			String result = item.getResult() == null ? "" : item.getResult(); // can be null if query failed
 			sb.append(" Eval result: [<span class='result-vector'>").append(result).append("</span>]");
 			sb.append(" Params:");

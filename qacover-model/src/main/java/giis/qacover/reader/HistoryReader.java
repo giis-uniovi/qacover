@@ -11,7 +11,7 @@ import giis.qacover.model.QueryKey;
  */
 public class HistoryReader {
 
-	private List<HistoryModel> history;
+	private final List<HistoryModel> history;
 
 	public HistoryReader(List<HistoryModel> history) {
 		this.history = history;

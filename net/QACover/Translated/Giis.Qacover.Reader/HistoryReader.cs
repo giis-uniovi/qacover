@@ -13,7 +13,7 @@ namespace Giis.Qacover.Reader
     /// </summary>
     public class HistoryReader
     {
-        private IList<HistoryModel> history;
+        private readonly IList<HistoryModel> history;
         public HistoryReader(IList<HistoryModel> history)
         {
             this.history = history;

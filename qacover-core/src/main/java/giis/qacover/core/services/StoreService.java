@@ -30,7 +30,7 @@ public class StoreService {
 	private String lastParametersRun = ""; // ultimo conjunto de parametros con los que se evaluo la cobertura
 	private String lastRulesLog = ""; // ultimos resultados de la evaluacion en formato string
 	private String lastGenStatus = ""; // estado de la ultima generacion de reglas (success o mensaje de error)
-	private LocalStore storage;
+	private final LocalStore storage;
 
 	public StoreService(Configuration options) {
 		storage = new LocalStore(options.getStoreRulesLocation());

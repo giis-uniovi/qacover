@@ -6,7 +6,7 @@ import giis.tdrules.openapi.model.TdSchema;
  * Wrapper of the TdRules schema model
  */
 public class SchemaModel {
-	private TdSchema model;
+	private final TdSchema model;
 
 	public SchemaModel() {
 		model = new TdSchema();

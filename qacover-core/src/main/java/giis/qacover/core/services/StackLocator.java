@@ -12,7 +12,7 @@ import giis.portable.util.CallStack;
 public class StackLocator {
 	private static final String UNDEFINED = "undefined";
 	private static final Logger log = LoggerFactory.getLogger(StackLocator.class);
-	private CallStack stack;
+	private final CallStack stack;
 	private String className = UNDEFINED;
 	private String methodName = UNDEFINED;
 	private String fileName = UNDEFINED;

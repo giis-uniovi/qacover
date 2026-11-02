@@ -17,7 +17,7 @@ namespace Giis.Qacover.Eval.Coverage
     public class CoverageService
     {
         private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(CoverageService));
-        private QueryModel model;
+        private readonly QueryModel model;
         private ICoverageDecisor decisor;
         private bool debugSql = false;
         private string lastRuleError; // Error message after evaluation of a single rule (used in logs)
