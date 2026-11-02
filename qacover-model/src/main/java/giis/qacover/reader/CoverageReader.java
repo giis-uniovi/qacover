@@ -18,7 +18,7 @@ import giis.qacover.storage.LocalStore;
  */
 public class CoverageReader {
 	private static final Logger log = LoggerFactory.getLogger(CoverageReader.class);
-	private String rulesFolder;
+	private final String rulesFolder;
 
 	/**
 	 * Instantiation from the store location

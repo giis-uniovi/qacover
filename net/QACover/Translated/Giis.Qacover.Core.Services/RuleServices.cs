@@ -24,7 +24,7 @@ namespace Giis.Qacover.Core.Services
     {
         private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(RuleServices));
         private string errorContext = ""; // to give clues on where an exception is raised
-        private FaultInjector faultInjector;
+        private readonly FaultInjector faultInjector;
         public RuleServices(FaultInjector injector)
         {
             faultInjector = injector;

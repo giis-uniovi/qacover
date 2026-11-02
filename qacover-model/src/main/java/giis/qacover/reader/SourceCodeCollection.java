@@ -19,7 +19,7 @@ public class SourceCodeCollection {
 
 	private static final Logger log = LoggerFactory.getLogger(SourceCodeCollection.class);
 
-	private Map<Integer, SourceCodeLine> lines = new TreeMap<Integer, SourceCodeLine>();
+	private final Map<Integer, SourceCodeLine> lines = new TreeMap<Integer, SourceCodeLine>();
 	
 	public Map<Integer, SourceCodeLine> getLines() {
 		return lines;

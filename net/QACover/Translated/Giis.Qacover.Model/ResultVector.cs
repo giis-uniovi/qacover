@@ -17,8 +17,8 @@ namespace Giis.Qacover.Model
         public static readonly string UNCOVERED = "UNCOVERED";
         public static readonly string ALREADY_COVERED = "ALREADY_COVERED";
         public static readonly string RUNTIME_ERROR = "RUNTIME_ERROR";
-        private string[] vector; // sincle char encoded result of each rule evaluation
-        private StringBuilder logsb; // addional log for debugging
+        private readonly string[] vector; // sincle char encoded result of each rule evaluation
+        private readonly StringBuilder logsb; // addional log for debugging
         public ResultVector(int ruleCount)
         {
             vector = new string[ruleCount];

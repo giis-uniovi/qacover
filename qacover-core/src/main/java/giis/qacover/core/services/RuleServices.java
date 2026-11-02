@@ -27,7 +27,7 @@ import giis.tdrules.openapi.model.TdSchema;
 public class RuleServices {
 	private static final Logger log = LoggerFactory.getLogger(RuleServices.class);
 	private String errorContext = ""; // to give clues on where an exception is raised
-	private FaultInjector faultInjector;
+	private final FaultInjector faultInjector;
 
 	public RuleServices(FaultInjector injector) {
 		faultInjector = injector;

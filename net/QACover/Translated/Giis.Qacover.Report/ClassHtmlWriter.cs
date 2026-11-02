@@ -56,7 +56,7 @@ namespace Giis.Qacover.Report
             for (int i = 0; i < history.GetItems().Count; i++)
             {
                 HistoryModel item = history.GetItems()[i];
-                sb.Append(i != 0 ? "<br/>" : "").Append("<strong>").Append(i + 1).Append("</strong>.");
+                sb.Append(i == 0 ? "" : "<br/>").Append("<strong>").Append(i + 1).Append("</strong>.");
                 string result = item.GetResult() == null ? "" : item.GetResult(); // can be null if query failed
                 sb.Append(" Eval result: [<span class='result-vector'>").Append(result).Append("</span>]");
                 sb.Append(" Params:");

@@ -20,8 +20,8 @@ namespace Giis.Qacover.Reader
     public class QueryReader
     {
         private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(QueryReader));
-        private string folder; // store folder with the rules
-        private QueryKey queryKey;
+        private readonly string folder; // store folder with the rules
+        private readonly QueryKey queryKey;
         // Next data is optional
         private string timestamp = ""; // fecha formato iso
         private string @params = ""; // parametros en xml

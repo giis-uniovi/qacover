@@ -13,7 +13,7 @@ namespace Giis.Qacover.Reader
         private string source = null;
         // If a query was run at this line, this contains the QueryReader (allows more
         // than one)
-        private IList<QueryReader> queries = new List<QueryReader>();
+        private readonly IList<QueryReader> queries = new List<QueryReader>();
         public virtual string GetSource()
         {
             return source;

@@ -19,7 +19,7 @@ namespace Giis.Qacover.Reader
     public class CoverageReader
     {
         private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(CoverageReader));
-        private string rulesFolder;
+        private readonly string rulesFolder;
         /// <summary>
         /// Instantiation from the store location
         /// </summary>

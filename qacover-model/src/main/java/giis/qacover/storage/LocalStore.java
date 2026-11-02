@@ -1,7 +1,6 @@
 package giis.qacover.storage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -128,7 +127,7 @@ public class LocalStore {
 		for (int i = files.size() - 1; i >= 0; i--)
 			if (!files.get(i).endsWith(".xml")) // only .xml (e.g. exclude history)
 				files.remove(i);
-		Collections.sort(files); // To make repetible
+		files.sort(null); // To make repetible
 		return files;
 	}
 

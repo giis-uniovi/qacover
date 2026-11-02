@@ -102,7 +102,7 @@
     <replace file="QACover/Translated/Giis.Qacover.Core/QueryStatement.cs" token="string[] params" value="string[] @params" failOnNoReplacements="true" />
     <replace file="QACover/Translated/Giis.Qacover.Storage/LocalStore.cs" token="files.size()" value="files.Count" failOnNoReplacements="true" />
     <replace file="QACover/Translated/Giis.Qacover.Storage/LocalStore.cs" token="files.Remove(" value="files.RemoveAt(" failOnNoReplacements="true" />
-    <replace file="QACover/Translated/Giis.Qacover.Storage/LocalStore.cs" token="Collections.Sort(files)" value="((List&lt;string&gt;)files).Sort()" failOnNoReplacements="true" />
+    <replace file="QACover/Translated/Giis.Qacover.Storage/LocalStore.cs" token="files.Sort(null)" value="((List&lt;string&gt;)files).Sort()" failOnNoReplacements="true" />
     <replace file="QACover/Translated/Giis.Qacover.Core.Services/StackLocator.cs" token=" stack.Count" value=" stack.Size()" failOnNoReplacements="true" />
     <replace file="QACover/Translated/Giis.Qacover.Eval.Query/IQueryStatementReader.cs" token="List&lt;" value="IList&lt;" failOnNoReplacements="true" />
     <replace file="QACover/Translated/Giis.Qacover.Eval.Coverage/CoverageMutation.cs" token="private List&lt;" value="private IList&lt;" failOnNoReplacements="true" />

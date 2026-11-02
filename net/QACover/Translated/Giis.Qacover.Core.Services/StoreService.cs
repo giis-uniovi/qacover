@@ -29,7 +29,7 @@ namespace Giis.Qacover.Core.Services
         private string lastParametersRun = ""; // ultimo conjunto de parametros con los que se evaluo la cobertura
         private string lastRulesLog = ""; // ultimos resultados de la evaluacion en formato string
         private string lastGenStatus = ""; // estado de la ultima generacion de reglas (success o mensaje de error)
-        private LocalStore storage;
+        private readonly LocalStore storage;
         public StoreService(Configuration options)
         {
             storage = new LocalStore(options.GetStoreRulesLocation());

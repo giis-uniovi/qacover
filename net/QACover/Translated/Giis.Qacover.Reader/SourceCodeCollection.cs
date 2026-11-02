@@ -17,7 +17,7 @@ namespace Giis.Qacover.Reader
     public class SourceCodeCollection
     {
         private static readonly Logger log = Giis.Portable.Util.NLogUtil.GetLogger(typeof(SourceCodeCollection));
-        private Map<int, SourceCodeLine> lines = new TreeMap<int, SourceCodeLine>();
+        private readonly Map<int, SourceCodeLine> lines = new TreeMap<int, SourceCodeLine>();
         public virtual Map<int, SourceCodeLine> GetLines()
         {
             return lines;

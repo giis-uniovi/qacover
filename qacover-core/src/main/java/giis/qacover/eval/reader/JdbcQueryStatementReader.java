@@ -14,8 +14,8 @@ import giis.qacover.portable.QaCoverException;
  * Implements the jdbc access to the data stored in the database to evaluate the rules
  */
 public class JdbcQueryStatementReader implements IQueryStatementReader {
-	private Connection conn;
-	private String sql;
+	private final Connection conn;
+	private final String sql;
 
 	public JdbcQueryStatementReader(Connection conn, String sql) {
 		this.conn = conn;

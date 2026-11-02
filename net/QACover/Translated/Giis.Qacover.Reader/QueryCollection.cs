@@ -16,9 +16,9 @@ namespace Giis.Qacover.Reader
     /// </summary>
     public class QueryCollection
     {
-        private IList<QueryReader> items = new List<QueryReader>();
-        private string folder; // store folder
-        private string name; // a name given to differentiate from other collections
+        private readonly IList<QueryReader> items = new List<QueryReader>();
+        private readonly string folder; // store folder
+        private readonly string name; // a name given to differentiate from other collections
         private CoverageSummary summary = null; // optional, created on demand
         public QueryCollection(string rulesFolder, string collectionName)
         {
